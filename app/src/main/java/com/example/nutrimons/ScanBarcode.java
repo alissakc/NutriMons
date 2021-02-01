@@ -1,5 +1,6 @@
 package com.example.nutrimons;
 
+import android.Manifest;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,6 +8,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.tbruyelle.rxpermissions3.RxPermissions;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,6 +56,17 @@ public class ScanBarcode extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        RxPermissions rxPermissions = new RxPermissions(this);
+        rxPermissions
+                .request(Manifest.permission.CAMERA) // ask single or multiple permission once
+                .subscribe(granted -> {
+                    if (granted) {
+                        // All requested permissions are granted
+                    } else {
+                        // At least one permission is denied
+                    }
+                });
     }
 
     @Override
