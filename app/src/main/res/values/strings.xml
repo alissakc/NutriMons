@@ -135,4 +135,20 @@
     <string name="nutrients">Nutrients</string>
     <string name="nutrient_information">Nutrient Information</string>
     <string name="nutrient_overview">Nutrient Overview</string>
+    <string name="manually_add_meal">Manually Add Meal</string>
+    <string name="register">Register</string>
+    <string name="sign_in">Sign In</string>
+    <string name="name_of_food">Name of Food:</string>
+    <string name="name">Name</string>
+    <string name="serving_size">Serving Size:</string>
+    <string name="serving_size_edit_text">Serving Size</string>
+    <string name="serving_weight">Serving Weight:</string>
+    <string name="serving_weight_edit_text">Serving Weight (in grams)</string>
+    <string name="calories">Calories:</string>
+    <string name="submit">Submit</string>
+    <string name="calories_per_serving">Calories Per Serving</string>
+    <string name="select_snack">Select your snack(s):</string>
+    <string name="select_dinner">Select your dinner:</string>
+    <string name="select_lunch">Select your lunch:</string>
+    <string name="select_breakfast">Select your breakfast:</string>
 </resources>
