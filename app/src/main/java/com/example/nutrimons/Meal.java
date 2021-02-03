@@ -87,12 +87,16 @@ public class Meal extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        if (view.findViewById(R.id.scanBarcodeButton).equals(view)) {
-            Navigation.findNavController(view).navigate(R.id.action_nav_meal_to_nav_scanBarcode);
-        } else if (view.findViewById(R.id.addMealButton).equals(view)) {
-            Navigation.findNavController(view).navigate(R.id.action_nav_meal_to_nav_addMeal);
-        } else if (view.findViewById(R.id.mealPlanButton).equals(view)) {
-            Navigation.findNavController(view).navigate(R.id.action_nav_meal_to_nav_mealPlan);
+        switch(view.getId()){
+            case(R.id.scanBarcodeButton):
+                Navigation.findNavController(view).navigate(R.id.action_nav_meal_to_nav_scanBarcode);
+                break;
+            case(R.id.addMealButton):
+                Navigation.findNavController(view).navigate(R.id.action_nav_meal_to_nav_addMeal);
+                break;
+            case(R.id.mealPlanButton):
+                Navigation.findNavController(view).navigate(R.id.action_nav_meal_to_nav_mealPlan);
+                break;
         }
     }
 
