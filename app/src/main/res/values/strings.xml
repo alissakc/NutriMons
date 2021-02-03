@@ -160,4 +160,5 @@
     <string name="calories_per_unit">Calories per Unit:</string>
     <string name="calories_per_unit_edit_text">Calories per Unit</string>
     <string name="unit_name_edit_text">e.g. \'set\', \'rep\'</string>
+    <string name="add_water">Add Water</string>
 </resources>
