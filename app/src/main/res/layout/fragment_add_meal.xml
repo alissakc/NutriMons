@@ -47,7 +47,7 @@
                 android:autofillHints=""
                 android:ems="10"
                 android:inputType="text"
-                android:text="@string/name"
+                android:hint="@string/name"
                 android:textSize="18sp" />
 
             <TextView
@@ -70,7 +70,7 @@
                 android:autofillHints=""
                 android:ems="10"
                 android:inputType="text"
-                android:text="@string/serving_size_edit_text"
+                android:hint="@string/serving_size_edit_text"
                 android:textSize="18sp" />
 
             <TextView
@@ -93,7 +93,7 @@
                 android:autofillHints=""
                 android:ems="10"
                 android:inputType="number|text"
-                android:text="@string/serving_weight_edit_text"
+                android:hint="@string/serving_weight_edit_text"
                 android:textSize="18sp" />
 
             <TextView
@@ -116,7 +116,7 @@
                 android:autofillHints=""
                 android:ems="10"
                 android:inputType="number|text"
-                android:text="@string/calories_per_serving"
+                android:hint="@string/calories_per_serving"
                 android:textSize="18sp" />
 
             <Button
