@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="@drawable/layout_rounded"
+            android:background="@drawable/layout_rounded_lightblue"
             android:orientation="horizontal"
             android:padding="10dp">
 
@@ -120,7 +120,7 @@
             android:layout_height="0dp"
             android:layout_margin="10dp"
             android:layout_weight="1"
-            android:background="@drawable/layout_rounded"
+            android:background="@drawable/layout_rounded_lightblue"
             android:gravity="center"
             android:orientation="horizontal"
             android:padding="5dp">
