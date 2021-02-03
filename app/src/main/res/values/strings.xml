@@ -152,4 +152,12 @@
     <string name="select_lunch">Select your lunch:</string>
     <string name="select_breakfast">Select your breakfast:</string>
     <string name="registration_prompt">Don\'t have an account? Create one here</string>
+    <string name="select_workout">Select an existing workout</string>
+    <string name="create_new_workout">Create a new workout activity</string>
+    <string name="name_of_exercise">Name of Exercise:</string>
+    <string name="name_of_exercise_edit_text">Name of exercise...</string>
+    <string name="unit_name">Unit Name:</string>
+    <string name="calories_per_unit">Calories per Unit:</string>
+    <string name="calories_per_unit_edit_text">Calories per Unit</string>
+    <string name="unit_name_edit_text">e.g. \'set\', \'rep\'</string>
 </resources>
