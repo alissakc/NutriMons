@@ -3,6 +3,7 @@ package com.example.nutrimons;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +14,7 @@ import android.view.ViewGroup;
  * Use the {@link Exercise#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Dashboard extends Fragment {
+public class Dashboard extends Fragment implements View.OnClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -60,5 +61,25 @@ public class Dashboard extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch(view.getId()){
+            case(R.id.button1):
+                Navigation.findNavController(view).navigate(R.id.action_nav_home_to_nav_meal);
+                break;
+            case(R.id.button2):
+                Navigation.findNavController(view).navigate(R.id.action_nav_home_to_nav_water);
+                break;
+            case(R.id.button3):
+                Navigation.findNavController(view).navigate(R.id.action_nav_home_to_nav_exercise);
+                break;
+        }
+    }
+
+    public void toProfile(View view)
+    {
+        Navigation.findNavController(view).navigate(R.id.action_nav_home_to_nav_profile);
     }
 }

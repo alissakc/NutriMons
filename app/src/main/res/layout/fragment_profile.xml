@@ -71,7 +71,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
                             android:layout_marginLeft="5dp"
-                            android:src="@drawable/pencil" />
+                            android:src="@drawable/pencil"
+                            android:visibility="gone" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -86,7 +87,7 @@
                             android:text="Name: "
                             android:textColor="@color/black" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/textView19"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -105,7 +106,7 @@
                             android:text="Username: "
                             android:textColor="@color/black" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/textView20"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -124,7 +125,7 @@
                             android:text="Password: "
                             android:textColor="@color/black" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/textView21"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -143,7 +144,7 @@
                             android:text="Birthday: "
                             android:textColor="@color/black" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/textView22"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -179,7 +180,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
                             android:layout_marginLeft="5dp"
-                            android:src="@drawable/pencil" />
+                            android:src="@drawable/pencil"
+                            android:visibility="gone" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -194,7 +196,7 @@
                             android:text="Age: "
                             android:textColor="@color/black" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/textView24"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -213,7 +215,7 @@
                             android:text="Sex: "
                             android:textColor="@color/black" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/textView26"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -232,7 +234,7 @@
                             android:text="Weight: "
                             android:textColor="@color/black" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/textView28"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -251,7 +253,7 @@
                             android:text="Height: "
                             android:textColor="@color/black" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/textView30"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -270,7 +272,7 @@
                             android:text="Ethnicity: "
                             android:textColor="@color/black" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/textView32"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -284,17 +286,11 @@
                         android:text="Health History: "
                         android:textColor="@color/black" />
 
-                    <TextView
+                    <EditText
                         android:id="@+id/textView43"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Diabetes" />
-
-                    <TextView
-                        android:id="@+id/textView44"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Hypertension" />
+                        android:text="Diabetes, Hypertension" />
 
                 </LinearLayout>
 
@@ -332,7 +328,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:paddingLeft="5dp"
-                            android:src="@drawable/pencil" />
+                            android:src="@drawable/pencil"
+                            android:visibility="gone" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -347,7 +344,7 @@
                             android:text="Source: "
                             android:textColor="@color/black" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/textView38"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -366,7 +363,7 @@
                             android:text="History: "
                             android:textColor="@color/black" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/textView40"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -385,7 +382,7 @@
                             android:text="Plan: "
                             android:textColor="@color/black" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/textView36"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -404,7 +401,7 @@
                             android:text="NutriCoins: "
                             android:textColor="@color/black" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/textView42"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -441,30 +438,16 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:paddingLeft="5dp"
-                            android:src="@drawable/pencil" />
+                            android:src="@drawable/pencil"
+                            android:visibility="gone" />
                     </LinearLayout>
 
-                    <TextView
+                    <EditText
                         android:id="@+id/textView46"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="lose 100 lbs"
-                        android:textColor="@color/black" />
-
-                    <TextView
-                        android:id="@+id/textView47"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="improve overall health"
-                        android:textColor="@color/black" />
-
-                    <TextView
-                        android:id="@+id/textView48"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="walk 2 miles each day"
+                        android:text="lose 100 lbs, improve overall health, walk 2 miles each day"
                         android:textColor="@color/black" />
 
                 </LinearLayout>

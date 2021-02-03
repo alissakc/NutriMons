@@ -21,6 +21,7 @@
         </activity>
     </application>
 
-    <uses-permission android:name="android.permission.CAMERA"/> <!--adds in a library that asks user for camera permissions-->
+    <uses-feature android:name="android.hardware.camera.any" /> <!--camera permissions-->
+    <uses-permission android:name="android.permission.CAMERA"/>
 
 </manifest>

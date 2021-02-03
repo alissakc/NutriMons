@@ -8,12 +8,14 @@ android {
 
     defaultConfig {
         applicationId "com.example.nutrimons"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -25,10 +27,6 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
-    }
-    buildFeatures {
-        viewBinding true
-        dataBinding true
     }
 }
 
@@ -52,6 +50,23 @@ dependencies {
     implementation "io.reactivex.rxjava3:rxjava:3.0.9"
     implementation "io.reactivex.rxjava3:rxandroid:3.0.0"
 
-    //RxPermissions
+    //RxPermissions https://github.com/tbruyelle/RxPermissions
     implementation 'com.github.tbruyelle:rxpermissions:0.12'
+
+    //barcode scanner https://developers.google.com/ml-kit/vision/barcode-scanning/android
+    implementation 'com.google.mlkit:barcode-scanning:16.1.1'
+    //implementation 'com.google.android.gms:play-services-mlkit-barcode-scanning:16.1.4' //get from google play option
+
+    //add in multidex since barcode scanner library big?
+    implementation 'com.android.support:multidex:1.0.3'
+
+    //cameraX to handle image rotation
+    def camerax_version = "1.0.0-beta07"
+    // CameraX core library using camera2 implementation
+    implementation "androidx.camera:camera-camera2:$camerax_version"
+    // CameraX Lifecycle Library
+    implementation "androidx.camera:camera-lifecycle:$camerax_version"
+    // CameraX View class
+    implementation "androidx.camera:camera-view:1.0.0-alpha14"
+    implementation "androidx.camera:camera-extensions:1.0.0-alpha14"
 }
