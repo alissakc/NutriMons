@@ -21,20 +21,10 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/button4"
-                android:layout_width="154dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="back"
-                app:backgroundTint="#D3645C" />
-
             <TextView
                 android:id="@+id/textView101"
-                android:layout_width="170dp"
+                android:layout_width="236dp"
                 android:layout_height="match_parent"
-                android:layout_marginStart="150dp"
-                android:layout_marginLeft="150dp"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:imeOptions="actionSend"
