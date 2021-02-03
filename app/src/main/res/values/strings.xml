@@ -163,4 +163,5 @@
     <string name="add_water">Add Water</string>
     <string name="water_tracker">Water Tracker</string>
     <string name="enter_amount_of_water">Enter amount of water</string>
+    <string name="create_meal_plan">Create Meal Plan</string>
 </resources>

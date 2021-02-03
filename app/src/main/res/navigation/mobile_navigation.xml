@@ -18,7 +18,11 @@
         android:id="@+id/nav_login"
         android:name="com.example.nutrimons.ui.login.LoginFragment"
         android:label="Login"
-        tools:layout="@layout/fragment_login"></fragment>
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_nav_login_to_nav_registration"
+            app:destination="@id/nav_registration" />
+    </fragment>
     <fragment
         android:id="@+id/nav_registration"
         android:name="com.example.nutrimons.ui.login.RegistrationFragment"
@@ -37,7 +41,17 @@
         android:id="@+id/nav_meal"
         android:name="com.example.nutrimons.Meal"
         android:label="Meal"
-        tools:layout="@layout/fragment_meal" />
+        tools:layout="@layout/fragment_meal" >
+        <action
+            android:id="@+id/action_nav_meal_to_nav_mealPlan"
+            app:destination="@id/nav_mealPlan" />
+        <action
+            android:id="@+id/action_nav_meal_to_nav_addMeal"
+            app:destination="@id/nav_addMeal" />
+        <action
+            android:id="@+id/action_nav_meal_to_nav_scanBarcode"
+            app:destination="@id/nav_scanBarcode" />
+    </fragment>
     <fragment
         android:id="@+id/nav_addMeal"
         android:name="com.example.nutrimons.AddMeal"
@@ -62,14 +76,18 @@
         android:label="Meal Plan"
         tools:layout="@layout/fragment_meal_plan">
         <action
-            android:id="@+id/action_mealPlan_to_meal3"
+            android:id="@+id/action_nav_mealPlan_to_nav_meal"
             app:destination="@id/nav_meal" />
     </fragment>
     <fragment
         android:id="@+id/nav_tamagotchi"
         android:name="com.example.nutrimons.Tamagotchi"
         android:label="Tamagotchi"
-        tools:layout="@layout/fragment_tamagotchi" />
+        tools:layout="@layout/fragment_tamagotchi" >
+        <action
+            android:id="@+id/action_nav_tamagotchi_to_nav_tamagotchiShop"
+            app:destination="@id/nav_tamagotchiShop" />
+    </fragment>
     <fragment
         android:id="@+id/nav_tamagotchiShop"
         android:name="com.example.nutrimons.TamagotchiShop"
