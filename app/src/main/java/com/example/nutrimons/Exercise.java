@@ -1,19 +1,29 @@
 package com.example.nutrimons;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.Toast;
+import android.widget.AdapterView.OnItemSelectedListener;
+
+import androidx.fragment.app.Fragment;
+
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link Exercise#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Exercise extends Fragment {
+public class Exercise extends Fragment implements AdapterView.OnItemSelectedListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -23,6 +33,9 @@ public class Exercise extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    // vars
+    private Spinner spinner1;
 
     public Exercise() {
         // Required empty public constructor
@@ -59,6 +72,53 @@ public class Exercise extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_exercise, container, false);
+        View view =  inflater.inflate(R.layout.fragment_exercise, container, false);
+
+        // Spinner element
+        spinner1 = (Spinner) view.findViewById(R.id.breakfastMultipleItemSelectionSpinner);
+
+        // Spinner click listener
+        spinner1.setOnItemSelectedListener(this);
+
+        // Spinner Drop down elements
+        List<String> exercises = new ArrayList<String>();
+        exercises.add("Select an item");
+        exercises.add("Aerobic");
+        exercises.add("Basketball");
+        exercises.add("Badminton");
+        exercises.add("Baseball");
+        exercises.add("Bench Press");
+        exercises.add("Bicycling");
+        exercises.add("Boxing");
+        exercises.add("Soccer");
+        exercises.add("Running");
+        exercises.add("Volleyball");
+        exercises.add("Walking");
+
+        // Creating adapter for spinners
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, exercises);
+
+        // Drop down layout style - list view with radio button
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // attaching data adapter to spinners
+        spinner1.setAdapter(dataAdapter);
+
+        return view;
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        // On selecting a spinner item
+        String item = parent.getItemAtPosition(position).toString();
+
+        // Showing selected spinner item
+        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        // TODO Auto-generated method stub
     }
 }

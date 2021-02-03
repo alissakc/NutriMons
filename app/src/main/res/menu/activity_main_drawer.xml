@@ -45,6 +45,10 @@
                     android:id="@+id/nav_scanBarcode"
                     android:icon="@drawable/ic_qr_code"
                     android:title="@string/scan_barcode" />
+                <item
+                    android:id="@+id/nav_water"
+                    android:icon="@drawable/ic_mug"
+                    android:title="@string/add_water" />
             </group>
         </menu>
     </item>
