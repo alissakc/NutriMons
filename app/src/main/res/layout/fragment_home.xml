@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/ic_tamagotchi_background"
     android:visibility="visible"
-    tools:context=".DashboardActivity">
+    tools:context=".MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

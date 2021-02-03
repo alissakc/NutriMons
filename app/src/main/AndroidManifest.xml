@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NutriMons">
         <activity
-            android:name=".DashboardActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.NutriMons.NoActionBar">
             <intent-filter>
