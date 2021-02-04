@@ -1,6 +1,10 @@
 package com.example.nutrimons;
 
 import android.Manifest;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,6 +13,8 @@ import androidx.camera.core.Camera;
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.ImageCapture;
+import androidx.camera.core.ImageCaptureException;
+import androidx.camera.core.ImageProxy;
 import androidx.camera.core.Preview;
 import androidx.camera.extensions.HdrImageCaptureExtender;
 import androidx.camera.lifecycle.ProcessCameraProvider;
@@ -16,12 +22,15 @@ import androidx.camera.view.PreviewView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.navigation.Navigation;
 
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.mlkit.vision.common.InputImage;
@@ -29,7 +38,10 @@ import com.tbruyelle.rxpermissions3.RxPermissions;
 
 import com.google.mlkit.vision.barcode.*;
 
+import java.nio.ByteBuffer;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,6 +59,8 @@ public class ScanBarcode extends Fragment {
     View view;
     Button button;
     ImageView bc;
+    ImageCapture imageCapture;
+    Executor executor = Executors.newSingleThreadExecutor();
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -84,15 +98,17 @@ public class ScanBarcode extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        startPermissionsCamera();
+        start();
     }
 
-    private void startPermissionsCamera()
+    private void start()
     {
         //get camera permissions
         RxPermissions rxPermissions = new RxPermissions(this);
         rxPermissions
-                .request(Manifest.permission.CAMERA) // ask single or multiple permission once
+                .request(Manifest.permission.CAMERA/*,
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE*/) // ask single or multiple permission once
                 .subscribe(granted -> {
                     if (granted) {
                         // All requested permissions are granted
@@ -100,7 +116,8 @@ public class ScanBarcode extends Fragment {
                         setBarCodeOptions();
                         startCamera();
                     } else {
-                        return;
+                        Toast.makeText(getContext(), "Permissions needed for this function", Toast.LENGTH_LONG).show();
+                        Navigation.findNavController(view).navigate(R.id.action_nav_scanBarcode_to_nav_home);
                     }
                 });
     }
@@ -161,28 +178,41 @@ public class ScanBarcode extends Fragment {
             hdrImageCaptureExtender.enableExtension(cameraSelector);
         }
 
-        final ImageCapture imageCapture = builder
+        imageCapture = builder
                 .setTargetRotation(getActivity().getWindowManager().getDefaultDisplay().getRotation())
                 .build();
         preview.setSurfaceProvider(mPreviewView.createSurfaceProvider());
         Camera camera = cameraProvider.bindToLifecycle((LifecycleOwner)this, cameraSelector, preview, imageAnalysis, imageCapture);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageCapture.takePicture(ContextCompat.getMainExecutor((getContext())),
+                        new ImageCapture.OnImageCapturedCallback() {
+                            @Override
+                            public void onCaptureSuccess(ImageProxy image) {
+                                // insert your code here.
+                                Bitmap bitmap = getBitmap(image);
+                                bc.setImageBitmap(bitmap);
+                                Toast.makeText(getContext(), "Image taken", Toast.LENGTH_SHORT).show();
+                            }
+                            @Override
+                            public void onError(ImageCaptureException error) {
+                                // insert your code here.
+                                Toast.makeText(getContext(), "Error taking picture", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+        });
     }
 
-    /*public void onClick() {
-        ImageCapture.OutputFileOptions outputFileOptions =
-                new ImageCapture.OutputFileOptions.Builder(new File(...)).build();
-        imageCapture.takePicture(outputFileOptions, cameraExecutor,
-                new ImageCapture.OnImageSavedListener() {
-                    @Override
-                    public void onImageSaved(ImageCapture.OutputFileResults outputFileResults) {
-                        // insert your code here.
-                    }
-                    @Override
-                    public void onError(ImageCaptureException error) {
-                        // insert your code here.
-                    }
-                }
-    }*/
+    private Bitmap getBitmap(ImageProxy image) { //https://stackoverflow.com/questions/61693512/converting-a-captured-image-to-a-bitmap
+        ByteBuffer buffer = image.getPlanes()[0].getBuffer();
+        buffer.rewind();
+        byte[] bytes = new byte[buffer.capacity()];
+        buffer.get(bytes);
+        byte[] clonedBytes = bytes.clone();
+        return BitmapFactory.decodeByteArray(clonedBytes, 0, clonedBytes.length);
+    }
 
     private void setContentView(int activity_dashboard) {
     }
@@ -195,6 +225,7 @@ public class ScanBarcode extends Fragment {
         view = inflater.inflate(R.layout.fragment_scan_barcode, container, false);
         mPreviewView = view.findViewById(R.id.viewFinder);
         button = view.findViewById(R.id.camera_capture_button);
+        bc = view.findViewById(R.id.imageView31);
 
         return view;
     }

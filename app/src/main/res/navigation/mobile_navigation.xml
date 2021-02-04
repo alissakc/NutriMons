@@ -81,6 +81,9 @@
         <action
             android:id="@+id/action_scanBarcode_to_meal2"
             app:destination="@id/nav_meal" />
+        <action
+            android:id="@+id/action_nav_scanBarcode_to_nav_home"
+            app:destination="@id/nav_home" />
     </fragment>
     <fragment
         android:id="@+id/nav_mealPlan"
