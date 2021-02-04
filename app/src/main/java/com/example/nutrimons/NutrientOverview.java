@@ -2,11 +2,26 @@ package com.example.nutrimons;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.github.mikephil.charting.charts.HorizontalBarChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +38,17 @@ public class NutrientOverview extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    // vars
+    private static final int MAX_X_VALUE = 18;
+    private static final int MAX_Y_VALUE = 50;
+    private static final int MIN_Y_VALUE = 5;
+    private static final String SET_LABEL = "Nutrient Overview";
+    private static final String[] NUTRIENTS = { "CARBOHYDRATES", "PROTEINS", "FATS",  "VITAMIN B1", "VITAMIN B2", "VITAMIN B6", "VITAMIN B12",
+            "VITAMIN C", "FOLIC ACID", "VITAMIN A", "VITAMIN D", "VITAMIN E", "VITAMIN K", "CALCIUM", "POTASSIUM", "SODIUM", "IRON", "ZINC" };
+
+    private HorizontalBarChart chart;
+
 
     public NutrientOverview() {
         // Required empty public constructor
@@ -49,16 +75,59 @@ public class NutrientOverview extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
+    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_nutrient_overview, container, false);
+        View view = inflater.inflate(R.layout.fragment_nutrient_overview, container, false);
+
+        chart = view.findViewById(R.id.horizontalBarChart);
+
+        BarData data = createChartData();
+        configureChartAppearance();
+        prepareChartData(data);
+
+        return view;
+    }
+
+    private void configureChartAppearance() {
+        chart.getDescription().setEnabled(false);
+
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setLabelCount(MAX_X_VALUE);   // sets the number of labels for the y-axis
+        xAxis.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return NUTRIENTS[(int) value];
+            }
+        });
+
+
+    }
+
+    private BarData createChartData() {
+        ArrayList<BarEntry> values = new ArrayList<>();
+        for (int i = 0; i < MAX_X_VALUE; i++) {
+            float x = i;
+            float y = new Util().randomFloatBetween(MIN_Y_VALUE, MAX_Y_VALUE);
+            values.add(new BarEntry(x, y));
+        }
+        BarDataSet set1 = new BarDataSet(values, SET_LABEL);
+
+        ArrayList<IBarDataSet> dataSets = new ArrayList<>();
+        dataSets.add(set1);
+
+        BarData data = new BarData(dataSets);
+
+        return data;
+    }
+
+    private void prepareChartData(BarData data) {
+        data.setValueTextSize(12f);
+        chart.setData(data);
+        chart.invalidate();
     }
 }
