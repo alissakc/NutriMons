@@ -2,12 +2,14 @@ package com.example.nutrimons;
 
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,6 +26,8 @@ public class Dashboard extends Fragment implements View.OnClickListener {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    Button goToProfile, goToMeal, goToWater, goToExercise;
 
     public Dashboard() {
         // Required empty public constructor
@@ -60,7 +64,21 @@ public class Dashboard extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        // Button initialization
+        goToProfile = view.findViewById(R.id.imageView1);
+        goToMeal = view.findViewById(R.id.button1);
+        goToWater = view.findViewById(R.id.button2);
+        goToExercise = view.findViewById(R.id.button3);
+
+        // assign listener for buttons
+        goToProfile.setOnClickListener(this);
+        goToMeal.setOnClickListener(this);
+        goToWater.setOnClickListener(this);
+        goToExercise.setOnClickListener(this);
+
+        return view;
     }
 
     @Override
