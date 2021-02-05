@@ -11,9 +11,6 @@
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/action_nav_login_to_profileFragment"
-            app:destination="@id/nav_profile" />
-        <action
             android:id="@+id/action_nav_home_to_nav_meal"
             app:destination="@id/nav_meal" />
         <action
