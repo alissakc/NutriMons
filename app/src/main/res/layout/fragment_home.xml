@@ -4,9 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/ic_tamagotchi_background"
-    android:visibility="visible"
-    tools:context=".MainActivity">
+    tools:context="com.example.nutrimons.Dashboard">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -84,12 +82,14 @@
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:layout_marginBottom="20dp"
+                        android:onClick="toProfile"
                         app:srcCompat="@drawable/profile_pic" />
 
                     <Button
                         android:id="@+id/button1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:onClick="onClick"
                         android:text="Add Meal"
                         android:textSize="8dp" />
 
@@ -97,6 +97,7 @@
                         android:id="@+id/button2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:onClick="onClick"
                         android:text="Add Water"
                         android:textSize="8dp" />
 
@@ -104,6 +105,7 @@
                         android:id="@+id/button3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:onClick="onClick"
                         android:text="Add Exercise"
                         android:textSize="8dp" />
                 </LinearLayout>
