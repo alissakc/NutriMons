@@ -3,17 +3,18 @@ package com.example.nutrimons;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.Button;
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link Tamagotchi#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Tamagotchi extends Fragment {
+public class Tamagotchi extends Fragment implements View.OnClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -23,6 +24,9 @@ public class Tamagotchi extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    // vars
+    Button goToStore;
 
     public Tamagotchi() {
         // Required empty public constructor
@@ -59,6 +63,22 @@ public class Tamagotchi extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tamagotchi, container, false);
+        View view = inflater.inflate(R.layout.fragment_tamagotchi, container, false);
+
+        goToStore = view.findViewById(R.id.store);
+
+        goToStore.setOnClickListener(this);
+
+        return view;
+    }
+
+
+    @Override
+    public void onClick(View view) {
+        switch(view.getId()){
+            case(R.id.store):
+                Navigation.findNavController(view).navigate(R.id.action_nav_tamagotchi_to_nav_tamagotchiShop);
+                break;
+        }
     }
 }
