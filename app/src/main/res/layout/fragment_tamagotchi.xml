@@ -70,13 +70,24 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/store"
+                android:id="@+id/storeButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="onClick"
                 android:text="Store" />
+
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/feedNum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="#DA1B1B"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            tools:text="Stats" />
 
         <LinearLayout
             android:id="@+id/linearLayout6"
@@ -92,6 +103,7 @@
                 android:adjustViewBounds="false"
                 android:cropToPadding="false"
                 android:src="@drawable/tamagotchi_big" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -105,7 +117,7 @@
             android:padding="5dp">
 
             <Button
-                android:id="@+id/feed"
+                android:id="@+id/feedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

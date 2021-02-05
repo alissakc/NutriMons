@@ -9,6 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link Tamagotchi#newInstance} factory method to
@@ -27,6 +31,9 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
 
     // vars
     Button goToStore;
+    TextView feedText;
+    Button feedButton;
+    int feedCounter;
 
     public Tamagotchi() {
         // Required empty public constructor
@@ -65,9 +72,12 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tamagotchi, container, false);
 
-        goToStore = view.findViewById(R.id.store);
-
+        goToStore = view.findViewById(R.id.storeButton);
         goToStore.setOnClickListener(this);
+        feedText = (TextView) view.findViewById(R.id.feedNum);
+        feedButton = view.findViewById(R.id.feedButton);
+        feedButton.setOnClickListener(this);
+
 
         return view;
     }
@@ -76,9 +86,15 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         switch(view.getId()){
-            case(R.id.store):
+            case(R.id.storeButton):
                 Navigation.findNavController(view).navigate(R.id.action_nav_tamagotchi_to_nav_tamagotchiShop);
                 break;
+            case(R.id.feedButton):
+                TextView text=(TextView) feedText;
+                feedCounter++;
+                text.setText("YOURE FAT" + " " + feedCounter);
+
+
         }
     }
 }
