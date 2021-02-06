@@ -34,6 +34,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -43,8 +50,14 @@ import com.tbruyelle.rxpermissions3.RxPermissions;
 
 import com.google.mlkit.vision.barcode.*;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.nio.ByteBuffer;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -68,6 +81,7 @@ public class ScanBarcode extends Fragment {
     ImageCapture imageCapture;
     Executor executor = Executors.newSingleThreadExecutor();
     Context context;
+    RequestQueue queue;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -113,7 +127,8 @@ public class ScanBarcode extends Fragment {
         //get camera permissions
         RxPermissions rxPermissions = new RxPermissions(this);
         rxPermissions
-                .request(Manifest.permission.CAMERA/*,
+                .request(Manifest.permission.CAMERA,
+                        Manifest.permission.INTERNET/*,
                         Manifest.permission.READ_EXTERNAL_STORAGE,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE*/) // ask single or multiple permission once
                 .subscribe(granted -> {
@@ -239,23 +254,15 @@ public class ScanBarcode extends Fragment {
                             //Point[] corners = barcode.getCornerPoints();
 
                             String rawValue = barcode.getRawValue();
-                            int valueType = barcode.getValueType();
-
+                            //int valueType = barcode.getValueType();
                             TextView tv = view.findViewById(R.id.textView8);
-
                             tv.setText(rawValue);
-                            // See API reference for complete list of supported types
-                            /*switch (valueType) {
-                                case Barcode.TYPE_WIFI:
-                                    String ssid = barcode.getWifi().getSsid();
-                                    String password = barcode.getWifi().getPassword();
-                                    int type = barcode.getWifi().getEncryptionType();
-                                    break;
-                                case Barcode.TYPE_URL:
-                                    String title = barcode.getUrl().getTitle();
-                                    String url = barcode.getUrl().getUrl();
-                                    break;
-                            }*/
+
+                            queue.cancelAll(rawValue);
+                            StringRequest strReq = callOFFapi(rawValue);
+                            queue.add(strReq);
+                            tv = view.findViewById(R.id.textView44);
+                            tv.setText(strReq.toString());
                         }
                         // [END get_barcodes]
                         // [END_EXCLUDE]
@@ -271,6 +278,51 @@ public class ScanBarcode extends Fragment {
                 });
     }
 
+    private StringRequest callOFFapi(String barcodeString) //https://wiki.openfoodfacts.org/API
+    {
+        final String HEADER = "https://world.openfoodfacts.org/api/v0/product/";
+        final String FOOTER = ".json";
+
+        String searchURL = HEADER + barcodeString + FOOTER;
+
+        return new StringRequest(Request.Method.GET, searchURL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // try/catch block for returned JSON data
+                        // see API's documentation for returned format
+                        try {
+                            JSONObject result = new JSONObject(response).getJSONObject("list");
+                            int maxItems = result.getInt("end");
+                            JSONArray resultList = result.getJSONArray("item");
+                            Toast.makeText(context, resultList.toString(), Toast.LENGTH_SHORT).show();
+
+                            // catch for the JSON parsing error
+                        } catch (JSONException e) {
+                            Toast.makeText(context, "error with api response", Toast.LENGTH_SHORT).show();
+                        }
+                    } // public void onResponse(String response)
+                }, // Response.Listener<String>()
+                new Response.ErrorListener() {
+                    // 4th param - method onErrorResponse lays the code procedure of error return
+                    // ERROR
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // display a simple message on the screen
+                        Toast.makeText(context, "api not responding", Toast.LENGTH_SHORT).show();
+                    }
+                })
+        {
+            @Override //change http header per OFF api READ operations request
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("UserAgent: NutriMons - Android - Version 0.0 - https://github.com/alissakc/NutriMons", "CSULB CECS 491: BAMM");
+
+                return params;
+            }
+        };
+    }
+
     private void setContentView(int activity_dashboard) {
     }
 
@@ -284,6 +336,7 @@ public class ScanBarcode extends Fragment {
         button = view.findViewById(R.id.camera_capture_button);
         bc = view.findViewById(R.id.imageView31);
         context = getContext();
+        queue = Volley.newRequestQueue(getContext());
 
         return view;
     }
