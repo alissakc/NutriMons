@@ -1,19 +1,47 @@
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
+import android.content.ContentValues;
 
 public class DBHelper extends SQLiteOpenHelper {
+    private static final String DATABASE_NAME = "NutrimonsDatabase";
+    private static final int DATABASE_Version = 1;    // Database Version
+
+    private static final String USER_TABLE = "User";   // Table Name
+    private static final String UID="_id";     // Column I (Primary Key)
+    private static final String USERNAME = "Username";    //Column II
+    private static final String USER_PASSWORD= "Password";    // Column III
+    private static final String CREATE_TABLE = "CREATE TABLE "+USER_TABLE+
+            " ("+UID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+USERNAME+
+            " VARCHAR(255) ,"+ USER_PASSWORD+" VARCHAR(225));";
+
     public DBHelper(Context context){
-        super(context, "Userdata.db", null, 1);
+        super(context, DATABASE_NAME, null, 1);
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create Table ....");
+        try {
+            db.execSQL(CREATE_TABLE);
+        } catch (Exception e) {
+           System.out.println("Errors");
+        }
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        db.execSQL("DROP TABLE IF EXISTS "+USER_TABLE);
     }
+
+ /*   public boolean insertUser(String userName)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(USERNAME, user.getName());
+        values.put(USEREMAIL, user.getEmail());
+        values.put(USER_PASSWORD, user.getPassword());
+        // Inserting Row
+        db.insert(USER_TABLE, null, values);
+        db.close();
+    }*/
 }
+
