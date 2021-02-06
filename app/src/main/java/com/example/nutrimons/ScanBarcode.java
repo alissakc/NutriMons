@@ -1,6 +1,7 @@
 package com.example.nutrimons;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -30,8 +31,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.mlkit.vision.common.InputImage;
 import com.tbruyelle.rxpermissions3.RxPermissions;
@@ -39,6 +44,7 @@ import com.tbruyelle.rxpermissions3.RxPermissions;
 import com.google.mlkit.vision.barcode.*;
 
 import java.nio.ByteBuffer;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -61,6 +67,7 @@ public class ScanBarcode extends Fragment {
     ImageView bc;
     ImageCapture imageCapture;
     Executor executor = Executors.newSingleThreadExecutor();
+    Context context;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -113,7 +120,6 @@ public class ScanBarcode extends Fragment {
                     if (granted) {
                         // All requested permissions are granted
                         // Set up the listener for take photo button
-                        setBarCodeOptions();
                         startCamera();
                     } else {
                         Toast.makeText(getContext(), "Permissions needed for this function", Toast.LENGTH_LONG).show();
@@ -121,19 +127,6 @@ public class ScanBarcode extends Fragment {
                     }
                 });
     }
-
-    private void setBarCodeOptions()
-    {
-        //set barcode scanner options
-        BarcodeScannerOptions options =
-                new BarcodeScannerOptions.Builder()
-                        .setBarcodeFormats(
-                                Barcode.FORMAT_UPC_A, //food barcode formats https://www.barcodefaq.com/best-to-use/
-                                Barcode.FORMAT_UPC_E,
-                                Barcode.FORMAT_EAN_8,
-                                Barcode.FORMAT_EAN_13)
-                        .build();
-   }
 
     private void startCamera() { //https://akhilbattula.medium.com/android-camerax-java-example-aeee884f9102
 
@@ -191,14 +184,20 @@ public class ScanBarcode extends Fragment {
                             @Override
                             public void onCaptureSuccess(ImageProxy image) {
                                 // insert your code here.
-                                Bitmap bitmap = getBitmap(image);
+                                Bitmap bitmap = getBitmap(image); //show image taken in corner
                                 bc.setImageBitmap(bitmap);
-                                Toast.makeText(getContext(), "Image taken", Toast.LENGTH_SHORT).show();
+
+                                @SuppressLint("UnsafeExperimentalUsageError") Image mediaImage = image.getImage();
+                                if(mediaImage != null) {
+                                    InputImage inputImage = InputImage.fromMediaImage(mediaImage, image.getImageInfo().getRotationDegrees());
+                                    scanBarcode(inputImage);
+                                }
+                                //Toast.makeText(context, "Image taken", Toast.LENGTH_SHORT).show();
                             }
                             @Override
                             public void onError(ImageCaptureException error) {
                                 // insert your code here.
-                                Toast.makeText(getContext(), "Error taking picture", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Error taking picture", Toast.LENGTH_SHORT).show();
                             }
                         });
             }
@@ -214,6 +213,64 @@ public class ScanBarcode extends Fragment {
         return BitmapFactory.decodeByteArray(clonedBytes, 0, clonedBytes.length);
     }
 
+    private void scanBarcode(InputImage inputImage) //modified from https://github.com/googlesamples/mlkit/blob/a815d463bd79a8ec277f9dcf64bd35de0cc396b7/android/android-snippets/app/src/main/java/com/google/example/mlkit/BarcodeScanningActivity.java#L45-L50
+    {
+        //set barcode scanner options
+        BarcodeScannerOptions options =
+                new BarcodeScannerOptions.Builder()
+                        .setBarcodeFormats(
+                                Barcode.FORMAT_UPC_A, //food barcode formats https://www.barcodefaq.com/best-to-use/
+                                Barcode.FORMAT_UPC_E,
+                                Barcode.FORMAT_EAN_8,
+                                Barcode.FORMAT_EAN_13)
+                        .build();
+
+        BarcodeScanner scanner = BarcodeScanning.getClient(options); //make barcode client
+
+        Task<List<Barcode>> result = scanner.process(inputImage) //process barcode
+                .addOnSuccessListener(new OnSuccessListener<List<Barcode>>() {
+                    @Override
+                    public void onSuccess(List<Barcode> barcodes) {
+                        // Task completed successfully
+                        // [START_EXCLUDE]
+                        // [START get_barcodes]
+                        for (Barcode barcode: barcodes) {
+                            //Rect bounds = barcode.getBoundingBox();
+                            //Point[] corners = barcode.getCornerPoints();
+
+                            String rawValue = barcode.getRawValue();
+                            int valueType = barcode.getValueType();
+
+                            TextView tv = view.findViewById(R.id.textView8);
+
+                            tv.setText(rawValue);
+                            // See API reference for complete list of supported types
+                            /*switch (valueType) {
+                                case Barcode.TYPE_WIFI:
+                                    String ssid = barcode.getWifi().getSsid();
+                                    String password = barcode.getWifi().getPassword();
+                                    int type = barcode.getWifi().getEncryptionType();
+                                    break;
+                                case Barcode.TYPE_URL:
+                                    String title = barcode.getUrl().getTitle();
+                                    String url = barcode.getUrl().getUrl();
+                                    break;
+                            }*/
+                        }
+                        // [END get_barcodes]
+                        // [END_EXCLUDE]
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Task failed with an exception
+                        // ...
+                        Toast.makeText(context, "Error Processing Barcode", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
     private void setContentView(int activity_dashboard) {
     }
 
@@ -226,6 +283,7 @@ public class ScanBarcode extends Fragment {
         mPreviewView = view.findViewById(R.id.viewFinder);
         button = view.findViewById(R.id.camera_capture_button);
         bc = view.findViewById(R.id.imageView31);
+        context = getContext();
 
         return view;
     }
