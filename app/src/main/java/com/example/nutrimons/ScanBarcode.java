@@ -259,10 +259,9 @@ public class ScanBarcode extends Fragment {
                             tv.setText(rawValue);
 
                             queue.cancelAll(rawValue);
-                            StringRequest strReq = callOFFapi(rawValue);
-                            queue.add(strReq);
                             tv = view.findViewById(R.id.textView44);
-                            tv.setText(strReq.toString());
+                            StringRequest strReq = callOFFapi(rawValue, tv);
+                            queue.add(strReq);
                         }
                         // [END get_barcodes]
                         // [END_EXCLUDE]
@@ -278,7 +277,7 @@ public class ScanBarcode extends Fragment {
                 });
     }
 
-    private StringRequest callOFFapi(String barcodeString) //https://wiki.openfoodfacts.org/API
+    private StringRequest callOFFapi(String barcodeString, TextView tv) //https://wiki.openfoodfacts.org/API ; also has an app: https://github.com/openfoodfacts/openfoodfacts-androidapp
     {
         final String HEADER = "https://world.openfoodfacts.org/api/v0/product/";
         final String FOOTER = ".json";
@@ -292,13 +291,16 @@ public class ScanBarcode extends Fragment {
                         // try/catch block for returned JSON data
                         // see API's documentation for returned format
                         try {
-                            JSONObject result = new JSONObject(response).getJSONObject("list");
+                            /*JSONObject result = new JSONObject(response).getJSONObject("list");
                             int maxItems = result.getInt("end");
-                            JSONArray resultList = result.getJSONArray("item");
-                            Toast.makeText(context, resultList.toString(), Toast.LENGTH_SHORT).show();
+                            JSONArray resultList = result.getJSONArray("item");*/
+                            tv.setText(response); //ref: https://world.openfoodfacts.org/api/v0/product/0075270410521.json
+                            //Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "api request sent response", Toast.LENGTH_SHORT).show();
 
                             // catch for the JSON parsing error
-                        } catch (JSONException e) {
+                        } catch (Exception e/*JSONException e*/) {
+                            //Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
                             Toast.makeText(context, "error with api response", Toast.LENGTH_SHORT).show();
                         }
                     } // public void onResponse(String response)
