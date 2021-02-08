@@ -92,7 +92,7 @@
         <LinearLayout
             android:id="@+id/linearLayout6"
             android:layout_width="match_parent"
-            android:layout_height="498dp"
+            android:layout_height="438dp"
             android:orientation="horizontal">
 
             <ImageView
