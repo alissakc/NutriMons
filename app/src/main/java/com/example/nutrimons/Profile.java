@@ -23,8 +23,6 @@ import java.util.List;
 
 public class Profile extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
-    private Spinner spinner;
-
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -33,6 +31,10 @@ public class Profile extends Fragment implements View.OnClickListener, AdapterVi
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private Spinner spinner;
+
+    Button editProfilePicture;
 
     public Profile() {
         // Required empty public constructor
@@ -70,6 +72,11 @@ public class Profile extends Fragment implements View.OnClickListener, AdapterVi
 
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
+        //set up button
+        /*editProfilePicture = view.findViewById(R.id.imageView5);
+        editProfilePicture.setOnClickListener(this);*/
+
+        //ask for storage permissions
         RxPermissions rxPermissions = new RxPermissions(this);
         rxPermissions
                 .request(Manifest.permission.READ_EXTERNAL_STORAGE/*,
@@ -89,6 +96,7 @@ public class Profile extends Fragment implements View.OnClickListener, AdapterVi
         spinner.setOnItemSelectedListener(this);
 
         List<String> profileFocuses = new ArrayList<String>();
+        profileFocuses.add("Select Focus");
         profileFocuses.add("Lose Weight");
         profileFocuses.add("Gain Muscle");
         profileFocuses.add("Maintain Weight");
@@ -108,6 +116,7 @@ public class Profile extends Fragment implements View.OnClickListener, AdapterVi
     @Override
     public void onClick(View view) {
         //let user upload photo and swap user profile pic with this
+        Toast.makeText(getContext(), "Pencil Clicked", Toast.LENGTH_LONG).show();
     }
 
     @Override
