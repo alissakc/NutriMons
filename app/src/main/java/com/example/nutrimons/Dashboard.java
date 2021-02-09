@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -85,19 +86,23 @@ public class Dashboard extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch(view.getId()){
             case(R.id.button1):
-                Navigation.findNavController(view).navigate(R.id.action_nav_home_to_nav_meal);
+                //Navigation.findNavController(view).navigate(R.id.action_nav_home_to_nav_meal);
+                Toast.makeText(getContext(), "meal clicked", Toast.LENGTH_SHORT);
                 break;
             case(R.id.button2):
-                Navigation.findNavController(view).navigate(R.id.action_nav_home_to_nav_water);
+                //Navigation.findNavController(view).navigate(R.id.action_nav_home_to_nav_water);
+                Toast.makeText(getContext(), "water clicked", Toast.LENGTH_SHORT);
                 break;
             case(R.id.button3):
-                Navigation.findNavController(view).navigate(R.id.action_nav_home_to_nav_exercise);
+                //Navigation.findNavController(view).navigate(R.id.action_nav_home_to_nav_exercise);
+                Toast.makeText(getContext(), "exercise clicked", Toast.LENGTH_SHORT);
                 break;
         }
     }
 
     public void toProfile(View view)
     {
-        Navigation.findNavController(view).navigate(R.id.action_nav_home_to_nav_profile);
+        //Navigation.findNavController(view).navigate(R.id.action_nav_home_to_nav_profile);
+        Toast.makeText(getContext(), "profile clicked", Toast.LENGTH_SHORT);
     }
 }
