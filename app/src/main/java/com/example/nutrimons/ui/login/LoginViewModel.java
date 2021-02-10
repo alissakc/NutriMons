@@ -3,6 +3,7 @@ package com.example.nutrimons.ui.login;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import androidx.navigation.Navigation;
 
 import android.util.Patterns;
 
@@ -36,6 +37,7 @@ public class LoginViewModel extends ViewModel {
         if (result instanceof Result.Success) {
             LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();
             loginResult.setValue(new LoginResult(new LoggedInUserView(data.getDisplayName())));
+
         } else {
             loginResult.setValue(new LoginResult(R.string.login_failed));
         }

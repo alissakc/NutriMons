@@ -9,11 +9,14 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static final String USER_TABLE = "User";   // Table Name
     private static final String UID="_id";     // Column I (Primary Key)
-    private static final String USERNAME = "Username";    //Column II
+    private static final String USER_EMAIL = "Email";    //Column II
     private static final String USER_PASSWORD= "Password";    // Column III
-    private static final String CREATE_TABLE = "CREATE TABLE "+USER_TABLE+
-            " ("+UID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+USERNAME+
+    private static final String CREATE_USER_TABLE = "CREATE TABLE "+USER_TABLE+
+            " ("+UID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+USER_EMAIL+
             " VARCHAR(255) ,"+ USER_PASSWORD+" VARCHAR(225));";
+
+    //Search SecretKeyFactory for password hashing if needed
+
 
     public DBHelper(Context context){
         super(context, DATABASE_NAME, null, 1);
@@ -21,7 +24,8 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         try {
-            db.execSQL(CREATE_TABLE);
+            db.execSQL(CREATE_USER_TABLE);
+
         } catch (Exception e) {
            System.out.println("Errors");
         }
@@ -32,16 +36,17 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS "+USER_TABLE);
     }
 
- /*   public boolean insertUser(String userName)
+    public boolean insertUser(String user)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(USERNAME, user.getName());
-        values.put(USEREMAIL, user.getEmail());
-        values.put(USER_PASSWORD, user.getPassword());
+        //values.put(USER_EMAIL, user.getEmail());
+        //values.put(USER_PASSWORD, user.getPassword());
         // Inserting Row
         db.insert(USER_TABLE, null, values);
         db.close();
-    }*/
+
+        return true;
+    }
 }
 
