@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/ic_tamagotchi_background"
-    tools:context="com.example.nutrimons.Profile">
+    tools:context=".Profile">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -115,7 +115,7 @@
                         android:textColor="@color/black" />
 
                     <EditText
-                        android:id="@+id/textView19"
+                        android:id="@+id/profileName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Timothy" />
@@ -134,7 +134,7 @@
                         android:textColor="@color/black" />
 
                     <EditText
-                        android:id="@+id/textView20"
+                        android:id="@+id/username"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="TimTomTam" />
@@ -153,7 +153,7 @@
                         android:textColor="@color/black" />
 
                     <EditText
-                        android:id="@+id/textView21"
+                        android:id="@+id/password"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="hunter2" />
@@ -172,7 +172,7 @@
                         android:textColor="@color/black" />
 
                     <EditText
-                        android:id="@+id/textView22"
+                        android:id="@+id/birthday"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="June 8 1949" />
@@ -224,7 +224,7 @@
                         android:textColor="@color/black" />
 
                     <EditText
-                        android:id="@+id/textView38"
+                        android:id="@+id/financialSource"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="paypal" />
@@ -243,7 +243,7 @@
                         android:textColor="@color/black" />
 
                     <EditText
-                        android:id="@+id/textView40"
+                        android:id="@+id/financialHistory"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="9 transactions" />
@@ -262,7 +262,7 @@
                         android:textColor="@color/black" />
 
                     <EditText
-                        android:id="@+id/textView36"
+                        android:id="@+id/financialPlan"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="NutriGold" />
@@ -281,7 +281,7 @@
                         android:textColor="@color/black" />
 
                     <EditText
-                        android:id="@+id/textView42"
+                        android:id="@+id/nutriCoins"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="420" />
@@ -303,7 +303,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/textView18"
+                        android:id="@+id/textView42"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Health Factors"
@@ -333,7 +333,7 @@
                         android:textColor="@color/black" />
 
                     <EditText
-                        android:id="@+id/textView24"
+                        android:id="@+id/age"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="71" />
@@ -352,7 +352,7 @@
                         android:textColor="@color/black" />
 
                     <EditText
-                        android:id="@+id/textView26"
+                        android:id="@+id/sex"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Male" />
@@ -371,7 +371,7 @@
                         android:textColor="@color/black" />
 
                     <EditText
-                        android:id="@+id/textView28"
+                        android:id="@+id/weight"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="280 lbs" />
@@ -390,7 +390,7 @@
                         android:textColor="@color/black" />
 
                     <EditText
-                        android:id="@+id/textView30"
+                        android:id="@+id/height"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="5'8&quot;" />
@@ -409,7 +409,7 @@
                         android:textColor="@color/black" />
 
                     <EditText
-                        android:id="@+id/textView32"
+                        android:id="@+id/ethnicity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="White" />
@@ -423,7 +423,7 @@
                     android:textColor="@color/black" />
 
                 <EditText
-                    android:id="@+id/textView43"
+                    android:id="@+id/healthHistory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Diabetes, Hypertension" />
@@ -463,7 +463,7 @@
                 </LinearLayout>
 
                 <EditText
-                    android:id="@+id/textView46"
+                    android:id="@+id/healthGoals"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

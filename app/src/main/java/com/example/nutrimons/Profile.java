@@ -1,13 +1,17 @@
 package com.example.nutrimons;
 
 import android.Manifest;
+import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -34,7 +38,10 @@ public class Profile extends Fragment implements View.OnClickListener, AdapterVi
 
     private Spinner spinner;
 
-    Button editProfilePicture;
+    private Button editProfilePicture;
+
+    private String profileFocus, name, username, password, birthday, financialSource, financialHistory, financialPlan, nutriCoins, age, sex, weight, height, ethnicity, healthHistory, healthGoals;
+    private EditText nameText, usernameText, passwordText, birthdayText, financialSourceText, financialHistoryText, financialPlanText, nutriCoinsText, ageText, sexText, weightText, heightText, ethnicityText, healthHistoryText, healthGoalsText;
 
     public Profile() {
         // Required empty public constructor
@@ -110,6 +117,38 @@ public class Profile extends Fragment implements View.OnClickListener, AdapterVi
         // attaching data adapter to spinners
         spinner.setAdapter(dataAdapter);
 
+        nameText = view.findViewById(R.id.profileName);
+        usernameText = view.findViewById(R.id.username);
+        passwordText = view.findViewById(R.id.password);
+        birthdayText = view.findViewById(R.id.birthday);
+        financialSourceText = view.findViewById(R.id.financialSource);
+        financialHistoryText = view.findViewById(R.id.financialHistory);
+        financialPlanText = view.findViewById(R.id.financialPlan);
+        nutriCoinsText = view.findViewById(R.id.nutriCoins);
+        ageText = view.findViewById(R.id.age);
+        sexText = view.findViewById(R.id.sex);
+        weightText = view.findViewById(R.id.weight);
+        heightText = view.findViewById(R.id.height);
+        ethnicityText = view.findViewById(R.id.ethnicity);
+        healthHistoryText = view.findViewById(R.id.healthHistory);
+        healthGoalsText = view.findViewById(R.id.healthGoals);
+
+        nameText.addTextChangedListener(new TextChangedListener<EditText>(nameText, name));
+        usernameText.addTextChangedListener(new TextChangedListener<EditText>(usernameText, username));
+        passwordText.addTextChangedListener(new TextChangedListener<EditText>(passwordText, password));
+        birthdayText.addTextChangedListener(new TextChangedListener<EditText>(birthdayText, birthday));
+        financialSourceText.addTextChangedListener(new TextChangedListener<EditText>(financialSourceText, financialSource));
+        financialHistoryText.addTextChangedListener(new TextChangedListener<EditText>(financialHistoryText, financialHistory));
+        financialPlanText.addTextChangedListener(new TextChangedListener<EditText>(financialPlanText, financialPlan));
+        nutriCoinsText.addTextChangedListener(new TextChangedListener<EditText>(nutriCoinsText, nutriCoins));
+        ageText.addTextChangedListener(new TextChangedListener<EditText>(ageText, age));
+        sexText.addTextChangedListener(new TextChangedListener<EditText>(sexText, sex));
+        weightText.addTextChangedListener(new TextChangedListener<EditText>(weightText, weight));
+        heightText.addTextChangedListener(new TextChangedListener<EditText>(heightText, height));
+        ethnicityText.addTextChangedListener(new TextChangedListener<EditText>(ethnicityText, ethnicity));
+        healthHistoryText.addTextChangedListener(new TextChangedListener<EditText>(healthHistoryText, healthHistory));
+        healthGoalsText.addTextChangedListener(new TextChangedListener<EditText>(healthGoalsText, healthGoals));
+
         return view;
     }
 
@@ -122,17 +161,48 @@ public class Profile extends Fragment implements View.OnClickListener, AdapterVi
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // On selecting a spinner item
-        String item = parent.getItemAtPosition(position).toString();
+        profileFocus = parent.getItemAtPosition(position).toString();
 
         //***save selected data to database here***
 
         // Showing selected spinner item
-        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
-
+        Toast.makeText(parent.getContext(), "Selected: " + profileFocus, Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
         // TODO Auto-generated method stub
+    }
+
+    public class TextChangedListener<T> implements TextWatcher { //https://stackoverflow.com/questions/11134144/android-edittext-onchange-listener
+        private T target;
+        private EditText et;
+        private String str;
+
+        public TextChangedListener(T target, String str) {
+            this.target = target;
+            this.str = str;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            this.onTextChanged(target, s);
+        }
+
+        public /*abstract*/ void onTextChanged(T target, Editable s)
+        {
+            //target.setText(s); //infinite loop since text now changed
+            //also set the view fields database values then replace str with a db insert
+            et = (EditText) target;
+            str = et.getText().toString();
+            Toast.makeText(getContext(), "value is now: " + str, Toast.LENGTH_SHORT).show();
+        }
     }
 }
