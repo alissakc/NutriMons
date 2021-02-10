@@ -165,4 +165,6 @@
     <string name="enter_amount_of_water">Enter amount of water</string>
     <string name="create_meal_plan">Create Meal Plan</string>
     <string name="profile">Profile</string>
+    <string name="duration">Duration</string>
+    <string name="hint_15_min">15 min</string>
 </resources>

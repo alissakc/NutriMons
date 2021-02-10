@@ -75,4 +75,24 @@ dependencies {
 
     // Bar chart class
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
+    // Room for database
+    def room_version = "2.2.6"
+    def lifecycleVersion = "2.2.0"
+    // Room components
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+    // optional - RxJava support for Room
+    implementation "androidx.room:room-rxjava2:$room_version"
+    // optional - Guava support for Room, including Optional and ListenableFuture
+    implementation "androidx.room:room-guava:$room_version"
+    // optional - Test helpers
+    testImplementation "androidx.room:room-testing:$room_version"
+    // Lifecycle components
+    implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-livedata:$lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion"
+    // Recycler View
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+
 }

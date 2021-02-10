@@ -5,17 +5,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemSelectedListener;
 
 import androidx.fragment.app.Fragment;
+
+import com.example.nutrimons.database.AppDatabase;
 
 
 /**
@@ -36,6 +38,14 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
 
     // vars
     private Spinner spinner1;
+    private Button addButton;
+    private String exerciseName, unitName;
+    private int caloriesPerUnit;
+    private float duration;
+    private EditText exerciseNameText, unitNameText, caloriesPerUnitText, durationText;
+
+    // creates instance of database
+    private AppDatabase mDb;
 
     public Exercise() {
         // Required empty public constructor
@@ -74,12 +84,19 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_exercise, container, false);
 
+        // database
+        mDb = AppDatabase.getInstance(getContext());
+
+        List<String> exercises = (List<String>) mDb.exerciseDao().getAllNames();
+        exercises.add(0, "Select an item");
+
         // Spinner element
         spinner1 = (Spinner) view.findViewById(R.id.breakfastMultipleItemSelectionSpinner);
 
         // Spinner click listener
         spinner1.setOnItemSelectedListener(this);
 
+        /*
         // Spinner Drop down elements
         List<String> exercises = new ArrayList<String>();
         exercises.add("Select an item");
@@ -94,6 +111,7 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
         exercises.add("Running");
         exercises.add("Volleyball");
         exercises.add("Walking");
+        */
 
         // Creating adapter for spinners
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, exercises);
@@ -104,6 +122,29 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
         // attaching data adapter to spinners
         spinner1.setAdapter(dataAdapter);
 
+        // Button initialization
+        addButton = view.findViewById(R.id.submitNewExercise);
+
+        // new exercise
+        exerciseNameText = (EditText) view.findViewById(R.id.editTextExerciseName);
+        caloriesPerUnitText = (EditText) view.findViewById(R.id.editTextCaloriesPerUnit);
+        unitNameText = (EditText) view.findViewById(R.id.editTextUnitName);
+        durationText = (EditText) view.findViewById(R.id.editTextDuration);
+
+        //assign listener
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exerciseName = exerciseNameText.getText().toString();
+                caloriesPerUnit = Integer.parseInt(caloriesPerUnitText.getText().toString());
+                unitName = unitNameText.getText().toString();
+                duration = Float.parseFloat(durationText.getText().toString());
+
+                final com.example.nutrimons.database.Exercise exercise = new com.example.nutrimons.database.Exercise(exerciseName, caloriesPerUnit, unitName, duration);
+                mDb.exerciseDao().insert(exercise);
+                Toast.makeText(getContext(), "Created entry", Toast.LENGTH_SHORT).show();
+            }
+        });
         return view;
     }
 
@@ -121,4 +162,6 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
     public void onNothingSelected(AdapterView<?> parent) {
         // TODO Auto-generated method stub
     }
+
+
 }
