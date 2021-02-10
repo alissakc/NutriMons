@@ -7,6 +7,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.example.nutrimons.database.AppDatabase;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +28,15 @@ public class AddMeal extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    // vars
+    private Button addButton;
+    private String mealName;
+    private int servingSize, servingWeight, caloriesPerServing;
+    private EditText mealNameText, servingSizeText, servingWeightText, caloriesPerServingText;
+
+    // creates instance of database
+    private AppDatabase mDb;
 
     public AddMeal() {
         // Required empty public constructor
@@ -59,6 +73,35 @@ public class AddMeal extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_meal, container, false);
+        View view = inflater.inflate(R.layout.fragment_add_meal, container, false);
+
+        // database
+        mDb = AppDatabase.getInstance(getContext());
+
+        // Button initialization
+        addButton = view.findViewById(R.id.submitNewMealButton);
+
+        // new meal
+        mealNameText = (EditText) view.findViewById(R.id.editTextFoodName);
+        servingSizeText = (EditText) view.findViewById(R.id.editTextServingSize);
+        servingWeightText = (EditText) view.findViewById(R.id.editTextServingWeight);
+        caloriesPerServingText = (EditText) view.findViewById(R.id.editTextCalories);
+
+        //assign listener
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mealName = mealNameText.getText().toString();
+                servingSize = Integer.parseInt(servingSizeText.getText().toString());
+                servingWeight = Integer.parseInt(servingWeightText.getText().toString());
+                caloriesPerServing = Integer.parseInt(caloriesPerServingText.getText().toString());
+
+                final com.example.nutrimons.database.Meal meal = new com.example.nutrimons.database.Meal(mealName, servingSize, servingWeight, caloriesPerServing);
+                mDb.mealDao().insert(meal);
+                Toast.makeText(getContext(), "Created entry", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return view;
     }
 }

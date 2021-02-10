@@ -29,6 +29,9 @@ public interface MealDao {
     @Insert
     void insertAll(Meal... meals);
 
+    @Insert
+    void insert(Meal meal);
+
     @Update
     public void updateMeal(Meal meals);
 

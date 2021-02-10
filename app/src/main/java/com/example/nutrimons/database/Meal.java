@@ -24,4 +24,11 @@ public class Meal {
 
     @ColumnInfo(name = "calories_per_serving")
     public int caloriesPerServing;
+
+    public Meal(String mealName, int servingSize, int servingWeight, int caloriesPerServing) {
+        this.mealName = mealName;
+        this.servingSize = servingSize;
+        this.servingWeight = servingWeight;
+        this.caloriesPerServing = caloriesPerServing;
+    }
 }

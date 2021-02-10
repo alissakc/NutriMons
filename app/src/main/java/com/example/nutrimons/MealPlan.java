@@ -17,6 +17,8 @@ import android.widget.AdapterView.OnItemSelectedListener;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.nutrimons.database.AppDatabase;
+
 
 public class MealPlan extends Fragment implements OnItemSelectedListener {
 
@@ -31,6 +33,9 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
 
     // vars
     private Spinner spinner1, spinner2, spinner3, spinner4;
+
+    // creates instance of database
+    private AppDatabase mDb;
 
     public MealPlan() {
         // Required empty public constructor
@@ -65,6 +70,9 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_meal_plan, container, false);
 
+        // database
+        mDb = AppDatabase.getInstance(getContext());
+
         // Spinner element
         spinner1 = (Spinner) view.findViewById(R.id.breakfastMultipleItemSelectionSpinner);
         spinner2 = (Spinner) view.findViewById(R.id.lunchMultipleItemSelectionSpinner);
@@ -78,6 +86,11 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
         spinner4.setOnItemSelectedListener(this);
 
         // Spinner Drop down elements
+        List<String> food = (List<String>) mDb.mealDao().getAllNames();
+        food.add(0, "Select an item");
+
+        /*
+        // Spinner Drop down elements
         List<String> food = new ArrayList<String>();
         food.add("Select an item");
         food.add("Apple Pie");
@@ -87,6 +100,7 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
         food.add("Greek Yogurt");
         food.add("Tomato Sauce Pasta");
         food.add("White Rice");
+         */
 
         // Creating adapter for spinners
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, food);
