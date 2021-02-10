@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="10dp"
     android:layout_marginBottom="10dp"
     android:orientation="vertical"
     android:padding="20dp"
@@ -80,9 +81,10 @@
                 android:layout_marginTop="16dp"
                 android:autofillHints=""
                 android:ems="10"
-                android:inputType="text"
                 android:hint="@string/name_of_exercise_edit_text"
+                android:inputType="text"
                 android:textSize="18sp" />
+
             <TextView
                 android:id="@+id/caloriesPerUnit"
                 android:layout_width="wrap_content"
@@ -100,8 +102,8 @@
                 android:layout_marginTop="16dp"
                 android:autofillHints=""
                 android:ems="10"
-                android:inputType="text"
                 android:hint="@string/calories_per_unit_edit_text"
+                android:inputType="text"
                 android:textSize="18sp" />
 
             <TextView
@@ -121,9 +123,36 @@
                 android:layout_marginTop="16dp"
                 android:autofillHints=""
                 android:ems="10"
-                android:inputType="number|text"
                 android:hint="@string/unit_name_edit_text"
+                android:inputType="text"
                 android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/duration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="48dp"
+                android:text="@string/duration"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/editTextDuration"
+                android:layout_width="326dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="16dp"
+                android:autofillHints=""
+                android:ems="10"
+                android:hint="@string/hint_15_min"
+                android:inputType="number|text"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/submitNewExercise"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/submit" />
 
         </LinearLayout>
 
