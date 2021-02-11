@@ -7,7 +7,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 // Meal and Exercise are classes annotated with @Entity
-@Database(entities = {Meal.class, Exercise.class}, version = 1)
+@Database(entities = {Meal.class, Exercise.class, User.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
 
     // database instance
@@ -28,5 +28,6 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract MealDao mealDao();
     // ExerciseDao is a class annotated with @Dao
     public abstract ExerciseDao exerciseDao();
+    public abstract UserDao userDao();
 
 }

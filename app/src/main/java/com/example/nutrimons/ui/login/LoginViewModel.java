@@ -36,6 +36,7 @@ public class LoginViewModel extends ViewModel {
 
         if (result instanceof Result.Success) {
             LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();
+            System.out.println(data.getDisplayName() + ", " + data.getUserId());
             loginResult.setValue(new LoginResult(new LoggedInUserView(data.getDisplayName())));
 
         } else {
@@ -56,6 +57,10 @@ public class LoginViewModel extends ViewModel {
     // A placeholder username validation check
     private boolean isUserNameValid(String username) {
         if (username == null) {
+            return false;
+        }
+        if (username.equals("minh"))
+        {
             return false;
         }
         if (username.contains("@")) {
