@@ -23,11 +23,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nutrimons.R;
+import com.example.nutrimons.database.AppDatabase;
+import com.example.nutrimons.database.User;
+
+import java.util.List;
 
 public class LoginFragment extends Fragment {
 
     private LoginViewModel loginViewModel;
-
+    private AppDatabase mDb;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -42,12 +46,48 @@ public class LoginFragment extends Fragment {
         loginViewModel = new ViewModelProvider(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
 
-        final EditText usernameEditText = view.findViewById(R.id.username);
+        final EditText emailEditText = view.findViewById(R.id.email);
         final EditText passwordEditText = view.findViewById(R.id.password);
         final Button loginButton = view.findViewById(R.id.login);
+        final Button registerButton = view.findViewById(R.id.registerButton);
         final ProgressBar loadingProgressBar = view.findViewById(R.id.loading);
+        mDb = AppDatabase.getInstance(getContext());
 
-        loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
+        registerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //loadingProgressBar.setVisibility(View.VISIBLE);
+                //loginViewModel.login(usernameEditText.getText().toString(),
+                //        passwordEditText.getText().toString());
+                Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_registration);
+
+            }
+        });
+
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                User user = new User(emailEditText.getText().toString(),passwordEditText.getText().toString());
+                List<User> myList = mDb.userDao().getAll();
+
+                //loadingProgressBar.setVisibility(View.VISIBLE);
+                if(checkEmail(myList,user))
+                {
+
+                    Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_home);
+                }
+                else {
+                    emailEditText.setError("FAILURE");
+                    emailEditText.requestFocus();
+                }
+
+            }
+        });
+
+
+
+
+        /*loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
             @Override
             public void onChanged(@Nullable LoginFormState loginFormState) {
                 if (loginFormState == null) {
@@ -108,20 +148,21 @@ public class LoginFragment extends Fragment {
                 }
                 return false;
             }
-        });
+        });*/
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadingProgressBar.setVisibility(View.VISIBLE);
-                loginViewModel.login(usernameEditText.getText().toString(),
-                        passwordEditText.getText().toString());
-                Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_home);
 
-            }
-        });
     }
-
+    private boolean checkEmail(List<User> list, User user)
+    {
+        for(User i : list)
+        {
+            if(i.email.equals(user.email) && i.password.equals(user.password))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
     private void updateUiWithUser(LoggedInUserView model) {
         String welcome = getString(R.string.welcome) + model.getDisplayName();
         // TODO : initiate successful logged in experience
