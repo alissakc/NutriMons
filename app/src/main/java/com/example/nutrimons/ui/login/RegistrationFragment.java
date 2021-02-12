@@ -154,7 +154,7 @@ public class RegistrationFragment extends Fragment {
     private boolean userNameValidate(List<User> list,User user) {
         for(User i:list)
         {
-            if(i.userName.equals(user.userName) || user.userName.length()==0)
+            if(i.email.equals(user.email) || user.email.length()==0)
             {
                 return false;
             }

@@ -15,16 +15,16 @@ import io.reactivex.rxjava3.core.Single;
 
 @Dao
 public interface UserDao {
-    @Query("SELECT * FROM user ORDER BY user_name ASC")
+    @Query("SELECT * FROM user ORDER BY email ASC")
     List<User> getAll();
 
-    @Query("SELECT user_name FROM user ORDER BY user_name ASC")
-    List<String> getAllNames();
+    @Query("SELECT email FROM user ORDER BY email ASC")
+    List<String> getAllEmail();
 
     /*@Query("SELECT * FROM meal WHERE mealID IN (:mealIds)")
     List<Meal> loadAllByIds(int[] mealIds);*/
 
-    @Query("SELECT * FROM user WHERE user_name LIKE :search")
+    @Query("SELECT * FROM user WHERE email LIKE :search")
     User findByName(String search);
 
     @Insert
