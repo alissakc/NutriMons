@@ -47,15 +47,13 @@ public class RegistrationFragment extends Fragment {
         /*loginViewModel = new ViewModelProvider(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);*/
 
-        final EditText usernameEditText = view.findViewById(R.id.username);
+        final EditText emailEditText = view.findViewById(R.id.email);
         final EditText passwordEditText = view.findViewById(R.id.password);
-        final Button loginButton = view.findViewById(R.id.login);
+        final Button loginButton = view.findViewById(R.id.register);
         final ProgressBar loadingProgressBar = view.findViewById(R.id.loading);
         mDb = AppDatabase.getInstance(getContext());
 
         //mDb.userDao().nukeTable();
-
-
 
 
 
@@ -130,12 +128,11 @@ public class RegistrationFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 List<User> myList = mDb.userDao().getAll();
-                User user = new User(usernameEditText.getText().toString(), passwordEditText.getText().toString());
-                userNameValidate(myList, user);
+                User user = new User(emailEditText.getText().toString(), passwordEditText.getText().toString());
 
-                if(!userNameValidate(myList, user)){
-                    usernameEditText.setError("Username is not entered");
-                    usernameEditText.requestFocus();
+                if(!emailValidate(myList, user)){
+                    emailEditText.setError("Email is not entered");
+                    emailEditText.requestFocus();
                 }
                 else if(!passwordValidation(myList, user)){
                     passwordEditText.setError("Password is not entered");
@@ -151,7 +148,7 @@ public class RegistrationFragment extends Fragment {
             }
         });
     }
-    private boolean userNameValidate(List<User> list,User user) {
+    private boolean emailValidate(List<User> list,User user) {
         for(User i:list)
         {
             if(i.email.equals(user.email) || user.email.length()==0)

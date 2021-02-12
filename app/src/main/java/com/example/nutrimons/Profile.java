@@ -1,7 +1,6 @@
 package com.example.nutrimons;
 
 import android.Manifest;
-import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,9 +15,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.navigation.Navigation;
 
 import com.tbruyelle.rxpermissions3.RxPermissions;
 
@@ -118,7 +114,7 @@ public class Profile extends Fragment implements View.OnClickListener, AdapterVi
         spinner.setAdapter(dataAdapter);
 
         nameText = view.findViewById(R.id.profileName);
-        usernameText = view.findViewById(R.id.username);
+        usernameText = view.findViewById(R.id.email);
         passwordText = view.findViewById(R.id.password);
         birthdayText = view.findViewById(R.id.birthday);
         financialSourceText = view.findViewById(R.id.financialSource);
