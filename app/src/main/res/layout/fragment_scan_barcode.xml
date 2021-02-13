@@ -26,33 +26,39 @@ tools:context=".ScanBarcode">
 
     </androidx.camera.view.PreviewView>
 
-    <ImageView
-        android:id="@+id/imageView31"
-        android:layout_width="128dp"
-        android:layout_height="144dp"
-        android:src="@drawable/barcode"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/barcode" />
+    <LinearLayout
+        android:id="@+id/barcodeResult"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/layout_rounded_white"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:visibility="gone">
 
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="128dp"
-        android:layout_marginTop="20dp"
-        android:text="rawValue"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:id="@+id/imageView31"
+            android:layout_width="288dp"
+            android:layout_height="256dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:src="@drawable/barcode"
+            app:srcCompat="@drawable/barcode" />
 
-    <TextView
-        android:id="@+id/textView44"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="128dp"
-        android:layout_marginTop="40dp"
-        android:text="api res"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:text="rawValue" />
+
+        <TextView
+            android:id="@+id/textView44"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:text="api res" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

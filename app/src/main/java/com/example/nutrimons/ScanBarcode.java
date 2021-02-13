@@ -255,6 +255,8 @@ public class ScanBarcode extends Fragment {
 
                             String rawValue = barcode.getRawValue();
                             //int valueType = barcode.getValueType();
+                            View br = view.findViewById(R.id.barcodeResult);
+                            View vf = view.findViewById(R.id.viewFinder);
                             TextView tv = view.findViewById(R.id.textView8);
                             tv.setText(rawValue);
 
@@ -262,6 +264,8 @@ public class ScanBarcode extends Fragment {
                             tv = view.findViewById(R.id.textView44);
                             StringRequest strReq = callOFFapi(rawValue, tv);
                             queue.add(strReq);
+                            br.setVisibility(View.VISIBLE);
+                            vf.setVisibility(View.INVISIBLE);
                         }
                         // [END get_barcodes]
                         // [END_EXCLUDE]
