@@ -2,7 +2,6 @@ package com.example.nutrimons;
 
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -10,11 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.ImageView;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link Exercise#newInstance} factory method to
+ * Use the {@link Dashboard#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class Dashboard extends Fragment implements View.OnClickListener {
@@ -28,7 +27,8 @@ public class Dashboard extends Fragment implements View.OnClickListener {
     private String mParam1;
     private String mParam2;
 
-    Button goToProfile, goToMeal, goToWater, goToExercise;
+    Button goToMeal, goToWater, goToExercise;
+    ImageView gotToProfile;
 
     public Dashboard() {
         // Required empty public constructor
@@ -40,7 +40,7 @@ public class Dashboard extends Fragment implements View.OnClickListener {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment Exercise.
+     * @return A new instance of fragment Dashboard.
      */
     // TODO: Rename and change types and number of parameters
     public static Dashboard newInstance(String param1, String param2) {
@@ -65,16 +65,17 @@ public class Dashboard extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
-        // Button initialization
-        goToProfile = view.findViewById(R.id.imageView1);
-        goToMeal = view.findViewById(R.id.button1);
-        goToWater = view.findViewById(R.id.button2);
-        goToExercise = view.findViewById(R.id.button3);
+        // Button and image initialization
+        gotToProfile = view.findViewById(R.id.imageProfile);
+        goToMeal = view.findViewById(R.id.dashboardAddMeal);
+        goToWater = view.findViewById(R.id.dashboardAddWater);
+        goToExercise = view.findViewById(R.id.dashboardAddExercise);
+
 
         // assign listener for buttons
-        goToProfile.setOnClickListener(this);
+        gotToProfile.setOnClickListener(this);
         goToMeal.setOnClickListener(this);
         goToWater.setOnClickListener(this);
         goToExercise.setOnClickListener(this);
@@ -83,26 +84,20 @@ public class Dashboard extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public void onClick(View view) {
-        switch(view.getId()){
-            case(R.id.button1):
-                //Navigation.findNavController(view).navigate(R.id.action_nav_home_to_nav_meal);
-                Toast.makeText(getContext(), "meal clicked", Toast.LENGTH_SHORT);
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case (R.id.imageProfile):
+                Navigation.findNavController(v).navigate(R.id.action_nav_dashboard_to_nav_profile);
                 break;
-            case(R.id.button2):
-                //Navigation.findNavController(view).navigate(R.id.action_nav_home_to_nav_water);
-                Toast.makeText(getContext(), "water clicked", Toast.LENGTH_SHORT);
+            case (R.id.dashboardAddMeal):
+                Navigation.findNavController(v).navigate(R.id.action_nav_dashboard_to_nav_meal);
                 break;
-            case(R.id.button3):
-                //Navigation.findNavController(view).navigate(R.id.action_nav_home_to_nav_exercise);
-                Toast.makeText(getContext(), "exercise clicked", Toast.LENGTH_SHORT);
+            case (R.id.dashboardAddWater):
+                Navigation.findNavController(v).navigate(R.id.action_nav_dashboard_to_nav_water);
+                break;
+            case (R.id.dashboardAddExercise):
+                Navigation.findNavController(v).navigate(R.id.action_nav_dashboard_to_nav_exercise);
                 break;
         }
-    }
-
-    public void toProfile(View view)
-    {
-        //Navigation.findNavController(view).navigate(R.id.action_nav_home_to_nav_profile);
-        Toast.makeText(getContext(), "profile clicked", Toast.LENGTH_SHORT);
     }
 }

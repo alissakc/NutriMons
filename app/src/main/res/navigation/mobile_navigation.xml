@@ -3,37 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@id/nav_home">
 
-    <fragment
-        android:id="@+id/nav_home"
-        android:name="com.example.nutrimons.ui.home.HomeFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home">
-        <action
-            android:id="@+id/action_nav_home_to_nav_meal"
-            app:destination="@id/nav_meal" />
-        <action
-            android:id="@+id/action_nav_home_to_nav_exercise"
-            app:destination="@id/nav_exercise" />
-        <action
-            android:id="@+id/action_nav_home_to_nav_water"
-            app:destination="@id/nav_water" />
-        <action
-            android:id="@+id/action_nav_home_to_nav_profile"
-            app:destination="@id/nav_profile" />
-    </fragment>
     <fragment
         android:id="@+id/nav_login"
         android:name="com.example.nutrimons.ui.login.LoginFragment"
         android:label="Login"
         tools:layout="@layout/fragment_login">
         <action
-            android:id="@+id/action_nav_login_to_nav_home"
-            app:destination="@id/nav_home" />
-        <action
             android:id="@+id/action_nav_login_to_nav_registration"
             app:destination="@id/nav_registration" />
+        <action
+            android:id="@+id/action_nav_login_to_nav_home"
+            app:destination="@id/nav_home" />
     </fragment>
     <fragment
         android:id="@+id/nav_registration"
@@ -135,5 +117,23 @@
         <action
             android:id="@+id/action_nav_nutrientInformation_to_nav_nutrientOverview"
             app:destination="@id/nav_nutrientOverview" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.nutrimons.Dashboard"
+        android:label="@string/dashboard"
+        tools:layout="@layout/fragment_dashboard">
+        <action
+            android:id="@+id/action_nav_dashboard_to_nav_exercise"
+            app:destination="@id/nav_exercise" />
+        <action
+            android:id="@+id/action_nav_dashboard_to_nav_meal"
+            app:destination="@id/nav_meal" />
+        <action
+            android:id="@+id/action_nav_dashboard_to_nav_profile"
+            app:destination="@id/nav_profile" />
+        <action
+            android:id="@+id/action_nav_dashboard_to_nav_water"
+            app:destination="@id/nav_water" />
     </fragment>
 </navigation>
