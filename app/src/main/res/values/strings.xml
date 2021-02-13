@@ -167,4 +167,7 @@
     <string name="profile">Profile</string>
     <string name="duration">Duration</string>
     <string name="hint_15_min">15 min</string>
+    <string name="add_exercise">Add Exercise</string>
+    <string name="today_s_fun_fact">Today\'s Fun Fact</string>
+    <string name="dashboard">Dashboard</string>
 </resources>
