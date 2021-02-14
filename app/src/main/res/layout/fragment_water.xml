@@ -6,65 +6,47 @@
     android:layout_height="match_parent"
     tools:context=".Water">
 
-    <ProgressBar
-        android:id="@+id/progressBar"
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/waterPieChart_view"
         style="?android:attr/progressBarStyle"
-        android:layout_width="196dp"
-        android:layout_height="208dp"
-        android:layout_marginTop="60dp"
+        android:layout_width="0dp"
+        android:layout_height="450dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView100" />
-
-    <TextView
-        android:id="@+id/textView100"
-        android:layout_width="297dp"
-        android:layout_height="64dp"
-        android:layout_marginTop="28dp"
-        android:gravity="center"
-        android:text="@string/water_tracker"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textColor="@color/purple_200"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
-        android:layout_width="0dp"
-        android:layout_height="51dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="60dp"
+        android:id="@+id/waterAmountInputBox"
+        android:layout_width="269dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="16dp"
+        android:autofillHints=""
         android:ems="10"
         android:inputType="textPersonName"
         android:text="@string/enter_amount_of_water"
         android:textColor="#8F8F8F"
         android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressBar"
-        android:autofillHints="" />
+        app:layout_constraintTop_toBottomOf="@+id/waterPieChart_view"
+        app:layout_constraintVertical_bias="0.429" />
 
     <Button
         android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="106dp"
+        android:layout_height="58dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:text="@string/submit"
-        app:layout_constraintBaseline_toBaselineOf="@+id/editTextTextPersonName"
+        app:layout_constraintBaseline_toBaselineOf="@+id/waterAmountInputBox"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.321"
-        app:layout_constraintStart_toEndOf="@+id/editTextTextPersonName" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/waterAmountInputBox" />
 
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginRight="60dp"
-        android:src="@android:drawable/ic_menu_preferences"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
 </androidx.constraintlayout.widget.ConstraintLayout>

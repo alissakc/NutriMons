@@ -97,7 +97,7 @@
     <fragment
         android:id="@+id/nav_water"
         android:name="com.example.nutrimons.Water"
-        android:label="Water"
+        android:label="@string/water_tracker"
         tools:layout="@layout/fragment_water" />
     <fragment
         android:id="@+id/nav_exercise"

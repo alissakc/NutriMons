@@ -170,4 +170,5 @@
     <string name="add_exercise">Add Exercise</string>
     <string name="today_s_fun_fact">Today\'s Fun Fact</string>
     <string name="dashboard">Dashboard</string>
+    <string name="fun_fact">Fun Fact</string>
 </resources>
