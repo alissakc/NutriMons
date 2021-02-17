@@ -14,7 +14,7 @@ tools:context=".ScanBarcode">
         android:layout_marginBottom="50dp"
         android:elevation="2dp"
         android:scaleType="fitCenter"
-        android:text="Scan Barcode"
+        android:text="@string/scan_barcode_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
@@ -36,7 +36,7 @@ tools:context=".ScanBarcode">
         android:visibility="gone">
 
         <ImageView
-            android:id="@+id/imageView31"
+            android:id="@+id/barcodePreview"
             android:layout_width="288dp"
             android:layout_height="256dp"
             android:layout_gravity="center"
@@ -45,20 +45,20 @@ tools:context=".ScanBarcode">
             app:srcCompat="@drawable/barcode" />
 
         <TextView
-            android:id="@+id/textView8"
+            android:id="@+id/barcodeString"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="10dp"
-            android:text="rawValue" />
+            android:text="@string/barcode_string" />
 
         <TextView
-            android:id="@+id/textView44"
+            android:id="@+id/barcodeApiJson"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="10dp"
-            android:text="api res" />
+            android:text="@string/barcode_api_json" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

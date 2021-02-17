@@ -1,7 +1,6 @@
 package com.example.nutrimons;
 
 import android.Manifest;
-import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,9 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.navigation.Navigation;
 
 import com.tbruyelle.rxpermissions3.RxPermissions;
 
@@ -166,7 +162,7 @@ public class Profile extends Fragment implements View.OnClickListener, AdapterVi
     @Override
     public void onClick(View view) {
         switch(view.getId()) {
-            case (R.id.imageView5): //let user upload photo and swap user profile pic with this
+            case (R.id.editProfilePicture): //let user upload photo and swap user profile pic with this
                 Toast.makeText(getContext(), "Pencil Clicked", Toast.LENGTH_LONG).show();
                 //Navigation.findNavController(view).navigate(R.id.action_nav_meal_to_nav_scanBarcode);
                 break;
