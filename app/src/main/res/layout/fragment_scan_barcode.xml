@@ -22,7 +22,8 @@ tools:context=".ScanBarcode">
     <androidx.camera.view.PreviewView
         android:id="@+id/viewFinder"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="visible">
 
     </androidx.camera.view.PreviewView>
 
@@ -30,7 +31,6 @@ tools:context=".ScanBarcode">
         android:id="@+id/barcodeResult"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/layout_rounded_white"
         android:orientation="vertical"
         android:padding="10dp"
         android:visibility="gone">

@@ -153,15 +153,17 @@
 
         <Button
             android:id="@+id/saveProfile"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:onClick="onClick"
             android:text="@string/save_profile" />
 
         <Button
             android:id="@+id/showNutrientRecs"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:onClick="onClick"
             android:text="@string/nutrient_recommendation_button" />
 
