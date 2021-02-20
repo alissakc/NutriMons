@@ -180,6 +180,7 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="birthday">Birthday</string>
+    <string name="save_profile">Save ALL Changes</string>
     <string name="nutrient_recommendation_button">Show Nutrient Recommendations</string>
     <string name="nutrient_table_nutrient_header">Nutrient</string>
     <string name="nutrient_table_recommended_intake">Recommended Intake</string>

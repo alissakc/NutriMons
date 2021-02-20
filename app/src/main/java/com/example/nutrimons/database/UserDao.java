@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
@@ -25,12 +26,12 @@ public interface UserDao {
     List<Meal> loadAllByIds(int[] mealIds);*/
 
     @Query("SELECT * FROM user WHERE email LIKE :search")
-    User findByName(String search);
+    User findByEmail(String search);
 
     @Insert
     void insertAll(User... users);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE) //effectively makes this an update/insert
     void insert(User user);
 
     @Update
