@@ -3,19 +3,23 @@ package com.example.nutrimons;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CalendarView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -27,7 +31,12 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,10 +67,14 @@ public class Dashboard extends Fragment implements View.OnClickListener {
     private static final String[] MACRO_NUTRIENTS = { "CARBOHYDRATES", "PROTEINS", "FATS"};
 
     Button goToMeal, goToWater, goToExercise;
-    ImageView gotToProfile;
+    ImageView gotToProfile, goToPreviousDate, goToNextDate;
     int currentIndex;
 
     private TextView factTextView;
+
+    // vars for calendar
+    private TextView currentDate;
+    private ImageButton goToCalendar;
 
     private String[] factBank = new String[]{
             "Milk is 87% water. The nutrients, like protein, carbohydrate, vitamins and minerals are all found in the other 13%.",
@@ -142,6 +155,77 @@ public class Dashboard extends Fragment implements View.OnClickListener {
         goToExercise.setOnClickListener(this);
 
         updateFact();
+
+        // calendar
+        currentDate = view.findViewById(R.id.currentDateTextView);
+        Bundle bundle = this.getArguments();
+        if(bundle == null){
+            // gets current date
+            long date = System.currentTimeMillis();
+            SimpleDateFormat Date = new SimpleDateFormat("MM/dd/yyyy");
+            String dateString = Date.format(date);
+            currentDate.setText(dateString);
+        }else{
+            String date = bundle.getString("key");
+            currentDate.setText(date);
+        }
+
+        // button that goes to the calendar view
+        goToCalendar = view.findViewById(R.id.calendarImageButton);
+        goToCalendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Navigation.findNavController(v).navigate(R.id.action_nav_dashboard_to_nav_calendar);
+                Bundle bundle = new Bundle();
+                String date = currentDate.getText().toString();
+                bundle.putString("currentDateKey", date);
+                CalendarViewFragment fragment = new CalendarViewFragment();
+                fragment.setArguments(bundle);
+                fragment.setArguments(savedInstanceState);
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_dashboard, fragment).addToBackStack(null).commit();
+            }
+        });
+
+        // button initialization for previous day
+        goToPreviousDate= view.findViewById(R.id.previousDayImageButton);
+        goToPreviousDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String currentDay = currentDate.getText().toString();
+                try{
+                    Date currentDateVal =new SimpleDateFormat("MM/dd/yyyy").parse(currentDay);
+                    Date yesterday = new Date(currentDateVal.getTime() - (1000 * 60 * 60 * 24));
+                    SimpleDateFormat Date = new SimpleDateFormat("MM/dd/yyyy");
+                    String dateString = Date.format(yesterday);
+                    currentDate.setText(dateString);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
+
+        // button initialization for next day
+        goToNextDate= view.findViewById(R.id.nextDayImageButton);
+        goToNextDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String currentDay = currentDate.getText().toString();
+                try{
+                    Date currentDateVal =new SimpleDateFormat("MM/dd/yyyy").parse(currentDay);
+                    Date tomorrow = new Date(currentDateVal.getTime() + (1000 * 60 * 60 * 24));
+                    SimpleDateFormat Date = new SimpleDateFormat("MM/dd/yyyy");
+                    String dateString = Date.format(tomorrow);
+                    currentDate.setText(dateString);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
 
         return view;
     }
