@@ -4,10 +4,14 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
@@ -21,53 +25,26 @@ import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link Water#newInstance} factory method to
- * create an instance of this fragment.
  */
-public class Water extends Fragment {
+public class Water extends Fragment implements View.OnClickListener{
     // Variables for pie chart
     PieChart waterPieChart;
     private double amountDrank = 100.0;
     private double amountNeeded = 20.0;
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private double inputAmount;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    EditText waterAmountInput;
+    Button submitWater;
+    Button unitChange;
 
+    // Required empty public constructor
     public Water() {
-        // Required empty public constructor
-    }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Water.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static Water newInstance(String param1, String param2) {
-        Water fragment = new Water();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -76,20 +53,49 @@ public class Water extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_water, container, false);
         waterPieChart = view.findViewById(R.id.waterPieChart_view);
+
+        waterAmountInput = view.findViewById(R.id.waterAmountInputBox);
+        submitWater = view.findViewById(R.id.waterSubmitButton);
+        submitWater.setOnClickListener(this);
+        unitChange = view.findViewById(R.id.unitChangeButton);
+        unitChange.setOnClickListener(this);
         initPieChart();
-        showPieChart();
+        showPieChart(); // this method has to go after unitChange because it uses unitChange
+
         return view;
     }
-    private void showPieChart(){
 
+    /**
+     * Warning toast to the user when they enter in an invalid option for the input text.
+     */
+    private void toastWarning(){
+        Toast.makeText(getContext(), "Not a valid input", Toast.LENGTH_SHORT).show();
+    }
+    private void toastConvertedtoOz(){
+        Toast.makeText(getContext(), "Converted to oz", Toast.LENGTH_SHORT).show();
+    }
+    private void toastConvertedtoML(){
+        Toast.makeText(getContext(), "Converted to ml", Toast.LENGTH_SHORT).show();
+    }
+    /**
+     * Shows and modifies the pie chart.
+     */
+    private void showPieChart(){
         ArrayList<PieEntry> pieEntries = new ArrayList<>();
-        String label = "(in ounces)";
+        String label;
+        if(inOz(unitChange)){
+            label = "(in ounces)";
+        }
+        else{
+            label = "(in milliliters)";
+        }
 
         //initializing data
         Map<String, Double> typeAmountMap = new HashMap<>();
         typeAmountMap.put("Consumed",amountDrank);
-        typeAmountMap.put("Needed",amountNeeded);
-
+        if (amountNeeded > 0) {
+            typeAmountMap.put("Needed", amountNeeded);
+        }
 
         //initializing colors for the entries
         ArrayList<Integer> colors = new ArrayList<>();
@@ -144,6 +150,10 @@ public class Water extends Fragment {
         waterPieChart.setData(pieData);
         waterPieChart.invalidate();
     }
+
+    /**
+     * Initializes Pie Chart Settings
+     */
     private void initPieChart(){
         //using percentage as values instead of amount
         waterPieChart.setUsePercentValues(false);
@@ -167,7 +177,61 @@ public class Water extends Fragment {
         waterPieChart.animateY(1400, Easing.EaseInOutQuad);
         //setting the color of the hole in the middle, default white
         waterPieChart.setHoleColor(Color.parseColor("#ffffff"));
-        waterPieChart.setHoleRadius(40f);
-        waterPieChart.setTransparentCircleRadius(0f);
+        waterPieChart.setHoleRadius(25f);
+        waterPieChart.setTransparentCircleRadius(30f);
+    }
+
+    //convert oz to milli
+    private double convertOztoMilli(double oz){
+        oz *= 29.5735;
+        return oz;
+    }
+
+    private double convertMillitoOz(double ml){
+        ml /= 29.5735;
+        return ml;
+    }
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case (R.id.waterSubmitButton):
+                try {
+
+                    inputAmount = Double.parseDouble(waterAmountInput.getText().toString());
+                    amountDrank += inputAmount;
+                    amountNeeded = Math.max(0, amountNeeded - inputAmount);
+                    initPieChart();
+                    showPieChart();
+
+                } catch (NumberFormatException e) {
+                    toastWarning();
+                }
+                break;
+            case (R.id.unitChangeButton):
+                if (inOz(unitChange)){
+                    unitChange.setText("ml");
+                    amountDrank = convertOztoMilli(amountDrank);
+                    amountNeeded = convertOztoMilli(amountNeeded);
+                    toastConvertedtoML();
+                }
+                else if(!inOz(unitChange)){
+                    unitChange.setText("oz");
+                    amountDrank = convertMillitoOz(amountDrank);
+                    amountNeeded = convertMillitoOz(amountNeeded);
+                    toastConvertedtoOz();
+                }
+                break;
+
+        }
+    }
+
+    // checks if a button text is in oz
+    private boolean inOz(Button button) {
+        if (unitChange.getText().equals("oz")){
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }
