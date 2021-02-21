@@ -12,6 +12,7 @@ import androidx.navigation.Navigation;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,7 @@ import com.example.nutrimons.database.AppDatabase;
 import com.example.nutrimons.database.User;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class RegistrationFragment extends Fragment {
 
@@ -130,43 +132,114 @@ public class RegistrationFragment extends Fragment {
                 List<User> myList = mDb.userDao().getAll();
                 User user = new User(emailEditText.getText().toString(), passwordEditText.getText().toString());
 
-                if(!emailValidate(myList, user)){
-                    emailEditText.setError("Email is not entered");
+                int emailValidation = emailValidate(myList, user);
+                int passwordValidation = passwordValidate(user);
+                if(emailValidation != 0){ //0 is valid response
+                    switch(emailValidation)
+                    {
+                        case 1:
+                        {
+                            emailEditText.setError("Email is not entered");
+                            break;
+                        }
+                        case 2:
+                        {
+                            emailEditText.setError("Email is invalid");
+                            break;
+                        }
+                        case 3:
+                        {
+                            emailEditText.setError("Email is already registered");
+                            break;
+                        }
+                        default:
+                        {
+                            emailEditText.setError("Unknown error");
+                        }
+                    }
                     emailEditText.requestFocus();
                 }
-                else if(!passwordValidation(myList, user)){
-                    passwordEditText.setError("Password is not entered");
+                else if(passwordValidation != 0){
+                    switch(passwordValidation)
+                    {
+                        case 1:
+                        {
+                            passwordEditText.setError("Password must be at least 8 characters");
+                            break;
+                        }
+                        case 2:
+                        {
+                            passwordEditText.setError("Password must be at most 24 characters");
+                            break;
+                        }
+                        case 3:
+                        {
+                            passwordEditText.setError("Password must have at least one lowercase " +
+                                    "letter, one uppercase letter, a number, and a special character");
+                            break;
+                        }
+                        case 4:
+                        {
+                            passwordEditText.setError("Password cannot have more than 2 repeating characters");
+                            break;
+                        }
+                        default:
+                        {
+                            passwordEditText.setError("Unknown error");
+                        }
+                    }
                     passwordEditText.requestFocus();
                 }
                 else{
                     System.out.println("INSERTING INTO DATABASE");
                     mDb.userDao().insert(user);
                     Navigation.findNavController(view).navigate(R.id.action_nav_registration_to_nav_login);
-
                 }
 
             }
         });
     }
-    private boolean emailValidate(List<User> list,User user) {
+    //returns 1 for null email, 2 for invalid email, 3 for existing email, else 0
+    private int emailValidate(List<User> list,User user) {
+        if(user.email.length() == 0)
+        {
+            return 1;
+        }
+        if(!Patterns.EMAIL_ADDRESS.matcher(user.email).matches())
+        {
+            return 2;
+        }
         for(User i:list)
         {
-            if(i.email.equals(user.email) || user.email.length()==0)
+            //'.' does not matter, case does not matter
+            if(i.email.toLowerCase().replace(".", "").equals(user.email.toLowerCase().replace(".", "")))
             {
-                return false;
+                return 3;
             }
         }
-        return true;
+        return 0;
     }
-    private boolean passwordValidation(List<User> list, User user) {
-        for(User i:list)
+    private int passwordValidate(User user) {
+        if(user.password.length() < 8)
         {
-            if(user.password.length()==0)
-            {
-                return false;
-            }
+            return 1;
         }
-        return true;
+        if(user.password.length() > 24)
+        {
+            return 2;
+        }
+        Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{4,}$");
+        if(!PASSWORD_PATTERN.matcher(user.password).matches())
+        {
+            return 3;
+        }
+        String[] pass = user.password.split("");
+        for(int i = 2; i < user.password.length(); ++i)
+        {
+            if(pass[i].equals(pass[i - 1]) && pass[i].equals(pass[i - 2]))
+                return 4;
+        }
+        return 0;
     }
     private void updateUiWithUser(LoggedInUserView model) {
         String welcome = getString(R.string.welcome) + model.getDisplayName();
