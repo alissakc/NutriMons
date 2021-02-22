@@ -3,6 +3,7 @@ package com.example.nutrimons;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -91,6 +92,7 @@ public class AddMeal extends Fragment {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Toast.makeText(getContext(), "Created entry", Toast.LENGTH_SHORT).show();
                 mealName = mealNameText.getText().toString();
                 servingSize = Integer.parseInt(servingSizeText.getText().toString());
                 servingWeight = Integer.parseInt(servingWeightText.getText().toString());
@@ -98,7 +100,9 @@ public class AddMeal extends Fragment {
 
                 final com.example.nutrimons.database.Meal meal = new com.example.nutrimons.database.Meal(mealName, servingSize, servingWeight, caloriesPerServing);
                 mDb.mealDao().insert(meal);
-                Toast.makeText(getContext(), "Created entry", Toast.LENGTH_SHORT).show();
+
+                // navigates to meal plan
+                Navigation.findNavController(view).navigate(R.id.action_nav_addMeal_to_nav_mealPlan);
             }
         });
 

@@ -5,7 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import android.widget.AdapterView;
@@ -16,8 +18,12 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.example.nutrimons.database.AppDatabase;
+import com.example.nutrimons.database.Exercise;
+import com.example.nutrimons.database.Meal;
+import com.google.android.material.navigation.NavigationView;
 
 
 public class MealPlan extends Fragment implements OnItemSelectedListener {
@@ -32,7 +38,13 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
     private String mParam2;
 
     // vars
-    private Spinner spinner1, spinner2, spinner3, spinner4;
+    private Spinner breakfastSpinner, lunchSpinner, dinnerSpinner, snackSpinner;
+    private Button save;
+    private List<String> selectedBreakfast = new ArrayList<>();
+    private List<String> selectedLunch = new ArrayList<>();
+    private List<String> selectedDinner = new ArrayList<>();
+    private List<String> selectedSnack = new ArrayList<>();
+    private ArrayAdapter<String> breakfastDataAdapter, lunchDataAdapter, dinnerDataAdapter, snackDataAdapter;
 
     // creates instance of database
     private AppDatabase mDb;
@@ -74,16 +86,16 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
         mDb = AppDatabase.getInstance(getContext());
 
         // Spinner element
-        spinner1 = (Spinner) view.findViewById(R.id.breakfastMultipleItemSelectionSpinner);
-        spinner2 = (Spinner) view.findViewById(R.id.lunchMultipleItemSelectionSpinner);
-        spinner3 = (Spinner) view.findViewById(R.id.dinnerMultipleItemSelectionSpinner);
-        spinner4 = (Spinner) view.findViewById(R.id.snackMultipleItemSelectionSpinner);
+        breakfastSpinner = (Spinner) view.findViewById(R.id.breakfastMultipleItemSelectionSpinner);
+        lunchSpinner = (Spinner) view.findViewById(R.id.lunchMultipleItemSelectionSpinner);
+        dinnerSpinner = (Spinner) view.findViewById(R.id.dinnerMultipleItemSelectionSpinner);
+        snackSpinner = (Spinner) view.findViewById(R.id.snackMultipleItemSelectionSpinner);
 
         // Spinner click listener
-        spinner1.setOnItemSelectedListener(this);
-        spinner2.setOnItemSelectedListener(this);
-        spinner3.setOnItemSelectedListener(this);
-        spinner4.setOnItemSelectedListener(this);
+        breakfastSpinner.setOnItemSelectedListener(this);
+        lunchSpinner.setOnItemSelectedListener(this);
+        dinnerSpinner.setOnItemSelectedListener(this);
+        snackSpinner.setOnItemSelectedListener(this);
 
         // Spinner Drop down elements
         List<String> food = (List<String>) mDb.mealDao().getAllNames();
@@ -103,17 +115,46 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
          */
 
         // Creating adapter for spinners
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, food);
+        breakfastDataAdapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_item, food);
+        lunchDataAdapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_item, food);
+        dinnerDataAdapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_item, food);
+        snackDataAdapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_item, food);
 
         // Drop down layout style - list view with radio button
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        breakfastDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        lunchDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dinnerDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        snackDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
 
         // attaching data adapter to spinners
-        spinner1.setAdapter(dataAdapter);
-        spinner2.setAdapter(dataAdapter);
-        spinner3.setAdapter(dataAdapter);
-        spinner4.setAdapter(dataAdapter);
+        breakfastSpinner.setAdapter(breakfastDataAdapter);
+        lunchSpinner.setAdapter(lunchDataAdapter);
+        dinnerSpinner.setAdapter(dinnerDataAdapter);
+        snackSpinner.setAdapter(snackDataAdapter);
 
+        save = view.findViewById(R.id.saveMealPlanButton);
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectedBreakfast.add(breakfastSpinner.getSelectedItem().toString());
+                selectedLunch.add(lunchSpinner.getSelectedItem().toString());
+                selectedDinner.add(dinnerSpinner.getSelectedItem().toString());
+                selectedSnack.add(snackSpinner.getSelectedItem().toString());
+                long date = System.currentTimeMillis();
+                SimpleDateFormat Date = new SimpleDateFormat("MM/dd/yyyy");
+                String dateString = Date.format(date);
+                if(mDb.dateDataDao().findByDate(dateString) == null){
+                    final com.example.nutrimons.database.DateData dateData = new com.example.nutrimons.database.DateData(dateString, selectedBreakfast, selectedLunch, selectedDinner, selectedSnack, null, 0.0);
+                    mDb.dateDataDao().insert(dateData);
+                }
+                else{
+                    mDb.dateDataDao().updateMealPlan(selectedBreakfast, selectedLunch, selectedDinner, selectedSnack);
+                }
+                // navigates to the dashboard
+                Navigation.findNavController(view).navigate(R.id.action_nav_mealPlan_to_nav_home);
+            }
+        });
 
         return view;
     }
@@ -123,8 +164,10 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
         // On selecting a spinner item
         String item = parent.getItemAtPosition(position).toString();
 
+        parent.getId();
+
         // Showing selected spinner item
-        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_SHORT).show();
 
     }
 
