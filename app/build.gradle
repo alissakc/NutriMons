@@ -6,6 +6,8 @@ android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
 
+    useLibrary 'org.apache.http.legacy'
+
     defaultConfig {
         applicationId "com.example.nutrimons"
         minSdkVersion 21
@@ -94,5 +96,10 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion"
     // Recycler View
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
+
+    // for number picker
+    implementation 'com.github.travijuu:numberpicker:1.0.7'
+
+    implementation 'com.google.code.gson:gson:2.8.0'
 
 }

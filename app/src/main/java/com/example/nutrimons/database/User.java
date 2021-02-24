@@ -66,13 +66,16 @@ public class User {
     @ColumnInfo(name = "profileFocus")
     public String profileFocus;
 
+    @ColumnInfo(name = "activityLevel")
+    public String activityLevel;
+
     public User(String email, String password) {
         this.email = email;
         this.password = password;
     }
 
     @Ignore
-    public User(String email, String password, String name, String birthday, String financialSource, String financialHistory, String financialPlan, String nutriCoins, String age, String sex, String weight, String height, String ethnicity, String healthHistory, String healthGoals, String profileFocus) {
+    public User(String email, String password, String name, String birthday, String financialSource, String financialHistory, String financialPlan, String nutriCoins, String age, String sex, String weight, String height, String ethnicity, String healthHistory, String healthGoals, String profileFocus, String activityLevel) {
         this.email = email;
         this.password = password;
         this.name = name;
@@ -89,6 +92,7 @@ public class User {
         this.healthHistory = healthHistory;
         this.healthGoals = healthGoals;
         this.profileFocus = profileFocus;
+        this.activityLevel = activityLevel;
     }
 
     /*public User(String userName, String email, String password) {

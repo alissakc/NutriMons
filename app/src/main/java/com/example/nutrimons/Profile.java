@@ -1,10 +1,10 @@
 package com.example.nutrimons;
 
 import android.Manifest;
-import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +17,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.navigation.Navigation;
 
+import com.example.nutrimons.database.AppDatabase;
+import com.example.nutrimons.database.User;
 import com.tbruyelle.rxpermissions3.RxPermissions;
 
 import java.util.ArrayList;
@@ -39,12 +38,15 @@ public class Profile extends Fragment implements View.OnClickListener, AdapterVi
 
     private Spinner spinner;
 
-    private Button editProfilePicture, showNutrientRecs;
+    private Button editProfilePicture, showNutrientRecs, saveProfile;
 
     private String profileFocus, name, email, password, birthday, financialSource, financialHistory, financialPlan, nutriCoins, age, sex, weight, height, ethnicity, healthHistory, healthGoals, activityLevel;
     private EditText nameText, emailText, passwordText, birthdayText, financialSourceText, financialHistoryText, financialPlanText, nutriCoinsText, ageText, sexText, weightText, heightText, ethnicityText, healthHistoryText, healthGoalsText, activityLevelText;
+    private int nameId, emailId, passwordId, birthdayId, financialSourceId, financialHistoryId, financialPlanId, nutriCoinsId, ageId, sexId, weightId, heightId, ethnicityId, healthHistoryId, healthGoalsId, activityLevelId;
 
     private View view;
+
+    private AppDatabase mDb;
 
     public Profile() {
         // Required empty public constructor
@@ -108,9 +110,8 @@ public class Profile extends Fragment implements View.OnClickListener, AdapterVi
         List<String> profileFocuses = new ArrayList<String>();
         profileFocuses.add("Select Focus");
         profileFocuses.add("Lose Weight");
-        profileFocuses.add("Gain Muscle");
         profileFocuses.add("Maintain Weight");
-        profileFocuses.add("No Longer Be Malnourished");
+        profileFocuses.add("Gain Muscle");
 
         // Creating adapter for spinners
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, profileFocuses);
@@ -122,9 +123,11 @@ public class Profile extends Fragment implements View.OnClickListener, AdapterVi
 
         //editProfilePicture = view.findViewById(R.id.imageView5); cannot cast the ImageView as a Button; use an ImageButton object instead
         showNutrientRecs = view.findViewById(R.id.showNutrientRecs);
+        saveProfile = view.findViewById(R.id.saveProfile);
 
         //editProfilePicture.setOnClickListener(this);
         showNutrientRecs.setOnClickListener(this);
+        saveProfile.setOnClickListener(this);
 
         nameText = view.findViewById(R.id.profileName);
         emailText = view.findViewById(R.id.email);
@@ -160,19 +163,42 @@ public class Profile extends Fragment implements View.OnClickListener, AdapterVi
         healthGoalsText.addTextChangedListener(new TextChangedListener<EditText>(healthGoalsText, healthGoals));
         activityLevelText.addTextChangedListener(new TextChangedListener<EditText>(activityLevelText, activityLevel));
 
+        nameId = (nameText.getId());
+        emailId = (emailText.getId());
+        passwordId = (passwordText.getId());
+        birthdayId = (birthdayText.getId());
+        financialSourceId = (financialSourceText.getId());
+        financialHistoryId = (financialHistoryText.getId());
+        financialPlanId = (financialPlanText.getId());
+        nutriCoinsId = (nutriCoinsText.getId());
+        ageId = (ageText.getId());
+        sexId = (sexText.getId());
+        weightId = (weightText.getId());
+        heightId = (heightText.getId());
+        ethnicityId = (ethnicityText.getId());
+        healthHistoryId = (healthHistoryText.getId());
+        healthGoalsId = (healthGoalsText.getId());
+        activityLevelId = (activityLevelText.getId());
+
+        mDb = AppDatabase.getInstance(getContext());
+
         return view;
     }
 
     @Override
     public void onClick(View view) {
         switch(view.getId()) {
-            case (R.id.imageView5): //let user upload photo and swap user profile pic with this
+            case (R.id.editProfilePicture): //let user upload photo and swap user profile pic with this
                 Toast.makeText(getContext(), "Pencil Clicked", Toast.LENGTH_LONG).show();
                 //Navigation.findNavController(view).navigate(R.id.action_nav_meal_to_nav_scanBarcode);
                 break;
             case (R.id.showNutrientRecs):
                 calculateNutrients();
                 Toast.makeText(getContext(), "nutrient button clicked", Toast.LENGTH_LONG).show();
+                break;
+            case (R.id.saveProfile):
+                saveChanges();
+                Toast.makeText(getContext(), "save profile button clicked", Toast.LENGTH_LONG).show();
                 break;
         }
     }
@@ -191,6 +217,47 @@ public class Profile extends Fragment implements View.OnClickListener, AdapterVi
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
         // TODO Auto-generated method stub
+    }
+
+    private void printAllUserInfo(List<User> userList)
+    {
+        for(User u : userList)
+        {
+            Log.d("userinfo", u.userID + u.name + u.email + u.password + u.birthday + u.financialSource + u.financialHistory + u.financialPlan
+                    + u.nutriCoins + u.age + u.sex + u.weight + u.height + u.ethnicity + u.healthHistory + u.healthGoals + u.profileFocus + u.activityLevel);
+        }
+    }
+
+    private void saveChanges()
+    {
+        //crashes if email not changed to a valid one first; requires the token to be passed in
+        Log.d("debug", email);
+        User u = mDb.userDao().findByEmail(email);
+        getFields(); //refactor to pull in info from database (earlier)
+        u.profileFocus = profileFocus;
+        u.name = name;
+        u.email = email;
+        u.password = password;
+        u.birthday = birthday;
+        u.age = age;
+        u.sex = sex;
+        u.weight = weight;
+        u.height = height;
+        u.ethnicity = ethnicity;
+        u.activityLevel = activityLevel;
+        u.healthHistory = healthHistory;
+        u.financialSource = financialSource;
+        u.financialHistory = financialHistory;
+        u.financialPlan = financialPlan;
+        u.nutriCoins = nutriCoins;
+        u.healthGoals = healthGoals;
+        //mDb.userDao().updateUser(u);
+        Log.d("debug", "saveChanges() called");
+        Log.d("debug", String.valueOf(u.userID));
+        mDb.userDao().delete(u); //allows user to change email
+        mDb.userDao().insert(u);
+        //Log.d("debug", mDb.userDao().getAll().get(0).email.getClass().getName()); //String
+        printAllUserInfo(mDb.userDao().getAll());
     }
 
     public class TextChangedListener<T> implements TextWatcher { //https://stackoverflow.com/questions/11134144/android-edittext-onchange-listener
@@ -221,6 +288,39 @@ public class Profile extends Fragment implements View.OnClickListener, AdapterVi
             //also set the view fields database values then replace str with a db insert
             et = (EditText) target;
             str = et.getText().toString();
+            if(((EditText) target).getId() == nameId)
+                name = str;
+            else if(((EditText) target).getId() == emailId)
+                email = str;
+            else if(((EditText) target).getId() == passwordId)
+                password = str;
+            else if(((EditText) target).getId() == birthdayId)
+                birthday = str;
+            else if(((EditText) target).getId() == financialSourceId)
+                financialSource = str;
+            else if(((EditText) target).getId() == financialHistoryId)
+                financialHistory = str;
+            else if(((EditText) target).getId() == financialPlanId)
+                financialPlan = str;
+            else if(((EditText) target).getId() == nutriCoinsId)
+                nutriCoins = str;
+            else if(((EditText) target).getId() == ageId)
+                age = str;
+            else if(((EditText) target).getId() == sexId)
+                sex = str;
+            else if(((EditText) target).getId() == weightId)
+                weight = str;
+            else if(((EditText) target).getId() == heightId)
+                height = str;
+            else if(((EditText) target).getId() == ethnicityId)
+                ethnicity = str;
+            else if(((EditText) target).getId() == healthHistoryId)
+                healthHistory = str;
+            else if(((EditText) target).getId() == healthGoalsId)
+                healthGoals = str;
+            else if(((EditText) target).getId() == activityLevelId)
+                activityLevel = str;
+            //Log.d("debug", String.valueOf(((EditText) target).getId()));
             Toast.makeText(getContext(), "value is now: " + str, Toast.LENGTH_SHORT).show();
         }
     }

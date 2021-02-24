@@ -9,7 +9,6 @@ import android.media.Image;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
 import androidx.camera.core.Camera;
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.ImageAnalysis;
@@ -25,7 +24,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.navigation.Navigation;
 
-import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,10 +47,6 @@ import com.google.mlkit.vision.common.InputImage;
 import com.tbruyelle.rxpermissions3.RxPermissions;
 
 import com.google.mlkit.vision.barcode.*;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.nio.ByteBuffer;
 import java.util.HashMap;
@@ -257,11 +251,11 @@ public class ScanBarcode extends Fragment {
                             //int valueType = barcode.getValueType();
                             View br = view.findViewById(R.id.barcodeResult);
                             View vf = view.findViewById(R.id.viewFinder);
-                            TextView tv = view.findViewById(R.id.textView8);
+                            TextView tv = view.findViewById(R.id.barcodeString);
                             tv.setText(rawValue);
 
                             queue.cancelAll(rawValue);
-                            tv = view.findViewById(R.id.textView44);
+                            tv = view.findViewById(R.id.barcodeApiJson);
                             StringRequest strReq = callOFFapi(rawValue, tv);
                             queue.add(strReq);
                             br.setVisibility(View.VISIBLE);
@@ -340,7 +334,7 @@ public class ScanBarcode extends Fragment {
         view = inflater.inflate(R.layout.fragment_scan_barcode, container, false);
         mPreviewView = view.findViewById(R.id.viewFinder);
         button = view.findViewById(R.id.camera_capture_button);
-        bc = view.findViewById(R.id.imageView31);
+        bc = view.findViewById(R.id.barcodePreview);
         context = getContext();
         queue = Volley.newRequestQueue(getContext());
 

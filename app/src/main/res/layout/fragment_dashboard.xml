@@ -1,25 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/caloriesPieChart"
+    android:id="@+id/fragment_dashboard"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/ic_tamagotchi_background"
     tools:context=".Dashboard">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="24dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:backgroundTint="@color/ic_tamagotchi_background">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/previousDayImageButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_arrow_back" />
+
+                <TextView
+                    android:id="@+id/currentDateTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="TextView"
+                    android:textAlignment="center"
+                    android:textSize="24sp" />
+
+                <ImageButton
+                    android:id="@+id/nextDayImageButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:src="@drawable/ic_arrow_forward" />
+
+                <ImageButton
+                    android:id="@+id/calendarImageButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_calendar" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -102,8 +135,8 @@
                     </LinearLayout>
 
                     <View
-                    android:layout_width="20dp"
-                    android:layout_height="match_parent" />
+                        android:layout_width="20dp"
+                        android:layout_height="match_parent" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -127,7 +160,7 @@
                                 android:contentDescription='""' />
 
                         </LinearLayout>
-                </LinearLayout>
+                    </LinearLayout>
 
                 </LinearLayout>
             </HorizontalScrollView>
@@ -165,4 +198,4 @@
     </ScrollView>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

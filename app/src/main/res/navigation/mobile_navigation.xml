@@ -54,6 +54,9 @@
         <action
             android:id="@+id/action_addMeal_to_meal2"
             app:destination="@id/nav_meal" />
+        <action
+            android:id="@+id/action_nav_addMeal_to_nav_mealPlan"
+            app:destination="@id/nav_mealPlan" />
     </fragment>
     <fragment
         android:id="@+id/nav_scanBarcode"
@@ -75,6 +78,9 @@
         <action
             android:id="@+id/action_nav_mealPlan_to_nav_meal"
             app:destination="@id/nav_meal" />
+        <action
+            android:id="@+id/action_nav_mealPlan_to_nav_home"
+            app:destination="@id/nav_home" />
     </fragment>
     <fragment
         android:id="@+id/nav_tamagotchi"
@@ -135,5 +141,17 @@
         <action
             android:id="@+id/action_nav_dashboard_to_nav_water"
             app:destination="@id/nav_water" />
+        <action
+            android:id="@+id/action_nav_dashboard_to_nav_calendar"
+            app:destination="@id/nav_calendar" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_calendar"
+        android:name="com.example.nutrimons.CalendarViewFragment"
+        android:label="Calendar"
+        tools:layout="@layout/fragment_calendar_view">
+        <action
+            android:id="@+id/action_nav_calendar_to_nav_home"
+            app:destination="@id/nav_home" />
     </fragment>
 </navigation>

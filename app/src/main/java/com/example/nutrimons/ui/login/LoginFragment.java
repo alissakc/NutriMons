@@ -73,11 +73,10 @@ public class LoginFragment extends Fragment {
                 //loadingProgressBar.setVisibility(View.VISIBLE);
                 if(checkEmail(myList,user))
                 {
-
                     Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_home);
                 }
                 else {
-                    emailEditText.setError("FAILURE");
+                    emailEditText.setError("email or password does not match existing user");
                     emailEditText.requestFocus();
                 }
 
