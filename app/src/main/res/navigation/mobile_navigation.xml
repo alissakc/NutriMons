@@ -78,7 +78,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_tamagotchi"
-        android:name="com.example.nutrimons.Tamagotchi"
+        android:name="TamagotchiGame.Tamagotchi"
         android:label="Tamagotchi"
         tools:layout="@layout/fragment_tamagotchi" >
         <action
