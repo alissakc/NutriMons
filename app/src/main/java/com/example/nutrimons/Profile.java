@@ -1,6 +1,7 @@
 package com.example.nutrimons;
 
 import android.Manifest;
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -22,7 +23,22 @@ import com.example.nutrimons.database.AppDatabase;
 import com.example.nutrimons.database.User;
 import com.tbruyelle.rxpermissions3.RxPermissions;
 
+import jxl.Cell;
+import jxl.CellType;
+import jxl.Sheet;
+import jxl.Workbook;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Profile extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
@@ -91,8 +107,8 @@ public class Profile extends Fragment implements View.OnClickListener, AdapterVi
         //ask for storage permissions
         RxPermissions rxPermissions = new RxPermissions(this);
         rxPermissions
-                .request(Manifest.permission.READ_EXTERNAL_STORAGE/*,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE*/) // ask single or multiple permission once
+                .request(Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE) // ask single or multiple permission once
                 .subscribe(granted -> {
                     if (granted) {
                         // All requested permissions are granted
@@ -195,6 +211,7 @@ public class Profile extends Fragment implements View.OnClickListener, AdapterVi
             case (R.id.showNutrientRecs):
                 calculateNutrients();
                 Toast.makeText(getContext(), "nutrient button clicked", Toast.LENGTH_LONG).show();
+                processExcel();
                 break;
             case (R.id.saveProfile):
                 saveChanges();
@@ -211,7 +228,7 @@ public class Profile extends Fragment implements View.OnClickListener, AdapterVi
         //***save selected data to database here***
 
         // Showing selected spinner item
-        Toast.makeText(parent.getContext(), "Selected: " + profileFocus, Toast.LENGTH_LONG).show();
+        Toast.makeText(parent.getContext(), "Selected: " + profileFocus, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -398,5 +415,33 @@ public class Profile extends Fragment implements View.OnClickListener, AdapterVi
             return (int)((10 * Integer.parseInt(weight) / 2.2 /*pounds*/ + 6.25 * 2.54 * Integer.parseInt(height) /*inches*/ - 5 * Integer.parseInt(age) + 5) * al);
         else
             return (int)((10 * Integer.parseInt(weight) / 2.2 /*pounds*/ + 6.25 * 2.54 * Integer.parseInt(height) /*inches*/ - 5 * Integer.parseInt(age) - 161) * al);
+    }
+
+    private void processExcel()
+    {
+        try
+        {
+            TextView exFile = view.findViewById(R.id.nutrientExcelView);
+
+            AssetManager am = getContext().getAssets(); //grab file from assets folder
+            InputStream is = am.open("recommended_intakes_individuals.xls"); //***jxl only accepts xls saved as workbooks
+            Workbook wb = Workbook.getWorkbook(is);
+            Sheet sheet = wb.getSheet(0); //get first sheet
+
+            for(int i = 0; i < sheet.getColumns(); ++i) //iterate over columns and rows
+            {
+                for(int j = 0; j < sheet.getRows(); ++j)
+                {
+                    Cell cell = sheet.getCell(i, j);
+                    CellType type = cell.getType();
+                    Log.d("cell: (" + i + "," + j + ")", cell.getContents()); //output to log
+                    exFile.append(cell.getContents()); //output to TextView
+                }
+            }
+        }
+        catch(Exception e)
+        {
+            Log.d("error", "excel processing; " + e.toString());
+        }
     }
 }

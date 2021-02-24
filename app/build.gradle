@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.nutrimons"
-        minSdkVersion 21
+        minSdkVersion 26
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -102,4 +102,6 @@ dependencies {
 
     implementation 'com.google.code.gson:gson:2.8.0'
 
+    //for jxl to process excel file
+    implementation "net.sourceforge.jexcelapi:jxl:2.6.12"
 }
