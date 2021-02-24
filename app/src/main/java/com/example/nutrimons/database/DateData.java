@@ -2,8 +2,10 @@ package com.example.nutrimons.database;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
+import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
 import java.util.Date;
 import java.util.List;
@@ -17,22 +19,22 @@ public class DateData {
     public String date;
 
     @ColumnInfo(name="breakfast")
-    public List<String> breakfast;
+    public final  List<String> breakfast;
 
     @ColumnInfo(name="lunch")
-    public List<String> lunch;
+    public final  List<String> lunch;
 
     @ColumnInfo(name="dinner")
-    public List<String> dinner;
+    public final  List<String> dinner;
 
     @ColumnInfo(name="snack")
-    public List<String> snack;
+    public final  List<String> snack;
 
     @ColumnInfo(name="water")
     public double water;
 
     @ColumnInfo(name="exercise")
-    public List<String> todayExercise;
+    public final  List<String> todayExercise;
 
     public DateData(@NonNull String date, List<String> breakfast, List<String> lunch, List<String> dinner, List<String> snack, List<String> todayExercise, double water) {
         this.date = date;

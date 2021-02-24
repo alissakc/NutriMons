@@ -1,21 +1,61 @@
 package com.example.nutrimons.database;
 
-
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.TypeConverters;
 import androidx.room.Update;
 
-import java.util.Date;
 import java.util.List;
 
 @Dao
+@TypeConverters({Converters.class})
 public interface DateDataDao {
 
     @Query("SELECT * FROM dateData WHERE date LIKE :search")
     DateData findByDate(String search);
 
+    // UPDATE QUERIES
+    // updates the breakfast column only
+    @Query("UPDATE dateData SET breakfast=:breakfast WHERE date = :date")
+    void updateBreakfast(final List<String> breakfast, String date);
+
+    // updates the lunch column only
+    @Query("UPDATE dateData SET lunch=:lunch WHERE date = :date")
+    void updateLunch(final List<String> lunch, String date);
+
+    // updates the dinner column only
+    @Query("UPDATE dateData SET dinner=:dinner WHERE date = :date")
+    void updateDinner(final List<String> dinner, String date);
+
+    // updates the snack column only
+    @Query("UPDATE dateData SET snack=:snack WHERE date = :date")
+    void updateSnack(final List<String> snack, String date);
+
+    // updates the meal plan columns only
+    @Query("UPDATE dateData SET breakfast=(:breakfast), lunch=(:lunch), dinner=(:dinner), snack=(:snack) WHERE date = :date")
+    public abstract void updateMealPlan(final List<String> breakfast, final List<String> lunch, final List<String> dinner, final List<String> snack, String date);
+
+    // updates the exercise column only
+    @Query("UPDATE dateData SET exercise=(:exercise) WHERE date = :date")
+    public abstract void updateExercise(final List<String> exercise, String date);
+
+    // updates the water column only
+    @Query("UPDATE dateData SET water=:water WHERE date = :date")
+    void updateWater(double water, String date);
+
+    @Insert
+    void insert(DateData dateData);
+
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    public void updateDateData(DateData dateData);
+
+    @Delete
+    void delete(DateData dateData);
+
+    /*
     // INSERT QUERIES
     // inserts into the breakfast column only
     @Query("INSERT INTO dateData (breakfast) VALUES (:breakfast)")
@@ -44,43 +84,5 @@ public interface DateDataDao {
     // inserts into the water column only
     @Query("INSERT INTO dateData (water) VALUES (:water)")
     void insertWater(double water);
-
-
-    // UPDATE QUERIES
-    // updates the breakfast column only
-    @Query("UPDATE dateData SET breakfast=:breakfast")
-    void updateBreakfast(List<String> breakfast);
-
-    // updates the lunch column only
-    @Query("UPDATE dateData SET lunch=:lunch")
-    void updateLunch(List<String> lunch);
-
-    // updates the dinner column only
-    @Query("UPDATE dateData SET dinner=:dinner")
-    void updateDinner(List<String> dinner);
-
-    // updates the snack column only
-    @Query("UPDATE dateData SET snack=:snack")
-    void updateSnack(List<String> snack);
-
-    // updates the snack column only
-    @Query("UPDATE dateData SET breakfast=:breakfast, lunch=:lunch, dinner=:dinner, snack=:snack")
-    void updateMealPlan(List<String> breakfast, List<String> lunch, List<String> dinner, List<String> snack);
-
-    // updates the exercise column only
-    @Query("UPDATE dateData SET exercise=:exercise")
-    void updateExercise(List<String> exercise);
-
-    // updates the water column only
-    @Query("UPDATE dateData SET water=:water")
-    void updateWater(double water);
-
-    @Insert
-    void insert(DateData dateData);
-
-    @Update
-    public void updateDateDate(DateData dateData);
-
-    @Delete
-    void delete(DateData dateData);
+     */
 }

@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.widget.AdapterView;
@@ -16,8 +18,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.Navigation;
 
 import com.example.nutrimons.database.AppDatabase;
+import com.example.nutrimons.database.DateData;
 
 
 /**
@@ -37,12 +42,13 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
     private String mParam2;
 
     // vars
-    private Spinner spinner1;
-    private Button addButton;
+    private Spinner exerciseSpinner;
+    private Button addButton, save;
     private String exerciseName, unitName;
     private int caloriesPerUnit;
     private float duration;
     private EditText exerciseNameText, unitNameText, caloriesPerUnitText, durationText;
+    private final List<String> exerciseList = new ArrayList<>();
 
     // creates instance of database
     private AppDatabase mDb;
@@ -91,10 +97,10 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
         exercises.add(0, "Select an item");
 
         // Spinner element
-        spinner1 = (Spinner) view.findViewById(R.id.breakfastMultipleItemSelectionSpinner);
+        exerciseSpinner = (Spinner) view.findViewById(R.id.breakfastMultipleItemSelectionSpinner);
 
         // Spinner click listener
-        spinner1.setOnItemSelectedListener(this);
+        exerciseSpinner.setOnItemSelectedListener(this);
 
         /*
         // Spinner Drop down elements
@@ -120,7 +126,7 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         // attaching data adapter to spinners
-        spinner1.setAdapter(dataAdapter);
+        exerciseSpinner.setAdapter(dataAdapter);
 
         // Button initialization
         addButton = view.findViewById(R.id.submitNewExercise);
@@ -143,6 +149,39 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
                 final com.example.nutrimons.database.Exercise exercise = new com.example.nutrimons.database.Exercise(exerciseName, caloriesPerUnit, unitName, duration);
                 mDb.exerciseDao().insert(exercise);
                 Toast.makeText(getContext(), "Created entry", Toast.LENGTH_SHORT).show();
+                // refreshes exercise page
+                Exercise fragment = new Exercise();
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_exercise, fragment).addToBackStack(null).commit();
+            }
+        });
+
+        save = view.findViewById(R.id.saveExerciseButton);
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exerciseList.add(exerciseSpinner.getSelectedItem().toString());
+                long date = System.currentTimeMillis();
+                SimpleDateFormat Date = new SimpleDateFormat("MM/dd/yyyy");
+                String dateString = Date.format(date);
+                if(mDb.dateDataDao().findByDate(dateString) == null){
+                    final DateData dateData = new DateData(dateString, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), exerciseList, 0.0);
+                    mDb.dateDataDao().insert(dateData);
+                }
+                else{
+                    final com.example.nutrimons.database.DateData dateData = new com.example.nutrimons.database.DateData(dateString,
+                            mDb.dateDataDao().findByDate(dateString).breakfast,
+                            mDb.dateDataDao().findByDate(dateString).lunch,
+                            mDb.dateDataDao().findByDate(dateString).dinner,
+                            mDb.dateDataDao().findByDate(dateString).snack,
+                            exerciseList, mDb.dateDataDao().findByDate(dateString).water);
+                    mDb.dateDataDao().updateDateData(dateData);
+                    //mDb.dateDataDao().updateExercise(exerciseList, dateString);
+                }
+                // refreshes exercise page
+                Exercise fragment = new Exercise();
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_exercise, fragment).addToBackStack(null).commit();
             }
         });
         return view;

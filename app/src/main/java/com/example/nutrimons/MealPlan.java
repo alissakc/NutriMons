@@ -40,10 +40,10 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
     // vars
     private Spinner breakfastSpinner, lunchSpinner, dinnerSpinner, snackSpinner;
     private Button save;
-    private List<String> selectedBreakfast = new ArrayList<>();
-    private List<String> selectedLunch = new ArrayList<>();
-    private List<String> selectedDinner = new ArrayList<>();
-    private List<String> selectedSnack = new ArrayList<>();
+    private final List<String> selectedBreakfast = new ArrayList<>();
+    private final List<String> selectedLunch = new ArrayList<>();
+    private final List<String> selectedDinner = new ArrayList<>();
+    private final List<String> selectedSnack = new ArrayList<>();
     private ArrayAdapter<String> breakfastDataAdapter, lunchDataAdapter, dinnerDataAdapter, snackDataAdapter;
 
     // creates instance of database
@@ -145,11 +145,30 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
                 SimpleDateFormat Date = new SimpleDateFormat("MM/dd/yyyy");
                 String dateString = Date.format(date);
                 if(mDb.dateDataDao().findByDate(dateString) == null){
-                    final com.example.nutrimons.database.DateData dateData = new com.example.nutrimons.database.DateData(dateString, selectedBreakfast, selectedLunch, selectedDinner, selectedSnack, null, 0.0);
+                    final com.example.nutrimons.database.DateData dateData = new com.example.nutrimons.database.DateData(dateString, selectedBreakfast, selectedLunch, selectedDinner, selectedSnack, new ArrayList<String>(), 0.0);
                     mDb.dateDataDao().insert(dateData);
                 }
                 else{
-                    mDb.dateDataDao().updateMealPlan(selectedBreakfast, selectedLunch, selectedDinner, selectedSnack);
+                    if(breakfastSpinner.getSelectedItem().toString().equalsIgnoreCase("Select an item")){
+                        selectedBreakfast.clear();
+                    }
+                    if(lunchSpinner.getSelectedItem().toString().equalsIgnoreCase("Select an item")){
+                        selectedLunch.clear();
+                    }
+                    if(dinnerSpinner.getSelectedItem().toString().equalsIgnoreCase("Select an item")){
+                        selectedDinner.clear();
+                    }
+                    if(snackSpinner.getSelectedItem().toString().equalsIgnoreCase("Select an item")){
+                        selectedSnack.clear();
+                    }
+                    final com.example.nutrimons.database.DateData dateData = new com.example.nutrimons.database.DateData(dateString,
+                            (selectedBreakfast.isEmpty()) ? mDb.dateDataDao().findByDate(dateString).breakfast : selectedBreakfast,
+                            (selectedLunch.isEmpty()) ? mDb.dateDataDao().findByDate(dateString).lunch : selectedLunch,
+                            (selectedDinner.isEmpty()) ? mDb.dateDataDao().findByDate(dateString).dinner : selectedDinner,
+                            (selectedSnack.isEmpty()) ? mDb.dateDataDao().findByDate(dateString).snack : selectedSnack,
+                            mDb.dateDataDao().findByDate(dateString).todayExercise, mDb.dateDataDao().findByDate(dateString).water);
+                    mDb.dateDataDao().updateDateData(dateData);
+                    //mDb.dateDataDao().updateMealPlan(selectedBreakfast, selectedLunch, selectedDinner, selectedSnack, dateString);
                 }
                 // navigates to the dashboard
                 Navigation.findNavController(view).navigate(R.id.action_nav_mealPlan_to_nav_home);

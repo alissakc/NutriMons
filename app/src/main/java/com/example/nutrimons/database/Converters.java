@@ -66,6 +66,7 @@ public class Converters {
         if(value == null){
             return null;
         }
+        Gson gson = new Gson();
         Type listType = new TypeToken<List<String>>() {}.getType();
         return new Gson().fromJson(value, listType);
     }
@@ -76,8 +77,9 @@ public class Converters {
             return null;
         }
         Gson gson = new Gson();
+        Type type = new TypeToken<List<String>>() {}.getType();
         String json = gson.toJson(list);
-        return json;
+        return new Gson().toJson(list);
     }
 
 
