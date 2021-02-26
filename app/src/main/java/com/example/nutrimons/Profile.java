@@ -1,6 +1,7 @@
 package com.example.nutrimons;
 
 import android.Manifest;
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -20,12 +21,13 @@ import androidx.fragment.app.Fragment;
 
 import com.example.nutrimons.database.AppDatabase;
 import com.example.nutrimons.database.User;
+
 import com.tbruyelle.rxpermissions3.RxPermissions;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Profile extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+public class Profile<T> extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -91,8 +93,8 @@ public class Profile extends Fragment implements View.OnClickListener, AdapterVi
         //ask for storage permissions
         RxPermissions rxPermissions = new RxPermissions(this);
         rxPermissions
-                .request(Manifest.permission.READ_EXTERNAL_STORAGE/*,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE*/) // ask single or multiple permission once
+                .request(Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE) // ask single or multiple permission once
                 .subscribe(granted -> {
                     if (granted) {
                         // All requested permissions are granted
@@ -211,21 +213,12 @@ public class Profile extends Fragment implements View.OnClickListener, AdapterVi
         //***save selected data to database here***
 
         // Showing selected spinner item
-        Toast.makeText(parent.getContext(), "Selected: " + profileFocus, Toast.LENGTH_LONG).show();
+        Toast.makeText(parent.getContext(), "Selected: " + profileFocus, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
         // TODO Auto-generated method stub
-    }
-
-    private void printAllUserInfo(List<User> userList)
-    {
-        for(User u : userList)
-        {
-            Log.d("userinfo", u.userID + u.name + u.email + u.password + u.birthday + u.financialSource + u.financialHistory + u.financialPlan
-                    + u.nutriCoins + u.age + u.sex + u.weight + u.height + u.ethnicity + u.healthHistory + u.healthGoals + u.profileFocus + u.activityLevel);
-        }
     }
 
     private void saveChanges()
@@ -257,7 +250,11 @@ public class Profile extends Fragment implements View.OnClickListener, AdapterVi
         mDb.userDao().delete(u); //allows user to change email
         mDb.userDao().insert(u);
         //Log.d("debug", mDb.userDao().getAll().get(0).email.getClass().getName()); //String
-        printAllUserInfo(mDb.userDao().getAll());
+        List<User> a = mDb.userDao().getAll();
+        for(int i = 0; i < a.size(); ++i)
+        {
+            Log.d("User " + i, a.get(i).toString());
+        }
     }
 
     public class TextChangedListener<T> implements TextWatcher { //https://stackoverflow.com/questions/11134144/android-edittext-onchange-listener
@@ -325,7 +322,7 @@ public class Profile extends Fragment implements View.OnClickListener, AdapterVi
         }
     }
 
-    private void calculateNutrients()
+    private void calculateNutrients() //from https://www.nal.usda.gov/sites/default/files/fnic_uploads/recommended_intakes_individuals.pdf
     {
         View nt = view.findViewById(R.id.nutrientsTable);
         TextView rdiCal = view.findViewById(R.id.rdiCalories);

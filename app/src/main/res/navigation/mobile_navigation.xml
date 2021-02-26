@@ -78,10 +78,13 @@
         <action
             android:id="@+id/action_nav_mealPlan_to_nav_meal"
             app:destination="@id/nav_meal" />
+        <action
+            android:id="@+id/action_nav_mealPlan_to_nav_home"
+            app:destination="@id/nav_home" />
     </fragment>
     <fragment
         android:id="@+id/nav_tamagotchi"
-        android:name="com.example.nutrimons.Tamagotchi"
+        android:name="TamagotchiGame.Tamagotchi"
         android:label="Tamagotchi"
         tools:layout="@layout/fragment_tamagotchi" >
         <action

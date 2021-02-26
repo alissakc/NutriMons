@@ -6,9 +6,11 @@ android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
 
+    useLibrary 'org.apache.http.legacy'
+
     defaultConfig {
         applicationId "com.example.nutrimons"
-        minSdkVersion 21
+        minSdkVersion 26
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -95,4 +97,11 @@ dependencies {
     // Recycler View
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
+    // for number picker
+    implementation 'com.github.travijuu:numberpicker:1.0.7'
+
+    implementation 'com.google.code.gson:gson:2.8.0'
+
+    //for jxl to process excel file
+    implementation "net.sourceforge.jexcelapi:jxl:2.6.12"
 }

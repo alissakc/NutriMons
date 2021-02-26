@@ -1,160 +1,176 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_exercise"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="10dp"
-    android:layout_marginBottom="10dp"
-    android:orientation="vertical"
-    android:padding="20dp"
+    android:background="@color/ic_tamagotchi_background"
     tools:context=".Exercise">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:padding="20dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/select_workout"
-                android:textAllCaps="true"
-                android:textColor="@color/black"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-
-            <Spinner
-                android:id="@+id/breakfastMultipleItemSelectionSpinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp" />
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/ic_tamagotchi_background"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:padding="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:padding="20dp">
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/create_new_workout"
-                android:textAllCaps="true"
-                android:textColor="@color/black"
-                android:textSize="24sp"
-                android:textStyle="bold" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp" />
 
-            <TextView
-                android:id="@+id/exerciseName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="48dp"
-                android:text="@string/name_of_exercise"
-                android:textSize="18sp" />
-
-            <EditText
-                android:id="@+id/editTextExerciseName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="16dp"
-                android:autofillHints=""
-                android:ems="10"
-                android:hint="@string/name_of_exercise_edit_text"
-                android:inputType="text"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/caloriesPerUnit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="48dp"
-                android:text="@string/calories_per_unit"
-                android:textSize="18sp" />
-
-            <EditText
-                android:id="@+id/editTextCaloriesPerUnit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="16dp"
-                android:autofillHints=""
-                android:ems="10"
-                android:hint="@string/calories_per_unit_edit_text"
-                android:inputType="text"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/unitName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="48dp"
-                android:text="@string/unit_name"
-                android:textSize="18sp" />
-
-            <EditText
-                android:id="@+id/editTextUnitName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="16dp"
-                android:autofillHints=""
-                android:ems="10"
-                android:hint="@string/unit_name_edit_text"
-                android:inputType="text"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/duration"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="48dp"
-                android:text="@string/duration"
-                android:textSize="18sp" />
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="20dp">
 
-            <EditText
-                android:id="@+id/editTextDuration"
-                android:layout_width="326dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="16dp"
-                android:autofillHints=""
-                android:ems="10"
-                android:hint="@string/hint_15_min"
-                android:inputType="number|text"
-                android:textSize="18sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/select_workout"
+                    android:textAllCaps="true"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
 
-            <Button
-                android:id="@+id/submitNewExercise"
+                <Spinner
+                    android:id="@+id/breakfastMultipleItemSelectionSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp" />
+
+                <Button
+                    android:id="@+id/saveExerciseButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginRight="0dp"
+                    android:text="@string/save_workout" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp" />
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/submit" />
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/create_new_workout"
+                    android:textAllCaps="true"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/exerciseName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="48dp"
+                    android:text="@string/name_of_exercise"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/editTextExerciseName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="16dp"
+                    android:autofillHints=""
+                    android:ems="10"
+                    android:hint="@string/name_of_exercise_edit_text"
+                    android:inputType="text"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/caloriesPerUnit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="48dp"
+                    android:text="@string/calories_per_unit"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/editTextCaloriesPerUnit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="16dp"
+                    android:autofillHints=""
+                    android:ems="10"
+                    android:hint="@string/calories_per_unit_edit_text"
+                    android:inputType="text"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/unitName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="48dp"
+                    android:text="@string/unit_name"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/editTextUnitName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="16dp"
+                    android:autofillHints=""
+                    android:ems="10"
+                    android:hint="@string/unit_name_edit_text"
+                    android:inputType="text"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/duration"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="48dp"
+                    android:text="@string/duration"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/editTextDuration"
+                    android:layout_width="326dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="16dp"
+                    android:autofillHints=""
+                    android:ems="10"
+                    android:hint="@string/hint_15_min"
+                    android:inputType="number|text"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:id="@+id/submitNewExercise"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/submit" />
+
+            </LinearLayout>
 
         </LinearLayout>
-
-    </LinearLayout>
-</ScrollView>
+    </ScrollView>
+</FrameLayout>

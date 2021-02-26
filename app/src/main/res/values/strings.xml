@@ -302,6 +302,6 @@
     <string name="health_factors">Health Factors</string>
     <string name="sedentary">Sedentary</string>
     <string name="today">Today</string>
-    <string name="oz">oz</string>
-
+    <string name="save">Save</string>
+    <string name="save_workout">Save Workout</string>
 </resources>

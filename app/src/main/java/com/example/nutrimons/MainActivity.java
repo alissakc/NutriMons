@@ -1,16 +1,20 @@
 package com.example.nutrimons;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.widget.Toast;
 
+import com.example.nutrimons.database.AppDatabase;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
@@ -43,12 +47,13 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_login, R.id.nav_registration, R.id.nav_addMeal, R.id.nav_exercise, R.id.nav_meal, R.id.nav_mealPlan, R.id.nav_nutrientInformation, R.id.nav_nutrientOverview, R.id.nav_profile, R.id.nav_scanBarcode, R.id.nav_tamagotchi, R.id.nav_tamagotchiShop, R.id.nav_water)
+                R.id.nav_home, R.id.nav_login, R.id.nav_registration, R.id.nav_addMeal, R.id.nav_exercise, R.id.nav_meal, R.id.nav_mealPlan, R.id.nav_nutrientInformation, R.id.nav_nutrientOverview, R.id.nav_profile, R.id.nav_scanBarcode, R.id.nav_tamagotchi, R.id.nav_tamagotchiShop, R.id.nav_water, R.id.nav_calendar)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        NutrientTablesInitializer nti = new NutrientTablesInitializer(getAssets(), AppDatabase.getInstance(getApplicationContext()));
     }
 
     @Override
@@ -64,5 +69,6 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
 
 }

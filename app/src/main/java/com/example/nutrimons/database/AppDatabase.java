@@ -5,9 +5,12 @@ import android.content.Context;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
 
 // Meal, Exercise, and User are classes annotated with @Entity
-@Database(entities = {Meal.class, Exercise.class, User.class}, version = 1)
+@Database(entities = {Meal.class, Exercise.class, User.class, DateData.class, ElementDRIs.class, ElementULs.class, MacronutrientDRIs.class,
+  MacronutrientRanges.class, VitaminDRIs.class, VitaminULs.class}, version = 1)
+@TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
 
     // database instance
@@ -30,5 +33,13 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract ExerciseDao exerciseDao();
     // UserDao is a class annotated with @Dao
     public abstract UserDao userDao();
+    // DataDataDao is a class annotated with @Dao
+    public abstract DateDataDao dateDataDao();
 
+    public abstract ElementDRIsDAO elementDRIsDAO();
+    public abstract ElementULsDAO elementULsDAO();
+    public abstract MacronutrientDRIsDAO macronutrientDRIsDAO();
+    public abstract MacronutrientRangesDAO macronutrientRangesDAO();
+    public abstract VitaminDRIsDAO vitaminDRIsDAO();
+    public abstract VitaminULsDAO vitaminULsDAO();
 }

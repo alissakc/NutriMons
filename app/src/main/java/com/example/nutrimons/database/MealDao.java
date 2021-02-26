@@ -17,6 +17,9 @@ public interface MealDao {
     @Query("SELECT * FROM meal ORDER BY meal_name ASC")
     LiveData<List<Meal>> getAll();
 
+    @Query("SELECT mealID FROM meal WHERE meal_name =:meal_name")
+    int getID(String meal_name);
+
     @Query("SELECT meal_name FROM meal ORDER BY meal_name ASC")
     List<String> getAllNames();
 

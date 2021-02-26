@@ -95,10 +95,10 @@ public class User {
         this.activityLevel = activityLevel;
     }
 
-    /*public User(String userName, String email, String password) {
-        this.userName = userName;
-        this.email = email;
-        this.password = password;
-    }*/
-
+    public String toString()
+    {
+        return userID + name + email + password + birthday + financialSource + financialHistory
+                + financialPlan + nutriCoins + age + sex + weight + height + ethnicity
+                + healthHistory + healthGoals + profileFocus + activityLevel;
+    }
 }
