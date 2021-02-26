@@ -20,32 +20,11 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.example.nutrimons.database.AppDatabase;
-import com.example.nutrimons.database.ElementDRIs;
-import com.example.nutrimons.database.ElementULs;
-import com.example.nutrimons.database.MacronutrientDRIs;
-import com.example.nutrimons.database.MacronutrientRanges;
 import com.example.nutrimons.database.User;
-import com.example.nutrimons.database.VitaminDRIs;
-import com.example.nutrimons.database.VitaminULs;
+
 import com.tbruyelle.rxpermissions3.RxPermissions;
 
-import jxl.Cell;
-import jxl.CellType;
-import jxl.Sheet;
-import jxl.Workbook;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.lang.reflect.Array;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class Profile<T> extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
@@ -218,7 +197,6 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
             case (R.id.showNutrientRecs):
                 calculateNutrients();
                 Toast.makeText(getContext(), "nutrient button clicked", Toast.LENGTH_LONG).show();
-                processExcel();
                 break;
             case (R.id.saveProfile):
                 saveChanges();
@@ -417,163 +395,5 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
             return (int)((10 * Integer.parseInt(weight) / 2.2 /*pounds*/ + 6.25 * 2.54 * Integer.parseInt(height) /*inches*/ - 5 * Integer.parseInt(age) + 5) * al);
         else
             return (int)((10 * Integer.parseInt(weight) / 2.2 /*pounds*/ + 6.25 * 2.54 * Integer.parseInt(height) /*inches*/ - 5 * Integer.parseInt(age) - 161) * al);
-    }
-
-    private void processExcel() //from https://www.nal.usda.gov/sites/default/files/fnic_uploads/recommended_intakes_individuals.pdf
-            //light manual processing required; .xls file must be saved in format as in the /Assets folder's "recommended_intakes_individuals.xls"
-                //trim everything except the actual tables; first sheet DRI Vitamins, second sheet DRI Elements, third sheet DRI macronutrients,
-                //fourth sheet macronutrient acceptable ranges, fifth sheet DRI: ULs Vitamins, sixth sheet DRI: ULs Elements
-            //fix misspellings in .xls from super/subscripts in pdf
-            //fix headers taking up two rows from being too long
-    {
-        try
-        {
-            TextView exFile = view.findViewById(R.id.nutrientExcelView);
-
-            AssetManager am = getContext().getAssets(); //grab file from assets folder
-            InputStream is = am.open("recommended_intakes_individuals.xls"); //***jxl only accepts xls saved as workbooks
-            Workbook wb = Workbook.getWorkbook(is);
-
-            for(int i = 0; i < wb.getNumberOfSheets(); ++i) //iterate over sheets
-            {
-                Sheet sheet = wb.getSheet(i); //get sheet
-                Log.d("sheet: " + i, sheet.getName());
-
-                if(sheet.getName().equals("MacronutrientRanges"))
-                {
-                    for(int j = 2; j < sheet.getColumns(); ++j) //iterate over columns
-                    {
-                        String headerVal = sheet.getCell(j, 0).getContents();
-                        ArrayList<String> values = new ArrayList<>();
-
-                        switch(headerVal)
-                        {
-                            case "Macronutrient":
-                            case "":
-                                break;
-                            case "Children, 1-3 y":
-                                values.add("1-3 y");
-                                break;
-                            case "Children, 4-18 y":
-                                values.add("4-18 y");
-                                break;
-                            default:
-                                values.add("Adult");
-                        }
-                        for(int k = 1; k < sheet.getRows(); ++k) //iterate over rows
-                        {
-                            if(k != 2 && k != 3) //ignore linoleic acids for now
-                                values.add(sheet.getCell(k, j).getContents()); //assign cells (j,k)
-                        }
-                        mDb.macronutrientRangesDAO().insert(new MacronutrientRanges(values));
-                    }
-                }
-                else
-                {
-                    for(int j = 0; j < sheet.getRows(); ++j) //iterate over rows
-                    {
-                        String headerVal = sheet.getCell(0, j).getContents(), sex = "N/A", babyStatus = "N/A"; //set initial groupId vals
-
-                        switch(headerVal)
-                        {
-                            case "LifeStage":
-                            case "Group":
-                            case "Infants":
-                            case "Children":
-                                break;
-                            case "Males":
-                                sex = "Male";
-                                break;
-                            case "Females":
-                                sex = "Female";
-                                break;
-                            case "Pregnancy":
-                                babyStatus = "Pregnant";
-                                break;
-                            case "Lactation":
-                                babyStatus = "Lactating";
-                                break;
-                            default:
-                            {
-                                ArrayList<String> values = new ArrayList<>();
-                                values.add(sheet.getCell(0, j).getContents());
-                                values.add(sex);
-                                values.add(babyStatus);
-                                for(int k = 1; k < sheet.getColumns(); ++k) //iterate over columns
-                                {
-                                    values.add(sheet.getCell(k, j).getContents()); //assign cells (j,k)
-                                }
-                                switch(sheet.getName())
-                                {
-                                    case "VitaminDRIs":
-                                        mDb.vitaminDRIsDAO().insert(new VitaminDRIs(values));
-                                        break;
-                                    case "ElementDRIs":
-                                        mDb.elementDRIsDAO().insert(new ElementDRIs(values));
-                                        break;
-                                    case "MacronutrientDRIs":
-                                        mDb.macronutrientDRIsDAO().insert(new MacronutrientDRIs(values));
-                                        break;
-                                    case "VitaminULs":
-                                        mDb.vitaminULsDAO().insert(new VitaminULs(values));
-                                        break;
-                                    case "ElementULs":
-                                        mDb.elementULsDAO().insert(new ElementULs(values));
-                                        break;
-                                }
-                            }
-                        }
-                    }
-                }
-                /*for(int i = 0; i < sheet.getRows(); ++i) //iterate over rows and columns
-                {
-                    for(int j = 0; j < sheet.getColumns(); ++j)
-                    {
-                        Cell cell = sheet.getCell(j, i); //column, row
-                        CellType type = cell.getType();
-                        Log.d("cell: (" + j + "," + i + ")", cell.getContents() + " " + type); //output to log
-                        exFile.append(cell.getContents()); //output to TextView
-                    }
-                }*/
-            }
-        }
-        catch(Exception e)
-        {
-            Log.d("error", "excel processing; " + e.toString());
-        }
-        finally
-        {
-            List<ElementDRIs> a = mDb.elementDRIsDAO().getAll();
-            List<ElementULs> b = mDb.elementULsDAO().getAll();
-            List<MacronutrientDRIs> c = mDb.macronutrientDRIsDAO().getAll();
-            List<MacronutrientRanges> d = mDb.macronutrientRangesDAO().getAll();
-            List<VitaminDRIs> e = mDb.vitaminDRIsDAO().getAll();
-            List<VitaminULs> f = mDb.vitaminULsDAO().getAll();
-
-            for(int i = 0; i < a.size(); ++i)
-            {
-                Log.d("Element DRI " + i, a.toString());
-            }
-            for(int i = 0; i < a.size(); ++i)
-            {
-                Log.d("Element UL " + i, b.toString());
-            }
-            for(int i = 0; i < a.size(); ++i)
-            {
-                Log.d("Macronutrient DRI " + i, c.toString());
-            }
-            for(int i = 0; i < a.size(); ++i)
-            {
-                Log.d("Macronutrient Range " + i, d.toString());
-            }
-            for(int i = 0; i < a.size(); ++i)
-            {
-                Log.d("Vitamin DRI " + i, e.toString());
-            }
-            for(int i = 0; i < a.size(); ++i)
-            {
-                Log.d("Vitamin UL " + i, f.toString());
-            }
-        }
     }
 }

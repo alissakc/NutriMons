@@ -2,10 +2,12 @@ package com.example.nutrimons;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.widget.Toast;
 
+import com.example.nutrimons.database.AppDatabase;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -51,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        NutrientTablesInitializer nti = new NutrientTablesInitializer(getAssets(), AppDatabase.getInstance(getApplicationContext()));
     }
 
     @Override
