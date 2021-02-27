@@ -6,6 +6,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 @Entity//(indices = {@Index(value = {"user_name"}, unique = false)})
 public class ElementDRIs {
@@ -96,5 +97,26 @@ public class ElementDRIs {
                 + " " + copper + " " + fluoride + " " + iodine + " " + iron + " " + magnesium
                 + " " + manganese + " " + molybdenum + " " + phosphorous + " " + selenium + " "
                 + zinc + " " + potassium + " " + sodium + " " + chloride;
+    }
+
+    public Hashtable<String, Float> toHashTable()
+    {
+        Hashtable<String, Float> hash = new Hashtable();
+        hash.put("calcium", Float.valueOf(calcium));
+        hash.put("chromium", Float.valueOf(chromium));
+        hash.put("copper", Float.valueOf(copper));
+        hash.put("fluoride", Float.valueOf(fluoride));
+        hash.put("iodine", Float.valueOf(iodine));
+        hash.put("iron", Float.valueOf(iron));
+        hash.put("magnesium", Float.valueOf(magnesium));
+        hash.put("manganese", Float.valueOf(manganese));
+        hash.put("molybdenum", Float.valueOf(molybdenum));
+        hash.put("phosphorous", Float.valueOf(phosphorous));
+        hash.put("selenium", Float.valueOf(selenium));
+        hash.put("zinc", Float.valueOf(zinc));
+        hash.put("potassium", Float.valueOf(potassium));
+        hash.put("sodium", Float.valueOf(sodium));
+        hash.put("chloride", Float.valueOf(chloride));
+        return hash;
     }
 }

@@ -191,7 +191,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/rdiTitle"
+                    android:id="@+id/driTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -223,7 +223,7 @@
                     android:textColor="#000000" />
 
                 <TextView
-                    android:id="@+id/rdiCalories"
+                    android:id="@+id/driCalories"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -252,7 +252,7 @@
                     android:textColor="#000000" />
 
                 <TextView
-                    android:id="@+id/rdiProtein"
+                    android:id="@+id/driProtein"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -282,7 +282,7 @@
                     android:textColor="#000000" />
 
                 <TextView
-                    android:id="@+id/rdiCarbs"
+                    android:id="@+id/driCarbs"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -311,7 +311,7 @@
                     android:textColor="#000000" />
 
                 <TextView
-                    android:id="@+id/rdiSugar"
+                    android:id="@+id/driSugar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -340,7 +340,7 @@
                     android:textColor="#000000" />
 
                 <TextView
-                    android:id="@+id/rdiFiber"
+                    android:id="@+id/driFiber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -369,7 +369,7 @@
                     android:textColor="#000000" />
 
                 <TextView
-                    android:id="@+id/rdiFats"
+                    android:id="@+id/driFats"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -398,7 +398,7 @@
                     android:textColor="#000000" />
 
                 <TextView
-                    android:id="@+id/rdiCholesterol"
+                    android:id="@+id/driCholesterol"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -427,7 +427,7 @@
                     android:textColor="#000000" />
 
                 <TextView
-                    android:id="@+id/rdiSaturatedFats"
+                    android:id="@+id/driSaturatedFats"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -456,7 +456,7 @@
                     android:textColor="#000000" />
 
                 <TextView
-                    android:id="@+id/rdiUnsaturatedFats"
+                    android:id="@+id/driUnsaturatedFats"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -485,7 +485,7 @@
                     android:textColor="#000000" />
 
                 <TextView
-                    android:id="@+id/rdiTransFats"
+                    android:id="@+id/driTransFats"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -514,7 +514,7 @@
                     android:textColor="#000000" />
 
                 <TextView
-                    android:id="@+id/rdiVitaminA"
+                    android:id="@+id/driVitaminA"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -543,7 +543,7 @@
                     android:textColor="#000000" />
 
                 <TextView
-                    android:id="@+id/rdiVitaminC"
+                    android:id="@+id/driVitaminC"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -572,7 +572,7 @@
                     android:textColor="#000000" />
 
                 <TextView
-                    android:id="@+id/rdiVitaminD"
+                    android:id="@+id/driVitaminD"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -601,7 +601,7 @@
                     android:textColor="#000000" />
 
                 <TextView
-                    android:id="@+id/rdiSodium"
+                    android:id="@+id/driSodium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -630,7 +630,7 @@
                     android:textColor="#000000" />
 
                 <TextView
-                    android:id="@+id/rdiPotassium"
+                    android:id="@+id/driPotassium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -659,7 +659,7 @@
                     android:textColor="#000000" />
 
                 <TextView
-                    android:id="@+id/rdiCalcium"
+                    android:id="@+id/driCalcium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -689,7 +689,7 @@
                     android:textColor="#000000" />
 
                 <TextView
-                    android:id="@+id/rdiIron"
+                    android:id="@+id/driIron"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -706,18 +706,6 @@
             </TableRow>
 
         </TableLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Nutrient Excel Data"
-            android:id="@+id/nutrientExcelView"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:lineSpacingExtra="2dp"
-            android:gravity="center" />
 
         <LinearLayout
             android:layout_width="match_parent"

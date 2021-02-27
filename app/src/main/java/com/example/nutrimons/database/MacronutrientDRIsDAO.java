@@ -29,7 +29,6 @@ public interface MacronutrientDRIsDAO {
     @Delete
     void delete(MacronutrientDRIs macronutrientDRIs);
 
-
     @Query("DELETE FROM macronutrientDRIs")
     public void nukeTable();
 }

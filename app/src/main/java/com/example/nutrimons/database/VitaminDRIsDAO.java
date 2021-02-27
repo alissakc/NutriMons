@@ -29,7 +29,6 @@ public interface VitaminDRIsDAO {
     @Delete
     void delete(VitaminDRIs vitaminDRIs);
 
-
     @Query("DELETE FROM vitaminDRIs")
     public void nukeTable();
 }

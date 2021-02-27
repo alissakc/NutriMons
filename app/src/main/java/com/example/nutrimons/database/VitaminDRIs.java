@@ -6,6 +6,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 @Entity//(indices = {@Index(value = {"user_name"}, unique = false)})
 public class VitaminDRIs {
@@ -92,5 +93,25 @@ public class VitaminDRIs {
                 +  " " + vitaminD + " " + vitaminE + " " + vitaminK + " " + thiamin + " " + riboflavin
                 + " " + niacin + " " + vitaminB6 + " " + folate + " " + vitaminB12 + " " + pantothenicAcid
                 + " " + biotin + " " + choline;
+    }
+
+    public Hashtable<String, Float> toHashTable()
+    {
+        Hashtable<String, Float> hash = new Hashtable();
+        hash.put("vitaminA", Float.valueOf(vitaminA));
+        hash.put("vitaminC", Float.valueOf(vitaminC));
+        hash.put("vitaminD", Float.valueOf(vitaminD));
+        hash.put("vitaminE", Float.valueOf(vitaminE));
+        hash.put("vitaminK", Float.valueOf(vitaminK));
+        hash.put("thiamin", Float.valueOf(thiamin));
+        hash.put("riboflavin", Float.valueOf(riboflavin));
+        hash.put("niacin", Float.valueOf(niacin));
+        hash.put("vitaminB6", Float.valueOf(vitaminB6));
+        hash.put("folate", Float.valueOf(folate));
+        hash.put("vitaminB12", Float.valueOf(vitaminB12));
+        hash.put("pantothenicAcid", Float.valueOf(pantothenicAcid));
+        hash.put("biotin", Float.valueOf(biotin));
+        hash.put("choline", Float.valueOf(choline));
+        return hash;
     }
 }

@@ -6,6 +6,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 @Entity//(indices = {@Index(value = {"user_name"}, unique = false)})
 public class MacronutrientDRIs {
@@ -62,6 +63,18 @@ public class MacronutrientDRIs {
     {
         return groupID + " " + age + " " + sex + " " + babyStatus + " " + water + " " + carbohydrate
                 + " " + fiber + " " + fat + " " + linoleicAcid + " " + alphaLinoleicAcid + " " + protein;
+    }
 
+    public Hashtable<String, Float> toHashTable()
+    {
+        Hashtable<String, Float> hash = new Hashtable();
+        hash.put("water", Float.valueOf(water));
+        hash.put("carbohydrate", Float.valueOf(carbohydrate));
+        hash.put("fiber", Float.valueOf(fiber));
+        hash.put("fat", Float.valueOf(fat));
+        hash.put("linoleicAcid", Float.valueOf(linoleicAcid));
+        hash.put("alphaLinoleicAcid", Float.valueOf(alphaLinoleicAcid));
+        hash.put("protein", Float.valueOf(protein));
+        return hash;
     }
 }

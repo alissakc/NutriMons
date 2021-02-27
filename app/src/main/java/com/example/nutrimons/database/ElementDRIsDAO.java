@@ -29,7 +29,6 @@ public interface ElementDRIsDAO {
     @Delete
     void delete(ElementDRIs elementDRIs);
 
-
     @Query("DELETE FROM elementDRIs")
     public void nukeTable();
 }

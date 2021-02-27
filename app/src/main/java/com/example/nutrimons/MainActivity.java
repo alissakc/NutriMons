@@ -1,22 +1,15 @@
 package com.example.nutrimons;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
-import android.widget.Toast;
 
 import com.example.nutrimons.database.AppDatabase;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -53,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-        NutrientTablesInitializer nti = new NutrientTablesInitializer(getAssets(), AppDatabase.getInstance(getApplicationContext()));
+        NutrientTablesApi nta = new NutrientTablesApi(AppDatabase.getInstance(getApplicationContext()));
+        nta.Initialize(getAssets(), AppDatabase.getInstance(getApplicationContext()));
     }
 
     @Override

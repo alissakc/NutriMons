@@ -24,7 +24,9 @@ import com.example.nutrimons.database.User;
 
 import com.tbruyelle.rxpermissions3.RxPermissions;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
 public class Profile<T> extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
@@ -49,6 +51,10 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
     private View view;
 
     private AppDatabase mDb;
+
+    private NutrientTablesApi nta;
+    private Hashtable<String, Hashtable<String, Float>> nuts;
+    private static DecimalFormat df = new DecimalFormat("0.0");
 
     public Profile() {
         // Required empty public constructor
@@ -183,6 +189,7 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
         activityLevelId = (activityLevelText.getId());
 
         mDb = AppDatabase.getInstance(getContext());
+        nta = new NutrientTablesApi(mDb);
 
         return view;
     }
@@ -195,6 +202,16 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
                 //Navigation.findNavController(view).navigate(R.id.action_nav_meal_to_nav_scanBarcode);
                 break;
             case (R.id.showNutrientRecs):
+                getFields();
+                Log.d("age & sex", age + " " + sex);
+                nta = new NutrientTablesApi(AppDatabase.getInstance(getContext()));
+                nuts = nta.getTablesByGroup(age, sex, "N/A");
+                nuts.forEach((key, value)->
+                {
+                    Log.d("key", key);
+                    value.forEach((key2, value2)->Log.d("key & string", key2 + " " + value2 + " "));
+                    Log.d("========","===========");
+                });
                 calculateNutrients();
                 Toast.makeText(getContext(), "nutrient button clicked", Toast.LENGTH_LONG).show();
                 break;
@@ -223,10 +240,9 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
 
     private void saveChanges()
     {
-        //crashes if email not changed to a valid one first; requires the token to be passed in
+        getFields(); //refactor to pull in info from database (earlier)
         Log.d("debug", email);
         User u = mDb.userDao().findByEmail(email);
-        getFields(); //refactor to pull in info from database (earlier)
         u.profileFocus = profileFocus;
         u.name = name;
         u.email = email;
@@ -325,33 +341,80 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
     private void calculateNutrients() //from https://www.nal.usda.gov/sites/default/files/fnic_uploads/recommended_intakes_individuals.pdf
     {
         View nt = view.findViewById(R.id.nutrientsTable);
-        TextView rdiCal = view.findViewById(R.id.rdiCalories);
-        TextView ulCal = view.findViewById(R.id.ulCalories);
-        TextView rdiPro = view.findViewById(R.id.rdiProtein);
-        TextView ulPro = view.findViewById(R.id.ulProtein);
-        TextView rdiCarbs = view.findViewById(R.id.rdiCarbs);
+        TextView driCalories = view.findViewById(R.id.driCalories);
+        TextView ulCalories = view.findViewById(R.id.ulCalories);
+        TextView driProtein = view.findViewById(R.id.driProtein);
+        TextView ulProtein = view.findViewById(R.id.ulProtein);
+        TextView driCarbs = view.findViewById(R.id.driCarbs);
         TextView ulCarbs = view.findViewById(R.id.ulCarbs);
-        TextView rdiFats = view.findViewById(R.id.rdiFats);
+        TextView driSugar = view.findViewById(R.id.driSugar);
+        TextView ulSugar = view.findViewById(R.id.ulSugar);
+        TextView driFiber = view.findViewById(R.id.driFiber);
+        TextView ulFiber = view.findViewById(R.id.ulFiber);
+        TextView driFats = view.findViewById(R.id.driFats);
         TextView ulFats = view.findViewById(R.id.ulFats);
-        int calories, proteins, proteinMax, carbohydrates, carbMax, fats, fatMax;
+        TextView driCholesterol = view.findViewById(R.id.driCholesterol);
+        TextView ulCholesterol = view.findViewById(R.id.ulCholesterol);
+        TextView driSaturatedFats = view.findViewById(R.id.driSaturatedFats);
+        TextView ulSaturatedFats = view.findViewById(R.id.ulSaturatedFats);
+        TextView driUnsaturatedFats = view.findViewById(R.id.driUnsaturatedFats);
+        TextView ulUnsaturatedFats = view.findViewById(R.id.ulUnsaturatedFats);
+        TextView driTransFats = view.findViewById(R.id.driTransFats);
+        TextView ulTransFats = view.findViewById(R.id.ulTransFats);
+        TextView driVitaminA = view.findViewById(R.id.driVitaminA);
+        TextView ulVitaminA = view.findViewById(R.id.ulVitaminA);
+        TextView driVitaminC = view.findViewById(R.id.driVitaminC);
+        TextView ulVitaminC = view.findViewById(R.id.ulVitaminC);
+        TextView driVitaminD = view.findViewById(R.id.driVitaminD);
+        TextView ulVitaminD = view.findViewById(R.id.ulVitaminD);
+        TextView driSodium = view.findViewById(R.id.driSodium);
+        TextView ulSodium = view.findViewById(R.id.ulSodium);
+        TextView driPotassium = view.findViewById(R.id.driPotassium);
+        TextView ulPotassium = view.findViewById(R.id.ulPotassium);
+        TextView driCalcium = view.findViewById(R.id.driCalcium);
+        TextView ulCalcium = view.findViewById(R.id.ulCalcium);
+        TextView driIron = view.findViewById(R.id.driIron);
+        TextView ulIron = view.findViewById(R.id.ulIron);
 
-        getFields();
+        int calories;
         calories = calculateCalories();
-        proteins = (int)(calories * .2125); //10-35% calorie recommendation
-        proteinMax = (int)(calories * .35);
-        carbohydrates = (int)(calories * .525); //45-65% calorie recommendation
-        carbMax = (int)(calories * .65);
-        fats = (int)(calories * .2625); //20-35% calorie recommendation
-        fatMax = (int)(calories * .35);
 
-        rdiCal.setText(String.valueOf(calories));
-        ulCal.setText(String.valueOf(calories));
-        rdiPro.setText(String.valueOf(proteins));
-        ulPro.setText(String.valueOf(proteinMax));
-        rdiCarbs.setText(String.valueOf(carbohydrates));
-        ulCarbs.setText(String.valueOf(carbMax));
-        rdiFats.setText(String.valueOf(fats));
-        ulFats.setText(String.valueOf(fatMax));
+        driCalories.setText(String.valueOf(calories));
+        ulCalories.setText(String.valueOf(calories));
+        driProtein.setText(String.valueOf(nuts.get("nutrientDRIs").get("protein")) + "g"); //grams returned, convert to calories
+        ulProtein.setText(String.valueOf(df.format((nuts.get("nutrientRanges").get("proteinMax")) / 100 * calories / 4)) + "g"); //percentage returned
+        driCarbs.setText(String.valueOf(nuts.get("nutrientDRIs").get("carbohydrate")) + "g");
+        ulCarbs.setText(String.valueOf(df.format((nuts.get("nutrientRanges").get("carbohydrateMax")) / 100 * calories / 4)) + "g");
+        driSugar.setText("0.0g");
+        ulSugar.setText(String.valueOf(df.format(calories * .25 / 4)) + "g");
+        driFiber.setText(String.valueOf(nuts.get("nutrientDRIs").get("fiber")) + "g");
+        ulFiber.setText(String.valueOf(nuts.get("nutrientDRIs").get("fiber")) + "g");
+        driFats.setText(String.valueOf(nuts.get("nutrientDRIs").get("fat")) + "g");
+        ulFats.setText(String.valueOf(df.format((nuts.get("nutrientRanges").get("fatMax")) / 100 * calories / 9)) + "g");
+        driCholesterol.setText("0.0g");
+        ulCholesterol.setText("0.0g");
+        driSaturatedFats.setText("0.0g");
+        ulSaturatedFats.setText("0.0g");
+        driUnsaturatedFats.setText(String.valueOf(nuts.get("nutrientDRIs").get("linoleicAcid") + nuts.get("nutrientDRIs").get("alphaLinoleicAcid")) + "g");
+        ulUnsaturatedFats.setText(String.valueOf(df.format(((nuts.get("nutrientRanges").get("linoleicAcidMax") + nuts.get("nutrientRanges").get("alphaLinoleicAcidMax")))/ 100 * calories / 9)) + "g");
+        driTransFats.setText("0.0g");
+        ulTransFats.setText("0.0g");
+
+        driVitaminA.setText(String.valueOf(nuts.get("vitaminDRIs").get("vitaminA")) + "µg");
+        ulVitaminA.setText(String.valueOf(nuts.get("vitaminULs").get("vitaminA")) + "µg");
+        driVitaminC.setText(String.valueOf(nuts.get("vitaminDRIs").get("vitaminC")) + "mg");
+        ulVitaminC.setText(String.valueOf(nuts.get("vitaminULs").get("vitaminC")) + "mg");
+        driVitaminD.setText(String.valueOf(nuts.get("vitaminDRIs").get("vitaminD")) + "µg");
+        ulVitaminD.setText(String.valueOf(nuts.get("vitaminULs").get("vitaminD")) + "µg");
+
+        driSodium.setText(String.valueOf(nuts.get("elementDRIs").get("sodium")) + "g");
+        ulSodium.setText(String.valueOf(nuts.get("elementULs").get("sodium")) + "g");
+        driPotassium.setText(String.valueOf(nuts.get("elementDRIs").get("potassium")) + "g");
+        //ulPotassium.setText(String.valueOf(nuts.get("elementULs").get("potassium")) + "g"); //no limit
+        driCalcium.setText(String.valueOf(nuts.get("elementDRIs").get("calcium")) + "mg");
+        ulCalcium.setText(String.valueOf(nuts.get("elementULs").get("calcium")) + "mg");
+        driIron.setText(String.valueOf(nuts.get("elementDRIs").get("iron")) + "mg");
+        ulIron.setText(String.valueOf(nuts.get("elementULs").get("iron")) + "mg");
 
         nt.setVisibility(view.VISIBLE);
     }
@@ -392,8 +455,8 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
             al = 1.9;
 
         if(sex.equals("Male")) //Mifflin-St Jeor Equation https://en.wikipedia.org/wiki/Basal_metabolic_rate
-            return (int)((10 * Integer.parseInt(weight) / 2.2 /*pounds*/ + 6.25 * 2.54 * Integer.parseInt(height) /*inches*/ - 5 * Integer.parseInt(age) + 5) * al);
+            return (int)((10 * Integer.parseInt(weight) / 2.2 /*pounds*/ + 6.25 * 2.54 * Integer.parseInt(height) /*inches*/ - 5 * Float.parseFloat(age) + 5) * al);
         else
-            return (int)((10 * Integer.parseInt(weight) / 2.2 /*pounds*/ + 6.25 * 2.54 * Integer.parseInt(height) /*inches*/ - 5 * Integer.parseInt(age) - 161) * al);
+            return (int)((10 * Integer.parseInt(weight) / 2.2 /*pounds*/ + 6.25 * 2.54 * Integer.parseInt(height) /*inches*/ - 5 * Float.parseFloat(age) - 161) * al);
     }
 }

@@ -14,7 +14,7 @@ public interface ElementULsDAO {
     @Query("SELECT * FROM elementuls ORDER BY groupID ASC")
     List<ElementULs> getAll();
 
-    @Query("SELECT * FROM elementuls WHERE age LIKE :searchAge AND sex LIKE :searchSex AND babyStatus LIKE :searchBabyStatus")
+    @Query("SELECT * FROM elementuls WHERE age = :searchAge AND sex = :searchSex AND babyStatus = :searchBabyStatus")
     ElementULs findByGroup(String searchAge, String searchSex, String searchBabyStatus);
 
     @Insert
@@ -28,7 +28,6 @@ public interface ElementULsDAO {
 
     @Delete
     void delete(ElementULs elementULs);
-
 
     @Query("DELETE FROM elementULs")
     public void nukeTable();

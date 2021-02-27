@@ -17,17 +17,25 @@ import com.example.nutrimons.database.VitaminULs;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Set;
 
 import jxl.Sheet;
 import jxl.Workbook;
 
-public class NutrientTablesInitializer {
-    public NutrientTablesInitializer(AssetManager am, AppDatabase mDb) //from https://www.nal.usda.gov/sites/default/files/fnic_uploads/recommended_intakes_individuals.pdf
+public class NutrientTablesApi {
+    AppDatabase mDb;
+
+    public NutrientTablesApi(AppDatabase db) { mDb = db; }
+
+    public void Initialize(AssetManager am, AppDatabase db) //from https://www.nal.usda.gov/sites/default/files/fnic_uploads/recommended_intakes_individuals.pdf
     //light manual processing required; '.xls workbook' file must be saved in format as in the /Assets folder's "recommended_intakes_individuals.xls"
     //trim everything except the actual tables; first sheet VitaminDRIs, second sheet ElementDRIs, third sheet McronutrientDRIs,
     //fourth sheet MacronutrientRanges acceptable ranges, fifth sheet VitaminULs, sixth sheet ElementULs
     {
+        mDb = db;
         try
         {
             //clear tables
@@ -49,7 +57,7 @@ public class NutrientTablesInitializer {
                 {
                     for(int j = 2; j < sheet.getColumns(); ++j) //iterate over columns
                     {
-                        String headerVal = sheet.getCell(j, 0).getContents();
+                        String headerVal = sheet.getCell(j, 0).getContents().replace("−", "-");
                         ArrayList<String> values = new ArrayList<>();
                         //Log.d("j: " + j, headerVal);
 
@@ -73,7 +81,11 @@ public class NutrientTablesInitializer {
                             for(int k = 1; k < sheet.getRows(); ++k) //iterate over rows
                             {
                                 //Log.d("k: " + k, sheet.getCell(j, k).getContents());
-                                values.add(sheet.getCell(j, k).getContents()); //assign cells (j,k)
+                                String val = sheet.getCell(j, k).getContents().replaceAll("[^\\.\\-0123456789]","").replace("−", "-"); //assign cells (j,k), remove * and letters
+                                if(val.contains("ND") || val.equals(""))
+                                    values.add("0");
+                                else
+                                    values.add(val);
                             }
                             mDb.macronutrientRangesDAO().insert(new MacronutrientRanges(values));
                         }
@@ -84,7 +96,7 @@ public class NutrientTablesInitializer {
                     String sex = "N/A", babyStatus = "N/A"; //groupId vals
                     for(int j = 0; j < sheet.getRows(); ++j) //iterate over rows
                     {
-                        String headerVal = sheet.getCell(0, j).getContents(); //set initial groupId age
+                        String headerVal = sheet.getCell(0, j).getContents().replace("−", "-"); //set initial groupId age
 
                         switch(headerVal)
                         {
@@ -108,12 +120,16 @@ public class NutrientTablesInitializer {
                             default: //refactor so default is to not add
                             {
                                 ArrayList<String> values = new ArrayList<>();
-                                values.add(sheet.getCell(0, j).getContents());
+                                values.add(headerVal);
                                 values.add(sex);
                                 values.add(babyStatus);
                                 for(int k = 1; k < sheet.getColumns(); ++k) //iterate over columns
                                 {
-                                    values.add(sheet.getCell(k, j).getContents()); //assign cells (j,k)
+                                    String val = sheet.getCell(k, j).getContents().replaceAll("[^\\.0123456789]","").replace("−", "-"); //assign cells (k,j), remove * and letters
+                                    if(val.contains("ND") || val.equals(""))
+                                        values.add("0");
+                                    else
+                                        values.add(val);
                                 }
                                 switch(sheet.getName())
                                 {
@@ -187,5 +203,81 @@ public class NutrientTablesInitializer {
                 Log.d("Vitamin UL " + i, f.get(i).toString());
             }
         }
+    }
+
+    public Hashtable<String, Hashtable<String, Float>> getTablesByGroup(String age, String sex, String babyStatus)
+    //returns an arraylist of 6 string arraylists of the nutrient table rows
+    // corresponding to that group
+    {
+        Hashtable<String, Hashtable<String, Float>> nutrientTables = new Hashtable();
+        float ageNum = Float.parseFloat(age);
+        Log.d("float age", String.valueOf(ageNum));
+        String ageGroup1 = "";
+        String ageGroup2 = "";
+
+        if(ageNum >= 0 && ageNum < .5)
+        {
+            ageGroup1 = "0 to 6 mo";
+            ageGroup2 = "1-3 y";
+            sex = "N/A";
+        }
+        else if(ageNum >= .5 && ageNum < 1)
+        {
+            ageGroup1 = "6 to 12 mo";
+            ageGroup2 = "1-3 y";
+            sex = "N/A";
+        }
+        else if(ageNum >= 1 && ageNum <= 3)
+        {
+            ageGroup1 = "1-3 y";
+            ageGroup2 = "1-3 y";
+            sex = "N/A";
+        }
+        else if(ageNum >= 4 && ageNum <= 8)
+        {
+            ageGroup1 = "4-8 y";
+            ageGroup2 = "4-18 y";
+            sex = "N/A";
+        }
+        else if(ageNum >= 9 && ageNum <= 13)
+        {
+            ageGroup1 = "9-13 y";
+            ageGroup2 = "4-18 y";
+        }
+        else if(ageNum >= 14 && ageNum <= 18)
+        {
+            ageGroup1 = "14-18 y";
+            ageGroup2 = "4-18 y";
+        }
+        else if(ageNum >= 19 && ageNum <= 30)
+        {
+            ageGroup1 = "19-30 y";
+            ageGroup2 = "Adult";
+        }
+        else if(ageNum >= 31 && ageNum <= 50)
+        {
+            ageGroup1 = "31-50 y";
+            ageGroup2 = "Adult";
+        }
+        else if(ageNum >= 51 && ageNum <= 70)
+        {
+            ageGroup1 = "51-70 y";
+            ageGroup2 = "Adult";
+        }
+        else if(ageNum > 70)
+        {
+            ageGroup1 = "> 70 y";
+            ageGroup2 = "Adult";
+        }
+        Log.d("group", ageGroup1 + " " + ageGroup2 + " " + sex + " " + babyStatus);
+
+        nutrientTables.put("elementDRIs", mDb.elementDRIsDAO().findByGroup(ageGroup1, sex, babyStatus).toHashTable());
+        nutrientTables.put("elementULs", mDb.elementULsDAO().findByGroup(ageGroup1, sex, babyStatus).toHashTable());
+        nutrientTables.put("vitaminDRIs", mDb.vitaminDRIsDAO().findByGroup(ageGroup1, sex, babyStatus).toHashTable());
+        nutrientTables.put("vitaminULs", mDb.vitaminULsDAO().findByGroup(ageGroup1, sex, babyStatus).toHashTable());
+        nutrientTables.put("nutrientDRIs", mDb.macronutrientDRIsDAO().findByGroup(ageGroup1, sex, babyStatus).toHashTable());
+        nutrientTables.put("nutrientRanges", mDb.macronutrientRangesDAO().findByGroup(ageGroup2).toHashTable());
+
+        return nutrientTables;
     }
 }
