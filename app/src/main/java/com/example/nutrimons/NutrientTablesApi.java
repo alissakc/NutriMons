@@ -12,10 +12,12 @@ import com.example.nutrimons.database.ElementDRIs;
 import com.example.nutrimons.database.ElementULs;
 import com.example.nutrimons.database.MacronutrientDRIs;
 import com.example.nutrimons.database.MacronutrientRanges;
+import com.example.nutrimons.database.User;
 import com.example.nutrimons.database.VitaminDRIs;
 import com.example.nutrimons.database.VitaminULs;
 
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -26,26 +28,18 @@ import jxl.Sheet;
 import jxl.Workbook;
 
 public class NutrientTablesApi {
-    AppDatabase mDb;
+    private static AppDatabase mDb;
+    private static DecimalFormat df = new DecimalFormat("0.0");
 
     public NutrientTablesApi(AppDatabase db) { mDb = db; }
 
-    public void Initialize(AssetManager am, AppDatabase db) //from https://www.nal.usda.gov/sites/default/files/fnic_uploads/recommended_intakes_individuals.pdf
+    public void Initialize(AssetManager am) //from https://www.nal.usda.gov/sites/default/files/fnic_uploads/recommended_intakes_individuals.pdf
     //light manual processing required; '.xls workbook' file must be saved in format as in the /Assets folder's "recommended_intakes_individuals.xls"
     //trim everything except the actual tables; first sheet VitaminDRIs, second sheet ElementDRIs, third sheet McronutrientDRIs,
     //fourth sheet MacronutrientRanges acceptable ranges, fifth sheet VitaminULs, sixth sheet ElementULs
     {
-        mDb = db;
         try
         {
-            //clear tables
-            mDb.elementDRIsDAO().nukeTable();
-            mDb.elementULsDAO().nukeTable();
-            mDb.macronutrientRangesDAO().nukeTable();
-            mDb.macronutrientDRIsDAO().nukeTable();
-            mDb.vitaminDRIsDAO().nukeTable();
-            mDb.vitaminULsDAO().nukeTable();
-
             InputStream is = am.open("recommended_intakes_individuals.xls"); //***jxl only accepts xls saved as workbooks
             Workbook wb = Workbook.getWorkbook(is);
             for(int i = 0; i < wb.getNumberOfSheets(); ++i) //iterate over sheets
@@ -67,13 +61,16 @@ public class NutrientTablesApi {
                             case "":
                                 break;
                             case "Children, 1-3 y":
-                                values.add("1-3 y");
+                                headerVal = "1-3 y";
+                                values.add(headerVal);
                                 break;
                             case "Children, 4-18 y":
-                                values.add("4-18 y");
+                                headerVal = "4-18 y";
+                                values.add(headerVal);
                                 break;
                             default: //refactor so default is to not add
-                                values.add("Adult");
+                                headerVal = "Adult";
+                                values.add(headerVal);
                         }
 
                         if(values.size() != 0)
@@ -87,7 +84,14 @@ public class NutrientTablesApi {
                                 else
                                     values.add(val);
                             }
-                            mDb.macronutrientRangesDAO().insert(new MacronutrientRanges(values));
+
+                            //checks each row, verifying integrity of db tables
+                            try { mDb.macronutrientRangesDAO().findByGroup(headerVal).toString(); } //if found, don't repopulate/
+                                /*MacronutrientRanges mr = new MacronutrientRanges(values); //code to replace content
+                                mr.groupID = temp.groupID;
+                                mDb.macronutrientRangesDAO().insert(mr);*/
+                            catch (NullPointerException e) { mDb.macronutrientRangesDAO().insert(new MacronutrientRanges(values)); } //if not populated, populate
+
                         }
                     }
                 }
@@ -134,19 +138,24 @@ public class NutrientTablesApi {
                                 switch(sheet.getName())
                                 {
                                     case "VitaminDRIs":
-                                        mDb.vitaminDRIsDAO().insert(new VitaminDRIs(values));
+                                        try { mDb.vitaminDRIsDAO().findByGroup(headerVal, sex, babyStatus).toString(); }
+                                        catch(NullPointerException e) { mDb.vitaminDRIsDAO().insert(new VitaminDRIs(values)); }
                                         break;
                                     case "ElementDRIs":
-                                        mDb.elementDRIsDAO().insert(new ElementDRIs(values));
+                                        try { mDb.elementDRIsDAO().findByGroup(headerVal, sex, babyStatus).toString(); }
+                                        catch(NullPointerException e) { mDb.elementDRIsDAO().insert(new ElementDRIs(values)); }
                                         break;
                                     case "MacronutrientDRIs":
-                                        mDb.macronutrientDRIsDAO().insert(new MacronutrientDRIs(values));
+                                        try { mDb.macronutrientDRIsDAO().findByGroup(headerVal, sex, babyStatus).toString(); }
+                                        catch(NullPointerException e) { mDb.macronutrientDRIsDAO().insert(new MacronutrientDRIs(values)); }
                                         break;
                                     case "VitaminULs":
-                                        mDb.vitaminULsDAO().insert(new VitaminULs(values));
+                                        try { mDb.vitaminULsDAO().findByGroup(headerVal, sex, babyStatus).toString(); }
+                                        catch(NullPointerException e) { mDb.vitaminULsDAO().insert(new VitaminULs(values)); }
                                         break;
                                     case "ElementULs":
-                                        mDb.elementULsDAO().insert(new ElementULs(values));
+                                        try { mDb.elementULsDAO().findByGroup(headerVal, sex, babyStatus).toString(); }
+                                        catch(NullPointerException e) { mDb.elementULsDAO().insert(new ElementULs(values)); }
                                         break;
                                 }
                             }
@@ -279,5 +288,71 @@ public class NutrientTablesApi {
         nutrientTables.put("nutrientRanges", mDb.macronutrientRangesDAO().findByGroup(ageGroup2).toHashTable());
 
         return nutrientTables;
+    }
+
+    public void updateUserNutrients(String email)
+    {
+        User u = mDb.userDao().findByEmail(email);
+        Log.d("age, sex", u.age + " " + u.sex);
+        Hashtable<String, Hashtable<String, Float>> hash = getTablesByGroup(u.age, u.sex, "N/A");
+        
+        u.calories = String.valueOf(calculateCalories(u));
+        u.water = String.valueOf(hash.get("nutrientDRIs").get("water"));
+        u.proteinDRI = String.valueOf(hash.get("nutrientDRIs").get("protein")); //grams returned
+        u.proteinUL = df.format((hash.get("nutrientRanges").get("proteinMax")) / 100 * Float.parseFloat(u.calories) / 4); //percentage returned
+        u.carbsDRI = String.valueOf(hash.get("nutrientDRIs").get("carbohydrate"));
+        u.carbsUL = df.format((hash.get("nutrientRanges").get("carbohydrateMax")) / 100 * Float.parseFloat(u.calories) / 4);
+        u.sugarDRI = "0.0";
+        u.sugarUL = df.format(Float.parseFloat(u.calories) * .25 / 4);
+        u.fiberDRI = String.valueOf(hash.get("nutrientDRIs").get("fiber"));
+        u.fatsDRI = String.valueOf(hash.get("nutrientDRIs").get("fat"));
+        u.fatsUL = df.format((hash.get("nutrientRanges").get("fatMax")) / 100 * Float.parseFloat(u.calories) / 9);
+        u.cholesterolDRI = "0.0";
+        u.cholesterolUL = "0.0";
+        u.saturatedFatsDRI = "0.0";
+        u.saturatedFatsUL = "0.0";
+        u.unsaturatedFatsDRI = String.valueOf(hash.get("nutrientDRIs").get("linoleicAcid") + hash.get("nutrientDRIs").get("alphaLinoleicAcid"));
+        u.unsaturatedFatsUL = df.format(((hash.get("nutrientRanges").get("linoleicAcidMax") + hash.get("nutrientRanges").get("alphaLinoleicAcidMax")))/ 100 * Float.parseFloat(u.calories) / 9);
+        u.transFatsDRI = "0.0";
+        u.transFatsUL = "0.0";
+
+        u.vitaminADRI = String.valueOf(hash.get("vitaminDRIs").get("vitaminA"));
+        u.vitaminAUL = String.valueOf(hash.get("vitaminULs").get("vitaminA"));
+        u.vitaminCDRI = String.valueOf(hash.get("vitaminDRIs").get("vitaminC"));
+        u.vitaminCUL = String.valueOf(hash.get("vitaminULs").get("vitaminC"));
+        u.vitaminDDRI = String.valueOf(hash.get("vitaminDRIs").get("vitaminD"));
+        u.vitaminDUL = String.valueOf(hash.get("vitaminULs").get("vitaminD"));
+
+        u.sodiumDRI = String.valueOf(hash.get("elementDRIs").get("sodium"));
+        u.sodiumUL = String.valueOf(hash.get("elementULs").get("sodium"));
+        u.potassiumDRI = String.valueOf(hash.get("elementDRIs").get("potassium"));
+        u.calciumDRI = String.valueOf(hash.get("elementDRIs").get("calcium"));
+        u.calciumUL = String.valueOf(hash.get("elementULs").get("calcium"));
+        u.ironDRI = String.valueOf(hash.get("elementDRIs").get("iron"));
+        u.ironUL = String.valueOf(hash.get("elementULs").get("iron"));
+
+        mDb.userDao().insert(u);
+        Log.d("user", u.age + " " + u.toString());
+    }
+
+    private int calculateCalories(User u)
+    {
+        double al;
+        //modify with activity modifier https://www.k-state.edu/paccats/Contents/PA/PDF/Physical%20Activity%20and%20Controlling%20Weight.pdf
+        if(u.activityLevel.equals("Sedentary"))
+            al = 1.2;
+        else if(u.activityLevel.equals("Lightly active"))
+            al = 1.375;
+        else if(u.activityLevel.equals("Moderately active"))
+            al = 1.55;
+        else if(u.activityLevel.equals("Very active"))
+            al = 1.725;
+        else
+            al = 1.9;
+
+        if(u.sex.equals("Male")) //Mifflin-St Jeor Equation https://en.wikipedia.org/wiki/Basal_metabolic_rate
+            return (int)((10 * Integer.parseInt(u.weight) / 2.2 /*pounds*/ + 6.25 * 2.54 * Integer.parseInt(u.height) /*inches*/ - 5 * Float.parseFloat(u.age) + 5) * al);
+        else
+            return (int)((10 * Integer.parseInt(u.weight) / 2.2 /*pounds*/ + 6.25 * 2.54 * Integer.parseInt(u.height) /*inches*/ - 5 * Float.parseFloat(u.age) - 161) * al);
     }
 }

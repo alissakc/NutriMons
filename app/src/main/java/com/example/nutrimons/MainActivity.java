@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
         NutrientTablesApi nta = new NutrientTablesApi(AppDatabase.getInstance(getApplicationContext()));
-        nta.Initialize(getAssets(), AppDatabase.getInstance(getApplicationContext()));
+        nta.Initialize(getAssets());
     }
 
     @Override

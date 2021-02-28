@@ -51,10 +51,7 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
     private View view;
 
     private AppDatabase mDb;
-
     private NutrientTablesApi nta;
-    private Hashtable<String, Hashtable<String, Float>> nuts;
-    private static DecimalFormat df = new DecimalFormat("0.0");
 
     public Profile() {
         // Required empty public constructor
@@ -202,8 +199,7 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
                 //Navigation.findNavController(view).navigate(R.id.action_nav_meal_to_nav_scanBarcode);
                 break;
             case (R.id.showNutrientRecs):
-                getFields();
-                Log.d("age & sex", age + " " + sex);
+                /*Log.d("age & sex", age + " " + sex);
                 nta = new NutrientTablesApi(AppDatabase.getInstance(getContext()));
                 nuts = nta.getTablesByGroup(age, sex, "N/A");
                 nuts.forEach((key, value)->
@@ -211,8 +207,8 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
                     Log.d("key", key);
                     value.forEach((key2, value2)->Log.d("key & string", key2 + " " + value2 + " "));
                     Log.d("========","===========");
-                });
-                calculateNutrients();
+                });*/
+                showNutrients();
                 Toast.makeText(getContext(), "nutrient button clicked", Toast.LENGTH_LONG).show();
                 break;
             case (R.id.saveProfile):
@@ -338,11 +334,18 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
         }
     }
 
-    private void calculateNutrients() //from https://www.nal.usda.gov/sites/default/files/fnic_uploads/recommended_intakes_individuals.pdf
+    private void showNutrients() //from https://www.nal.usda.gov/sites/default/files/fnic_uploads/recommended_intakes_individuals.pdf
     {
+        //fix for token
+        getFields();
+        User u = mDb.userDao().findByEmail(email);
+        nta.updateUserNutrients(email);
+
         View nt = view.findViewById(R.id.nutrientsTable);
         TextView driCalories = view.findViewById(R.id.driCalories);
         TextView ulCalories = view.findViewById(R.id.ulCalories);
+        TextView driWater = view.findViewById(R.id.driWater);
+        TextView ulWater = view.findViewById(R.id.ulWater);
         TextView driProtein = view.findViewById(R.id.driProtein);
         TextView ulProtein = view.findViewById(R.id.ulProtein);
         TextView driCarbs = view.findViewById(R.id.driCarbs);
@@ -376,45 +379,44 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
         TextView driIron = view.findViewById(R.id.driIron);
         TextView ulIron = view.findViewById(R.id.ulIron);
 
-        int calories;
-        calories = calculateCalories();
+        driCalories.setText(u.calories + " cal");
+        ulCalories.setText(u.calories + " cal");
+        driWater.setText(u.water + "L");
+        //ulWater.setText(u.water + "L");
+        driProtein.setText(u.proteinDRI + "g"); //grams returned, convert to calories
+        ulProtein.setText(u.proteinUL + "g"); //percentage returned
+        driCarbs.setText(u.carbsDRI + "g");
+        ulCarbs.setText(u.carbsUL + "g");
+        driSugar.setText(u.sugarDRI + "g");
+        ulSugar.setText(u.sugarUL + "g");
+        driFiber.setText(u.fiberDRI + "g");
+        //ulFiber.setText(u.fiberDRI + "g");
+        driFats.setText(u.fatsDRI + "g");
+        ulFats.setText(u.fatsUL + "g");
+        driCholesterol.setText(u.cholesterolDRI + "g");
+        ulCholesterol.setText(u.cholesterolUL + "g");
+        driSaturatedFats.setText(u.saturatedFatsDRI + "g");
+        ulSaturatedFats.setText(u.saturatedFatsUL + "g");
+        driUnsaturatedFats.setText(u.unsaturatedFatsDRI + "g");
+        ulUnsaturatedFats.setText(u.unsaturatedFatsUL + "g");
+        driTransFats.setText(u.transFatsDRI + "g");
+        ulTransFats.setText(u.transFatsUL + "g");
 
-        driCalories.setText(String.valueOf(calories));
-        ulCalories.setText(String.valueOf(calories));
-        driProtein.setText(String.valueOf(nuts.get("nutrientDRIs").get("protein")) + "g"); //grams returned, convert to calories
-        ulProtein.setText(String.valueOf(df.format((nuts.get("nutrientRanges").get("proteinMax")) / 100 * calories / 4)) + "g"); //percentage returned
-        driCarbs.setText(String.valueOf(nuts.get("nutrientDRIs").get("carbohydrate")) + "g");
-        ulCarbs.setText(String.valueOf(df.format((nuts.get("nutrientRanges").get("carbohydrateMax")) / 100 * calories / 4)) + "g");
-        driSugar.setText("0.0g");
-        ulSugar.setText(String.valueOf(df.format(calories * .25 / 4)) + "g");
-        driFiber.setText(String.valueOf(nuts.get("nutrientDRIs").get("fiber")) + "g");
-        ulFiber.setText(String.valueOf(nuts.get("nutrientDRIs").get("fiber")) + "g");
-        driFats.setText(String.valueOf(nuts.get("nutrientDRIs").get("fat")) + "g");
-        ulFats.setText(String.valueOf(df.format((nuts.get("nutrientRanges").get("fatMax")) / 100 * calories / 9)) + "g");
-        driCholesterol.setText("0.0g");
-        ulCholesterol.setText("0.0g");
-        driSaturatedFats.setText("0.0g");
-        ulSaturatedFats.setText("0.0g");
-        driUnsaturatedFats.setText(String.valueOf(nuts.get("nutrientDRIs").get("linoleicAcid") + nuts.get("nutrientDRIs").get("alphaLinoleicAcid")) + "g");
-        ulUnsaturatedFats.setText(String.valueOf(df.format(((nuts.get("nutrientRanges").get("linoleicAcidMax") + nuts.get("nutrientRanges").get("alphaLinoleicAcidMax")))/ 100 * calories / 9)) + "g");
-        driTransFats.setText("0.0g");
-        ulTransFats.setText("0.0g");
+        driVitaminA.setText(u.vitaminADRI + "µg");
+        ulVitaminA.setText(u.vitaminAUL + "µg");
+        driVitaminC.setText(u.vitaminCDRI + "mg");
+        ulVitaminC.setText(u.vitaminCUL + "mg");
+        driVitaminD.setText(u.vitaminDDRI + "µg");
+        ulVitaminD.setText(u.vitaminDUL + "µg");
 
-        driVitaminA.setText(String.valueOf(nuts.get("vitaminDRIs").get("vitaminA")) + "µg");
-        ulVitaminA.setText(String.valueOf(nuts.get("vitaminULs").get("vitaminA")) + "µg");
-        driVitaminC.setText(String.valueOf(nuts.get("vitaminDRIs").get("vitaminC")) + "mg");
-        ulVitaminC.setText(String.valueOf(nuts.get("vitaminULs").get("vitaminC")) + "mg");
-        driVitaminD.setText(String.valueOf(nuts.get("vitaminDRIs").get("vitaminD")) + "µg");
-        ulVitaminD.setText(String.valueOf(nuts.get("vitaminULs").get("vitaminD")) + "µg");
-
-        driSodium.setText(String.valueOf(nuts.get("elementDRIs").get("sodium")) + "g");
-        ulSodium.setText(String.valueOf(nuts.get("elementULs").get("sodium")) + "g");
-        driPotassium.setText(String.valueOf(nuts.get("elementDRIs").get("potassium")) + "g");
-        //ulPotassium.setText(String.valueOf(nuts.get("elementULs").get("potassium")) + "g"); //no limit
-        driCalcium.setText(String.valueOf(nuts.get("elementDRIs").get("calcium")) + "mg");
-        ulCalcium.setText(String.valueOf(nuts.get("elementULs").get("calcium")) + "mg");
-        driIron.setText(String.valueOf(nuts.get("elementDRIs").get("iron")) + "mg");
-        ulIron.setText(String.valueOf(nuts.get("elementULs").get("iron")) + "mg");
+        driSodium.setText(u.sodiumDRI + "g");
+        ulSodium.setText(u.sodiumUL + "g");
+        driPotassium.setText(u.potassiumDRI + "g");
+        //ulPotassium.setText(u.potassiumDRI + "g"); //no limit
+        driCalcium.setText(u.calciumDRI + "mg");
+        ulCalcium.setText(u.calciumUL + "mg");
+        driIron.setText(u.ironDRI + "mg");
+        ulIron.setText(u.ironUL + "mg");
 
         nt.setVisibility(view.VISIBLE);
     }
@@ -437,26 +439,5 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
         healthHistory = healthHistoryText.getText().toString();
         healthGoals = healthGoalsText.getText().toString();
         activityLevel = activityLevelText.getText().toString();
-    }
-
-    private int calculateCalories()
-    {
-        double al;
-        //modify with activity modifier https://www.k-state.edu/paccats/Contents/PA/PDF/Physical%20Activity%20and%20Controlling%20Weight.pdf
-        if(activityLevel.equals("Sedentary"))
-            al = 1.2;
-        else if(activityLevel.equals("Lightly active"))
-            al = 1.375;
-        else if(activityLevel.equals("Moderately active"))
-            al = 1.55;
-        else if(activityLevel.equals("Very active"))
-            al = 1.725;
-        else
-            al = 1.9;
-
-        if(sex.equals("Male")) //Mifflin-St Jeor Equation https://en.wikipedia.org/wiki/Basal_metabolic_rate
-            return (int)((10 * Integer.parseInt(weight) / 2.2 /*pounds*/ + 6.25 * 2.54 * Integer.parseInt(height) /*inches*/ - 5 * Float.parseFloat(age) + 5) * al);
-        else
-            return (int)((10 * Integer.parseInt(weight) / 2.2 /*pounds*/ + 6.25 * 2.54 * Integer.parseInt(height) /*inches*/ - 5 * Float.parseFloat(age) - 161) * al);
     }
 }

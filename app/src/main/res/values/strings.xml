@@ -186,6 +186,7 @@
     <string name="nutrient_table_recommended_intake">Recommended Intake</string>
     <string name="nutrient_table_max_intake">Max Intake</string>
     <string name="nutrient_table_calories">Calories</string>
+    <string name="nutrient_table_water">Water</string>
     <string name="nutrient_table_protein">Protein</string>
     <string name="nutrient_table_carbs">Carbs</string>
     <string name="nutrient_table_sugar">Sugar</string>

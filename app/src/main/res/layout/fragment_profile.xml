@@ -244,6 +244,35 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:id="@+id/rowWater"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/nutrient_table_water"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:id="@+id/driWater"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text=""
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:id="@+id/ulWater"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text=""
+                    android:textColor="#000000" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
                     android:id="@+id/rowProtein"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
