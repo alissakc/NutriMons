@@ -290,9 +290,9 @@ public class NutrientTablesApi {
         return nutrientTables;
     }
 
-    public void updateUserNutrients(String email)
+    public void updateUserNutrients(int userID)
     {
-        User u = mDb.userDao().findByEmail(email);
+        User u = mDb.userDao().findByUserID(userID);
         Log.d("age, sex", u.age + " " + u.sex);
         Hashtable<String, Hashtable<String, Float>> hash = getTablesByGroup(u.age, u.sex, "N/A");
         

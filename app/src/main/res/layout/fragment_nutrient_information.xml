@@ -10,787 +10,850 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="vertical"
-            android:padding="10dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="2dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/nutrient_info_name"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/nutrient_info_image"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/nutrient_info_description"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/nutrient_info_link"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="2dp">
+
+                    <TextView
+                        android:id="@+id/caloriesName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/calories_name"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/caloriesImage"
+                        android:layout_width="16dp"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:contentDescription="@string/calories_image"
+                        android:padding="2dp"
+                        app:srcCompat="@drawable/calories" />
+
+                    <TextView
+                        android:id="@+id/caloriesDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/calories_description"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/caloriesLink"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/calories_link"
+                        android:textColor="@color/purple_700"
+                        android:visibility="gone" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="2dp">
+
+                    <TextView
+                        android:id="@+id/proteinName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/protein_name"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/proteinImage"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:contentDescription="@string/protein_image"
+                        android:padding="2dp"
+                        app:srcCompat="@drawable/protein" />
+
+                    <TextView
+                        android:id="@+id/proteinDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/protein_description"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/proteinLink"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/protein_link"
+                        android:textColor="@color/purple_700"
+                        android:visibility="gone" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="2dp">
+
+                    <TextView
+                        android:id="@+id/carbsName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/carbs_name"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/carbsImage"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:contentDescription="@string/carbs_image"
+                        android:padding="2dp"
+                        app:srcCompat="@drawable/carbs" />
+
+                    <TextView
+                        android:id="@+id/carbsDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/carbs_description"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/carbsLink"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/carbs_link"
+                        android:textColor="@color/purple_700"
+                        android:visibility="gone" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="2dp">
+
+                    <TextView
+                        android:id="@+id/sugarName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/sugar_name"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/sugarImage"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:contentDescription="@string/sugar_image"
+                        android:padding="2dp"
+                        app:srcCompat="@drawable/sugar" />
+
+                    <TextView
+                        android:id="@+id/sugarDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/sugar_description"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/sugarLink"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/sugar_link"
+                        android:textColor="@color/purple_700"
+                        android:visibility="gone" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="2dp">
+
+                    <TextView
+                        android:id="@+id/fiberName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/fiber_name"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/fiberImage"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:contentDescription="@string/fiber_image"
+                        android:padding="2dp"
+                        app:srcCompat="@drawable/fibers" />
+
+                    <TextView
+                        android:id="@+id/fiberDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/fiber_description"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/fiberLink"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/fiber_link"
+                        android:textColor="@color/purple_700"
+                        android:visibility="gone" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="2dp">
+
+                    <TextView
+                        android:id="@+id/fatsName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/fats_name"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/fatsImage"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:contentDescription="@string/fats_image"
+                        android:padding="2dp"
+                        app:srcCompat="@drawable/fats" />
+
+                    <TextView
+                        android:id="@+id/fatsDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/fats_description"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/fatsLink"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/fats_link"
+                        android:textColor="@color/purple_700"
+                        android:visibility="gone" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="2dp">
+
+                    <TextView
+                        android:id="@+id/cholesterolName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/cholesterol_name"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/cholesterolImage"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:contentDescription="@string/cholesterol_name"
+                        android:padding="2dp"
+                        app:srcCompat="@drawable/cholesterol" />
+
+                    <TextView
+                        android:id="@+id/cholesterolDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/cholesterol_description"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/cholesterolLink"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/cholesterol_link"
+                        android:textColor="@color/purple_700"
+                        android:visibility="gone" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="2dp">
+
+                    <TextView
+                        android:id="@+id/saturatedFatsName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/saturated_fats_name"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/saturatedFatsImage"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:contentDescription="@string/saturated_fats_image"
+                        android:padding="2dp"
+                        app:srcCompat="@drawable/saturated_fat" />
+
+                    <TextView
+                        android:id="@+id/saturatedFatsDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/saturated_fats_description"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/saturatedFatsLink"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/saturated_fats_link"
+                        android:textColor="@color/purple_700"
+                        android:visibility="gone" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="2dp">
+
+                    <TextView
+                        android:id="@+id/unsaturatedFatsName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/unsaturated_fats_name"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/unsaturatedFatsImage"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:contentDescription="@string/unsaturated_fats_image"
+                        android:padding="2dp"
+                        app:srcCompat="@drawable/unsaturated_fat" />
+
+                    <TextView
+                        android:id="@+id/unsaturatedFatsDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/unsaturated_fats_description"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/unsaturatedFatsLink"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/unsaturated_fats_link"
+                        android:textColor="@color/purple_700"
+                        android:visibility="gone" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="2dp">
+
+                    <TextView
+                        android:id="@+id/transFatsName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/trans_fats_name"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/transFatsImage"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:contentDescription="@string/trans_fats_image"
+                        android:padding="2dp"
+                        app:srcCompat="@drawable/trans_fat" />
+
+                    <TextView
+                        android:id="@+id/transFatsDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/trans_fats_description"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/transFatsLink"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/trans_fats_link"
+                        android:textColor="@color/purple_700"
+                        android:visibility="gone" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="2dp">
+
+                    <TextView
+                        android:id="@+id/vitaminAName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/vitamin_a_name"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/vitaminAImage"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:contentDescription="@string/vitamin_a_image"
+                        android:padding="2dp"
+                        app:srcCompat="@drawable/vita" />
+
+                    <TextView
+                        android:id="@+id/vitaminADescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/vitamin_a_description"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/vitaminALink"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/vitamin_a_link"
+                        android:textColor="@color/purple_700"
+                        android:visibility="gone" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="2dp">
+
+                    <TextView
+                        android:id="@+id/vitaminCName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/vitamin_c_name"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/vitaminCImage"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:contentDescription="@string/vitamin_c_image"
+                        android:padding="2dp"
+                        app:srcCompat="@drawable/vitc" />
+
+                    <TextView
+                        android:id="@+id/vitaminCDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/vitamin_c_description"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/vitaminCLink"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/vitamin_c_link"
+                        android:textColor="@color/purple_700"
+                        android:visibility="gone" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="2dp">
+
+                    <TextView
+                        android:id="@+id/vitaminDName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/vitamin_d_name"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/vitaminDImage"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:contentDescription="@string/vitamin_d_image"
+                        android:padding="2dp"
+                        app:srcCompat="@drawable/vitd" />
+
+                    <TextView
+                        android:id="@+id/vitaminDDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/vitamin_d_description"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/vitaminDLink"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/vitamin_d_link"
+                        android:textColor="@color/purple_700"
+                        android:visibility="gone" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="2dp">
+
+                    <TextView
+                        android:id="@+id/sodiumName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/sodium_name"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/sodiumImage"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:contentDescription="@string/sodium_image"
+                        android:padding="2dp"
+                        app:srcCompat="@drawable/sodium" />
+
+                    <TextView
+                        android:id="@+id/sodiumDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/sodium_description"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/sodiumLink"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/sodium_link"
+                        android:textColor="@color/purple_700"
+                        android:visibility="gone" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="2dp">
+
+                    <TextView
+                        android:id="@+id/potassiumName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/potassium_name"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/potassiumImage"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:contentDescription="@string/potassium_image"
+                        android:padding="2dp"
+                        app:srcCompat="@drawable/potassium" />
+
+                    <TextView
+                        android:id="@+id/potassiumDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/potassium_description"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/potassiumLink"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/potassium_link"
+                        android:textColor="@color/purple_700"
+                        android:visibility="gone" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="2dp">
+
+                    <TextView
+                        android:id="@+id/calciumName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/calcium_name"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/calciumImage"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:contentDescription="@string/calcium_image"
+                        android:padding="2dp"
+                        app:srcCompat="@drawable/calcium" />
+
+                    <TextView
+                        android:id="@+id/calciumDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/calcium_description"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/calciumLink"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/calcium_link"
+                        android:textColor="@color/purple_700"
+                        android:visibility="gone" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="2dp">
+
+                    <TextView
+                        android:id="@+id/ironName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/iron_name"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/ironImage"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:contentDescription="@string/iron_image"
+                        android:padding="2dp"
+                        app:srcCompat="@drawable/iron" />
+
+                    <TextView
+                        android:id="@+id/ironDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/iron_description"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/ironLink"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/iron_link"
+                        android:textColor="@color/purple_700"
+                        android:visibility="gone" />
+
+                </TableRow>
+
+            </TableLayout>
+
+            <Button
+                android:id="@+id/NLMnutrientInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:onClick="onClick"
+                android:text="@string/NLM_nutrient_info"
+                android:textSize="18sp" />
+
+            <WebView
+                android:id="@+id/NLMnutrientInfoWebView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/NLMvitaminInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:onClick="onClick"
+                android:text="@string/NLM_vitamin_info"
+                android:textSize="18sp" />
+
+            <WebView
+                android:id="@+id/NLMvitaminInfoWebView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/NLMmineralInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:onClick="onClick"
+                android:text="@string/NLM_mineral_info"
+                android:textSize="18sp" />
+
+            <WebView
+                android:id="@+id/NLMmineralInfoWebView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="10dp"
-        tools:layout_editor_absoluteX="20dp"
-        tools:layout_editor_absoluteY="20dp">
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="2dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/nutrient_info_name"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/nutrient_info_link"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/nutrient_info_description"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/nutrient_info_link"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="2dp">
-
-            <TextView
-                android:id="@+id/caloriesName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/calories_name"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/caloriesImage"
-                android:layout_width="16dp"
-                android:layout_height="20dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
-                android:contentDescription="@string/calories_image"
-                android:padding="2dp"
-                app:srcCompat="@drawable/calories" />
-
-            <TextView
-                android:id="@+id/caloriesDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/calories_description"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:id="@+id/caloriesLink"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/calories_link"
-                android:textColor="@color/purple_700" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="2dp">
-
-            <TextView
-                android:id="@+id/proteinName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/protein_name"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/proteinImage"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
-                android:contentDescription="@string/protein_image"
-                android:padding="2dp"
-                app:srcCompat="@drawable/protein" />
-
-            <TextView
-                android:id="@+id/proteinDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/protein_description"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:id="@+id/proteinLink"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/protein_link"
-                android:textColor="@color/purple_700" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="2dp">
-
-            <TextView
-                android:id="@+id/carbsName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/carbs_name"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/carbsImage"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
-                android:contentDescription="@string/carbs_image"
-                android:padding="2dp"
-                app:srcCompat="@drawable/carbs" />
-
-            <TextView
-                android:id="@+id/carbsDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/carbs_description"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:id="@+id/carbsLink"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/carbs_link"
-                android:textColor="@color/purple_700" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="2dp">
-
-            <TextView
-                android:id="@+id/sugarName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/sugar_name"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/sugarImage"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
-                android:contentDescription="@string/sugar_image"
-                android:padding="2dp"
-                app:srcCompat="@drawable/sugar" />
-
-            <TextView
-                android:id="@+id/sugarDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/sugar_description"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:id="@+id/sugarLink"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/sugar_link"
-                android:textColor="@color/purple_700" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="2dp">
-
-            <TextView
-                android:id="@+id/fiberName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/fiber_name"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/fiberImage"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
-                android:contentDescription="@string/fiber_image"
-                android:padding="2dp"
-                app:srcCompat="@drawable/fibers" />
-
-            <TextView
-                android:id="@+id/fiberDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/fiber_description"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:id="@+id/fiberLink"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/fiber_link"
-                android:textColor="@color/purple_700" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="2dp">
-
-            <TextView
-                android:id="@+id/fatsName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/fats_name"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/fatsImage"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
-                android:contentDescription="@string/fats_image"
-                android:padding="2dp"
-                app:srcCompat="@drawable/fats" />
-
-            <TextView
-                android:id="@+id/fatsDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/fats_description"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:id="@+id/fatsLink"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/fats_link"
-                android:textColor="@color/purple_700" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="2dp">
-
-            <TextView
-                android:id="@+id/cholesterolName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/cholesterol_name"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/cholesterolImage"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
-                android:contentDescription="@string/cholesterol_name"
-                android:padding="2dp"
-                app:srcCompat="@drawable/cholesterol" />
-
-            <TextView
-                android:id="@+id/cholesterolDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/cholesterol_description"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:id="@+id/cholesterolLink"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/cholesterol_link"
-                android:textColor="@color/purple_700" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="2dp">
-
-            <TextView
-                android:id="@+id/saturatedFatsName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/saturated_fats_name"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/saturatedFatsImage"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
-                android:contentDescription="@string/saturated_fats_image"
-                android:padding="2dp"
-                app:srcCompat="@drawable/saturated_fat" />
-
-            <TextView
-                android:id="@+id/saturatedFatsDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/saturated_fats_description"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:id="@+id/saturatedFatsLink"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/saturated_fats_link"
-                android:textColor="@color/purple_700" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="2dp">
-
-            <TextView
-                android:id="@+id/unsaturatedFatsName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/unsaturated_fats_name"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/unsaturatedFatsImage"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
-                android:contentDescription="@string/unsaturated_fats_image"
-                android:padding="2dp"
-                app:srcCompat="@drawable/unsaturated_fat" />
-
-            <TextView
-                android:id="@+id/unsaturatedFatsDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/unsaturated_fats_description"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:id="@+id/unsaturatedFatsLink"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/unsaturated_fats_link"
-                android:textColor="@color/purple_700" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="2dp">
-
-            <TextView
-                android:id="@+id/transFatsName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/trans_fats_name"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/transFatsImage"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
-                android:contentDescription="@string/trans_fats_image"
-                android:padding="2dp"
-                app:srcCompat="@drawable/trans_fat" />
-
-            <TextView
-                android:id="@+id/transFatsDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/trans_fats_description"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:id="@+id/transFatsLink"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/trans_fats_link"
-                android:textColor="@color/purple_700" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="2dp">
-
-            <TextView
-                android:id="@+id/vitaminAName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/vitamin_a_name"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/vitaminAImage"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
-                android:contentDescription="@string/vitamin_a_image"
-                android:padding="2dp"
-                app:srcCompat="@drawable/vita" />
-
-            <TextView
-                android:id="@+id/vitaminADescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/vitamin_a_description"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:id="@+id/vitaminALink"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/vitamin_a_link"
-                android:textColor="@color/purple_700" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="2dp">
-
-            <TextView
-                android:id="@+id/vitaminCName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/vitamin_c_name"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/vitaminCImage"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
-                android:contentDescription="@string/vitamin_c_image"
-                android:padding="2dp"
-                app:srcCompat="@drawable/vitc" />
-
-            <TextView
-                android:id="@+id/vitaminCDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/vitamin_c_description"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:id="@+id/vitaminCLink"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/vitamin_c_link"
-                android:textColor="@color/purple_700" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="2dp">
-
-            <TextView
-                android:id="@+id/vitaminDName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/vitamin_d_name"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/vitaminDImage"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
-                android:contentDescription="@string/vitamin_d_image"
-                android:padding="2dp"
-                app:srcCompat="@drawable/vitd" />
-
-            <TextView
-                android:id="@+id/vitaminDDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/vitamin_d_description"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:id="@+id/vitaminDLink"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/vitamin_d_link"
-                android:textColor="@color/purple_700" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="2dp">
-
-            <TextView
-                android:id="@+id/sodiumName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/sodium_name"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/sodiumImage"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
-                android:contentDescription="@string/sodium_image"
-                android:padding="2dp"
-                app:srcCompat="@drawable/sodium" />
-
-            <TextView
-                android:id="@+id/sodiumDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/sodium_description"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:id="@+id/sodiumLink"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/sodium_link"
-                android:textColor="@color/purple_700" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="2dp">
-
-            <TextView
-                android:id="@+id/potassiumName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/potassium_name"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/potassiumImage"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
-                android:contentDescription="@string/potassium_image"
-                android:padding="2dp"
-                app:srcCompat="@drawable/potassium" />
-
-            <TextView
-                android:id="@+id/potassiumDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/potassium_description"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:id="@+id/potassiumLink"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/potassium_link"
-                android:textColor="@color/purple_700" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="2dp">
-
-            <TextView
-                android:id="@+id/calciumName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/calcium_name"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/calciumImage"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
-                android:contentDescription="@string/calcium_image"
-                android:padding="2dp"
-                app:srcCompat="@drawable/calcium" />
-
-            <TextView
-                android:id="@+id/calciumDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/calcium_description"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:id="@+id/calciumLink"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/calcium_link"
-                android:textColor="@color/purple_700" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="2dp">
-
-            <TextView
-                android:id="@+id/ironName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/iron_name"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/ironImage"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
-                android:contentDescription="@string/iron_image"
-                android:padding="2dp"
-                app:srcCompat="@drawable/iron" />
-
-            <TextView
-                android:id="@+id/ironDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/iron_description"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:id="@+id/ironLink"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/iron_link"
-                android:textColor="@color/purple_700" />
-
-        </TableRow>
-
-    </TableLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

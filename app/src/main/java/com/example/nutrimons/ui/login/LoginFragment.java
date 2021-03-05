@@ -11,6 +11,7 @@ import androidx.navigation.Navigation;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 
 import com.example.nutrimons.R;
 import com.example.nutrimons.database.AppDatabase;
+import com.example.nutrimons.database.Token;
 import com.example.nutrimons.database.User;
 
 import java.util.List;
@@ -73,6 +75,21 @@ public class LoginFragment extends Fragment {
                 //loadingProgressBar.setVisibility(View.VISIBLE);
                 if(checkEmail(myList,user))
                 {
+                    int userID = mDb.userDao().findByEmail(user.email).userID;
+                    try
+                    {
+                        Token t = mDb.tokenDao().getToken();
+                        t.userID = userID;
+                        Log.d("userid", "" + t.userID);
+                        mDb.tokenDao().insert(t); //set token
+                    }
+                    catch(NullPointerException e) //fresh database
+                    {
+                        mDb.tokenDao().insert(new Token(userID));
+                    }
+                    List<Token> ts = mDb.tokenDao().getAll();
+                    for(Token t0 : ts)
+                        Log.d("tokens, userid", String.valueOf(t0.tokenID) + " " + String.valueOf(t0.userID));
                     Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_home);
                 }
                 else {

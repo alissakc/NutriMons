@@ -1,5 +1,7 @@
 package com.example.nutrimons.database;
 
+import android.graphics.Bitmap;
+
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -11,9 +13,6 @@ import com.example.nutrimons.R;
 
 @Entity//(indices = {@Index(value = {"user_name"}, unique = false)})
 public class User {
-
-
-
     @PrimaryKey(autoGenerate = true)
     @NonNull
     public int userID;
@@ -165,41 +164,26 @@ public class User {
     @ColumnInfo(name = "ironUL")
     public String ironUL;
 
+    @ColumnInfo(name = "profilePicture")
+    public String profilePicture;
+
     public User(String email, String password) {
         this.email = email;
         this.password = password;
     }
 
-    @Ignore
-    public User(String email, String password, String name, String birthday, String financialSource, String financialHistory, String financialPlan, String nutriCoins, String age, String sex, String weight, String height, String ethnicity, String healthHistory, String healthGoals, String profileFocus, String activityLevel) {
-        this.email = email;
-        this.password = password;
-        this.name = name;
-        this.birthday = birthday;
-        this.financialSource = financialSource;
-        this.financialHistory = financialHistory;
-        this.financialPlan = financialPlan;
-        this.nutriCoins = nutriCoins;
-        this.age = age;
-        this.sex = sex;
-        this.weight = weight;
-        this.height = height;
-        this.ethnicity = ethnicity;
-        this.healthHistory = healthHistory;
-        this.healthGoals = healthGoals;
-        this.profileFocus = profileFocus;
-        this.activityLevel = activityLevel;
-    }
-
     public String toString()
     {
-        return userID + name + email + password + birthday + financialSource + financialHistory
-                + financialPlan + nutriCoins + age + sex + weight + height + ethnicity
-                + healthHistory + healthGoals + profileFocus + activityLevel + calories + water
-                + proteinDRI + proteinUL + carbsDRI + carbsUL + sugarDRI + sugarUL + fiberDRI
-                + fatsDRI + fatsUL + cholesterolDRI + cholesterolUL + saturatedFatsDRI + saturatedFatsUL
-                + unsaturatedFatsDRI + unsaturatedFatsUL + transFatsDRI + transFatsUL + vitaminADRI
-                + vitaminAUL + vitaminCDRI + vitaminCUL + vitaminDDRI + vitaminDUL + sodiumDRI
-                + sodiumUL + potassiumDRI + calciumDRI + calciumUL + ironDRI + ironUL;
+        return userID + " " + name + " " + email + " " + password + " " + birthday + " " + financialSource
+                + " " + financialHistory + " " + financialPlan + " " + nutriCoins + " " + age + " "
+                + sex + " " + weight + " " + height + " " + ethnicity + " " + healthHistory + " "
+                + healthGoals + " " + profileFocus + " " + activityLevel + " " + calories + " " + water
+                + " " + proteinDRI + " " + proteinUL + " " + carbsDRI + " " + carbsUL + " " + sugarDRI
+                + " " + sugarUL + " " + fiberDRI + " " + fatsDRI + " " + fatsUL + " " + cholesterolDRI
+                + " " + cholesterolUL + " " + saturatedFatsDRI + " " + saturatedFatsUL + " "
+                + unsaturatedFatsDRI + " " + unsaturatedFatsUL + " " + transFatsDRI + " " + transFatsUL
+                + " " + vitaminADRI + " " + vitaminAUL + " " + vitaminCDRI + " " + vitaminCUL + " "
+                + " " + vitaminDDRI + " " + vitaminDUL + " " + sodiumDRI + " " + sodiumUL + " "
+                + potassiumDRI + " " + calciumDRI + " " + calciumUL + " " + ironDRI + " " + ironUL;
     }
 }

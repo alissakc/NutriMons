@@ -1,10 +1,18 @@
 package com.example.nutrimons;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +21,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +34,9 @@ import com.example.nutrimons.database.User;
 
 import com.tbruyelle.rxpermissions3.RxPermissions;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -42,7 +55,9 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
 
     private Spinner spinner;
 
-    private Button editProfilePicture, showNutrientRecs, saveProfile;
+    private ImageView profilePicture;
+    private ImageButton editProfilePicture;
+    private Button showNutrientRecs, saveProfile;
 
     private String profileFocus, name, email, password, birthday, financialSource, financialHistory, financialPlan, nutriCoins, age, sex, weight, height, ethnicity, healthHistory, healthGoals, activityLevel;
     private EditText nameText, emailText, passwordText, birthdayText, financialSourceText, financialHistoryText, financialPlanText, nutriCoinsText, ageText, sexText, weightText, heightText, ethnicityText, healthHistoryText, healthGoalsText, activityLevelText;
@@ -52,6 +67,9 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
 
     private AppDatabase mDb;
     private NutrientTablesApi nta;
+
+    private int userID;
+    Context context;
 
     public Profile() {
         // Required empty public constructor
@@ -126,11 +144,12 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
         // attaching data adapter to spinners
         spinner.setAdapter(dataAdapter);
 
-        //editProfilePicture = view.findViewById(R.id.imageView5); cannot cast the ImageView as a Button; use an ImageButton object instead
+        profilePicture = view.findViewById(R.id.profilePicture);
+        editProfilePicture = view.findViewById(R.id.editProfilePicture);
         showNutrientRecs = view.findViewById(R.id.showNutrientRecs);
         saveProfile = view.findViewById(R.id.saveProfile);
 
-        //editProfilePicture.setOnClickListener(this);
+        editProfilePicture.setOnClickListener(this);
         showNutrientRecs.setOnClickListener(this);
         saveProfile.setOnClickListener(this);
 
@@ -187,8 +206,19 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
 
         mDb = AppDatabase.getInstance(getContext());
         nta = new NutrientTablesApi(mDb);
+        userID = mDb.tokenDao().getUserID();
+        getFields();
+
+        context = getContext();
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        userID = mDb.tokenDao().getUserID();
+        getFields();
     }
 
     @Override
@@ -197,6 +227,9 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
             case (R.id.editProfilePicture): //let user upload photo and swap user profile pic with this
                 Toast.makeText(getContext(), "Pencil Clicked", Toast.LENGTH_LONG).show();
                 //Navigation.findNavController(view).navigate(R.id.action_nav_meal_to_nav_scanBarcode);
+                Intent intent = new   Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                intent.setType("image/*");
+                startActivityForResult(intent, 1);
                 break;
             case (R.id.showNutrientRecs):
                 /*Log.d("age & sex", age + " " + sex);
@@ -209,11 +242,11 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
                     Log.d("========","===========");
                 });*/
                 showNutrients();
-                Toast.makeText(getContext(), "nutrient button clicked", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(), "nutrient button clicked", Toast.LENGTH_LONG).show();
                 break;
             case (R.id.saveProfile):
                 saveChanges();
-                Toast.makeText(getContext(), "save profile button clicked", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(), "save profile button clicked", Toast.LENGTH_LONG).show();
                 break;
         }
     }
@@ -226,7 +259,7 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
         //***save selected data to database here***
 
         // Showing selected spinner item
-        Toast.makeText(parent.getContext(), "Selected: " + profileFocus, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(parent.getContext(), "Selected: " + profileFocus, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -234,16 +267,80 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
         // TODO Auto-generated method stub
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) //https://stackoverflow.com/questions/9107900/how-to-upload-image-from-gallery-in-android
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 1 && resultCode == Activity.RESULT_OK)
+        {
+            Uri selectedImage = data.getData();
+            Bitmap bitmap = null;
+            try
+            {
+                bitmap = MediaStore.Images.Media.getBitmap(this.context.getContentResolver(), selectedImage); //get and set image
+                Bitmap scaledbmp = scaleBitmap(bitmap, Math.max(profilePicture.getWidth(), profilePicture.getHeight()));
+                profilePicture.setImageBitmap(scaledbmp);
+
+                String bmp = BitMapToString(scaledbmp); //add to db
+                User u = mDb.userDao().findByUserID(userID);
+                u.profilePicture = bmp;
+                mDb.userDao().insert(u);
+                Log.d("bmp", bmp);
+            }
+            catch (FileNotFoundException e) { e.printStackTrace(); }
+            catch (IOException e) { e.printStackTrace(); }
+        }
+    }
+
+    private Bitmap scaleBitmap(Bitmap image, int size) //http://www.codeplayon.com/2018/11/android-image-upload-to-server-from-camera-and-gallery/
+    {
+        int width = image.getWidth(), height = image.getHeight();
+        float ratio = (float) width / (float) height;
+
+        if(ratio > 1)
+        {
+            width = size;
+            height = (int) (width / ratio);
+        }
+        else
+        {
+            height = size;
+            width = (int) (height * ratio);
+        }
+
+        return Bitmap.createScaledBitmap(image, width, height, true);
+    }
+
+    public String BitMapToString(Bitmap bitmap){ //https://stackoverflow.com/questions/13562429/how-many-ways-to-convert-bitmap-to-string-and-vice-versa
+        ByteArrayOutputStream baos=new  ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
+        byte [] b=baos.toByteArray();
+        String temp= Base64.encodeToString(b, Base64.DEFAULT);
+        return temp;
+    }
+
+    public Bitmap StringToBitMap(String encodedString){ //https://stackoverflow.com/questions/13562429/how-many-ways-to-convert-bitmap-to-string-and-vice-versa
+        try {
+            byte [] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);
+            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        } catch(Exception e) {
+            e.getMessage();
+            return null;
+        }
+    }
+
     private void saveChanges()
     {
-        getFields(); //refactor to pull in info from database (earlier)
-        Log.d("debug", email);
-        User u = mDb.userDao().findByEmail(email);
+        User u = mDb.userDao().findByUserID(userID);
+
         u.profileFocus = profileFocus;
         u.name = name;
         u.email = email;
         u.password = password;
         u.birthday = birthday;
+
         u.age = age;
         u.sex = sex;
         u.weight = weight;
@@ -251,22 +348,21 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
         u.ethnicity = ethnicity;
         u.activityLevel = activityLevel;
         u.healthHistory = healthHistory;
+
         u.financialSource = financialSource;
         u.financialHistory = financialHistory;
         u.financialPlan = financialPlan;
         u.nutriCoins = nutriCoins;
+
         u.healthGoals = healthGoals;
+
         //mDb.userDao().updateUser(u);
         Log.d("debug", "saveChanges() called");
-        Log.d("debug", String.valueOf(u.userID));
+        //Log.d("debug", String.valueOf(u.userID));
         mDb.userDao().delete(u); //allows user to change email
         mDb.userDao().insert(u);
-        //Log.d("debug", mDb.userDao().getAll().get(0).email.getClass().getName()); //String
-        List<User> a = mDb.userDao().getAll();
-        for(int i = 0; i < a.size(); ++i)
-        {
-            Log.d("User " + i, a.get(i).toString());
-        }
+
+        Log.d("User ", u.toString());
     }
 
     public class TextChangedListener<T> implements TextWatcher { //https://stackoverflow.com/questions/11134144/android-edittext-onchange-listener
@@ -330,16 +426,14 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
             else if(((EditText) target).getId() == activityLevelId)
                 activityLevel = str;
             //Log.d("debug", String.valueOf(((EditText) target).getId()));
-            Toast.makeText(getContext(), "value is now: " + str, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getContext(), "value is now: " + str, Toast.LENGTH_SHORT).show();
         }
     }
 
     private void showNutrients() //from https://www.nal.usda.gov/sites/default/files/fnic_uploads/recommended_intakes_individuals.pdf
     {
-        //fix for token
-        getFields();
-        User u = mDb.userDao().findByEmail(email);
-        nta.updateUserNutrients(email);
+        User u = mDb.userDao().findByUserID(userID);
+        nta.updateUserNutrients(userID);
 
         View nt = view.findViewById(R.id.nutrientsTable);
         TextView driCalories = view.findViewById(R.id.driCalories);
@@ -364,12 +458,14 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
         TextView ulUnsaturatedFats = view.findViewById(R.id.ulUnsaturatedFats);
         TextView driTransFats = view.findViewById(R.id.driTransFats);
         TextView ulTransFats = view.findViewById(R.id.ulTransFats);
+
         TextView driVitaminA = view.findViewById(R.id.driVitaminA);
         TextView ulVitaminA = view.findViewById(R.id.ulVitaminA);
         TextView driVitaminC = view.findViewById(R.id.driVitaminC);
         TextView ulVitaminC = view.findViewById(R.id.ulVitaminC);
         TextView driVitaminD = view.findViewById(R.id.driVitaminD);
         TextView ulVitaminD = view.findViewById(R.id.ulVitaminD);
+
         TextView driSodium = view.findViewById(R.id.driSodium);
         TextView ulSodium = view.findViewById(R.id.ulSodium);
         TextView driPotassium = view.findViewById(R.id.driPotassium);
@@ -423,21 +519,51 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
 
     private void getFields()
     {
-        name = nameText.getText().toString();
-        email = emailText.getText().toString();
-        password = passwordText.getText().toString();
-        birthday = birthdayText.getText().toString();
-        financialSource = financialSourceText.getText().toString();
-        financialHistory = financialHistoryText.getText().toString();
-        financialPlan = financialPlanText.getText().toString();
-        nutriCoins = nutriCoinsText.getText().toString();
-        age = ageText.getText().toString();
-        sex = sexText.getText().toString();
-        weight = weightText.getText().toString();
-        height = heightText.getText().toString();
-        ethnicity = ethnicityText.getText().toString();
-        healthHistory = healthHistoryText.getText().toString();
-        healthGoals = healthGoalsText.getText().toString();
-        activityLevel = activityLevelText.getText().toString();
+        String pfp = mDb.userDao().findByUserID(userID).profilePicture;
+        try {
+            if(!pfp.equals(""))
+                profilePicture.setImageBitmap(StringToBitMap(pfp));
+        }
+        catch(NullPointerException e) { }
+
+        name = mDb.userDao().findByUserID(userID).name;
+        email = mDb.userDao().findByUserID(userID).email;
+        password = mDb.userDao().findByUserID(userID).password;
+        birthday = mDb.userDao().findByUserID(userID).birthday;
+
+        age = mDb.userDao().findByUserID(userID).age;
+        sex = mDb.userDao().findByUserID(userID).sex;
+        weight = mDb.userDao().findByUserID(userID).weight;
+        height = mDb.userDao().findByUserID(userID).height;
+        ethnicity = mDb.userDao().findByUserID(userID).ethnicity;
+        activityLevel = mDb.userDao().findByUserID(userID).activityLevel;
+        healthHistory = mDb.userDao().findByUserID(userID).healthHistory;
+
+        financialSource = mDb.userDao().findByUserID(userID).financialSource;
+        financialHistory = mDb.userDao().findByUserID(userID).financialHistory;
+        financialPlan = mDb.userDao().findByUserID(userID).financialPlan;
+        nutriCoins = mDb.userDao().findByUserID(userID).nutriCoins;
+
+        healthGoals = mDb.userDao().findByUserID(userID).healthGoals;
+
+        nameText.setText(name);
+        emailText.setText(email);
+        passwordText.setText(password);
+        birthdayText.setText(birthday);
+
+        ageText.setText(age);
+        sexText.setText(sex);
+        weightText.setText(weight);
+        heightText.setText(height);
+        ethnicityText.setText(ethnicity);
+        activityLevelText.setText(activityLevel);
+        healthHistoryText.setText(healthHistory);
+
+        financialSourceText.setText(financialSource);
+        financialHistoryText.setText(financialHistory);
+        financialPlanText.setText(financialPlan);
+        nutriCoinsText.setText(nutriCoins);
+
+        healthGoalsText.setText(healthGoals);
     }
 }

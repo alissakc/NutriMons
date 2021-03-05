@@ -28,6 +28,9 @@ public interface UserDao {
     @Query("SELECT * FROM user WHERE email LIKE :search")
     User findByEmail(String search);
 
+    @Query("SELECT * FROM user WHERE userID LIKE :search")
+    User findByUserID(int search);
+
     @Insert
     void insertAll(User... users);
 

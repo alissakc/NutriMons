@@ -3,7 +3,6 @@ package com.example.nutrimons;
 import android.graphics.Color;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
@@ -13,11 +12,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CalendarView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.nutrimons.database.AppDatabase;
+import com.example.nutrimons.database.Token;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
@@ -31,11 +31,9 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -93,6 +91,8 @@ public class Dashboard extends Fragment implements View.OnClickListener {
             "Coffee beans can help eliminate bad breath.",
     };
 
+    private AppDatabase mDb;
+
     public Dashboard() {
         // Required empty public constructor
     }
@@ -129,6 +129,8 @@ public class Dashboard extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
+
+        mDb = AppDatabase.getInstance(getContext());
 
         // Button and image initialization
         gotToProfile = view.findViewById(R.id.imageProfile);
@@ -228,6 +230,32 @@ public class Dashboard extends Fragment implements View.OnClickListener {
         });
 
         return view;
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        View v = getView().findViewById(R.id.fragment_dashboard);
+
+        try {
+            if(mDb.tokenDao().getUserID() == 0) //no user logged in
+            {
+                Log.d("user not found", "id: " + mDb.tokenDao().getUserID());
+                Navigation.findNavController(v).navigate(R.id.action_nav_dashboard_to_nav_login);
+            }
+            else //user logged in
+            {
+                Log.d("user found", "id: " + mDb.tokenDao().getUserID());
+                //Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_dashboard);
+            }
+        }
+        catch(NullPointerException e) //fresh database
+        {
+            mDb.tokenDao().insert(new Token(0));
+            Log.d("new token", "id: " + mDb.tokenDao().getUserID());
+            Navigation.findNavController(v).navigate(R.id.action_nav_dashboard_to_nav_registration);
+        }
     }
 
     @Override

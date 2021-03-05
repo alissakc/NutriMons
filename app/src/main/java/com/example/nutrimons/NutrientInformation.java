@@ -1,24 +1,35 @@
 package com.example.nutrimons;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.Button;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link NutrientInformation#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NutrientInformation extends Fragment {
+public class NutrientInformation extends Fragment implements View.OnClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    Button nutButton, vitButton, minButton;
+    View nuts, vits, mins;
+    WebView wv;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -59,6 +70,76 @@ public class NutrientInformation extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_nutrient_information, container, false);
+        View v = inflater.inflate(R.layout.fragment_nutrient_information, container, false);
+
+        nutButton = v.findViewById(R.id.NLMnutrientInfo);
+        vitButton = v.findViewById(R.id.NLMvitaminInfo);
+        minButton = v.findViewById(R.id.NLMmineralInfo);
+
+        nutButton.setOnClickListener(this);
+        vitButton.setOnClickListener(this);
+        minButton.setOnClickListener(this);
+
+        nuts = v.findViewById(R.id.NLMnutrientInfoWebView);
+        vits = v.findViewById(R.id.NLMvitaminInfoWebView);
+        mins = v.findViewById(R.id.NLMmineralInfoWebView);
+
+
+
+        return v;
+    }
+
+    private class MyWebViewClient extends WebViewClient {
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            if ("www.example.com".equals(Uri.parse(url).getHost())) {
+                // This is my website, so do not override; let my WebView load the page
+                return false;
+            }
+            // Otherwise, the link is not for a page on my site, so launch another Activity that handles URLs
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            startActivity(intent);
+            return true;
+        }
+    }
+
+    @Override
+    public void onClick(View view)
+    {
+        switch(view.getId()){
+            case(R.id.NLMnutrientInfo):
+                if(nuts.getVisibility() == View.GONE)
+                {
+                    WebView wv = (WebView) nuts;
+                    wv.loadUrl("https://medlineplus.gov/definitions/nutritiondefinitions.html");
+                    wv.setWebViewClient(new MyWebViewClient());
+                    nuts.setVisibility(View.VISIBLE);
+                }
+                else
+                    nuts.setVisibility(View.GONE);
+                break;
+            case(R.id.NLMvitaminInfo):
+                if(vits.getVisibility() == View.GONE)
+                {
+                    WebView wv = (WebView) vits;
+                    wv.loadUrl("https://medlineplus.gov/definitions/vitaminsdefinitions.html");
+                    wv.setWebViewClient(new MyWebViewClient());
+                    vits.setVisibility(View.VISIBLE);
+                }
+                else
+                    vits.setVisibility(View.GONE);
+                break;
+            case(R.id.NLMmineralInfo):
+                if(mins.getVisibility() == View.GONE)
+                {
+                    WebView wv = (WebView) mins;
+                    wv.loadUrl("https://medlineplus.gov/definitions/mineralsdefinitions.html");
+                    wv.setWebViewClient(new MyWebViewClient());
+                    mins.setVisibility(View.VISIBLE);
+                }
+                else
+                    mins.setVisibility(View.GONE);
+                break;
+        }
     }
 }

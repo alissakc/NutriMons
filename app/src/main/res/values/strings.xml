@@ -218,7 +218,7 @@
     <string name="nutricoins">NutriCoins</string>
     <string name="health_goals_section">Health Goals</string>
     <string name="nutrient_info_link">Link</string>
-    <string name="nutrient_info_image">Image Image</string>
+    <string name="nutrient_info_image">Image</string>
     <string name="nutrient_info_name">Nutrient</string>
     <string name="nutrient_info_description">Description</string>
     <string name="calories_link">Wikipedia</string>
@@ -226,6 +226,9 @@
     <string name="calories_name">Calories</string>
     <string name="calories_description">energy</string>
     <string name="protein_link">Wikipedia</string>
+    <string name="NLM_nutrient_info">Macronutrient Details</string>
+    <string name="NLM_vitamin_info">Vitamin Details</string>
+    <string name="NLM_mineral_info">Mineral Details</string>
     <string name="protein_image">Protein Image</string>
     <string name="protein_name">Protein</string>
     <string name="protein_description">building blocks</string>
