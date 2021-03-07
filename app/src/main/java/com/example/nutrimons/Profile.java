@@ -432,8 +432,8 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
 
     private void showNutrients() //from https://www.nal.usda.gov/sites/default/files/fnic_uploads/recommended_intakes_individuals.pdf
     {
-        User u = mDb.userDao().findByUserID(userID);
         nta.updateUserNutrients(userID);
+        User u = mDb.userDao().findByUserID(userID);
 
         View nt = view.findViewById(R.id.nutrientsTable);
         TextView driCalories = view.findViewById(R.id.driCalories);
