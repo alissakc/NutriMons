@@ -11,7 +11,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ABF357"
+        android:background="@color/teal_700"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,17 +23,32 @@
             android:layout_width="match_parent"
             android:layout_height="72dp"
             android:layout_margin="10dp"
-            android:orientation="horizontal"
-            android:visibility="gone">
+            android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/button"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Exit"
-                android:visibility="gone"
-                tools:visibility="gone" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/healthBarLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Health" />
+
+                <ProgressBar
+                    android:id="@+id/healthBar"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:max="20"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:progressTint="#F31A0A" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -43,10 +58,11 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textView18"
+                    android:id="@+id/petName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:editable="true"
                     android:gravity="center"
                     android:text="Bobby"
                     android:textColor="@color/black"
@@ -70,39 +86,68 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/waterBarLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Water" />
+
+                <ProgressBar
+                    android:id="@+id/waterBar"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:max="20"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:progressTint="#36C8F4" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Exit"
+                android:visibility="gone"
+                tools:visibility="gone" />
+
             <Button
                 android:id="@+id/storeButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="onClick"
-                android:text="Store" />
+                android:text="Store"
+                android:visibility="gone"
+                tools:visibility="gone" />
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/feedNum"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textColor="#DA1B1B"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            android:visibility="gone"
-            tools:text="Stats" />
-
         <LinearLayout
-            android:id="@+id/linearLayout6"
+            android:id="@+id/petPlayZone"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="402dp"
+            android:layout_gravity="center"
+            android:foregroundGravity="center"
+            android:gravity="center">
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/TamagotchiPet"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="259dp"
+                android:layout_height="229dp"
+                android:layout_gravity="center"
                 android:layout_weight="0"
-                android:adjustViewBounds="false"
-                android:cropToPadding="false"
+                android:foregroundGravity="center"
                 android:src="@drawable/tamagotchi_big" />
 
         </LinearLayout>
@@ -115,8 +160,7 @@
             android:background="@drawable/layout_rounded_lightblue"
             android:gravity="center"
             android:orientation="horizontal"
-            android:padding="5dp"
-            android:visibility="gone">
+            android:padding="5dp">
 
             <Button
                 android:id="@+id/feedButton"
@@ -127,7 +171,7 @@
                 android:textSize="10sp" />
 
             <Button
-                android:id="@+id/water"
+                android:id="@+id/waterButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

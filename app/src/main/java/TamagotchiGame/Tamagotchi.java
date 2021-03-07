@@ -1,25 +1,21 @@
 package TamagotchiGame;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Point;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import android.os.Handler;
 import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.animation.Animation;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.nutrimons.R;
@@ -48,13 +44,32 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
     private int screenWidth;
     private int screenHeight;
 
-    // vars
-    Button goToStore;
-    TextView feedText;
-    Button feedButton;
-    int feedCounter;
+    //linearlayout size
+    private int llWidth;
+    private int llHeight;
 
-    ImageView TamagotchiPet;
+
+    //Edit pet name
+    TextView petName;
+
+    // vars to go to store
+    Button goToStore;
+
+    //var for feeding pet
+    ProgressBar healthBar;
+    Button feedButton;
+    int healthCounter;
+
+    //var for giving pet water
+    ProgressBar waterBar;
+    Button waterButton;
+    int waterCounter;
+
+
+
+
+    //game stuff
+    ImageButton TamagotchiPet;
     private float petX;
     private float petY;
 
@@ -66,7 +81,7 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
 
     public Tamagotchi() {
         // Required empty public constructor
-        //runGame.run();
+
     }
 
     /**
@@ -106,61 +121,115 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
 
         goToStore = view.findViewById(R.id.storeButton);
         goToStore.setOnClickListener(this);
-        feedText = (TextView) view.findViewById(R.id.feedNum);
+
+
+        //editing name
+        petName = view.findViewById(R.id.petName);
+
+        //feeding pet
         feedButton = view.findViewById(R.id.feedButton);
-        feedButton.setOnClickListener(this);
-        TamagotchiPet = (ImageView) view.findViewById(R.id.TamagotchiPet);
+        healthBar = view.findViewById(R.id.healthBar);
+        feedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                healthBar.setProgress(healthCounter);
+                healthCounter++;
+            }
+        });
+
+        //giving water
+        waterBar = view.findViewById(R.id.waterBar);
+        waterButton = view.findViewById(R.id.waterButton);
+        waterButton.setOnClickListener(v -> {
+            waterBar.setProgress(waterCounter);
+            waterCounter++;
+        });
+
+        TamagotchiPet = view.findViewById(R.id.TamagotchiPet);
+        LinearLayout ll_list = view.findViewById(R.id.petPlayZone);
+
+
 
         //Get Screen Size
-        //WindowManager wm = (WindowManager) Context.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics displayMetrics = new DisplayMetrics();
         ((Activity) getContext()).getWindowManager()
                 .getDefaultDisplay()
                 .getMetrics(displayMetrics);
-        //Display disp = wm.getDefaultDisplay();
-        //Point size = new Point();
-        //disp.getSize(size);
         screenWidth = displayMetrics.widthPixels;
         screenHeight = displayMetrics.heightPixels;
-        System.out.println(screenHeight + " " + screenWidth);
+
+        //get linear layout size
+        ll_list.post(new Runnable() {
+            public void run() {
+                llWidth = ll_list.getWidth();
+                llHeight = ll_list.getHeight();
+            }
+        });
+
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        changePos();
+                        try {
+
+                            changePos();
+                            TamagotchiPet.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    TamagotchiPet.animate().rotation(TamagotchiPet.getRotation()-360).start();
+                                }
+                            });
+
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
                     }
                 });
             }
         },0,20);
 
-
-
         return view;
     }
-    public void changePos() {
-        int speed = 20;
+    private void changePos() throws InterruptedException {
+        int speed = 5;
 
         if(TamagotchiPet.getY() < 0 ) {
-            //petX = (float)Math.floor(Math.random() * (screenWidth - TamagotchiPet.getWidth()));
-            //petY = screenHeight + 100.0f;
             dirY = 1;
         }
-        else if(TamagotchiPet.getY() + TamagotchiPet.getHeight() >= screenHeight) {
+        else if(TamagotchiPet.getY() + TamagotchiPet.getHeight() >= llHeight) {
             dirY = -1;
         }
         if(TamagotchiPet.getX() < 0) {
             dirX = 1;
         }
-        else if(TamagotchiPet.getX() + TamagotchiPet.getWidth() >= screenWidth) {
+        else if(TamagotchiPet.getX() + TamagotchiPet.getWidth() >= llWidth) {
             dirX = -1;
+        }
+        double randomChange = Math.random();
+        if(randomChange < .1) {
+
+            double randomDir = Math.random();
+            if (randomDir < .20)
+                dirX = 1;
+            else if (randomDir < .40)
+                dirY = 1;
+            else if (randomDir < .60)
+                dirX = -1;
+            else if (randomDir < .80)
+                dirY = -1;
+
+
         }
         petY += dirY * speed;
         petX += dirX * speed;
+
         TamagotchiPet.setX(petX);
         TamagotchiPet.setY(petY);
     }
+
 
     @Override
     public void onClick(View view) {
@@ -168,12 +237,6 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
             case(R.id.storeButton):
                 Navigation.findNavController(view).navigate(R.id.action_nav_tamagotchi_to_nav_tamagotchiShop);
                 break;
-            case(R.id.feedButton):
-                TextView text=(TextView) feedText;
-                feedCounter++;
-                text.setText("YOURE FAT" + " " + feedCounter);
-
-
         }
     }
 }
