@@ -150,6 +150,9 @@
         <action
             android:id="@+id/action_nav_dashboard_to_nav_registration"
             app:destination="@id/nav_registration" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_dailyInfo"
+            app:destination="@id/nav_dailyInfo" />
     </fragment>
     <fragment
         android:id="@+id/nav_calendar"
@@ -158,6 +161,15 @@
         tools:layout="@layout/fragment_calendar_view">
         <action
             android:id="@+id/action_nav_calendar_to_nav_home"
+            app:destination="@id/nav_home" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_dailyInfo"
+        android:name="com.example.nutrimons.DailyInfoFragment"
+        android:label="Daily Information"
+        tools:layout="@layout/fragment_daily_info">
+        <action
+            android:id="@+id/action_nav_dailyInfo_to_nav_home"
             app:destination="@id/nav_home" />
     </fragment>
 </navigation>

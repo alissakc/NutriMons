@@ -96,6 +96,8 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion"
     // Recycler View
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    // For control over item selection of both touch and mouse driven selection
+    implementation "androidx.recyclerview:recyclerview-selection:1.1.0"
 
     // for number picker
     implementation 'com.github.travijuu:numberpicker:1.0.7'
@@ -104,4 +106,5 @@ dependencies {
 
     //for jxl to process excel file
     implementation "net.sourceforge.jexcelapi:jxl:2.6.12"
+
 }
