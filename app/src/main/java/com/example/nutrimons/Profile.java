@@ -71,6 +71,8 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
     private int userID;
     Context context;
 
+    ArrayAdapter<String> dataAdapter;
+
     public Profile() {
         // Required empty public constructor
     }
@@ -137,7 +139,7 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
         profileFocuses.add("Gain Muscle");
 
         // Creating adapter for spinners
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, profileFocuses);
+        dataAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, profileFocuses);
         // Drop down layout style - list view with radio button
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -519,32 +521,51 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
 
     private void getFields()
     {
-        String pfp = mDb.userDao().findByUserID(userID).profilePicture;
+        User u = mDb.userDao().findByUserID(userID);
+        String pfp = u.profilePicture;
         try {
             if(!pfp.equals(""))
                 profilePicture.setImageBitmap(StringToBitMap(pfp));
         }
         catch(NullPointerException e) { }
 
-        name = mDb.userDao().findByUserID(userID).name;
-        email = mDb.userDao().findByUserID(userID).email;
-        password = mDb.userDao().findByUserID(userID).password;
-        birthday = mDb.userDao().findByUserID(userID).birthday;
+        switch(u.profileFocus)
+        {
+            case "Lose Weight":
+                profileFocus = "Lose Weight";
+                spinner.setSelection(1); //needs refactoring to find the text from the arraylist
+                break;
+            case "Maintain Weight":
+                profileFocus = "Maintain Weight";
+                spinner.setSelection(2);
+                break;
+            case "Gain Muscle":
+                profileFocus = "Gain Muscle";
+                spinner.setSelection(3);
+                break;
+            default:
 
-        age = mDb.userDao().findByUserID(userID).age;
-        sex = mDb.userDao().findByUserID(userID).sex;
-        weight = mDb.userDao().findByUserID(userID).weight;
-        height = mDb.userDao().findByUserID(userID).height;
-        ethnicity = mDb.userDao().findByUserID(userID).ethnicity;
-        activityLevel = mDb.userDao().findByUserID(userID).activityLevel;
-        healthHistory = mDb.userDao().findByUserID(userID).healthHistory;
+        }
 
-        financialSource = mDb.userDao().findByUserID(userID).financialSource;
-        financialHistory = mDb.userDao().findByUserID(userID).financialHistory;
-        financialPlan = mDb.userDao().findByUserID(userID).financialPlan;
-        nutriCoins = mDb.userDao().findByUserID(userID).nutriCoins;
+        name = u.name;
+        email = u.email;
+        password = u.password;
+        birthday = u.birthday;
 
-        healthGoals = mDb.userDao().findByUserID(userID).healthGoals;
+        age = u.age;
+        sex = u.sex;
+        weight = u.weight;
+        height = u.height;
+        ethnicity = u.ethnicity;
+        activityLevel = u.activityLevel;
+        healthHistory = u.healthHistory;
+
+        financialSource = u.financialSource;
+        financialHistory = u.financialHistory;
+        financialPlan = u.financialPlan;
+        nutriCoins = u.nutriCoins;
+
+        healthGoals = u.healthGoals;
 
         nameText.setText(name);
         emailText.setText(email);

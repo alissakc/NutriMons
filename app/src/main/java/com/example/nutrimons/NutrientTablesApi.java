@@ -337,22 +337,47 @@ public class NutrientTablesApi {
 
     private int calculateCalories(User u)
     {
-        double al;
+        int focusMod = 0; //maintain weight/default
+        double al = 1.0; //BMR
+
+        //modify with focus modifier
+        switch(u.profileFocus)
+        {
+            case "Lose Weight":
+                focusMod = -500;
+                break;
+            case "Gain Muscle":
+                focusMod = 500;
+                break;
+        }
+
         //modify with activity modifier https://www.k-state.edu/paccats/Contents/PA/PDF/Physical%20Activity%20and%20Controlling%20Weight.pdf
-        if(u.activityLevel.equals("Sedentary"))
-            al = 1.2;
-        else if(u.activityLevel.equals("Lightly active"))
-            al = 1.375;
-        else if(u.activityLevel.equals("Moderately active"))
-            al = 1.55;
-        else if(u.activityLevel.equals("Very active"))
-            al = 1.725;
-        else
-            al = 1.9;
+        switch(u.activityLevel)
+        {
+            case "Sedentary":
+                al = 1.2;
+                break;
+            case "Lightly active":
+            case "Lightly Active":
+                al = 1.375;
+                break;
+            case "Moderately active":
+            case "Moderately Active":
+                al = 1.55;
+                break;
+            case "Very active":
+            case "Very Active":
+                al = 1.725;
+                break;
+            case "Extremely active":
+            case "Extremely Active":
+                al = 1.9;
+                break;
+        }
 
         if(u.sex.equals("Male")) //Mifflin-St Jeor Equation https://en.wikipedia.org/wiki/Basal_metabolic_rate
-            return (int)((10 * Integer.parseInt(u.weight) / 2.2 /*pounds*/ + 6.25 * 2.54 * Integer.parseInt(u.height) /*inches*/ - 5 * Float.parseFloat(u.age) + 5) * al);
+            return (int)((10 * Integer.parseInt(u.weight) / 2.2 /*pounds*/ + 6.25 * 2.54 * Integer.parseInt(u.height) /*inches*/ - 5 * Float.parseFloat(u.age) + 5) * al) + focusMod;
         else
-            return (int)((10 * Integer.parseInt(u.weight) / 2.2 /*pounds*/ + 6.25 * 2.54 * Integer.parseInt(u.height) /*inches*/ - 5 * Float.parseFloat(u.age) - 161) * al);
+            return (int)((10 * Integer.parseInt(u.weight) / 2.2 /*pounds*/ + 6.25 * 2.54 * Integer.parseInt(u.height) /*inches*/ - 5 * Float.parseFloat(u.age) - 161) * al) + focusMod;
     }
 }
