@@ -28,6 +28,14 @@
                     android:padding="2dp">
 
                     <TextView
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/nutrient_info_link"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
@@ -51,21 +59,19 @@
                         android:textColor="@color/black"
                         android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="2dp"
-                        android:text="@string/nutrient_info_link"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:visibility="gone" />
-
                 </TableRow>
 
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="2dp">
+
+                    <ImageButton
+                        android:id="@+id/caloriesLink"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:onClick="onClick"
+                        android:src="@android:drawable/btn_plus" />
 
                     <TextView
                         android:id="@+id/caloriesName"
@@ -95,21 +101,32 @@
                         android:text="@string/calories_description"
                         android:textColor="@color/black" />
 
-                    <TextView
-                        android:id="@+id/caloriesLink"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="2dp"
-                        android:text="@string/calories_link"
-                        android:textColor="@color/purple_700"
-                        android:visibility="gone" />
+                </TableRow>
 
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="2dp" >
+
+                    <WebView
+                        android:id="@+id/caloriesWV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:visibility="gone" />
                 </TableRow>
 
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="2dp">
+
+                    <ImageButton
+                        android:id="@+id/proteinLink"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:onClick="onClick"
+                        android:src="@android:drawable/btn_plus" />
 
                     <TextView
                         android:id="@+id/proteinName"
@@ -139,13 +156,18 @@
                         android:text="@string/protein_description"
                         android:textColor="@color/black" />
 
-                    <TextView
-                        android:id="@+id/proteinLink"
-                        android:layout_width="wrap_content"
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="2dp" >
+
+                    <WebView
+                        android:id="@+id/proteinWV"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="2dp"
-                        android:text="@string/protein_link"
-                        android:textColor="@color/purple_700"
+                        android:layout_weight="1"
                         android:visibility="gone" />
                 </TableRow>
 
@@ -153,6 +175,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="2dp">
+
+                    <ImageButton
+                        android:id="@+id/carbsLink"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:onClick="onClick"
+                        android:src="@android:drawable/btn_plus" />
 
                     <TextView
                         android:id="@+id/carbsName"
@@ -182,13 +211,18 @@
                         android:text="@string/carbs_description"
                         android:textColor="@color/black" />
 
-                    <TextView
-                        android:id="@+id/carbsLink"
-                        android:layout_width="wrap_content"
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="2dp" >
+
+                    <WebView
+                        android:id="@+id/carbsWV"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="2dp"
-                        android:text="@string/carbs_link"
-                        android:textColor="@color/purple_700"
+                        android:layout_weight="1"
                         android:visibility="gone" />
                 </TableRow>
 
@@ -196,6 +230,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="2dp">
+
+                    <ImageButton
+                        android:id="@+id/sugarLink"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:onClick="onClick"
+                        android:src="@android:drawable/btn_plus" />
 
                     <TextView
                         android:id="@+id/sugarName"
@@ -225,21 +266,32 @@
                         android:text="@string/sugar_description"
                         android:textColor="@color/black" />
 
-                    <TextView
-                        android:id="@+id/sugarLink"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="2dp"
-                        android:text="@string/sugar_link"
-                        android:textColor="@color/purple_700"
-                        android:visibility="gone" />
+                </TableRow>
 
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="2dp" >
+
+                    <WebView
+                        android:id="@+id/sugarWV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:visibility="gone" />
                 </TableRow>
 
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="2dp">
+
+                    <ImageButton
+                        android:id="@+id/fiberLink"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:onClick="onClick"
+                        android:src="@android:drawable/btn_plus" />
 
                     <TextView
                         android:id="@+id/fiberName"
@@ -269,13 +321,18 @@
                         android:text="@string/fiber_description"
                         android:textColor="@color/black" />
 
-                    <TextView
-                        android:id="@+id/fiberLink"
-                        android:layout_width="wrap_content"
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="2dp" >
+
+                    <WebView
+                        android:id="@+id/fiberWV"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="2dp"
-                        android:text="@string/fiber_link"
-                        android:textColor="@color/purple_700"
+                        android:layout_weight="1"
                         android:visibility="gone" />
                 </TableRow>
 
@@ -283,6 +340,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="2dp">
+
+                    <ImageButton
+                        android:id="@+id/fatsLink"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:onClick="onClick"
+                        android:src="@android:drawable/btn_plus" />
 
                     <TextView
                         android:id="@+id/fatsName"
@@ -312,21 +376,32 @@
                         android:text="@string/fats_description"
                         android:textColor="@color/black" />
 
-                    <TextView
-                        android:id="@+id/fatsLink"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="2dp"
-                        android:text="@string/fats_link"
-                        android:textColor="@color/purple_700"
-                        android:visibility="gone" />
+                </TableRow>
 
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="2dp" >
+
+                    <WebView
+                        android:id="@+id/fatsWV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:visibility="gone" />
                 </TableRow>
 
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="2dp">
+
+                    <ImageButton
+                        android:id="@+id/cholesterolLink"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:onClick="onClick"
+                        android:src="@android:drawable/btn_plus" />
 
                     <TextView
                         android:id="@+id/cholesterolName"
@@ -356,21 +431,32 @@
                         android:text="@string/cholesterol_description"
                         android:textColor="@color/black" />
 
-                    <TextView
-                        android:id="@+id/cholesterolLink"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="2dp"
-                        android:text="@string/cholesterol_link"
-                        android:textColor="@color/purple_700"
-                        android:visibility="gone" />
+                </TableRow>
 
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="2dp" >
+
+                    <WebView
+                        android:id="@+id/cholesterolWV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:visibility="gone" />
                 </TableRow>
 
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="2dp">
+
+                    <ImageButton
+                        android:id="@+id/saturatedFatsLink"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:onClick="onClick"
+                        android:src="@android:drawable/btn_plus" />
 
                     <TextView
                         android:id="@+id/saturatedFatsName"
@@ -400,21 +486,32 @@
                         android:text="@string/saturated_fats_description"
                         android:textColor="@color/black" />
 
-                    <TextView
-                        android:id="@+id/saturatedFatsLink"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="2dp"
-                        android:text="@string/saturated_fats_link"
-                        android:textColor="@color/purple_700"
-                        android:visibility="gone" />
+                </TableRow>
 
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="2dp" >
+
+                    <WebView
+                        android:id="@+id/saturatedFatsWV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:visibility="gone" />
                 </TableRow>
 
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="2dp">
+
+                    <ImageButton
+                        android:id="@+id/unsaturatedFatsLink"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:onClick="onClick"
+                        android:src="@android:drawable/btn_plus" />
 
                     <TextView
                         android:id="@+id/unsaturatedFatsName"
@@ -444,13 +541,31 @@
                         android:text="@string/unsaturated_fats_description"
                         android:textColor="@color/black" />
 
-                    <TextView
-                        android:id="@+id/unsaturatedFatsLink"
-                        android:layout_width="wrap_content"
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="2dp" >
+
+                    <WebView
+                        android:id="@+id/unsaturatedFats1WV"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="2dp"
-                        android:text="@string/unsaturated_fats_link"
-                        android:textColor="@color/purple_700"
+                        android:layout_weight="1"
+                        android:visibility="gone" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="2dp" >
+
+                    <WebView
+                        android:id="@+id/unsaturatedFats2WV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:visibility="gone" />
                 </TableRow>
 
@@ -458,6 +573,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="2dp">
+
+                    <ImageButton
+                        android:id="@+id/transFatsLink"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:onClick="onClick"
+                        android:src="@android:drawable/btn_plus" />
 
                     <TextView
                         android:id="@+id/transFatsName"
@@ -487,21 +609,32 @@
                         android:text="@string/trans_fats_description"
                         android:textColor="@color/black" />
 
-                    <TextView
-                        android:id="@+id/transFatsLink"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="2dp"
-                        android:text="@string/trans_fats_link"
-                        android:textColor="@color/purple_700"
-                        android:visibility="gone" />
+                </TableRow>
 
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="2dp" >
+
+                    <WebView
+                        android:id="@+id/transFatsWV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:visibility="gone" />
                 </TableRow>
 
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="2dp">
+
+                    <ImageButton
+                        android:id="@+id/vitaminALink"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:onClick="onClick"
+                        android:src="@android:drawable/btn_plus" />
 
                     <TextView
                         android:id="@+id/vitaminAName"
@@ -531,13 +664,18 @@
                         android:text="@string/vitamin_a_description"
                         android:textColor="@color/black" />
 
-                    <TextView
-                        android:id="@+id/vitaminALink"
-                        android:layout_width="wrap_content"
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="2dp" >
+
+                    <WebView
+                        android:id="@+id/vitaminAWV"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="2dp"
-                        android:text="@string/vitamin_a_link"
-                        android:textColor="@color/purple_700"
+                        android:layout_weight="1"
                         android:visibility="gone" />
                 </TableRow>
 
@@ -545,6 +683,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="2dp">
+
+                    <ImageButton
+                        android:id="@+id/vitaminCLink"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:onClick="onClick"
+                        android:src="@android:drawable/btn_plus" />
 
                     <TextView
                         android:id="@+id/vitaminCName"
@@ -574,13 +719,18 @@
                         android:text="@string/vitamin_c_description"
                         android:textColor="@color/black" />
 
-                    <TextView
-                        android:id="@+id/vitaminCLink"
-                        android:layout_width="wrap_content"
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="2dp" >
+
+                    <WebView
+                        android:id="@+id/vitaminCWV"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="2dp"
-                        android:text="@string/vitamin_c_link"
-                        android:textColor="@color/purple_700"
+                        android:layout_weight="1"
                         android:visibility="gone" />
                 </TableRow>
 
@@ -588,6 +738,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="2dp">
+
+                    <ImageButton
+                        android:id="@+id/vitaminDLink"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:onClick="onClick"
+                        android:src="@android:drawable/btn_plus" />
 
                     <TextView
                         android:id="@+id/vitaminDName"
@@ -617,13 +774,18 @@
                         android:text="@string/vitamin_d_description"
                         android:textColor="@color/black" />
 
-                    <TextView
-                        android:id="@+id/vitaminDLink"
-                        android:layout_width="wrap_content"
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="2dp" >
+
+                    <WebView
+                        android:id="@+id/vitaminDWV"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="2dp"
-                        android:text="@string/vitamin_d_link"
-                        android:textColor="@color/purple_700"
+                        android:layout_weight="1"
                         android:visibility="gone" />
                 </TableRow>
 
@@ -631,6 +793,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="2dp">
+
+                    <ImageButton
+                        android:id="@+id/sodiumLink"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:onClick="onClick"
+                        android:src="@android:drawable/btn_plus" />
 
                     <TextView
                         android:id="@+id/sodiumName"
@@ -660,13 +829,18 @@
                         android:text="@string/sodium_description"
                         android:textColor="@color/black" />
 
-                    <TextView
-                        android:id="@+id/sodiumLink"
-                        android:layout_width="wrap_content"
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="2dp" >
+
+                    <WebView
+                        android:id="@+id/sodiumWV"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="2dp"
-                        android:text="@string/sodium_link"
-                        android:textColor="@color/purple_700"
+                        android:layout_weight="1"
                         android:visibility="gone" />
                 </TableRow>
 
@@ -674,6 +848,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="2dp">
+
+                    <ImageButton
+                        android:id="@+id/potassiumLink"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:onClick="onClick"
+                        android:src="@android:drawable/btn_plus" />
 
                     <TextView
                         android:id="@+id/potassiumName"
@@ -703,21 +884,32 @@
                         android:text="@string/potassium_description"
                         android:textColor="@color/black" />
 
-                    <TextView
-                        android:id="@+id/potassiumLink"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="2dp"
-                        android:text="@string/potassium_link"
-                        android:textColor="@color/purple_700"
-                        android:visibility="gone" />
+                </TableRow>
 
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="2dp" >
+
+                    <WebView
+                        android:id="@+id/potassiumWV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:visibility="gone" />
                 </TableRow>
 
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="2dp">
+
+                    <ImageButton
+                        android:id="@+id/calciumLink"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:onClick="onClick"
+                        android:src="@android:drawable/btn_plus" />
 
                     <TextView
                         android:id="@+id/calciumName"
@@ -747,21 +939,32 @@
                         android:text="@string/calcium_description"
                         android:textColor="@color/black" />
 
-                    <TextView
-                        android:id="@+id/calciumLink"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="2dp"
-                        android:text="@string/calcium_link"
-                        android:textColor="@color/purple_700"
-                        android:visibility="gone" />
+                </TableRow>
 
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="2dp" >
+
+                    <WebView
+                        android:id="@+id/calciumWV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:visibility="gone" />
                 </TableRow>
 
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="2dp">
+
+                    <ImageButton
+                        android:id="@+id/ironLink"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:onClick="onClick"
+                        android:src="@android:drawable/btn_plus" />
 
                     <TextView
                         android:id="@+id/ironName"
@@ -791,15 +994,19 @@
                         android:text="@string/iron_description"
                         android:textColor="@color/black" />
 
-                    <TextView
-                        android:id="@+id/ironLink"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="2dp"
-                        android:text="@string/iron_link"
-                        android:textColor="@color/purple_700"
-                        android:visibility="gone" />
+                </TableRow>
 
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="2dp" >
+
+                    <WebView
+                        android:id="@+id/ironWV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:visibility="gone" />
                 </TableRow>
 
             </TableLayout>
@@ -812,7 +1019,8 @@
                 android:layout_margin="5dp"
                 android:onClick="onClick"
                 android:text="@string/NLM_nutrient_info"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:visibility="gone" />
 
             <WebView
                 android:id="@+id/NLMnutrientInfoWebView"
@@ -828,7 +1036,8 @@
                 android:layout_margin="5dp"
                 android:onClick="onClick"
                 android:text="@string/NLM_vitamin_info"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:visibility="gone" />
 
             <WebView
                 android:id="@+id/NLMvitaminInfoWebView"
@@ -844,7 +1053,8 @@
                 android:layout_margin="5dp"
                 android:onClick="onClick"
                 android:text="@string/NLM_mineral_info"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:visibility="gone" />
 
             <WebView
                 android:id="@+id/NLMmineralInfoWebView"
