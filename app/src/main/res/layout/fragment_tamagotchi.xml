@@ -57,16 +57,13 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <TextView
+                <EditText
                     android:id="@+id/petName"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:editable="true"
                     android:gravity="center"
-                    android:text="Bobby"
-                    android:textColor="@color/black"
-                    android:textStyle="bold" />
+                    android:inputType="text"
+                    android:text="Bobby" />
 
                 <TextView
                     android:id="@+id/textView19"
@@ -76,13 +73,7 @@
                     android:text="Level 9000"
                     android:textColor="@color/black" />
 
-                <TextView
-                    android:id="@+id/textView20"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Saad"
-                    android:textColor="@color/black" />
+
 
             </LinearLayout>
 

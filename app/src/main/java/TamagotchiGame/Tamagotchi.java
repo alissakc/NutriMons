@@ -7,6 +7,9 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import android.os.Handler;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +22,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.nutrimons.R;
+import com.example.nutrimons.database.AppDatabase;
+import com.example.nutrimons.database.TamagotchiPet;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -38,7 +43,9 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    //onRun runGame = new onRun();
+
+
+    //private AppDatabase mDb;
 
     //screen size
     private int screenWidth;
@@ -50,7 +57,7 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
 
 
     //Edit pet name
-    TextView petName;
+    EditText petName;
 
     // vars to go to store
     Button goToStore;
@@ -105,6 +112,7 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -119,6 +127,10 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tamagotchi, container, false);
 
+        //mDb = AppDatabase.getInstance(getContext());
+
+
+
         goToStore = view.findViewById(R.id.storeButton);
         goToStore.setOnClickListener(this);
 
@@ -126,14 +138,20 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
         //editing name
         petName = view.findViewById(R.id.petName);
 
+
         //feeding pet
         feedButton = view.findViewById(R.id.feedButton);
         healthBar = view.findViewById(R.id.healthBar);
+        //int health = mDb.tamagotchiDao().gethealthlevel();
+        //healthCounter = health;
+        //healthBar.setProgress(health);
         feedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 healthBar.setProgress(healthCounter);
                 healthCounter++;
+                TamagotchiPet tama = new TamagotchiPet(healthCounter);
+                //mDb.tamagotchiDao().updateTamagotchi(tama);
             }
         });
 

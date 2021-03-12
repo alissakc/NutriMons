@@ -5,8 +5,10 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import TamagotchiGame.Tamagotchi;
+
 @Entity
-public class Tamagotchi {
+public class TamagotchiPet {
     @PrimaryKey(autoGenerate = true)
     @NonNull
     public int petId;
@@ -16,4 +18,13 @@ public class Tamagotchi {
 
     @ColumnInfo(name = "level")
     public int level;
+
+    @ColumnInfo(name = "healthLevel")
+    public int healthLevel;
+
+    public TamagotchiPet(int healthLevel)
+    {
+        this.healthLevel = healthLevel;
+    }
+
 }
