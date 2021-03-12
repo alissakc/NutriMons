@@ -1,5 +1,6 @@
 package com.example.nutrimons;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -92,6 +93,19 @@ public class CalendarViewFragment extends Fragment {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 String date = (month+1) + "/" + dayOfMonth + "/" + year;
+                // send data to dailyInfo fragment
+                Bundle bundle = new Bundle();
+                bundle.putString("key", date);
+                DailyInfoFragment fragment = new DailyInfoFragment();
+                fragment.setArguments(bundle);
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                ActionBar actionBar = getActivity().getActionBar();
+                if(actionBar != null)
+                {
+                    actionBar.setTitle("Daily Information");
+                }
+                transaction.replace(R.id.fragment_calendar, fragment).addToBackStack(null).commit();
+                /*
                 // send data to dashboard fragment
                 Bundle bundle = new Bundle();
                 bundle.putString("key", date);
@@ -102,6 +116,7 @@ public class CalendarViewFragment extends Fragment {
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.fragment_calendar, fragment).addToBackStack(null).commit();
                 //Navigation.findNavController(view).navigate(R.id.action_nav_calendar_to_nav_home);
+                 */
             }
         });
 

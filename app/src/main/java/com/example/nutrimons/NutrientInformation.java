@@ -2,11 +2,13 @@ package com.example.nutrimons;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,8 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.SearchView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,9 +31,17 @@ public class NutrientInformation extends Fragment implements View.OnClickListene
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    Button nutButton, vitButton, minButton;
-    View nuts, vits, mins;
-    WebView wv;
+    //Button nutButton, vitButton, minButton;
+    ImageButton caloriesButton, proteinButton, carbsButton, sugarButton, fiberButton, fatsButton,
+        cholesterolButton, saturatedFatsButton, unsaturatedFatsButton, transFatsButton,
+        vitaminAButton, vitaminCButton, vitaminDButton, sodiumButton, potassiumButton, calciumButton, ironButton;
+    //View nuts, vits, mins;
+    WebView caloriesWV, proteinWV, carbsWV, sugarWV, fiberWV, fatsWV, cholesterolWV, saturatedFatsWV,
+        unsaturatedFats1WV, unsaturatedFats2WV, transFatsWV, vitaminAWV, vitaminCWV, vitaminDWV,
+        sodiumWV, potassiumWV, calciumWV, ironWV;
+    final String nutrientURL = "https://medlineplus.gov/definitions/nutritiondefinitions.html",
+            vitaminURL = "https://medlineplus.gov/definitions/vitaminsdefinitions.html",
+            mineralURL = "https://medlineplus.gov/definitions/mineralsdefinitions.html";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -72,73 +84,173 @@ public class NutrientInformation extends Fragment implements View.OnClickListene
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_nutrient_information, container, false);
 
-        nutButton = v.findViewById(R.id.NLMnutrientInfo);
+        /*nutButton = v.findViewById(R.id.NLMnutrientInfo);
         vitButton = v.findViewById(R.id.NLMvitaminInfo);
         minButton = v.findViewById(R.id.NLMmineralInfo);
 
         nutButton.setOnClickListener(this);
         vitButton.setOnClickListener(this);
-        minButton.setOnClickListener(this);
+        minButton.setOnClickListener(this);*/
 
-        nuts = v.findViewById(R.id.NLMnutrientInfoWebView);
+        caloriesButton = v.findViewById(R.id.caloriesLink);
+        proteinButton = v.findViewById(R.id.proteinLink);
+        carbsButton = v.findViewById(R.id.carbsLink);
+        sugarButton = v.findViewById(R.id.sugarLink);
+        fiberButton = v.findViewById(R.id.fiberLink);
+        fatsButton = v.findViewById(R.id.fatsLink);
+        cholesterolButton = v.findViewById(R.id.cholesterolLink);
+        saturatedFatsButton = v.findViewById(R.id.saturatedFatsLink);
+        unsaturatedFatsButton = v.findViewById(R.id.unsaturatedFatsLink);
+        transFatsButton = v.findViewById(R.id.transFatsLink);
+        vitaminAButton = v.findViewById(R.id.vitaminALink);
+        vitaminCButton = v.findViewById(R.id.vitaminCLink);
+        vitaminDButton = v.findViewById(R.id.vitaminDLink);
+        sodiumButton = v.findViewById(R.id.sodiumLink);
+        potassiumButton = v.findViewById(R.id.potassiumLink);
+        calciumButton = v.findViewById(R.id.calciumLink);
+        ironButton = v.findViewById(R.id.ironLink);
+
+        caloriesButton.setOnClickListener(this);
+        proteinButton.setOnClickListener(this);
+        carbsButton.setOnClickListener(this);
+        sugarButton.setOnClickListener(this);
+        fiberButton.setOnClickListener(this);
+        fatsButton.setOnClickListener(this);
+        cholesterolButton.setOnClickListener(this);
+        saturatedFatsButton.setOnClickListener(this);
+        unsaturatedFatsButton.setOnClickListener(this);
+        transFatsButton.setOnClickListener(this);
+        vitaminAButton.setOnClickListener(this);
+        vitaminCButton.setOnClickListener(this);
+        vitaminDButton.setOnClickListener(this);
+        sodiumButton.setOnClickListener(this);
+        potassiumButton.setOnClickListener(this);
+        calciumButton.setOnClickListener(this);
+        ironButton.setOnClickListener(this);
+
+        /*nuts = v.findViewById(R.id.caloriesWV);
         vits = v.findViewById(R.id.NLMvitaminInfoWebView);
-        mins = v.findViewById(R.id.NLMmineralInfoWebView);
+        mins = v.findViewById(R.id.NLMmineralInfoWebView);*/
 
-
+        caloriesWV = v.findViewById(R.id.caloriesWV);
+        proteinWV = v.findViewById(R.id.proteinWV);
+        carbsWV = v.findViewById(R.id.carbsWV);
+        sugarWV = v.findViewById(R.id.sugarWV);
+        fiberWV = v.findViewById(R.id.fiberWV);
+        fatsWV = v.findViewById(R.id.fatsWV);
+        cholesterolWV = v.findViewById(R.id.cholesterolWV);
+        saturatedFatsWV = v.findViewById(R.id.saturatedFatsWV);
+        unsaturatedFats1WV = v.findViewById(R.id.unsaturatedFats1WV);
+        unsaturatedFats2WV = v.findViewById(R.id.unsaturatedFats2WV);
+        transFatsWV = v.findViewById(R.id.transFatsWV);
+        vitaminAWV = v.findViewById(R.id.vitaminAWV);
+        vitaminCWV = v.findViewById(R.id.vitaminCWV);
+        vitaminDWV = v.findViewById(R.id.vitaminDWV);
+        sodiumWV = v.findViewById(R.id.sodiumWV);
+        potassiumWV = v.findViewById(R.id.potassiumWV);
+        calciumWV = v.findViewById(R.id.calciumWV);
+        ironWV = v.findViewById(R.id.ironWV);
 
         return v;
     }
 
-    private class MyWebViewClient extends WebViewClient {
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            if ("www.example.com".equals(Uri.parse(url).getHost())) {
-                // This is my website, so do not override; let my WebView load the page
-                return false;
-            }
-            // Otherwise, the link is not for a page on my site, so launch another Activity that handles URLs
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            startActivity(intent);
-            return true;
+    private String trimHTML(String keptText)
+    {
+        return "javascript:(function() { " +
+                    "var article = document.getElementsByTagName('article')[0];" +
+                    "var h2s = document.getElementsByTagName('article')[0].getElementsByTagName('h2');" +
+                    "var ps = document.getElementsByTagName('article')[0].getElementsByTagName('p');" +
+
+                    "document.getElementsByTagName('header')[0].style.display = 'none';" +
+                    "document.getElementById('coop').style.display = 'none';" +
+                    "document.getElementById('breadcrumbs').style.display = 'none';" +
+                    "ps[0].style.display = 'none';" +
+                    "ps[1].style.display = 'none';" +
+                    "document.getElementsByClassName('page-info')[0].style.display = 'none';" +
+
+                    "for (var i = 0; i < h2s.length; ++i) {" + //can't use int in javascript
+                        "if (h2s[i].innerHTML != '" + keptText + "') {" +
+                            "h2s[i].style.display = 'none'; " +
+                            "ps[i + 2].style.display = 'none'; }}" +
+
+                    "document.getElementById('page-feedback').style.display = 'none';" +
+                    "document.getElementsByTagName('footer')[0].style.display = 'none';" +
+                "})()";
+    }
+
+    private void setWebView(WebView wv, String url, String keptText)
+    {
+        if(wv.getVisibility() == View.GONE)
+        {
+            wv.getSettings().setJavaScriptEnabled(true);
+            wv.setWebViewClient(new WebViewClient() {
+                @Override
+                public void onPageFinished(WebView view, String url) {
+                    wv.loadUrl(trimHTML(keptText));
+                    wv.setVisibility(View.VISIBLE);
+                }
+            });
+            wv.loadUrl(url);
         }
+        else
+            wv.setVisibility(View.GONE);
     }
 
     @Override
     public void onClick(View view)
     {
         switch(view.getId()){
-            case(R.id.NLMnutrientInfo):
-                if(nuts.getVisibility() == View.GONE)
-                {
-                    WebView wv = (WebView) nuts;
-                    wv.loadUrl("https://medlineplus.gov/definitions/nutritiondefinitions.html");
-                    wv.setWebViewClient(new MyWebViewClient());
-                    nuts.setVisibility(View.VISIBLE);
-                }
-                else
-                    nuts.setVisibility(View.GONE);
+            case(R.id.caloriesLink):
+                setWebView((WebView) caloriesWV, nutrientURL, "Calories");
                 break;
-            case(R.id.NLMvitaminInfo):
-                if(vits.getVisibility() == View.GONE)
-                {
-                    WebView wv = (WebView) vits;
-                    wv.loadUrl("https://medlineplus.gov/definitions/vitaminsdefinitions.html");
-                    wv.setWebViewClient(new MyWebViewClient());
-                    vits.setVisibility(View.VISIBLE);
-                }
-                else
-                    vits.setVisibility(View.GONE);
+            case(R.id.proteinLink):
+                setWebView((WebView) proteinWV, nutrientURL, "Protein");
                 break;
-            case(R.id.NLMmineralInfo):
-                if(mins.getVisibility() == View.GONE)
-                {
-                    WebView wv = (WebView) mins;
-                    wv.loadUrl("https://medlineplus.gov/definitions/mineralsdefinitions.html");
-                    wv.setWebViewClient(new MyWebViewClient());
-                    mins.setVisibility(View.VISIBLE);
-                }
-                else
-                    mins.setVisibility(View.GONE);
+            case(R.id.carbsLink):
+                setWebView((WebView) carbsWV, nutrientURL, "Carbohydrates");
+                break;
+            case(R.id.sugarLink):
+                setWebView((WebView) sugarWV, nutrientURL, "Sugar");
+                break;
+            case(R.id.fiberLink):
+                setWebView((WebView) fiberWV, nutrientURL, "Fiber");
+                break;
+            case(R.id.fatsLink):
+                setWebView((WebView) fatsWV, nutrientURL, "Total Fat");
+                break;
+            case(R.id.cholesterolLink):
+                setWebView((WebView) cholesterolWV, nutrientURL, "Cholesterol");
+                break;
+            case(R.id.saturatedFatsLink):
+                setWebView((WebView) saturatedFatsWV, nutrientURL, "Saturated Fat");
+                break;
+            case(R.id.unsaturatedFatsLink):
+                setWebView((WebView) unsaturatedFats1WV, nutrientURL, "Monounsaturated Fat");
+                setWebView((WebView) unsaturatedFats2WV, nutrientURL, "Polyunsaturated Fat");
+                break;
+            case(R.id.transFatsLink):
+                setWebView((WebView) transFatsWV, nutrientURL, "Trans Fat");
+                break;
+            case(R.id.vitaminALink):
+                setWebView((WebView) vitaminAWV, vitaminURL, "Vitamin A");
+                break;
+            case(R.id.vitaminCLink):
+                setWebView((WebView) vitaminCWV, vitaminURL, "Vitamin C");
+                break;
+            case(R.id.vitaminDLink):
+                setWebView((WebView) vitaminDWV, vitaminURL, "Vitamin D");
+                break;
+            case(R.id.sodiumLink):
+                setWebView((WebView) sodiumWV, mineralURL, "Sodium");
+                break;
+            case(R.id.potassiumLink):
+                setWebView((WebView) potassiumWV, mineralURL, "Potassium");
+                break;
+            case(R.id.calciumLink):
+                setWebView((WebView) calciumWV, mineralURL, "Calcium");
+                break;
+            case(R.id.ironLink):
+                setWebView((WebView) ironWV, mineralURL, "Iron");
                 break;
         }
     }

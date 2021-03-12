@@ -1,5 +1,6 @@
 package com.example.nutrimons;
 
+import android.app.ActionBar;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -185,6 +186,11 @@ public class Dashboard extends Fragment implements View.OnClickListener {
                 fragment.setArguments(bundle);
                 fragment.setArguments(savedInstanceState);
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                ActionBar actionBar = getActivity().getActionBar();
+                if(actionBar != null)
+                {
+                    actionBar.setTitle("Calendar");
+                }
                 transaction.replace(R.id.fragment_dashboard, fragment).addToBackStack(null).commit();
             }
         });

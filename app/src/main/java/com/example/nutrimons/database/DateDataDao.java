@@ -1,5 +1,6 @@
 package com.example.nutrimons.database;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -16,6 +17,21 @@ public interface DateDataDao {
 
     @Query("SELECT * FROM dateData WHERE date LIKE :search")
     DateData findByDate(String search);
+
+    @Query("SELECT breakfast FROM dateData WHERE date LIKE :search")
+    LiveData<List<String>> findBreakfastByDate(String search);
+
+    @Query("SELECT lunch FROM dateData WHERE date LIKE :search")
+    LiveData<List<String>> findLunchByDate(String search);
+
+    @Query("SELECT dinner FROM dateData WHERE date LIKE :search")
+    LiveData<List<String>> findDinnerByDate(String search);
+
+    @Query("SELECT snack FROM dateData WHERE date LIKE :search")
+    LiveData<List<String>> findSnackByDate(String search);
+
+    @Query("SELECT exercise FROM dateData WHERE date LIKE :search")
+    LiveData<List<String>> findExercisesByDate(String search);
 
     // UPDATE QUERIES
     // updates the breakfast column only
