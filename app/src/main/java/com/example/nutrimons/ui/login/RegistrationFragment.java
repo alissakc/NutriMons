@@ -24,6 +24,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.nutrimons.MainActivity;
 import com.example.nutrimons.R;
 import com.example.nutrimons.database.AppDatabase;
 import com.example.nutrimons.database.User;
@@ -40,7 +41,11 @@ public class RegistrationFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_registration, container, false);
+        View root = inflater.inflate(R.layout.fragment_registration, container, false);
+
+        ((MainActivity)getActivity()).setDrawer_Locked();
+
+        return root;
     }
 
     @Override
@@ -256,5 +261,11 @@ public class RegistrationFragment extends Fragment {
                     errorString,
                     Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ((MainActivity)getActivity()).setDrawer_UnLocked();
     }
 }

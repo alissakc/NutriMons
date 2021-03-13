@@ -23,6 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.nutrimons.MainActivity;
 import com.example.nutrimons.R;
 import com.example.nutrimons.database.AppDatabase;
 import com.example.nutrimons.database.Token;
@@ -39,7 +40,11 @@ public class LoginFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_login, container, false);
+        View root = inflater.inflate(R.layout.fragment_login, container, false);
+
+        ((MainActivity)getActivity()).setDrawer_Locked();
+
+        return root;
     }
 
     @Override
@@ -47,7 +52,6 @@ public class LoginFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         loginViewModel = new ViewModelProvider(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
-
         final EditText emailEditText = view.findViewById(R.id.email);
         final EditText passwordEditText = view.findViewById(R.id.password);
         final Button loginButton = view.findViewById(R.id.login);
@@ -194,5 +198,11 @@ public class LoginFragment extends Fragment {
                     errorString,
                     Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ((MainActivity)getActivity()).setDrawer_UnLocked();
     }
 }
