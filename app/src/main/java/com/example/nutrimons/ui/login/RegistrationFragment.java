@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.example.nutrimons.MainActivity;
 import com.example.nutrimons.R;
 import com.example.nutrimons.database.AppDatabase;
+import com.example.nutrimons.database.Token;
 import com.example.nutrimons.database.User;
 
 import java.util.List;
@@ -198,9 +199,11 @@ public class RegistrationFragment extends Fragment {
                 else{
                     System.out.println("INSERTING INTO DATABASE");
                     mDb.userDao().insert(user);
+                    Token t = new Token(-1);
+                    t.areTablesInitialized = true;
+                    mDb.tokenDao().insert(t);
                     Navigation.findNavController(view).navigate(R.id.action_nav_registration_to_nav_login);
                 }
-
             }
         });
     }

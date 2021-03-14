@@ -59,6 +59,21 @@ public class LoginFragment extends Fragment {
         final ProgressBar loadingProgressBar = view.findViewById(R.id.loading);
         mDb = AppDatabase.getInstance(getContext());
 
+        try
+        {
+            Token t = mDb.tokenDao().getToken();
+            if(t.userID != -1) //-1 means at least one user registered, but not logged in
+            {
+                Log.d("token found", "" + t.userID);
+                Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_home);
+            }
+        }
+        catch(NullPointerException e) //fresh database
+        {
+            Log.d("no token found", "nullptr exception");
+            Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_registration);
+        }
+
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,12 +99,15 @@ public class LoginFragment extends Fragment {
                     {
                         Token t = mDb.tokenDao().getToken();
                         t.userID = userID;
+                        t.areTablesInitialized = true;
                         Log.d("userid", "" + t.userID);
                         mDb.tokenDao().insert(t); //set token
                     }
                     catch(NullPointerException e) //fresh database
                     {
-                        mDb.tokenDao().insert(new Token(userID));
+                        Token t = new Token(userID);
+                        t.areTablesInitialized = true;
+                        mDb.tokenDao().insert(t);
                     }
                     List<Token> ts = mDb.tokenDao().getAll();
                     for(Token t0 : ts)

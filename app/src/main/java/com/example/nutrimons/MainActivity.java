@@ -1,10 +1,12 @@
 package com.example.nutrimons;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 
 import com.example.nutrimons.database.AppDatabase;
+import com.example.nutrimons.database.Token;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -48,8 +50,26 @@ public class MainActivity extends AppCompatActivity implements DrawerController 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-        NutrientTablesApi nta = new NutrientTablesApi(AppDatabase.getInstance(getApplicationContext()));
-        nta.Initialize(getAssets());
+
+        AppDatabase mDb = AppDatabase.getInstance(getApplicationContext());
+        try
+        {
+            Token t = mDb.tokenDao().getToken();
+            Log.d("tables initialized", String.valueOf(t.areTablesInitialized));
+            if(t.areTablesInitialized == false)
+            {
+                NutrientTablesApi nta = new NutrientTablesApi(mDb);
+                nta.Initialize(getAssets());
+                t.areTablesInitialized = true;
+                mDb.tokenDao().insert(t);
+            }
+        }
+        catch(NullPointerException e) //fresh database
+        {
+            Log.d("fresh tables", "true");
+            NutrientTablesApi nta = new NutrientTablesApi(mDb);
+            nta.Initialize(getAssets());
+        }
     }
 
     @Override
