@@ -57,7 +57,8 @@
                 android:layout_marginTop="48dp"
                 android:text="@string/serving_size"
                 android:textColor="@color/black"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:visibility="gone" />
 
             <EditText
                 android:id="@+id/editTextServingSize"
@@ -69,7 +70,8 @@
                 android:ems="10"
                 android:hint="@string/serving_size_edit_text"
                 android:inputType="number|text"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/servingWeight"
@@ -79,7 +81,8 @@
                 android:layout_marginTop="48dp"
                 android:text="@string/serving_weight"
                 android:textColor="@color/black"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:visibility="gone" />
 
             <EditText
                 android:id="@+id/editTextServingWeight"
@@ -89,9 +92,10 @@
                 android:layout_marginTop="16dp"
                 android:autofillHints=""
                 android:ems="10"
-                android:inputType="number|text"
                 android:hint="@string/serving_weight_edit_text"
-                android:textSize="18sp" />
+                android:inputType="number|text"
+                android:textSize="18sp"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/calories"
@@ -101,7 +105,8 @@
                 android:layout_marginTop="48dp"
                 android:text="@string/calories"
                 android:textColor="@color/black"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:visibility="gone" />
 
             <EditText
                 android:id="@+id/editTextCalories"
@@ -111,9 +116,16 @@
                 android:layout_marginTop="16dp"
                 android:autofillHints=""
                 android:ems="10"
-                android:inputType="number|text"
                 android:hint="@string/calories_per_serving"
-                android:textSize="18sp" />
+                android:inputType="number|text"
+                android:textSize="18sp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/FDCapiResponse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="apiRes" />
 
             <Button
                 android:id="@+id/submitNewMealButton"
@@ -124,6 +136,7 @@
                 android:layout_marginBottom="48dp"
                 android:text="@string/submit"
                 android:textSize="18sp" />
+
         </LinearLayout>
     </ScrollView>
 

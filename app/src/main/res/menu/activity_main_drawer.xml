@@ -5,6 +5,12 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_login"
+            android:icon="@drawable/ic_home"
+            android:title="Login"
+            android:visible="false" />
+
+        <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_home"
             android:title="@string/menu_home" />
@@ -13,73 +19,76 @@
             android:id="@+id/nav_profile"
             android:icon="@drawable/ic_person"
             android:title="@string/profile" />
+        <item
+            android:id="@+id/nav_exercise"
+            android:icon="@drawable/ic_exercise"
+            android:title="@string/exercise" />
+        <item
+            android:id="@+id/nav_tamagotchi"
+            android:icon="@drawable/ic_pet"
+            android:title="@string/tamagotchi" />
+        <item
+            android:id="@+id/nav_tamagotchiShop"
+            android:icon="@drawable/ic_shop"
+            android:title="@string/tamagotchi_shop" />
+        <item
+            android:id="@+id/nav_nutrientOverview"
+            android:icon="@drawable/ic_graph"
+            android:title="@string/nutrient_overview" />
+        <item
+            android:id="@+id/nav_nutrientInformation"
+            android:icon="@drawable/ic_info"
+            android:title="@string/nutrient_information" />
     </group>
-
-    <item android:title="@string/tamagotchi">
-        <menu>
-            <group android:checkableBehavior="single">
-                <item
-                    android:id="@+id/nav_tamagotchi"
-                    android:icon="@drawable/ic_pet"
-                    android:title="@string/tamagotchi" />
-                <item
-                    android:id="@+id/nav_tamagotchiShop"
-                    android:icon="@drawable/ic_shop"
-                    android:title="@string/tamagotchi_shop" />
-            </group>
-        </menu>
-    </item>
 
     <item android:title="@string/meal">
         <menu>
             <group android:checkableBehavior="single">
                 <item
-                    android:id="@+id/nav_meal"
-                    android:icon="@drawable/ic_meal"
-                    android:title="@string/meal" />
-                <item
                     android:id="@+id/nav_mealPlan"
                     android:icon="@drawable/ic_meal_plan"
                     android:title="@string/meal_plan" />
-                <item
-                    android:id="@+id/nav_addMeal"
-                    android:icon="@drawable/ic_add_meal"
-                    android:title="@string/add_meal" />
                 <item
                     android:id="@+id/nav_scanBarcode"
                     android:icon="@drawable/ic_qr_code"
                     android:title="@string/scan_barcode" />
                 <item
+                    android:id="@+id/nav_addMeal"
+                    android:icon="@drawable/ic_add_meal"
+                    android:title="@string/add_meal" />
+                <item
                     android:id="@+id/nav_water"
                     android:icon="@drawable/ic_mug"
                     android:title="@string/add_water" />
+                <item
+                    android:id="@+id/nav_meal"
+                    android:icon="@drawable/ic_meal"
+                    android:title="@string/meal"
+                    android:visible="false" />
             </group>
         </menu>
     </item>
-
-    <item android:title="@string/exercise">
+    <item
+        android:title="@string/tamagotchi"
+        android:visible="false">
         <menu>
-            <group android:checkableBehavior="single">
-                <item
-                    android:id="@+id/nav_exercise"
-                    android:icon="@drawable/ic_exercise"
-                    android:title="@string/exercise" />
-            </group>
+            <group android:checkableBehavior="single"></group>
         </menu>
     </item>
 
-    <item android:title="@string/nutrients">
+    <item
+        android:title="@string/exercise"
+        android:visible="false">
         <menu>
-            <group android:checkableBehavior="single">
-                <item
-                    android:id="@+id/nav_nutrientOverview"
-                    android:icon="@drawable/ic_graph"
-                    android:title="@string/nutrient_overview" />
-                <item
-                    android:id="@+id/nav_nutrientInformation"
-                    android:icon="@drawable/ic_info"
-                    android:title="@string/nutrient_information" />
-            </group>
+            <group android:checkableBehavior="single"></group>
+        </menu>
+    </item>
+
+    <item
+        android:title="@string/nutrients"
+        android:visible="false">
+        <menu>
+            <group android:checkableBehavior="single"></group>
         </menu>
     </item>
 </menu>
