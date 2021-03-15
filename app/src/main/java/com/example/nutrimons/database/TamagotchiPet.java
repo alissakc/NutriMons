@@ -13,8 +13,11 @@ public class TamagotchiPet {
     @NonNull
     public int petId;
 
+    @ColumnInfo(name = "userId")
+    public int userId;
+
     @ColumnInfo(name = "petName")
-    public int petName;
+    public String petName;
 
     @ColumnInfo(name = "level")
     public int level;
@@ -22,9 +25,18 @@ public class TamagotchiPet {
     @ColumnInfo(name = "healthLevel")
     public int healthLevel;
 
+    @ColumnInfo(name = "waterLevel")
+    public int waterLevel;
+
+    @ColumnInfo(name = "spriteId")
+    public int spriteId;
+
     public TamagotchiPet(int healthLevel)
     {
         this.healthLevel = healthLevel;
+    }
+    public TamagotchiPet()
+    {
     }
 
 }

@@ -12,6 +12,7 @@ import androidx.navigation.Navigation;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 
 import com.example.nutrimons.R;
 import com.example.nutrimons.database.AppDatabase;
+import com.example.nutrimons.database.TamagotchiPet;
 import com.example.nutrimons.database.User;
 
 import java.util.List;
@@ -193,6 +195,10 @@ public class RegistrationFragment extends Fragment {
                 else{
                     System.out.println("INSERTING INTO DATABASE");
                     mDb.userDao().insert(user);
+
+                    TamagotchiPet tama = new TamagotchiPet();
+                    tama.userId = mDb.userDao().findByEmail(user.email).userID;
+                    mDb.tamagotchiDao().insert(tama);
                     Navigation.findNavController(view).navigate(R.id.action_nav_registration_to_nav_login);
                 }
 

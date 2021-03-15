@@ -7,10 +7,12 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import android.os.Handler;
+import android.os.SystemClock;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,12 +23,16 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.nutrimons.Profile;
 import com.example.nutrimons.R;
 import com.example.nutrimons.database.AppDatabase;
 import com.example.nutrimons.database.TamagotchiPet;
 
+import java.util.List;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.stream.IntStream;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,7 +51,7 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
     private String mParam2;
 
 
-    //private AppDatabase mDb;
+    private AppDatabase mDb;
 
     //screen size
     private int screenWidth;
@@ -58,6 +64,7 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
 
     //Edit pet name
     EditText petName;
+    String name;
 
     // vars to go to store
     Button goToStore;
@@ -85,6 +92,8 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
 
     private Handler handler = new Handler();
     private Timer timer = new Timer();
+
+    int counter = 0;
 
     public Tamagotchi() {
         // Required empty public constructor
@@ -127,9 +136,25 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tamagotchi, container, false);
 
-        //mDb = AppDatabase.getInstance(getContext());
+        mDb = AppDatabase.getInstance(getContext());
+        Log.d("user", String.valueOf(mDb.tokenDao().getUserID()));
+        TamagotchiPet tama = mDb.tamagotchiDao().findByUserId(mDb.tokenDao().getUserID());
+        Log.d("health", String.valueOf(tama.healthLevel));
+        //List<TamagotchiPet> allPet =  mDb.tamagotchiDao().getAll();
 
+        //System.out.print(allPet);
+        name = tama.petName;
+        petName = view.findViewById(R.id.petName);
+        petName.setText(name);
+        petName.addTextChangedListener(new Tamagotchi.TextChangedListener<EditText>(petName, name));
+        if (name.isEmpty())
+        {
+            name = "Name";
+            TamagotchiPet tama1 = mDb.tamagotchiDao().findByUserId(mDb.tokenDao().getUserID());
+            tama1.petName = name;
+            mDb.tamagotchiDao().insert(tama1);
 
+        }
 
         goToStore = view.findViewById(R.id.storeButton);
         goToStore.setOnClickListener(this);
@@ -142,25 +167,31 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
         //feeding pet
         feedButton = view.findViewById(R.id.feedButton);
         healthBar = view.findViewById(R.id.healthBar);
-        //int health = mDb.tamagotchiDao().gethealthlevel();
-        //healthCounter = health;
-        //healthBar.setProgress(health);
+
+        healthCounter = tama.healthLevel;
+        healthBar.setProgress(healthCounter);
         feedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                healthBar.setProgress(healthCounter);
                 healthCounter++;
-                TamagotchiPet tama = new TamagotchiPet(healthCounter);
-                //mDb.tamagotchiDao().updateTamagotchi(tama);
+                //healthCounter = 0;
+                healthBar.setProgress(healthCounter);
+                tama.healthLevel = healthCounter;
+                mDb.tamagotchiDao().insert(tama);
             }
         });
 
         //giving water
         waterBar = view.findViewById(R.id.waterBar);
         waterButton = view.findViewById(R.id.waterButton);
+        waterCounter = tama.waterLevel;
+        waterBar.setProgress(waterCounter);
         waterButton.setOnClickListener(v -> {
-            waterBar.setProgress(waterCounter);
             waterCounter++;
+            //waterCounter = 0;
+            waterBar.setProgress(waterCounter);
+            tama.waterLevel = waterCounter;
+            mDb.tamagotchiDao().insert(tama);
         });
 
         TamagotchiPet = view.findViewById(R.id.TamagotchiPet);
@@ -191,8 +222,31 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
                     @Override
                     public void run() {
                         try {
+                            /*
+                            Random ran = new Random();
 
-                            changePos();
+                            if(ran.nextInt() % 2 == 0)
+                            {
+                                changePos();
+                            }
+                            */
+
+
+                            if (counter < 5)
+                            {
+                                System.out.println("STOP NOW");
+                            }
+                            else {
+
+                                changePos();
+                            }
+                            if (counter >= 10 || counter < 0)
+                            {
+                                counter = 0;
+                            }
+                            counter++;
+
+
                             TamagotchiPet.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -207,12 +261,17 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
                     }
                 });
             }
-        },0,20);
+        },0,100);
 
         return view;
     }
+    private void stopMovin()
+    {
+
+    }
+
     private void changePos() throws InterruptedException {
-        int speed = 5;
+        int speed = 20;
 
         if(TamagotchiPet.getY() < 0 ) {
             dirY = 1;
@@ -246,6 +305,42 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
 
         TamagotchiPet.setX(petX);
         TamagotchiPet.setY(petY);
+    }
+
+
+    public class TextChangedListener<T> implements TextWatcher { //https://stackoverflow.com/questions/11134144/android-edittext-onchange-listener
+        private T target;
+        private EditText et;
+        private String str;
+
+        public TextChangedListener(T target, String str) {
+            this.target = target;
+            this.str = str;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            this.onTextChanged(target, s);
+        }
+
+        public /*abstract*/ void onTextChanged(T target, Editable s)
+        {
+            //target.setText(s); //infinite loop since text now changed
+            //also set the view fields database values then replace str with a db insert
+            et = (EditText) target;
+            str = et.getText().toString();
+            name = str;
+            TamagotchiPet tama = mDb.tamagotchiDao().findByUserId(mDb.tokenDao().getUserID());
+            tama.petName = name;
+            mDb.tamagotchiDao().insert(tama);
+        }
     }
 
 

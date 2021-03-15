@@ -74,7 +74,6 @@
                     android:textColor="@color/black" />
 
 
-
             </LinearLayout>
 
             <LinearLayout
@@ -139,7 +138,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="0"
                 android:foregroundGravity="center"
-                android:src="@drawable/tamagotchi_big" />
+                android:src="@drawable/tamagotchi_pig" />
 
         </LinearLayout>
 
