@@ -31,12 +31,12 @@ public class DateData {
     public final  List<String> snack;
 
     @ColumnInfo(name="water")
-    public double water;
+    public Double water;
 
     @ColumnInfo(name="exercise")
     public final  List<String> todayExercise;
 
-    public DateData(@NonNull String date, List<String> breakfast, List<String> lunch, List<String> dinner, List<String> snack, List<String> todayExercise, double water) {
+    public DateData(@NonNull String date, List<String> breakfast, List<String> lunch, List<String> dinner, List<String> snack, List<String> todayExercise, Double water) {
         this.date = date;
         this.breakfast = breakfast;
         this.lunch = lunch;

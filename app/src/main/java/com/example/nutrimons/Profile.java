@@ -521,29 +521,28 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
         User u = mDb.userDao().findByUserID(userID);
         String pfp = u.profilePicture;
         try {
-            if(!pfp.equals(""))
+            if (!pfp.equals(""))
                 profilePicture.setImageBitmap(StringToBitMap(pfp));
+
+            switch (u.profileFocus) {
+                case "Lose Weight":
+                    profileFocus = "Lose Weight";
+                    spinner.setSelection(1); //needs refactoring to find the text from the arraylist
+                    break;
+                case "Maintain Weight":
+                    profileFocus = "Maintain Weight";
+                    spinner.setSelection(2);
+                    break;
+                case "Gain Muscle":
+                    profileFocus = "Gain Muscle";
+                    spinner.setSelection(3);
+                    break;
+                default:
+            }
         }
-        catch(NullPointerException e) { }
-
-        switch(u.profileFocus)
-        {
-            case "Lose Weight":
-                profileFocus = "Lose Weight";
-                spinner.setSelection(1); //needs refactoring to find the text from the arraylist
-                break;
-            case "Maintain Weight":
-                profileFocus = "Maintain Weight";
-                spinner.setSelection(2);
-                break;
-            case "Gain Muscle":
-                profileFocus = "Gain Muscle";
-                spinner.setSelection(3);
-                break;
-            default:
-
+        catch(NullPointerException e) {
+            Log.d("nullpointer exception", "userid: " + mDb.tokenDao().getUserID() + " not found");
         }
-
         name = u.name;
         email = u.email;
         password = u.password;

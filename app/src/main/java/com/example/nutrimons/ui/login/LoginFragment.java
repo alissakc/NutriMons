@@ -23,6 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.nutrimons.MainActivity;
 import com.example.nutrimons.R;
 import com.example.nutrimons.database.AppDatabase;
 import com.example.nutrimons.database.Token;
@@ -39,7 +40,11 @@ public class LoginFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_login, container, false);
+        View root = inflater.inflate(R.layout.fragment_login, container, false);
+
+        ((MainActivity)getActivity()).setDrawer_Locked();
+
+        return root;
     }
 
     @Override
@@ -47,13 +52,27 @@ public class LoginFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         loginViewModel = new ViewModelProvider(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
-
         final EditText emailEditText = view.findViewById(R.id.email);
         final EditText passwordEditText = view.findViewById(R.id.password);
         final Button loginButton = view.findViewById(R.id.login);
         final Button registerButton = view.findViewById(R.id.registerButton);
         final ProgressBar loadingProgressBar = view.findViewById(R.id.loading);
         mDb = AppDatabase.getInstance(getContext());
+
+        try
+        {
+            Token t = mDb.tokenDao().getToken();
+            if(t.userID != -1) //-1 means at least one user registered, but not logged in
+            {
+                Log.d("token found", "" + t.userID);
+                Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_home);
+            }
+        }
+        catch(NullPointerException e) //fresh database
+        {
+            Log.d("no token found", "nullptr exception");
+            Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_registration);
+        }
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,12 +99,15 @@ public class LoginFragment extends Fragment {
                     {
                         Token t = mDb.tokenDao().getToken();
                         t.userID = userID;
+                        t.areTablesInitialized = true;
                         Log.d("userid", "" + t.userID);
                         mDb.tokenDao().insert(t); //set token
                     }
                     catch(NullPointerException e) //fresh database
                     {
-                        mDb.tokenDao().insert(new Token(userID));
+                        Token t = new Token(userID);
+                        t.areTablesInitialized = true;
+                        mDb.tokenDao().insert(t);
                     }
                     List<Token> ts = mDb.tokenDao().getAll();
                     for(Token t0 : ts)
@@ -194,5 +216,11 @@ public class LoginFragment extends Fragment {
                     errorString,
                     Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ((MainActivity)getActivity()).setDrawer_UnLocked();
     }
 }

@@ -15,6 +15,9 @@ public class Token {
     @ColumnInfo(name = "userID")
     public int userID;
 
+    @ColumnInfo(name = "areTablesInitialized")
+    public boolean areTablesInitialized;
+
     public Token(int userID)
     {
         this.userID = userID;

@@ -1,6 +1,7 @@
 package com.example.nutrimons.database;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -19,19 +20,29 @@ public interface DateDataDao {
     DateData findByDate(String search);
 
     @Query("SELECT breakfast FROM dateData WHERE date LIKE :search")
-    LiveData<List<String>> findBreakfastByDate(String search);
+    //LiveData<List<String>> findBreakfastByDate(String search);
+    List<String> findBreakfastByDate(String search);
 
     @Query("SELECT lunch FROM dateData WHERE date LIKE :search")
-    LiveData<List<String>> findLunchByDate(String search);
+    //LiveData<List<String>> findLunchByDate(String search);
+    List<String> findLunchByDate(String search);
 
     @Query("SELECT dinner FROM dateData WHERE date LIKE :search")
-    LiveData<List<String>> findDinnerByDate(String search);
+    //LiveData<List<String>> findDinnerByDate(String search);
+    List<String> findDinnerByDate(String search);
 
     @Query("SELECT snack FROM dateData WHERE date LIKE :search")
-    LiveData<List<String>> findSnackByDate(String search);
+    //LiveData<List<String>> findSnackByDate(String search);
+    List<String> findSnackByDate(String search);
 
     @Query("SELECT exercise FROM dateData WHERE date LIKE :search")
-    LiveData<List<String>> findExercisesByDate(String search);
+    //iveData<List<String>> findExercisesByDate(String search);
+    List<String> findExercisesByDate(String search);
+
+
+    @Query("SELECT water FROM dateData WHERE date LIKE :search")
+    List<Double> findWaterByDate(String search);
+
 
     // UPDATE QUERIES
     // updates the breakfast column only
