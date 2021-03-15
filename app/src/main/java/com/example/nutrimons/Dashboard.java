@@ -48,7 +48,7 @@ import java.util.TimerTask;
  * Use the {@link Dashboard#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Dashboard extends Fragment implements View.OnClickListener {
+public class Dashboard extends Fragment  {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -168,10 +168,10 @@ public class Dashboard extends Fragment implements View.OnClickListener {
         mDb = AppDatabase.getInstance(getContext());
 
         // Button and image initialization
-        gotToProfile = view.findViewById(R.id.imageProfile);
-        goToMeal = view.findViewById(R.id.dashboardAddMeal);
-        goToWater = view.findViewById(R.id.dashboardAddWater);
-        goToExercise = view.findViewById(R.id.dashboardAddExercise);
+//        gotToProfile = view.findViewById(R.id.imageProfile);
+//        goToMeal = view.findViewById(R.id.dashboardAddMeal);
+//        goToWater = view.findViewById(R.id.dashboardAddWater);
+//        goToExercise = view.findViewById(R.id.dashboardAddExercise);
         factTextView = view.findViewById(R.id.textViewFunFactText);
 
         //create and show the piechart for calories
@@ -186,10 +186,10 @@ public class Dashboard extends Fragment implements View.OnClickListener {
         prepareChartData(data);
 
         // assign listener for buttons
-        gotToProfile.setOnClickListener(this);
-        goToMeal.setOnClickListener(this);
-        goToWater.setOnClickListener(this);
-        goToExercise.setOnClickListener(this);
+//        gotToProfile.setOnClickListener(this);
+//        goToMeal.setOnClickListener(this);
+//        goToWater.setOnClickListener(this);
+//        goToExercise.setOnClickListener(this);
 
         updateFact();
 
@@ -304,23 +304,23 @@ public class Dashboard extends Fragment implements View.OnClickListener {
         }
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case (R.id.imageProfile):
-                Navigation.findNavController(v).navigate(R.id.action_nav_dashboard_to_nav_profile);
-                break;
-            case (R.id.dashboardAddMeal):
-                Navigation.findNavController(v).navigate(R.id.action_nav_dashboard_to_nav_meal);
-                break;
-            case (R.id.dashboardAddWater):
-                Navigation.findNavController(v).navigate(R.id.action_nav_dashboard_to_nav_water);
-                break;
-            case (R.id.dashboardAddExercise):
-                Navigation.findNavController(v).navigate(R.id.action_nav_dashboard_to_nav_exercise);
-                break;
-        }
-    }
+//    @Override
+//    public void onClick(View v) {
+//        switch (v.getId()) {
+//            case (R.id.imageProfile):
+//                Navigation.findNavController(v).navigate(R.id.action_nav_dashboard_to_nav_profile);
+//                break;
+//            case (R.id.dashboardAddMeal):
+//                Navigation.findNavController(v).navigate(R.id.action_nav_dashboard_to_nav_meal);
+//                break;
+//            case (R.id.dashboardAddWater):
+//                Navigation.findNavController(v).navigate(R.id.action_nav_dashboard_to_nav_water);
+//                break;
+//            case (R.id.dashboardAddExercise):
+//                Navigation.findNavController(v).navigate(R.id.action_nav_dashboard_to_nav_exercise);
+//                break;
+//        }
+//    }
 
     private void updateFact() {
         Random rand = new Random();
