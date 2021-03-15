@@ -147,14 +147,22 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
         petName = view.findViewById(R.id.petName);
         petName.setText(name);
         petName.addTextChangedListener(new Tamagotchi.TextChangedListener<EditText>(petName, name));
-        if (name.isEmpty())
+
+        if (name == null)
+        {
+                name = "Name";
+                TamagotchiPet tama1 = mDb.tamagotchiDao().findByUserId(mDb.tokenDao().getUserID());
+                tama1.petName = name;
+                mDb.tamagotchiDao().insert(tama1);
+        }
+        else if (name.isEmpty())
         {
             name = "Name";
             TamagotchiPet tama1 = mDb.tamagotchiDao().findByUserId(mDb.tokenDao().getUserID());
             tama1.petName = name;
             mDb.tamagotchiDao().insert(tama1);
-
         }
+
 
         goToStore = view.findViewById(R.id.storeButton);
         goToStore.setOnClickListener(this);
