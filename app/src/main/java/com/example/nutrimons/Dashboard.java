@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +39,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -70,6 +74,10 @@ public class Dashboard extends Fragment implements View.OnClickListener {
     int currentIndex;
 
     private TextView factTextView;
+    int tenSec = 10000;
+    Handler handler = new Handler();
+    Runnable runnable;
+
 
     // vars for calendar
     private TextView currentDate;
@@ -90,6 +98,32 @@ public class Dashboard extends Fragment implements View.OnClickListener {
             "Popsicles were invented by accident.",
             "Bird saliva is a delicacy in China.",
             "Coffee beans can help eliminate bad breath.",
+            "Green, yellow, and red bell peppers are not actually the same vegetable.",
+            "Many shredded cheeses and cereals contain cellulose (wood pulp).",
+            "Ketchup was once believed to have medicinal qualities that could cure, among other ailments, diarrhea.",
+            "A typical ear of corn has an even number of rows.",
+            "One burger patty can contain hundreds of different cows.",
+            "Scientists can turn peanut butter into diamonds.",
+            "Fruit snacks and cars are coated in the same type of wax.",
+            "Ripe cranberries will bounce like rubber balls.",
+            "An 11-year-old invented the Popsicle by accident.",
+            "Farm-raised salmon is naturally white and then dyed pink.",
+            "Apple pie is not American.",
+            "Potatoes can absorb and reflect Wi-fi signals.",
+            "Raw oysters are still alive when you eat them.",
+            "Every banana you eat is a clone.",
+            "In fact, bananas are technically berries — and strawberries are not.",
+            "Before being domesticated, chickens only produced about a dozen eggs a year. Now they can produce hundreds.",
+            "Honey will never ever go bad.",
+            "Carrots were originally purple.",
+            "Most wasabi is actually just dyed horseradish.",
+            "People once thought tomatoes were poisonous.",
+            "Grapes will explode if you put them in the microwave.",
+            "Crackers will give you cavities faster than candy.",
+            "Eating too much nutmeg has the effect of a hallucinogenic drug.",
+            "Chicken wings were considered throwaway parts before Buffalo wings were invented.",
+            "Processed cheese was invented in Switzerland, not America.",
+            "Chili peppers contain a chemical that tricks your mouth into \"thinking\" it's being burned — that's why spicy food hurts so much.",
     };
 
     private AppDatabase mDb;
@@ -159,6 +193,13 @@ public class Dashboard extends Fragment implements View.OnClickListener {
 
         updateFact();
 
+        handler.postDelayed(runnable = new Runnable() {
+            public void run() {
+                handler.postDelayed(runnable, tenSec);
+                updateFact();
+            }
+        }, tenSec);
+
         // calendar
         currentDate = view.findViewById(R.id.currentDateTextView);
         Bundle bundle = this.getArguments();
@@ -210,8 +251,6 @@ public class Dashboard extends Fragment implements View.OnClickListener {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-
-
             }
         });
 
@@ -241,6 +280,7 @@ public class Dashboard extends Fragment implements View.OnClickListener {
     @Override
     public void onResume()
     {
+
         super.onResume();
         View v = getView().findViewById(R.id.fragment_dashboard);
 
@@ -283,7 +323,8 @@ public class Dashboard extends Fragment implements View.OnClickListener {
     }
 
     private void updateFact() {
-        currentIndex = (currentIndex+1) % factBank.length;
+        Random rand = new Random();
+        currentIndex = rand.nextInt(factBank.length);
         String factTextResId = factBank[currentIndex];
         factTextView.setText(factTextResId);
     }

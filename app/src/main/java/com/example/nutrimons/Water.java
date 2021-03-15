@@ -4,8 +4,11 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +16,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.nutrimons.database.AppDatabase;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,13 +35,20 @@ import java.util.Map;
 public class Water extends Fragment implements View.OnClickListener{
     // Variables for pie chart
     PieChart waterPieChart;
-    private double amountDrank = 100.0;
-    private double amountNeeded = 20.0;
-    private double inputAmount;
+    private Double amountDrank = 0.0;
+    private Double amountNeeded = 120.0;
+    private Double inputAmount;
 
     EditText waterAmountInput;
     Button submitWater;
     Button unitChange;
+
+
+    SimpleDateFormat Date;
+    String dateString;
+    long date;
+    // creates instance of database
+    private AppDatabase mDb;
 
     // Required empty public constructor
     public Water() {
@@ -53,18 +66,96 @@ public class Water extends Fragment implements View.OnClickListener{
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_water, container, false);
         waterPieChart = view.findViewById(R.id.waterPieChart_view);
-
-        waterAmountInput = view.findViewById(R.id.waterAmountInputBox);
         submitWater = view.findViewById(R.id.waterSubmitButton);
         submitWater.setOnClickListener(this);
+        waterAmountInput = view.findViewById(R.id.waterAmountInputBox);
         unitChange = view.findViewById(R.id.unitChangeButton);
         unitChange.setOnClickListener(this);
+        //Toast.makeText(getContext(), "dateString.getClass().getName()", Toast.LENGTH_SHORT).show();
+
+//        // database
+        mDb = AppDatabase.getInstance(getContext());
+
+        long date = System.currentTimeMillis();
+        SimpleDateFormat Date = new SimpleDateFormat("MM/dd/yyyy");
+        String dateString = Date.format(date);
+        Log.d("WaterDateString", dateString);
+        Log.d("WaterDateString", String.valueOf(dateString.equals("03/13/2021")));
+
+
+//        com.example.nutrimons.database.DateData dateTest = new com.example.nutrimons.database.DateData(dateString, new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), 1.1);
+//        com.example.nutrimons.database.DateData nullDateTest = null;
+//        com.example.nutrimons.database.DateData obj1 = new com.example.nutrimons.database.DateData(dateString, new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), 1.1);
+//        com.example.nutrimons.database.DateData obj2 = new com.example.nutrimons.database.DateData(dateString, new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), 1.1);
+//        //com.example.nutrimons.database.DateData findByObj = mDb.dateDataDao().findByDate(dateString);
+//        if (dateTest == null){
+//            Log.d("WaterDateString", "dateObject: NULL");
+//        } else if (dateTest != null){
+//            Log.d("WaterDateString", "dateObject: NOT NULL");
+//        }
+//
+//        if (nullDateTest == null){
+//            Log.d("WaterDateString", "dateObjectNull: NULL");
+//        } else if (nullDateTest != null){
+//            Log.d("WaterDateString", "dateObjectNullNOT NULL");
+//        }
+//
+//
+//        if (obj1 == obj2){
+//            Log.d("WaterDateString", "Obj: Equal");
+//        } else if (obj1 != obj2){
+//            Log.d("WaterDateString", "Obj: NOT EQUAL");
+//        }
+
+        // FIND BY
+//        if(mDb.dateDataDao().findByDate(dateString) == null){
+//            Log.d("WaterDateString", "FindBy: NULL");
+//        } else{
+//            Log.d("WaterDateString", "FindBy: NOT NULL");
+//        }
+
+        if(mDb.dateDataDao().findByDate(dateString) == null){
+            amountDrank = 0.0;
+            amountNeeded = 120.0;
+        }else {
+            List<Double> temp = (List<Double>)mDb.dateDataDao().findWaterByDate(dateString);
+            amountDrank = ((Double)temp.get(0) == null) ? 0.0 : (Double)temp.get(0);
+            amountNeeded -= amountDrank;
+        }
+//        try{
+//            List<Double> temp = (List<Double>)mDb.dateDataDao().findWaterByDate(dateString);
+//            amountDrank = ((Double)temp.get(0) == null) ? 0.0 : (Double)temp.get(0);
+//            amountNeeded -= amountDrank;
+//        } catch(NullPointerException e) {
+//            amountDrank = 0.0;
+//            amountNeeded = 120.0;
+//        }
         initPieChart();
         showPieChart(); // this method has to go after unitChange because it uses unitChange
 
+
+
         return view;
     }
-
+//    @Override
+//    public void onResume() {
+//        // database
+//        date = System.currentTimeMillis();
+//        Date = new SimpleDateFormat("MM/dd/yyyy");
+//        dateString = Date.format(date);
+//        Toast.makeText(getContext(), dateString.getClass().getName(), Toast.LENGTH_SHORT).show();
+//
+//        if(mDb.dateDataDao().findByDate(dateString) == null){
+//            amountDrank = 0.0;
+//            amountNeeded = 120.0;
+//        }else {
+//            List<Double> temp = (List<Double>)mDb.dateDataDao().findWaterByDate(dateString);
+//            amountDrank = ((Double)temp.get(0) == null) ? 0.0 : (Double)temp.get(0);
+//            amountNeeded -= amountDrank;
+//        }
+//        super.onResume();
+//
+//    }
     /**
      * Warning toast to the user when they enter in an invalid option for the input text.
      */
@@ -92,7 +183,7 @@ public class Water extends Fragment implements View.OnClickListener{
 
         //initializing data
         Map<String, Double> typeAmountMap = new HashMap<>();
-        typeAmountMap.put("Consumed",amountDrank);
+        typeAmountMap.put("Consumed", amountDrank);
         if (amountNeeded > 0) {
             typeAmountMap.put("Needed", amountNeeded);
         }
@@ -196,9 +287,25 @@ public class Water extends Fragment implements View.OnClickListener{
         switch (v.getId()) {
             case (R.id.waterSubmitButton):
                 try {
-
                     inputAmount = Double.parseDouble(waterAmountInput.getText().toString());
                     amountDrank += inputAmount;
+                    long date = System.currentTimeMillis();
+                    SimpleDateFormat Date = new SimpleDateFormat("MM/dd/yyyy");
+                    String dateString = Date.format(date);
+                    if(mDb.dateDataDao().findByDate(dateString) == null){
+                        final com.example.nutrimons.database.DateData dateData = new com.example.nutrimons.database.DateData(dateString, new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(),amountDrank);
+                        mDb.dateDataDao().insert(dateData);
+                    }
+                    else{
+                        final com.example.nutrimons.database.DateData dateData = new com.example.nutrimons.database.DateData(dateString,
+                                mDb.dateDataDao().findByDate(dateString).breakfast,
+                                mDb.dateDataDao().findByDate(dateString).lunch,
+                                mDb.dateDataDao().findByDate(dateString).dinner,
+                                mDb.dateDataDao().findByDate(dateString).snack,
+                                mDb.dateDataDao().findByDate(dateString).todayExercise, amountDrank);
+                        mDb.dateDataDao().updateDateData(dateData);
+                        //mDb.dateDataDao().updateMealPlan(selectedBreakfast, selectedLunch, selectedDinner, selectedSnack, dateString);
+                    }
                     amountNeeded = Math.max(0, amountNeeded - inputAmount);
                     initPieChart();
                     showPieChart();
