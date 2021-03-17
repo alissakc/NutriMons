@@ -178,8 +178,8 @@
     <fragment
         android:id="@+id/nav_addFromFDC"
         android:name="com.example.nutrimons.AddFromFDC"
-        android:label="fragment_add_from_fdc"
-        tools:layout="@layout/fragment_add_from_fdc" >
+        android:label="Food Data Central"
+        tools:layout="@layout/fragment_add_from_fdc">
         <action
             android:id="@+id/action_nav_addFromFDC_to_nav_mealPlan"
             app:destination="@id/nav_mealPlan" />

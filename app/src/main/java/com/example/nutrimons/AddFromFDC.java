@@ -107,10 +107,10 @@ public class AddFromFDC extends Fragment {
     private JsonObjectRequest callFDCapi(String searchString, TextView tv, boolean isBranded) //ref: https://fdc.nal.usda.gov/api-guide.html
     {
         String searchURL = QUERY_HEADER + FDC_API_KEY /*+ QUERY_MIDDLE + searchString*/;
-        //example: https://api.nal.usda.gov/fdc/v1/foods/search?api_key=DEMO_KEY&query=apple
+        //example: https://api.nal.usda.gov/fdc/v1/foods/search?api_key=DEMO_KEY&query=applesauce
         Log.d("searchURL", searchURL);
-        JSONObject jsonBody = new JSONObject(); //per FoodListCriteria https://fdc.nal.usda.gov/api-spec/fdc_api.html#/
-        try{
+        JSONObject jsonBody = new JSONObject();
+        try{ //per FoodListCriteria https://fdc.nal.usda.gov/api-spec/fdc_api.html#/
             jsonBody.put("query", searchString);
             if(isBranded)
                 jsonBody.put("dataType", new JSONArray(new Object[]{"Foundation", "Survey", "Branded", "SR Legacy"}));
@@ -167,7 +167,6 @@ public class AddFromFDC extends Fragment {
                         error.printStackTrace();
                     }
                 })
-
         {
             @Override //change http header per OFF api READ operations request
             public Map<String, String> getHeaders() throws AuthFailureError {
