@@ -292,4 +292,7 @@
     <string name="save">Save</string>
     <string name="save_workout">Save Workout</string>
     <string name="oz">oz</string>
+
+    <string name="checkboxBranded">Branded</string>
+    <string name="searchFDC">Search</string>
 </resources>

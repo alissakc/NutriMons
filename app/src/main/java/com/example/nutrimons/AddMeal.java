@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,10 +19,14 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.example.nutrimons.database.AppDatabase;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -43,7 +48,7 @@ public class AddMeal extends Fragment {
     private String mParam2;
 
     // vars
-    private Button addButton;
+    private Button addButton, searchFDCButton;
     private String mealName;
     private int servingSize, servingWeight, caloriesPerServing;
     private EditText mealNameText, servingSizeText, servingWeightText, caloriesPerServingText;
@@ -55,6 +60,9 @@ public class AddMeal extends Fragment {
     private final String QUERY_HEADER = "https://api.nal.usda.gov/fdc/v1/foods/search?api_key=";
     private final String QUERY_MIDDLE = "&query=";
     private RequestQueue queue;
+
+    private View checkboxbrandedButton;
+    private boolean isBranded;
 
     public AddMeal() {
         // Required empty public constructor
@@ -98,14 +106,39 @@ public class AddMeal extends Fragment {
 
         // Button initialization
         addButton = view.findViewById(R.id.submitNewMealButton);
+        searchFDCButton = view.findViewById(R.id.searchFDCButton);
 
         // new meal
         mealNameText = (EditText) view.findViewById(R.id.editTextFoodName);
-        /*servingSizeText = (EditText) view.findViewById(R.id.editTextServingSize);
+        servingSizeText = (EditText) view.findViewById(R.id.editTextServingSize);
         servingWeightText = (EditText) view.findViewById(R.id.editTextServingWeight);
-        caloriesPerServingText = (EditText) view.findViewById(R.id.editTextCalories);*/
+        caloriesPerServingText = (EditText) view.findViewById(R.id.editTextCalories);
+
+        checkboxbrandedButton = (CompoundButton) view.findViewById(R.id.checkboxBranded);
+        checkboxbrandedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(((CompoundButton) view).isChecked()){
+                    isBranded = true;
+                } else {
+                    isBranded = false;
+                }
+            }
+        });
 
         queue = Volley.newRequestQueue(getContext());
+
+        searchFDCButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mealName = mealNameText.getText().toString();
+
+                queue.cancelAll(mealName);
+                TextView tv = view.findViewById(R.id.FDCapiResponse);
+                JsonObjectRequest JSONoReq = callFDCapi(mealName, tv);
+                queue.add(JSONoReq);
+            }
+        });
 
         //assign listener
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -113,40 +146,46 @@ public class AddMeal extends Fragment {
             public void onClick(View v) {
                 //Toast.makeText(getContext(), "Created entry", Toast.LENGTH_SHORT).show();
                 mealName = mealNameText.getText().toString();
-                /*servingSize = Integer.parseInt(servingSizeText.getText().toString());
+                servingSize = Integer.parseInt(servingSizeText.getText().toString());
                 servingWeight = Integer.parseInt(servingWeightText.getText().toString());
-                caloriesPerServing = Integer.parseInt(caloriesPerServingText.getText().toString());*/
+                caloriesPerServing = Integer.parseInt(caloriesPerServingText.getText().toString());
 
                 final com.example.nutrimons.database.Meal meal = new com.example.nutrimons.database.Meal(mealName, servingSize, servingWeight, caloriesPerServing);
-                //mDb.mealDao().insert(meal);
-
-                queue.cancelAll(mealName);
-                TextView tv = view.findViewById(R.id.FDCapiResponse);
-                StringRequest strReq = callFDCapi(mealName, tv);
-                queue.add(strReq);
+                mDb.mealDao().insert(meal);
 
                 // navigates to meal plan
-                //Navigation.findNavController(view).navigate(R.id.action_nav_addMeal_to_nav_mealPlan);
+                Navigation.findNavController(view).navigate(R.id.action_nav_addMeal_to_nav_mealPlan);
             }
         });
 
         return view;
     }
 
-    private StringRequest callFDCapi(String searchString, TextView tv) //ref: https://fdc.nal.usda.gov/api-guide.html
+    private JsonObjectRequest callFDCapi(String searchString, TextView tv) //ref: https://fdc.nal.usda.gov/api-guide.html
     {
         String searchURL = QUERY_HEADER + FDC_API_KEY + QUERY_MIDDLE + searchString;
         //example: https://api.nal.usda.gov/fdc/v1/foods/search?api_key=DEMO_KEY&query=apple
         Log.d("searchURL", searchURL);
+        JSONObject jsonBody = new JSONObject(); //per FoodListCriteria https://fdc.nal.usda.gov/api-spec/fdc_api.html#/
+        try{
+            jsonBody.put("query", searchString);
+            if(isBranded)
+                jsonBody.put("dataType", new JSONArray(new Object[]{"Foundation", "Survey", "Branded", "SR Legacy"}));
+            else
+                jsonBody.put("dataType", new JSONArray(new Object[]{"Foundation", "Survey", "SR Legacy"}));
+            jsonBody.put("requireAllWords", true);
+        }
+        catch(JSONException e) { e.printStackTrace(); }
+        Log.d("branded", String.valueOf(isBranded));
 
-        return new StringRequest(Request.Method.GET, searchURL,
-                new Response.Listener<String>() {
+        return new JsonObjectRequest(Request.Method.POST, searchURL, jsonBody,
+                new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(String response) {
+                    public void onResponse(JSONObject response) {
                         // try/catch block for returned JSON data
                         // see API's documentation for returned format
                         try {
-                            tv.setText(response); //ref: https://fdc.nal.usda.gov/api-spec/fdc_api.html#/FDC/getFoodsSearch
+                            tv.setText(response.toString()); //ref: https://fdc.nal.usda.gov/api-spec/fdc_api.html#/FDC/getFoodsSearch
                             Toast.makeText(getContext(), "api request sent response", Toast.LENGTH_SHORT).show();
 
                             // catch for the JSON parsing error
@@ -163,8 +202,10 @@ public class AddMeal extends Fragment {
                     public void onErrorResponse(VolleyError error) {
                         // display a simple message on the screen
                         Toast.makeText(getContext(), "api not responding", Toast.LENGTH_SHORT).show();
+                        error.printStackTrace();
                     }
                 })
+
         {
             @Override //change http header per OFF api READ operations request
             public Map<String, String> getHeaders() throws AuthFailureError {
