@@ -137,7 +137,8 @@
                 android:id="@+id/FDCapiResponse"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="apiRes" />
+                android:text="apiRes"
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/submitNewMealButton"

@@ -3,6 +3,7 @@ package com.example.nutrimons;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
 
 import android.util.Log;
@@ -12,24 +13,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 import com.example.nutrimons.database.AppDatabase;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -55,11 +40,6 @@ public class AddMeal extends Fragment {
 
     // creates instance of database
     private AppDatabase mDb;
-
-    private final String FDC_API_KEY = "5k1NBU6Op8fHuzi1DBBG3rIAKT7SZuUFLoKpw6Fc";
-    private final String QUERY_HEADER = "https://api.nal.usda.gov/fdc/v1/foods/search?api_key=";
-    private final String QUERY_MIDDLE = "&query=";
-    private RequestQueue queue;
 
     private View checkboxbrandedButton;
     private boolean isBranded;
@@ -126,17 +106,27 @@ public class AddMeal extends Fragment {
             }
         });
 
-        queue = Volley.newRequestQueue(getContext());
-
         searchFDCButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mealName = mealNameText.getText().toString();
+                Log.d("mealname", mealName);
 
-                queue.cancelAll(mealName);
-                TextView tv = view.findViewById(R.id.FDCapiResponse);
-                JsonObjectRequest JSONoReq = callFDCapi(mealName, tv);
-                queue.add(JSONoReq);
+                /*//FragmentManager fm = getFragmentManager();
+                AddFromFDC fragment = new AddFromFDC();
+                //Fragment addFromFDC = new Fragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("mealName", mealName);
+                bundle.putBoolean("isBranded", isBranded);
+                //addFromFDC.setArguments(bundle);
+                fragment.setArguments(bundle);
+                /*fm.beginTransaction()
+                        .replace(placeholder, fragment, tabId)
+                        .commit();*/
+                AddFromFDC fragment = new AddFromFDC();
+                fragment.mealName = mealName;
+                fragment.isBranded = isBranded;
+                Navigation.findNavController(view).navigate(R.id.nav_addFromFDC);
             }
         });
 
@@ -159,61 +149,5 @@ public class AddMeal extends Fragment {
         });
 
         return view;
-    }
-
-    private JsonObjectRequest callFDCapi(String searchString, TextView tv) //ref: https://fdc.nal.usda.gov/api-guide.html
-    {
-        String searchURL = QUERY_HEADER + FDC_API_KEY + QUERY_MIDDLE + searchString;
-        //example: https://api.nal.usda.gov/fdc/v1/foods/search?api_key=DEMO_KEY&query=apple
-        Log.d("searchURL", searchURL);
-        JSONObject jsonBody = new JSONObject(); //per FoodListCriteria https://fdc.nal.usda.gov/api-spec/fdc_api.html#/
-        try{
-            jsonBody.put("query", searchString);
-            if(isBranded)
-                jsonBody.put("dataType", new JSONArray(new Object[]{"Foundation", "Survey", "Branded", "SR Legacy"}));
-            else
-                jsonBody.put("dataType", new JSONArray(new Object[]{"Foundation", "Survey", "SR Legacy"}));
-            jsonBody.put("requireAllWords", true);
-        }
-        catch(JSONException e) { e.printStackTrace(); }
-        Log.d("branded", String.valueOf(isBranded));
-
-        return new JsonObjectRequest(Request.Method.POST, searchURL, jsonBody,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // try/catch block for returned JSON data
-                        // see API's documentation for returned format
-                        try {
-                            tv.setText(response.toString()); //ref: https://fdc.nal.usda.gov/api-spec/fdc_api.html#/FDC/getFoodsSearch
-                            Toast.makeText(getContext(), "api request sent response", Toast.LENGTH_SHORT).show();
-
-                            // catch for the JSON parsing error
-                        } catch (Exception e/*JSONException e*/) {
-                            //Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
-                            Toast.makeText(getContext(), "error with api response", Toast.LENGTH_SHORT).show();
-                        }
-                    } // public void onResponse(String response)
-                }, // Response.Listener<String>()
-                new Response.ErrorListener() {
-                    // 4th param - method onErrorResponse lays the code procedure of error return
-                    // ERROR
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // display a simple message on the screen
-                        Toast.makeText(getContext(), "api not responding", Toast.LENGTH_SHORT).show();
-                        error.printStackTrace();
-                    }
-                })
-
-        {
-            @Override //change http header per OFF api READ operations request
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String>  params = new HashMap<String, String>();
-                params.put("UserAgent: NutriMons - Android - Version 0.0 - https://github.com/alissakc/NutriMons", "CSULB CECS 491: BAMM");
-
-                return params;
-            }
-        };
     }
 }

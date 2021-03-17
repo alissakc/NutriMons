@@ -52,11 +52,14 @@
         android:label="Add Meal"
         tools:layout="@layout/fragment_add_meal">
         <action
-            android:id="@+id/action_addMeal_to_meal2"
+            android:id="@+id/action_addMeal_to_meal"
             app:destination="@id/nav_meal" />
         <action
             android:id="@+id/action_nav_addMeal_to_nav_mealPlan"
             app:destination="@id/nav_mealPlan" />
+        <action
+            android:id="@+id/action_nav_addMeal_to_addFromFDC2"
+            app:destination="@id/nav_addFromFDC" />
     </fragment>
     <fragment
         android:id="@+id/nav_scanBarcode"
@@ -171,5 +174,14 @@
         <action
             android:id="@+id/action_nav_dailyInfo_to_nav_home"
             app:destination="@id/nav_home" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_addFromFDC"
+        android:name="com.example.nutrimons.AddFromFDC"
+        android:label="fragment_add_from_fdc"
+        tools:layout="@layout/fragment_add_from_fdc" >
+        <action
+            android:id="@+id/action_nav_addFromFDC_to_nav_mealPlan"
+            app:destination="@id/nav_mealPlan" />
     </fragment>
 </navigation>
