@@ -1,13 +1,24 @@
 package com.example.nutrimons;
 
+import android.app.ActionBar;
+import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+import androidx.room.util.TableInfo;
 
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.LinearLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,12 +30,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.nutrimons.database.AppDatabase;
-import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,8 +63,52 @@ public class AddFromFDC extends Fragment {
 
     private final String FDC_API_KEY = "5k1NBU6Op8fHuzi1DBBG3rIAKT7SZuUFLoKpw6Fc";
     private final String QUERY_HEADER = "https://api.nal.usda.gov/fdc/v1/foods/search?api_key=";
-    private final String QUERY_MIDDLE = "&query=";
+    //private final String QUERY_MIDDLE = "&query=";
     private RequestQueue queue;
+
+    private class foodRow
+    {
+        public com.example.nutrimons.database.Meal food;
+        public Button selectButton, detailsButton;
+        public boolean isDetailsOpen;
+        public TextView text;
+
+        public foodRow(com.example.nutrimons.database.Meal food, Button selectButton, Button detailsButton, TextView text)
+        {
+            this.food = food;
+            this.selectButton = selectButton;
+            this.selectButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    try{
+                        mDb.mealDao().insert(food);
+                        Navigation.findNavController(view).navigate(R.id.action_nav_addFromFDC_to_nav_mealPlan);
+                    }
+                    catch(SQLiteConstraintException e)
+                    {
+                        Toast.makeText(getContext(), "You already have this in your Meal Plan", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+            this.detailsButton = detailsButton;
+            this.detailsButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(isDetailsOpen){
+                        text.setText(food.mealName);
+                        isDetailsOpen = false;
+                    } else {
+                        text.setText(food.toTextViewString());
+                        isDetailsOpen = true;
+                    }
+                }
+            });
+            this.text = text;
+            this.isDetailsOpen = false;
+        }
+    }
+
+    private ArrayList<foodRow> foodRows = new ArrayList<>();
 
     public AddFromFDC() {
         // Required empty public constructor
@@ -121,6 +176,9 @@ public class AddFromFDC extends Fragment {
         catch(JSONException e) { e.printStackTrace(); }
         Log.d("branded", String.valueOf(isBranded));
 
+        HashMap<String, String> nutrientsOfInterest = generateNutrientsOfInterest();
+        TableLayout table = (TableLayout) v.findViewById(R.id.tableFDC);
+
         return new JsonObjectRequest(Request.Method.POST, searchURL, jsonBody,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -139,14 +197,48 @@ public class AddFromFDC extends Fragment {
                                 String foodName = foodArray.getJSONObject(i).getString("description");
                                 Log.d("food " + i, foodName);
 
+                                TableRow row = new TableRow(getContext());
+                                TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
+                                row.setLayoutParams(lp);
+
+                                Button button = new Button(getContext());
+                                //button.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
+                                button.setText(String.valueOf(i + 1));
+                                row.addView(button);
+
+                                TextView name = new TextView(getContext());
+                                //name.setLayoutParams(new TableRow.LayoutParams(new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 10)));
+                                name.setText(foodName);
+                                name.setEms(12);
+                                name.setGravity(Gravity.CENTER_HORIZONTAL);
+                                row.addView(name);
+
+                                Button details = new Button(getContext());
+                                //details.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
+                                details.setText("<<");
+                                row.addView(details);
+
+                                table.addView(row, i + 1);
+
+                                com.example.nutrimons.database.Meal food = new com.example.nutrimons.database.Meal(foodName, 1, 1, 1);
+
                                 JSONArray foodNutrients = foodArray.getJSONObject(i).getJSONArray("foodNutrients");
                                 Log.d("Number of food nutrients", String.valueOf(foodNutrients.length()));
                                 for(int j = 0; j < foodNutrients.length(); ++j)
                                 {
                                     JSONObject foodItem = foodNutrients.getJSONObject(j);
-                                    Log.d("food " + i, foodItem.getString("nutrientName") + " " +
-                                            foodItem.getInt("value") + foodItem.getString("unitName"));
+                                    if(nutrientsOfInterest.containsKey(foodItem.getString("nutrientName")))
+                                    {
+                                        if(foodItem.getString("value") != "kJ")
+                                        {
+                                            Log.d("food " + i, foodItem.getString("nutrientName") + " " +
+                                                    foodItem.getInt("value") + foodItem.getString("unitName"));
+                                            food.setFieldFromString(nutrientsOfInterest.get(foodItem.getString("nutrientName")), foodItem.getInt("value"));
+                                        }
+                                    }
                                 }
+
+                                foodRows.add(new foodRow(food, button, details, name));
                             }
 
                             // catch for the JSON parsing error
@@ -176,5 +268,60 @@ public class AddFromFDC extends Fragment {
                 return params;
             }
         };
+    }
+
+    private HashMap<String, String> generateNutrientsOfInterest()
+    {
+        HashMap<String, String> nutrientsOfInterest = new HashMap<>();
+        nutrientsOfInterest.put("Energy", "calories");
+        nutrientsOfInterest.put("Water", "water");
+        nutrientsOfInterest.put("Protein", "protein");
+        nutrientsOfInterest.put("Carbohydrate, by difference", "carbohydrate");
+        nutrientsOfInterest.put("Sugars, total including NLEA", "sugar");
+        nutrientsOfInterest.put("Fiber, total dietary", "fiber");
+        nutrientsOfInterest.put("Cholesterol", "cholesterol");
+        nutrientsOfInterest.put("Fatty acids, total saturated", "saturatedFat");
+        nutrientsOfInterest.put("Fatty acids, total monounsaturated", "monounsaturatedFat");
+        nutrientsOfInterest.put("Fatty acids, total polyunsaturated", "polyunsaturatedFat");
+        nutrientsOfInterest.put("Fatty acids, total trans", "transFat");
+
+        nutrientsOfInterest.put("Vitamin A, IU", "vitaminA");
+        nutrientsOfInterest.put("Vitamin C, total ascorbic acid", "vitaminC");
+        nutrientsOfInterest.put("Vitamin D (D2 + D3), International Units", "vitaminD");
+        //nutrientsOfInterest.put("Vitamin E, added", "vitaminE");
+        //nutrientsOfInterest.put("Vitamin K (phylloquinone)", "vitaminK");
+        //nutrientsOfInterest.put("Thiamin", "thiamin");
+        //nutrientsOfInterest.put("Riboflavin", "riboflavin");
+        //nutrientsOfInterest.put("Niacin", "niacin");
+        //nutrientsOfInterest.put("Vitamin B-6", "vitaminB6");
+        //nutrientsOfInterest.put("Folate, total", "folate");
+        //nutrientsOfInterest.put("Vitamin B-12", "vitaminB12");
+        //nutrientsOfInterest.put("Pantothenic acid", "pantothenicAcid");
+        //nutrientsOfInterest.put("Biotin", "biotin");
+        //nutrientsOfInterest.put("Choline, total", "choline");
+        //nutrientsOfInterest.put("Carotenoids", "carotenoids");
+
+        nutrientsOfInterest.put("Sodium, Na", "sodium");
+        nutrientsOfInterest.put("Potassium, K", "potassium");
+        nutrientsOfInterest.put("Calcium, Ca", "calcium");
+        nutrientsOfInterest.put("Iron, Fe", "iron");
+        //nutrientsOfInterest.put("Chromium", "chromium");
+        //nutrientsOfInterest.put("Copper, Cu", "copper");
+        //nutrientsOfInterest.put("Fluoride", "fluoride");
+        //nutrientsOfInterest.put("Iodine", "iodine");
+        //nutrientsOfInterest.put("Magnesium, Mg", "magnesium");
+        //nutrientsOfInterest.put("Manganese, Mn", "manganese");
+        //nutrientsOfInterest.put("Molybdenum, Mo", "molybdenum");
+        //nutrientsOfInterest.put("Phosphorous, P", "phosphorous");
+        //nutrientsOfInterest.put("Selenium, Se", "selenium");
+        //nutrientsOfInterest.put("Zinc, Zn", "zinc");
+        //nutrientsOfInterest.put("Chloride, Cl", "chloride");
+        //nutrientsOfInterest.put("Arsenic, As", "arsenic");
+        //nutrientsOfInterest.put("Boron, B", "boron");
+        //nutrientsOfInterest.put("Nickel, Ni", "nickel");
+        //nutrientsOfInterest.put("Silicon, Si", "silicon");
+        //nutrientsOfInterest.put("Vanadium, V", "vanadium");
+
+        return nutrientsOfInterest;
     }
 }
