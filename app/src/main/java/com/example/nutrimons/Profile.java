@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -431,89 +432,103 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
 
     private void showNutrients() //from https://www.nal.usda.gov/sites/default/files/fnic_uploads/recommended_intakes_individuals.pdf
     {
-        nta.updateUserNutrients(userID);
-        User u = mDb.userDao().findByUserID(userID);
+        try {
+            nta.updateUserNutrients(userID);
+            User u = mDb.userDao().findByUserID(userID);
 
-        View nt = view.findViewById(R.id.nutrientsTable);
-        TextView driCalories = view.findViewById(R.id.driCalories);
-        TextView ulCalories = view.findViewById(R.id.ulCalories);
-        TextView driWater = view.findViewById(R.id.driWater);
-        TextView ulWater = view.findViewById(R.id.ulWater);
-        TextView driProtein = view.findViewById(R.id.driProtein);
-        TextView ulProtein = view.findViewById(R.id.ulProtein);
-        TextView driCarbs = view.findViewById(R.id.driCarbs);
-        TextView ulCarbs = view.findViewById(R.id.ulCarbs);
-        TextView driSugar = view.findViewById(R.id.driSugar);
-        TextView ulSugar = view.findViewById(R.id.ulSugar);
-        TextView driFiber = view.findViewById(R.id.driFiber);
-        TextView ulFiber = view.findViewById(R.id.ulFiber);
-        TextView driFats = view.findViewById(R.id.driFats);
-        TextView ulFats = view.findViewById(R.id.ulFats);
-        TextView driCholesterol = view.findViewById(R.id.driCholesterol);
-        TextView ulCholesterol = view.findViewById(R.id.ulCholesterol);
-        TextView driSaturatedFats = view.findViewById(R.id.driSaturatedFats);
-        TextView ulSaturatedFats = view.findViewById(R.id.ulSaturatedFats);
-        TextView driUnsaturatedFats = view.findViewById(R.id.driUnsaturatedFats);
-        TextView ulUnsaturatedFats = view.findViewById(R.id.ulUnsaturatedFats);
-        TextView driTransFats = view.findViewById(R.id.driTransFats);
-        TextView ulTransFats = view.findViewById(R.id.ulTransFats);
+            View nt = view.findViewById(R.id.nutrientsTable);
+            TextView driCalories = view.findViewById(R.id.driCalories);
+            TextView ulCalories = view.findViewById(R.id.ulCalories);
+            TextView driWater = view.findViewById(R.id.driWater);
+            TextView ulWater = view.findViewById(R.id.ulWater);
+            TextView driProtein = view.findViewById(R.id.driProtein);
+            TextView ulProtein = view.findViewById(R.id.ulProtein);
+            TextView driCarbs = view.findViewById(R.id.driCarbs);
+            TextView ulCarbs = view.findViewById(R.id.ulCarbs);
+            TextView driSugar = view.findViewById(R.id.driSugar);
+            TextView ulSugar = view.findViewById(R.id.ulSugar);
+            TextView driFiber = view.findViewById(R.id.driFiber);
+            TextView ulFiber = view.findViewById(R.id.ulFiber);
+            TextView driFats = view.findViewById(R.id.driFats);
+            TextView ulFats = view.findViewById(R.id.ulFats);
+            TextView driCholesterol = view.findViewById(R.id.driCholesterol);
+            TextView ulCholesterol = view.findViewById(R.id.ulCholesterol);
+            TextView driSaturatedFats = view.findViewById(R.id.driSaturatedFats);
+            TextView ulSaturatedFats = view.findViewById(R.id.ulSaturatedFats);
+            TextView driUnsaturatedFats = view.findViewById(R.id.driUnsaturatedFats);
+            TextView ulUnsaturatedFats = view.findViewById(R.id.ulUnsaturatedFats);
+            TextView driTransFats = view.findViewById(R.id.driTransFats);
+            TextView ulTransFats = view.findViewById(R.id.ulTransFats);
 
-        TextView driVitaminA = view.findViewById(R.id.driVitaminA);
-        TextView ulVitaminA = view.findViewById(R.id.ulVitaminA);
-        TextView driVitaminC = view.findViewById(R.id.driVitaminC);
-        TextView ulVitaminC = view.findViewById(R.id.ulVitaminC);
-        TextView driVitaminD = view.findViewById(R.id.driVitaminD);
-        TextView ulVitaminD = view.findViewById(R.id.ulVitaminD);
+            TextView driVitaminA = view.findViewById(R.id.driVitaminA);
+            TextView ulVitaminA = view.findViewById(R.id.ulVitaminA);
+            TextView driVitaminC = view.findViewById(R.id.driVitaminC);
+            TextView ulVitaminC = view.findViewById(R.id.ulVitaminC);
+            TextView driVitaminD = view.findViewById(R.id.driVitaminD);
+            TextView ulVitaminD = view.findViewById(R.id.ulVitaminD);
 
-        TextView driSodium = view.findViewById(R.id.driSodium);
-        TextView ulSodium = view.findViewById(R.id.ulSodium);
-        TextView driPotassium = view.findViewById(R.id.driPotassium);
-        TextView ulPotassium = view.findViewById(R.id.ulPotassium);
-        TextView driCalcium = view.findViewById(R.id.driCalcium);
-        TextView ulCalcium = view.findViewById(R.id.ulCalcium);
-        TextView driIron = view.findViewById(R.id.driIron);
-        TextView ulIron = view.findViewById(R.id.ulIron);
+            TextView driSodium = view.findViewById(R.id.driSodium);
+            TextView ulSodium = view.findViewById(R.id.ulSodium);
+            TextView driPotassium = view.findViewById(R.id.driPotassium);
+            TextView ulPotassium = view.findViewById(R.id.ulPotassium);
+            TextView driCalcium = view.findViewById(R.id.driCalcium);
+            TextView ulCalcium = view.findViewById(R.id.ulCalcium);
+            TextView driIron = view.findViewById(R.id.driIron);
+            TextView ulIron = view.findViewById(R.id.ulIron);
 
-        driCalories.setText(u.calories + " cal");
-        ulCalories.setText(u.calories + " cal");
-        driWater.setText(u.water + "L");
-        //ulWater.setText(u.water + "L");
-        driProtein.setText(u.proteinDRI + "g"); //grams returned, convert to calories
-        ulProtein.setText(u.proteinUL + "g"); //percentage returned
-        driCarbs.setText(u.carbsDRI + "g");
-        ulCarbs.setText(u.carbsUL + "g");
-        driSugar.setText(u.sugarDRI + "g");
-        ulSugar.setText(u.sugarUL + "g");
-        driFiber.setText(u.fiberDRI + "g");
-        //ulFiber.setText(u.fiberDRI + "g");
-        driFats.setText(u.fatsDRI + "g");
-        ulFats.setText(u.fatsUL + "g");
-        driCholesterol.setText(u.cholesterolDRI + "g");
-        ulCholesterol.setText(u.cholesterolUL + "g");
-        driSaturatedFats.setText(u.saturatedFatsDRI + "g");
-        ulSaturatedFats.setText(u.saturatedFatsUL + "g");
-        driUnsaturatedFats.setText(u.unsaturatedFatsDRI + "g");
-        ulUnsaturatedFats.setText(u.unsaturatedFatsUL + "g");
-        driTransFats.setText(u.transFatsDRI + "g");
-        ulTransFats.setText(u.transFatsUL + "g");
+            driCalories.setText(u.calories + " cal");
+            ulCalories.setText(u.calories + " cal");
+            driWater.setText(u.water + "L");
+            //ulWater.setText(u.water + "L");
+            driProtein.setText(u.proteinDRI + "g"); //grams returned, convert to calories
+            ulProtein.setText(u.proteinUL + "g"); //percentage returned
+            driCarbs.setText(u.carbsDRI + "g");
+            ulCarbs.setText(u.carbsUL + "g");
+            driSugar.setText(u.sugarDRI + "g");
+            ulSugar.setText(u.sugarUL + "g");
+            driFiber.setText(u.fiberDRI + "g");
+            //ulFiber.setText(u.fiberDRI + "g");
+            driFats.setText(u.fatsDRI + "g");
+            ulFats.setText(u.fatsUL + "g");
+            driCholesterol.setText(u.cholesterolDRI + "g");
+            ulCholesterol.setText(u.cholesterolUL + "g");
+            driSaturatedFats.setText(u.saturatedFatsDRI + "g");
+            ulSaturatedFats.setText(u.saturatedFatsUL + "g");
+            driUnsaturatedFats.setText(u.unsaturatedFatsDRI + "g");
+            ulUnsaturatedFats.setText(u.unsaturatedFatsUL + "g");
+            driTransFats.setText(u.transFatsDRI + "g");
+            ulTransFats.setText(u.transFatsUL + "g");
 
-        driVitaminA.setText(u.vitaminADRI + "µg");
-        ulVitaminA.setText(u.vitaminAUL + "µg");
-        driVitaminC.setText(u.vitaminCDRI + "mg");
-        ulVitaminC.setText(u.vitaminCUL + "mg");
-        driVitaminD.setText(u.vitaminDDRI + "µg");
-        ulVitaminD.setText(u.vitaminDUL + "µg");
+            driVitaminA.setText(u.vitaminADRI + "µg");
+            ulVitaminA.setText(u.vitaminAUL + "µg");
+            driVitaminC.setText(u.vitaminCDRI + "mg");
+            ulVitaminC.setText(u.vitaminCUL + "mg");
+            driVitaminD.setText(u.vitaminDDRI + "µg");
+            ulVitaminD.setText(u.vitaminDUL + "µg");
 
-        driSodium.setText(u.sodiumDRI + "g");
-        ulSodium.setText(u.sodiumUL + "g");
-        driPotassium.setText(u.potassiumDRI + "g");
-        //ulPotassium.setText(u.potassiumDRI + "g"); //no limit
-        driCalcium.setText(u.calciumDRI + "mg");
-        ulCalcium.setText(u.calciumUL + "mg");
-        driIron.setText(u.ironDRI + "mg");
-        ulIron.setText(u.ironUL + "mg");
+            driSodium.setText(u.sodiumDRI + "g");
+            ulSodium.setText(u.sodiumUL + "g");
+            driPotassium.setText(u.potassiumDRI + "g");
+            //ulPotassium.setText(u.potassiumDRI + "g"); //no limit
+            driCalcium.setText(u.calciumDRI + "mg");
+            ulCalcium.setText(u.calciumUL + "mg");
+            driIron.setText(u.ironDRI + "mg");
+            ulIron.setText(u.ironUL + "mg");
 
-        nt.setVisibility(view.VISIBLE);
+            nt.setVisibility(view.VISIBLE);
+        }
+        catch (NullPointerException e)
+        {
+            Toast.makeText(getContext(), "Error. Please fill these fields and click Save All Changes to use this function", Toast.LENGTH_LONG).show();
+            TextView errorText = (TextView) spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);
+            ageText.setError("");
+            sexText.setError("");
+            weightText.setError("");
+            heightText.setError("");
+            activityLevelText.setError("");
+        }
     }
 
     private void getFields()

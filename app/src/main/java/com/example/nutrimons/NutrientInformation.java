@@ -84,14 +84,6 @@ public class NutrientInformation extends Fragment implements View.OnClickListene
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_nutrient_information, container, false);
 
-        /*nutButton = v.findViewById(R.id.NLMnutrientInfo);
-        vitButton = v.findViewById(R.id.NLMvitaminInfo);
-        minButton = v.findViewById(R.id.NLMmineralInfo);
-
-        nutButton.setOnClickListener(this);
-        vitButton.setOnClickListener(this);
-        minButton.setOnClickListener(this);*/
-
         caloriesButton = v.findViewById(R.id.caloriesLink);
         proteinButton = v.findViewById(R.id.proteinLink);
         carbsButton = v.findViewById(R.id.carbsLink);

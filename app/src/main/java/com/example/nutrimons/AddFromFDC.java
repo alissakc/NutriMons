@@ -190,12 +190,14 @@ public class AddFromFDC extends Fragment {
                             Toast.makeText(getContext(), "api request sent response", Toast.LENGTH_SHORT).show();
 
                             JSONArray foodArray = response.getJSONArray(("foods"));
-                            Log.d("number of foods", String.valueOf(foodArray.length()));
+                            //Log.d("number of foods", String.valueOf(foodArray.length()));
+                            if(foodArray.length() > 50)
+                                Toast.makeText(getContext(), "Results limited to 50. Use more keywords to narrow options.", Toast.LENGTH_SHORT).show();
 
                             for(int i = 0; i < foodArray.length(); ++i)
                             {
                                 String foodName = foodArray.getJSONObject(i).getString("description");
-                                Log.d("food " + i, foodName);
+                                //Log.d("food " + i, foodName);
 
                                 TableRow row = new TableRow(getContext());
                                 TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
@@ -223,7 +225,7 @@ public class AddFromFDC extends Fragment {
                                 com.example.nutrimons.database.Meal food = new com.example.nutrimons.database.Meal(foodName, 1, 1, 1);
 
                                 JSONArray foodNutrients = foodArray.getJSONObject(i).getJSONArray("foodNutrients");
-                                Log.d("Number of food nutrients", String.valueOf(foodNutrients.length()));
+                                //Log.d("Number of food nutrients", String.valueOf(foodNutrients.length()));
                                 for(int j = 0; j < foodNutrients.length(); ++j)
                                 {
                                     JSONObject foodItem = foodNutrients.getJSONObject(j);
@@ -231,8 +233,8 @@ public class AddFromFDC extends Fragment {
                                     {
                                         if(foodItem.getString("value") != "kJ")
                                         {
-                                            Log.d("food " + i, foodItem.getString("nutrientName") + " " +
-                                                    foodItem.getInt("value") + foodItem.getString("unitName"));
+                                            //Log.d("food " + i, foodItem.getString("nutrientName") + " " +
+                                            //        foodItem.getInt("value") + foodItem.getString("unitName"));
                                             food.setFieldFromString(nutrientsOfInterest.get(foodItem.getString("nutrientName")), foodItem.getInt("value"));
                                         }
                                     }
