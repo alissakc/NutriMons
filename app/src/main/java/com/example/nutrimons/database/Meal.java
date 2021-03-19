@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
@@ -91,7 +92,36 @@ public class Meal {
         this.caloriesPerServing = caloriesPerServing;
     }
 
-    public Meal(){}
+    @Ignore
+    public Meal(String mealName, int servingSize, int servingWeight, int caloriesPerServing,
+                int calories, int water, int protein, int carbohydrate, int sugar, int fiber,
+                int cholesterol, int saturatedFat, int monounsaturatedFat, int polyunsaturatedFat,
+                int transFat, int vitaminA, int vitaminC, int vitaminD, int sodium, int potassium,
+                int calcium, int iron)
+    {
+        this.mealName = mealName;
+        this.servingSize = servingSize;
+        this.servingWeight = servingWeight;
+        this.caloriesPerServing = caloriesPerServing;
+        this.calories = calories;
+        this.water = water;
+        this.protein = protein;
+        this.carbohydrate = carbohydrate;
+        this.sugar = sugar;
+        this.fiber = fiber;
+        this.cholesterol = cholesterol;
+        this.saturatedFat = saturatedFat;
+        this.monounsaturatedFat = monounsaturatedFat;
+        this.polyunsaturatedFat = polyunsaturatedFat;
+        this.transFat = transFat;
+        this.vitaminA = vitaminA;
+        this.vitaminC = vitaminC;
+        this.vitaminD = vitaminD;
+        this.sodium = sodium;
+        this.potassium = potassium;
+        this.calcium = calcium;
+        this.iron = iron;
+    }
 
     public void setFieldFromString(String field, int value)
     {
@@ -157,6 +187,31 @@ public class Meal {
         }
     }
 
+    /*public void setAdvFields(int calories, int water, int protein, int carbohydrate, int sugar,
+                             int fiber, int cholesterol, int saturatedFat, int monounsaturatedFat,
+                             int polyunsaturatedFat, int transFat, int vitaminA, int vitaminC,
+                             int vitaminD, int sodium, int potassium, int calcium, int iron)
+    {
+        this.calories = calories;
+        this.water = water;
+        this.protein = protein;
+        this.carbohydrate = carbohydrate;
+        this.sugar = sugar;
+        this.fiber = fiber;
+        this.cholesterol = cholesterol;
+        this.saturatedFat = saturatedFat;
+        this.monounsaturatedFat = monounsaturatedFat;
+        this.polyunsaturatedFat = polyunsaturatedFat;
+        this.transFat = transFat;
+        this.vitaminA = vitaminA;
+        this.vitaminC = vitaminC;
+        this.vitaminD = vitaminD;
+        this.sodium = sodium;
+        this.potassium = potassium;
+        this.calcium = calcium;
+        this.iron = iron;
+    }*/
+
     public String toTextViewString()
     {
         return mealName + "\n" +
@@ -166,9 +221,9 @@ public class Meal {
                 "Carbohydrate: " + carbohydrate + "g\n" +
                 "Sugar: " + sugar + "g\n" +
                 "Fiber: " + fiber + "g\n" +
-                "Cholesterol" + cholesterol + "mg\n" +
+                "Cholesterol: " + cholesterol + "mg\n" +
                 "Saturated Fat: " + saturatedFat + "g\n" +
-                "Unsaturated Fat: " + monounsaturatedFat + polyunsaturatedFat + "g\n" +
+                "Unsaturated Fat: " + (monounsaturatedFat + polyunsaturatedFat) + "g\n" +
                 "Trans Fat: " + transFat + "g\n" +
                 "Vitamin A: " + vitaminA + "μg\n" +
                 "Vitamin C: " + vitaminC + "mg\n" +

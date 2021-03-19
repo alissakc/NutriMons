@@ -159,6 +159,7 @@ public class AddFromFDC extends Fragment {
         return v;
     }
 
+    //work to get serving size/proportion eaten in
     private JsonObjectRequest callFDCapi(String searchString, TextView tv, boolean isBranded) //ref: https://fdc.nal.usda.gov/api-guide.html
     {
         String searchURL = QUERY_HEADER + FDC_API_KEY /*+ QUERY_MIDDLE + searchString*/;
