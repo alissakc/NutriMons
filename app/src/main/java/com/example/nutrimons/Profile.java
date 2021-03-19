@@ -529,6 +529,18 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
             heightText.setError("");
             activityLevelText.setError("");
         }
+        catch (NumberFormatException e)
+        {
+            Toast.makeText(getContext(), "Error. Please enter only integers into these fields", Toast.LENGTH_LONG).show();
+            TextView errorText = (TextView) spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);
+            ageText.setError("");
+            sexText.setError("");
+            weightText.setError("");
+            heightText.setError("");
+            activityLevelText.setError("");
+        }
     }
 
     private void getFields()
