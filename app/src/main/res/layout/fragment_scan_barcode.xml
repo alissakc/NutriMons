@@ -37,10 +37,9 @@ tools:context=".ScanBarcode">
 
         <ImageView
             android:id="@+id/barcodePreview"
-            android:layout_width="288dp"
-            android:layout_height="256dp"
+            android:layout_width="144dp"
+            android:layout_height="128dp"
             android:layout_gravity="center"
-            android:layout_margin="10dp"
             android:src="@drawable/barcode"
             app:srcCompat="@drawable/barcode" />
 
@@ -49,16 +48,29 @@ tools:context=".ScanBarcode">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="10dp"
             android:text="@string/barcode_string" />
 
-        <TextView
-            android:id="@+id/barcodeApiJson"
+        <Button
+            android:id="@+id/barcodeRetake"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="10dp"
+            android:text="@string/barcodeRetake" />
+
+        <Button
+            android:id="@+id/barcodeAccept"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/barcodeAccept" />
+
+        <TextView
+            android:id="@+id/barcodeApiResults"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="@string/barcode_api_json" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

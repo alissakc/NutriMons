@@ -236,7 +236,7 @@ public class AddFromFDC extends Fragment {
                                         {
                                             //Log.d("food " + i, foodItem.getString("nutrientName") + " " +
                                             //        foodItem.getInt("value") + foodItem.getString("unitName"));
-                                            food.setFieldFromString(nutrientsOfInterest.get(foodItem.getString("nutrientName")), foodItem.getInt("value"));
+                                            food.setFieldFromString(nutrientsOfInterest.get(foodItem.getString("nutrientName")), ((Double)foodItem.getDouble("value")).floatValue());
                                         }
                                     }
                                 }
@@ -308,10 +308,10 @@ public class AddFromFDC extends Fragment {
         nutrientsOfInterest.put("Potassium, K", "potassium");
         nutrientsOfInterest.put("Calcium, Ca", "calcium");
         nutrientsOfInterest.put("Iron, Fe", "iron");
-        //nutrientsOfInterest.put("Chromium", "chromium");
+        //nutrientsOfInterest.put("Chromium, Cr", "chromium");
         //nutrientsOfInterest.put("Copper, Cu", "copper");
-        //nutrientsOfInterest.put("Fluoride", "fluoride");
-        //nutrientsOfInterest.put("Iodine", "iodine");
+        //nutrientsOfInterest.put("Fluoride, F", "fluoride");
+        //nutrientsOfInterest.put("Iodine, I", "iodine");
         //nutrientsOfInterest.put("Magnesium, Mg", "magnesium");
         //nutrientsOfInterest.put("Manganese, Mn", "manganese");
         //nutrientsOfInterest.put("Molybdenum, Mo", "molybdenum");

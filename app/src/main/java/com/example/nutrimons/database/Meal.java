@@ -32,58 +32,58 @@ public class Meal {
     public int caloriesPerServing;
 
     @ColumnInfo(name = "calories")
-    public int calories;
+    public float calories;
 
     @ColumnInfo(name = "water")
-    public int water;
+    public float water;
 
     @ColumnInfo(name = "protein")
-    public int protein;
+    public float protein;
 
     @ColumnInfo(name = "carbohydrate")
-    public int carbohydrate;
+    public float carbohydrate;
 
     @ColumnInfo(name = "sugar")
-    public int sugar;
+    public float sugar;
 
     @ColumnInfo(name = "fiber")
-    public int fiber;
+    public float fiber;
 
     @ColumnInfo(name = "cholesterol")
-    public int cholesterol;
+    public float cholesterol;
 
     @ColumnInfo(name = "saturatedFat")
-    public int saturatedFat;
+    public float saturatedFat;
 
     @ColumnInfo(name = "monounsaturatedFat")
-    public int monounsaturatedFat;
+    public float monounsaturatedFat;
 
     @ColumnInfo(name = "polyunsaturatedFat")
-    public int polyunsaturatedFat;
+    public float polyunsaturatedFat;
 
     @ColumnInfo(name = "transFat")
-    public int transFat;
+    public float transFat;
 
     @ColumnInfo(name = "vitaminA")
-    public int vitaminA;
+    public float vitaminA;
 
     @ColumnInfo(name = "vitaminC")
-    public int vitaminC;
+    public float vitaminC;
 
     @ColumnInfo(name = "vitaminD")
-    public int vitaminD;
+    public float vitaminD;
 
     @ColumnInfo(name = "sodium")
-    public int sodium;
+    public float sodium;
 
     @ColumnInfo(name = "potassium")
-    public int potassium;
+    public float potassium;
 
     @ColumnInfo(name = "calcium")
-    public int calcium;
+    public float calcium;
 
     @ColumnInfo(name = "iron")
-    public int iron;
+    public float iron;
 
     public Meal(String mealName, int servingSize, int servingWeight, int caloriesPerServing) {
         this.mealName = mealName;
@@ -94,10 +94,10 @@ public class Meal {
 
     @Ignore
     public Meal(String mealName, int servingSize, int servingWeight, int caloriesPerServing,
-                int calories, int water, int protein, int carbohydrate, int sugar, int fiber,
-                int cholesterol, int saturatedFat, int monounsaturatedFat, int polyunsaturatedFat,
-                int transFat, int vitaminA, int vitaminC, int vitaminD, int sodium, int potassium,
-                int calcium, int iron)
+                float calories, float water, float protein, float carbohydrate, float sugar, float fiber,
+                float cholesterol, float saturatedFat, float monounsaturatedFat, float polyunsaturatedFat,
+                float transFat, float vitaminA, float vitaminC, float vitaminD, float sodium, float potassium,
+                float calcium, float iron)
     {
         this.mealName = mealName;
         this.servingSize = servingSize;
@@ -123,7 +123,7 @@ public class Meal {
         this.iron = iron;
     }
 
-    public void setFieldFromString(String field, int value)
+    public void setFieldFromString(String field, float value)
     {
         switch(field)
         {
@@ -187,10 +187,10 @@ public class Meal {
         }
     }
 
-    /*public void setAdvFields(int calories, int water, int protein, int carbohydrate, int sugar,
-                             int fiber, int cholesterol, int saturatedFat, int monounsaturatedFat,
-                             int polyunsaturatedFat, int transFat, int vitaminA, int vitaminC,
-                             int vitaminD, int sodium, int potassium, int calcium, int iron)
+    /*public void setAdvFields(float calories, float water, float protein, float carbohydrate, float sugar,
+                             float fiber, float cholesterol, float saturatedFat, float monounsaturatedFat,
+                             float polyunsaturatedFat, float transFat, float vitaminA, float vitaminC,
+                             float vitaminD, float sodium, float potassium, float calcium, float iron)
     {
         this.calories = calories;
         this.water = water;
@@ -215,6 +215,7 @@ public class Meal {
     public String toTextViewString()
     {
         return mealName + "\n" +
+                "Serving Size:" + servingSize + "\n" +
                 "Calories: " + calories + "kcal\n" +
                 "Water: " + water + "g\n" +
                 "Protein: " + protein + "g\n" +
