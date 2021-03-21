@@ -1,5 +1,6 @@
 package com.example.nutrimons;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -70,6 +71,12 @@ public class MainActivity extends AppCompatActivity implements DrawerController 
             NutrientTablesApi nta = new NutrientTablesApi(mDb);
             nta.Initialize(getAssets());
         }
+    }
+
+    @Override
+    protected void onStop () {
+        super .onStop() ;
+        startService( new Intent( this, NotificationService. class )) ;
     }
 
     @Override
