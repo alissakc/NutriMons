@@ -37,6 +37,9 @@ public interface TamagotchiDao {
     @Query("SELECT waterLevel FROM tamagotchipet")
     int getwaterlevel();
 
+    @Query("SELECT coins FROM tamagotchipet")
+    int getCoins();
+
     @Update
     void updateTamagotchi(TamagotchiPet tamagotchipet);
 

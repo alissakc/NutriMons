@@ -28,6 +28,8 @@ import com.example.nutrimons.R;
 import com.example.nutrimons.database.AppDatabase;
 import com.example.nutrimons.database.TamagotchiPet;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.Timer;
@@ -79,21 +81,28 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
     Button waterButton;
     int waterCounter;
 
+    //var for changing animal
+    Button changeAnimal;
+    private int currentImage;
+    int[] images = {R.drawable.tamagotchi_pig, R.drawable.tamagotchi_big, R.drawable.tama__pic};
 
 
 
-    //game stuff
+    //pet movement
     ImageButton TamagotchiPet;
     private float petX;
     private float petY;
-
+    int speed = 20;
     private int dirX = 1;
     private int dirY = 1;
 
+    //shop
+    int coins;
     private Handler handler = new Handler();
     private Timer timer = new Timer();
 
-    int counter = 0;
+
+    int counterForStopping = 0;
 
     public Tamagotchi() {
         // Required empty public constructor
@@ -136,11 +145,10 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tamagotchi, container, false);
 
+        //get DB and pet
         mDb = AppDatabase.getInstance(getContext());
-        Log.d("user", String.valueOf(mDb.tokenDao().getUserID()));
         TamagotchiPet tama = mDb.tamagotchiDao().findByUserId(mDb.tokenDao().getUserID());
-        Log.d("health", String.valueOf(tama.healthLevel));
-        //List<TamagotchiPet> allPet =  mDb.tamagotchiDao().getAll();
+
 
         //System.out.print(allPet);
         name = tama.petName;
@@ -171,11 +179,13 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
         //editing name
         petName = view.findViewById(R.id.petName);
 
+        //time
+        Date currentTime = Calendar.getInstance().getTime();
+        Log.d("clock", String.valueOf(currentTime.getMinutes()));
 
         //feeding pet
         feedButton = view.findViewById(R.id.feedButton);
         healthBar = view.findViewById(R.id.healthBar);
-
         healthCounter = tama.healthLevel;
         healthBar.setProgress(healthCounter);
         feedButton.setOnClickListener(new View.OnClickListener() {
@@ -202,9 +212,23 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
             mDb.tamagotchiDao().insert(tama);
         });
 
+
+
+
+
         TamagotchiPet = view.findViewById(R.id.TamagotchiPet);
         LinearLayout ll_list = view.findViewById(R.id.petPlayZone);
 
+        //Changing animal
+        changeAnimal = view.findViewById(R.id.petButton);
+        changeAnimal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentImage++;
+                currentImage = currentImage % images.length;
+                TamagotchiPet.setImageResource(images[currentImage]);
+            }
+        });
 
 
         //Get Screen Size
@@ -230,35 +254,29 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
                     @Override
                     public void run() {
                         try {
-                            /*
-                            Random ran = new Random();
 
-                            if(ran.nextInt() % 2 == 0)
-                            {
-                                changePos();
-                            }
-                            */
-
-
-                            if (counter < 5)
-                            {
-                                System.out.println("STOP NOW");
+                            if (counterForStopping > 10) {
+                                speed = 0;
                             }
                             else {
-
+                                speed = 20;
                                 changePos();
                             }
-                            if (counter >= 10 || counter < 0)
+                            if (counterForStopping >= 50 || counterForStopping < 0)
                             {
-                                counter = 0;
+                                counterForStopping = 0;
                             }
-                            counter++;
+                            counterForStopping++;
 
 
                             TamagotchiPet.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     TamagotchiPet.animate().rotation(TamagotchiPet.getRotation()-360).start();
+                                    coins = tama.coins;
+                                    coins++;
+                                    tama.coins++;
+                                    mDb.tamagotchiDao().insert(tama);
                                 }
                             });
 
@@ -273,13 +291,10 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
 
         return view;
     }
-    private void stopMovin()
-    {
 
-    }
 
     private void changePos() throws InterruptedException {
-        int speed = 20;
+
 
         if(TamagotchiPet.getY() < 0 ) {
             dirY = 1;

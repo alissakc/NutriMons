@@ -4,9 +4,14 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.example.nutrimons.database.AppDatabase;
+import com.example.nutrimons.database.TamagotchiPet;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,6 +24,11 @@ public class TamagotchiShop extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    private AppDatabase mDb;
+
+    //Coins
+    TextView coins;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -59,6 +69,17 @@ public class TamagotchiShop extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tamagotchi_shop, container, false);
+        View view = inflater.inflate(R.layout.fragment_tamagotchi_shop, container, false);
+
+        mDb = AppDatabase.getInstance(getContext());
+        TamagotchiPet tama = mDb.tamagotchiDao().findByUserId(mDb.tokenDao().getUserID());
+
+        //setting coins
+        coins = view.findViewById(R.id.tamaCoins);
+        coins.setText(String.valueOf(tama.coins));
+        mDb.tamagotchiDao().insert(tama);
+
+
+        return view;
     }
 }

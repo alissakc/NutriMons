@@ -31,6 +31,9 @@ public class TamagotchiPet {
     @ColumnInfo(name = "spriteId")
     public int spriteId;
 
+    @ColumnInfo(name = "coins")
+    public int coins;
+
     public TamagotchiPet(int healthLevel)
     {
         this.healthLevel = healthLevel;
