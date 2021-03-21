@@ -136,6 +136,7 @@
                 android:layout_height="229dp"
                 android:layout_gravity="center"
                 android:layout_weight="0"
+                android:background="#00FFFFFF"
                 android:foregroundGravity="center"
                 android:src="@drawable/tamagotchi_pig" />
 
