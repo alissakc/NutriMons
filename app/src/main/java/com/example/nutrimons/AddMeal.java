@@ -1,8 +1,11 @@
 package com.example.nutrimons;
 
+import android.database.sqlite.SQLiteConstraintException;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
 
 import android.util.Log;
@@ -10,21 +13,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 import com.example.nutrimons.database.AppDatabase;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,18 +37,24 @@ public class AddMeal extends Fragment {
     private String mParam2;
 
     // vars
-    private Button addButton;
+    private Button addButton, searchFDCButton, advancedMealButton;
     private String mealName;
-    private int servingSize, servingWeight, caloriesPerServing;
-    private EditText mealNameText, servingSizeText, servingWeightText, caloriesPerServingText;
+    private int servingSize, servingWeight, caloriesPerServing, advCalories, advWater, advProtein,
+        advCarbohydrate, advSugar, advFiber, advCholesterol, advSaturatedFat, advMonounsaturatedFat,
+        advPolyunsaturatedFat, advTransFat, advVitaminA, advVitaminC, advVitaminD, advSodium,
+        advPotassium, advCalcium, advIron;
+    private EditText mealNameText, servingSizeText, servingWeightText, caloriesPerServingText,
+        advCaloriesText, advWaterText, advProteinText, advCarbohydrateText, advSugarText, advFiberText,
+        advCholesterolText, advSaturatedFatText, advMonounsaturatedFatText, advPolyunsaturatedFatText,
+        advTransFatText, advVitaminAText, advVitaminCText, advVitaminDText, advSodiumText,
+        advPotassiumText, advCalciumText, advIronText;
+    private View advancedMealForm;
 
     // creates instance of database
     private AppDatabase mDb;
 
-    private final String FDC_API_KEY = "5k1NBU6Op8fHuzi1DBBG3rIAKT7SZuUFLoKpw6Fc";
-    private final String QUERY_HEADER = "https://api.nal.usda.gov/fdc/v1/foods/search?api_key=";
-    private final String QUERY_MIDDLE = "&query=";
-    private RequestQueue queue;
+    private View checkboxbrandedButton;
+    private boolean isBranded;
 
     public AddMeal() {
         // Required empty public constructor
@@ -98,81 +98,206 @@ public class AddMeal extends Fragment {
 
         // Button initialization
         addButton = view.findViewById(R.id.submitNewMealButton);
+        searchFDCButton = view.findViewById(R.id.searchFDCButton);
+        advancedMealButton = view.findViewById(R.id.advancedMealButton);
+        advancedMealForm = view.findViewById(R.id.advancedMealForm);
 
         // new meal
         mealNameText = (EditText) view.findViewById(R.id.editTextFoodName);
-        /*servingSizeText = (EditText) view.findViewById(R.id.editTextServingSize);
+        servingSizeText = (EditText) view.findViewById(R.id.editTextServingSize);
         servingWeightText = (EditText) view.findViewById(R.id.editTextServingWeight);
-        caloriesPerServingText = (EditText) view.findViewById(R.id.editTextCalories);*/
+        caloriesPerServingText = (EditText) view.findViewById(R.id.editTextCalories);
 
-        queue = Volley.newRequestQueue(getContext());
+        advCaloriesText = (EditText) view.findViewById(R.id.advancedMealEditCalories);
+        advWaterText = (EditText) view.findViewById(R.id.advancedMealEditWater);
+        advProteinText = (EditText) view.findViewById(R.id.advancedMealEditProtein);
+        advCarbohydrateText = (EditText) view.findViewById(R.id.advancedMealEditCarbohydrate);
+        advSugarText = (EditText) view.findViewById(R.id.advancedMealEditSugar);
+        advFiberText = (EditText) view.findViewById(R.id.advancedMealEditFiber);
+        advCholesterolText = (EditText) view.findViewById(R.id.advancedMealEditCholesterol);
+        advSaturatedFatText = (EditText) view.findViewById(R.id.advancedMealEditSaturatedFat);
+        advMonounsaturatedFatText = (EditText) view.findViewById(R.id.advancedMealEditMonounsaturatedFat);
+        advPolyunsaturatedFatText = (EditText) view.findViewById(R.id.advancedMealEditPolyunsaturatedFat);
+        advTransFatText = (EditText) view.findViewById(R.id.advancedMealEditTransFat);
+        advVitaminAText = (EditText) view.findViewById(R.id.advancedMealEditVitaminA);
+        advVitaminCText = (EditText) view.findViewById(R.id.advancedMealEditVitaminC);
+        advVitaminDText = (EditText) view.findViewById(R.id.advancedMealEditVitaminD);
+        advSodiumText = (EditText) view.findViewById(R.id.advancedMealEditSodium);
+        advPotassiumText = (EditText) view.findViewById(R.id.advancedMealEditPotassium);
+        advCalciumText = (EditText) view.findViewById(R.id.advancedMealEditCalcium);
+        advIronText = (EditText) view.findViewById(R.id.advancedMealEditIron);
+
+        checkboxbrandedButton = (CompoundButton) view.findViewById(R.id.checkboxBranded);
+        checkboxbrandedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(((CompoundButton) view).isChecked()){
+                    isBranded = true;
+                } else {
+                    isBranded = false;
+                }
+            }
+        });
+
+        searchFDCButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mealName = mealNameText.getText().toString();
+                Log.d("mealname", mealName);
+
+                /*//FragmentManager fm = getFragmentManager();
+                AddFromFDC fragment = new AddFromFDC();
+                //Fragment addFromFDC = new Fragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("mealName", mealName);
+                bundle.putBoolean("isBranded", isBranded);
+                //addFromFDC.setArguments(bundle);
+                fragment.setArguments(bundle);
+                /*fm.beginTransaction()
+                        .replace(placeholder, fragment, tabId)
+                        .commit();*/
+                AddFromFDC fragment = new AddFromFDC();
+                fragment.mealName = mealName;
+                fragment.isBranded = isBranded;
+                Navigation.findNavController(view).navigate(R.id.nav_addFromFDC);
+            }
+        });
+
+        advancedMealButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(advancedMealForm.getVisibility() == View.GONE)
+                    advancedMealForm.setVisibility(View.VISIBLE);
+                else
+                    advancedMealForm.setVisibility(View.GONE);
+            }
+        });
 
         //assign listener
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Toast.makeText(getContext(), "Created entry", Toast.LENGTH_SHORT).show();
-                mealName = mealNameText.getText().toString();
-                /*servingSize = Integer.parseInt(servingSizeText.getText().toString());
-                servingWeight = Integer.parseInt(servingWeightText.getText().toString());
-                caloriesPerServing = Integer.parseInt(caloriesPerServingText.getText().toString());*/
+                try {
+                    mealName = mealNameText.getText().toString();
+                    servingSize = Integer.parseInt(servingSizeText.getText().toString());
+                    servingWeight = Integer.parseInt(servingWeightText.getText().toString());
+                    caloriesPerServing = Integer.parseInt(caloriesPerServingText.getText().toString());
 
-                final com.example.nutrimons.database.Meal meal = new com.example.nutrimons.database.Meal(mealName, servingSize, servingWeight, caloriesPerServing);
-                //mDb.mealDao().insert(meal);
+                    if(advCaloriesText.getText().toString().isEmpty())
+                        advCalories = 0;
+                    else
+                        advCalories = Integer.parseInt(advCaloriesText.getText().toString());
+                    if(advWaterText.getText().toString().isEmpty())
+                        advWater = 0;
+                    else
+                        advWater = Integer.parseInt(advWaterText.getText().toString());
+                    if (advProteinText.getText().toString().isEmpty())
+                        advProtein = 0;
+                    else
+                        advProtein = Integer.parseInt(advProteinText.getText().toString());
+                    if (advCarbohydrateText.getText().toString().isEmpty())
+                        advCarbohydrate = 0;
+                    else
+                        advCarbohydrate = Integer.parseInt(advCarbohydrateText.getText().toString());
+                    if (advSugarText.getText().toString().isEmpty())
+                        advSugar = 0;
+                    else
+                        advSugar = Integer.parseInt(advSugarText.getText().toString());
+                    if (advFiberText.getText().toString().isEmpty())
+                        advFiber = 0;
+                    else
+                        advFiber = Integer.parseInt(advFiberText.getText().toString());
+                    if (advCholesterolText.getText().toString().isEmpty())
+                        advCholesterol = 0;
+                    else
+                        advCholesterol = Integer.parseInt(advCholesterolText.getText().toString());
+                    if (advSaturatedFatText.getText().toString().isEmpty())
+                        advSaturatedFat = 0;
+                    else
+                        advSaturatedFat = Integer.parseInt(advSaturatedFatText.getText().toString());
+                    if (advMonounsaturatedFatText.getText().toString().isEmpty())
+                        advMonounsaturatedFat = 0;
+                    else
+                        advMonounsaturatedFat = Integer.parseInt(advMonounsaturatedFatText.getText().toString());
+                    if (advPolyunsaturatedFatText.getText().toString().isEmpty())
+                        advPolyunsaturatedFat = 0;
+                    else
+                        advPolyunsaturatedFat = Integer.parseInt(advPolyunsaturatedFatText.getText().toString());
+                    if (advTransFatText.getText().toString().isEmpty())
+                        advTransFat = 0;
+                    else
+                        advTransFat = Integer.parseInt(advTransFatText.getText().toString());
+                    if (advVitaminAText.getText().toString().isEmpty())
+                        advVitaminA = 0;
+                    else
+                        advVitaminA = Integer.parseInt(advVitaminAText.getText().toString());
+                    if (advVitaminCText.getText().toString().isEmpty())
+                        advVitaminC = 0;
+                    else
+                        advVitaminC = Integer.parseInt(advVitaminCText.getText().toString());
+                    if (advVitaminDText.getText().toString().isEmpty())
+                        advVitaminD = 0;
+                    else
+                        advVitaminD = Integer.parseInt(advVitaminDText.getText().toString());
+                    if (advSodiumText.getText().toString().isEmpty())
+                        advSodium = 0;
+                    else
+                        advSodium = Integer.parseInt(advSodiumText.getText().toString());
+                    if (advPotassiumText.getText().toString().isEmpty())
+                        advPotassium = 0;
+                    else
+                        advPotassium = Integer.parseInt(advPotassiumText.getText().toString());
+                    if (advCalciumText.getText().toString().isEmpty())
+                        advCalcium = 0;
+                    else
+                        advCalcium = Integer.parseInt(advCalciumText.getText().toString());
+                    if (advIronText.getText().toString().isEmpty())
+                        advIron = 0;
+                    else
+                        advIron = Integer.parseInt(advIronText.getText().toString());
 
-                queue.cancelAll(mealName);
-                TextView tv = view.findViewById(R.id.FDCapiResponse);
-                StringRequest strReq = callFDCapi(mealName, tv);
-                queue.add(strReq);
+                    final com.example.nutrimons.database.Meal meal = new com.example.nutrimons.database.Meal(
+                            mealName, servingSize, servingWeight, caloriesPerServing,
+                            advCalories, advWater, advProtein, advCarbohydrate, advSugar,
+                            advFiber, advCholesterol, advSaturatedFat, advMonounsaturatedFat,
+                            advPolyunsaturatedFat, advTransFat, advVitaminA, advVitaminC, advVitaminD,
+                            advSodium, advPotassium, advCalcium, advIron);
+                    /*meal.setAdvFields(advCalories, advWater, advProtein, advCarbohydrate, advSugar,
+                            advFiber, advCholesterol, advSaturatedFat, advMonounsaturatedFat,
+                            advPolyunsaturatedFat, advTransFat, advVitaminA, advVitaminC, advVitaminD,
+                            advSodium, advPotassium, advCalcium, advIron);*/
+                    mDb.mealDao().insert(meal);
+                    Log.d("meal", mDb.mealDao().findByName(mealName).toTextViewString());
 
-                // navigates to meal plan
-                //Navigation.findNavController(view).navigate(R.id.action_nav_addMeal_to_nav_mealPlan);
+                    // navigates to meal plan
+                    Navigation.findNavController(view).navigate(R.id.action_nav_addMeal_to_nav_mealPlan);
+                }
+                catch (NullPointerException e)
+                {
+                    Toast.makeText(getContext(), "Error. Please fill out all of these fields", Toast.LENGTH_LONG).show();
+                    mealNameText.setError("");
+                    servingSizeText.setError("");
+                    servingWeightText.setError("");
+                    caloriesPerServingText.setError("");
+                    e.printStackTrace();
+                }
+                catch (NumberFormatException e)
+                {
+                    Toast.makeText(getContext(), "Error. Please fill out at all of these fields", Toast.LENGTH_LONG).show();
+                    mealNameText.setError("");
+                    servingSizeText.setError("");
+                    servingWeightText.setError("");
+                    caloriesPerServingText.setError("");
+                    e.printStackTrace();
+                }
+                catch(SQLiteConstraintException e) //doesn't currently catch
+                {
+                    Toast.makeText(getContext(), "Error. This item already exists", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
         return view;
-    }
-
-    private StringRequest callFDCapi(String searchString, TextView tv) //ref: https://fdc.nal.usda.gov/api-guide.html
-    {
-        String searchURL = QUERY_HEADER + FDC_API_KEY + QUERY_MIDDLE + searchString;
-        //example: https://api.nal.usda.gov/fdc/v1/foods/search?api_key=DEMO_KEY&query=apple
-        Log.d("searchURL", searchURL);
-
-        return new StringRequest(Request.Method.GET, searchURL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // try/catch block for returned JSON data
-                        // see API's documentation for returned format
-                        try {
-                            tv.setText(response); //ref: https://fdc.nal.usda.gov/api-spec/fdc_api.html#/FDC/getFoodsSearch
-                            Toast.makeText(getContext(), "api request sent response", Toast.LENGTH_SHORT).show();
-
-                            // catch for the JSON parsing error
-                        } catch (Exception e/*JSONException e*/) {
-                            //Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
-                            Toast.makeText(getContext(), "error with api response", Toast.LENGTH_SHORT).show();
-                        }
-                    } // public void onResponse(String response)
-                }, // Response.Listener<String>()
-                new Response.ErrorListener() {
-                    // 4th param - method onErrorResponse lays the code procedure of error return
-                    // ERROR
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // display a simple message on the screen
-                        Toast.makeText(getContext(), "api not responding", Toast.LENGTH_SHORT).show();
-                    }
-                })
-        {
-            @Override //change http header per OFF api READ operations request
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String>  params = new HashMap<String, String>();
-                params.put("UserAgent: NutriMons - Android - Version 0.0 - https://github.com/alissakc/NutriMons", "CSULB CECS 491: BAMM");
-
-                return params;
-            }
-        };
     }
 }

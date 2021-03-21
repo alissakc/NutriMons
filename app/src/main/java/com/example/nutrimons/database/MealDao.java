@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
@@ -29,7 +30,7 @@ public interface MealDao {
     @Query("SELECT * FROM meal WHERE meal_name LIKE :search")
     Meal findByName(String search);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(Meal... meals);
 
     @Insert

@@ -174,6 +174,8 @@
     <string name="scan_barcode_button">Scan Barcode</string>
     <string name="barcode_string">Barcode String</string>
     <string name="barcode_api_json">Barcode Api Json</string>
+    <string name="barcodeRetake">Retake</string>
+    <string name="barcodeAccept">Accept</string>
     <string name="personal_section">Personal</string>
     <string name="profile_focus">Profile Focus</string>
     <string name="profile_name">Name</string>
@@ -292,4 +294,49 @@
     <string name="save">Save</string>
     <string name="save_workout">Save Workout</string>
     <string name="oz">oz</string>
+
+    <string name="checkboxBranded">Branded</string>
+    <string name="searchFDC">Search</string>
+
+    <string name="foodName">Food Name</string>
+    <string name="details">Details</string>
+    <string name="select">Select</string>
+
+    <string name="advanced">Advanced</string>
+    <string name="advancedMealCalories">Calories</string>
+    <string name="advancedMealEditCalories">Calories per serving</string>
+    <string name="advancedMealWater">Water</string>
+    <string name="advancedMealEditWater">Water per serving</string>
+    <string name="advancedMealProtein">Protein</string>
+    <string name="advancedMealEditProtein">Protein per serving</string>
+    <string name="advancedMealCarbohydrate">Carbohydrate</string>
+    <string name="advancedMealEditCarbohydrate">Carbohydrate per serving</string>
+    <string name="advancedMealSugar">Sugar</string>
+    <string name="advancedMealEditSugar">Sugar per serving</string>
+    <string name="advancedMealFiber">Fiber</string>
+    <string name="advancedMealEditFiber">Fiber per serving</string>
+    <string name="advancedMealCholesterol">Cholesterol</string>
+    <string name="advancedMealEditCholesterol">Cholesterol per serving</string>
+    <string name="advancedMealSaturatedFat">Saturated Fat</string>
+    <string name="advancedMealEditSaturatedFat">Saturated Fat per serving</string>
+    <string name="advancedMealMonounsaturatedFat">Monounsaturated Fat</string>
+    <string name="advancedMealEditMonounsaturatedFat">Monounsaturated Fat per serving</string>
+    <string name="advancedMealPolyunsaturatedFat">Polyunsaturated Fat</string>
+    <string name="advancedMealEditPolyunsaturatedFat">Polyunsaturated Fat per serving</string>
+    <string name="advancedMealTransFat">Trans Fat</string>
+    <string name="advancedMealEditTransFat">Trans Fat per serving</string>
+    <string name="advancedMealVitaminA">Vitamin A</string>
+    <string name="advancedMealEditVitaminA">Vitamin A per serving</string>
+    <string name="advancedMealVitaminC">Vitamin C</string>
+    <string name="advancedMealEditVitaminC">Vitamin C per serving</string>
+    <string name="advancedMealVitaminD">Vitamin D</string>
+    <string name="advancedMealEditVitaminD">Vitamin D per serving</string>
+    <string name="advancedMealSodium">Sodium</string>
+    <string name="advancedMealEditSodium">Sodium per serving</string>
+    <string name="advancedMealPotassium">Potassium</string>
+    <string name="advancedMealEditPotassium">Potassium per serving</string>
+    <string name="advancedMealCalcium">Calcium</string>
+    <string name="advancedMealEditCalcium">Calcium per serving</string>
+    <string name="advancedMealIron">Iron</string>
+    <string name="advancedMealEditIron">Iron per serving</string>
 </resources>

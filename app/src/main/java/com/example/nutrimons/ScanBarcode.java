@@ -3,6 +3,7 @@ package com.example.nutrimons;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.database.sqlite.SQLiteConstraintException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
@@ -24,6 +25,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,16 +39,23 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.nutrimons.database.AppDatabase;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.google.gson.JsonObject;
 import com.google.mlkit.vision.common.InputImage;
 import com.tbruyelle.rxpermissions3.RxPermissions;
 
 import com.google.mlkit.vision.barcode.*;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.nio.ByteBuffer;
 import java.util.HashMap;
@@ -70,12 +79,14 @@ public class ScanBarcode extends Fragment {
 
     PreviewView mPreviewView;
     View view;
-    Button button;
+    Button button, barcodeRetakeButton, barcodeAcceptButton;
     ImageView bc;
     ImageCapture imageCapture;
     Executor executor = Executors.newSingleThreadExecutor();
     Context context;
     RequestQueue queue;
+    AppDatabase mDb;
+    com.example.nutrimons.database.Meal food;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -255,11 +266,12 @@ public class ScanBarcode extends Fragment {
                             tv.setText(rawValue);
 
                             queue.cancelAll(rawValue);
-                            tv = view.findViewById(R.id.barcodeApiJson);
-                            StringRequest strReq = callOFFapi(rawValue, tv);
-                            queue.add(strReq);
+                            tv = view.findViewById(R.id.barcodeApiResults);
+                            JsonRequest JReq = callOFFapi(rawValue, tv);
+                            queue.add(JReq);
                             br.setVisibility(View.VISIBLE);
                             vf.setVisibility(View.INVISIBLE);
+                            button.setVisibility(View.INVISIBLE);
                         }
                         // [END get_barcodes]
                         // [END_EXCLUDE]
@@ -275,31 +287,55 @@ public class ScanBarcode extends Fragment {
                 });
     }
 
-    private StringRequest callOFFapi(String barcodeString, TextView tv) //https://wiki.openfoodfacts.org/API ; also has an app: https://github.com/openfoodfacts/openfoodfacts-androidapp
+    private JsonRequest callOFFapi(String barcodeString, TextView tv) //https://wiki.openfoodfacts.org/API ; also has an app: https://github.com/openfoodfacts/openfoodfacts-androidapp
     {
         final String HEADER = "https://world.openfoodfacts.org/api/v0/product/";
         final String FOOTER = ".json";
 
         String searchURL = HEADER + barcodeString + FOOTER;
 
-        return new StringRequest(Request.Method.GET, searchURL,
-                new Response.Listener<String>() {
+        return new JsonObjectRequest(Request.Method.GET, searchURL, new JSONObject(),
+                new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(String response) {
+                    public void onResponse(JSONObject response) {
                         // try/catch block for returned JSON data
                         // see API's documentation for returned format
                         try {
                             /*JSONObject result = new JSONObject(response).getJSONObject("list");
                             int maxItems = result.getInt("end");
                             JSONArray resultList = result.getJSONArray("item");*/
-                            tv.setText(response); //ref: https://world.openfoodfacts.org/api/v0/product/0075270410521.json
+                            tv.setText(response.toString()); //ref: https://world.openfoodfacts.org/api/v0/product/0075270410521.json
                             //Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
+
+                            //Log.d("json_debug", response.toString());
+                            JSONObject product = response.getJSONObject("product");
+                            //Log.d("json_debug", product.getString("image_front_url"));
+                            //Log.d("json_debug", product.getString("product_name"));
+                            //Log.d("json_debug", product.getString("serving_size"));
+                            food.mealName = product.getString("product_name");
+
+                            //com.example.nutrimons.database.Meal food = new com.example.nutrimons.database.Meal(product.getString("product_name"), /*Integer.parseInt(product.getString("serving_size"))*/1, 1, 1);
+                            JSONObject nutriments = product.getJSONObject("nutriments");
+                            HashMap<String, String> nutrientsOfInterest = generateNutrientsOfInterest();
+                            for(int i = 0; i < nutriments.names().length(); ++i)
+                            {
+                                String key = nutriments.names().getString(i);
+                                if(nutrientsOfInterest.containsKey(key))
+                                {
+                                    Log.d("json_debug", "key: " + key + " // value: " + convertOFFResponseUnits(key, nutriments.get(key)));
+                                    food.setFieldFromString(nutrientsOfInterest.get(key), convertOFFResponseUnits(key, nutriments.get(key)));
+                                }
+                            }
+
                             Toast.makeText(context, "api request sent response", Toast.LENGTH_SHORT).show();
+                            TextView body = view.findViewById(R.id.barcodeApiResults);
+                            body.setText(food.toTextViewString());
 
                             // catch for the JSON parsing error
                         } catch (Exception e/*JSONException e*/) {
                             //Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
                             Toast.makeText(context, "error with api response", Toast.LENGTH_SHORT).show();
+                            e.printStackTrace();
                         }
                     } // public void onResponse(String response)
                 }, // Response.Listener<String>()
@@ -332,12 +368,162 @@ public class ScanBarcode extends Fragment {
         // Inflate the layout for this fragment
 
         view = inflater.inflate(R.layout.fragment_scan_barcode, container, false);
+        mDb = AppDatabase.getInstance(getContext());
         mPreviewView = view.findViewById(R.id.viewFinder);
+        food = new com.example.nutrimons.database.Meal("", 1, 1, 1);
         button = view.findViewById(R.id.camera_capture_button);
+        barcodeRetakeButton = view.findViewById(R.id.barcodeRetake);
+        barcodeRetakeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(view).navigate(R.id.action_nav_scanBarcode_self);
+            }
+        });
+        barcodeAcceptButton = view.findViewById(R.id.barcodeAccept);
+        barcodeAcceptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try{
+                    mDb.mealDao().insert(food);
+                }
+                catch(SQLiteConstraintException e) //still crashes, exception thrown from database.Meal
+                {
+                    e.printStackTrace();
+                    Toast.makeText(getContext(), "Barcode already scanned", Toast.LENGTH_LONG).show();
+                    Navigation.findNavController(view).navigate(R.id.action_nav_scanBarcode_self);
+                }
+                Navigation.findNavController(view).navigate(R.id.action_nav_scanBarcode_to_nav_mealPlan);
+            }
+        });
         bc = view.findViewById(R.id.barcodePreview);
         context = getContext();
         queue = Volley.newRequestQueue(getContext());
 
         return view;
+    }
+
+    private HashMap<String, String> generateNutrientsOfInterest()
+    {
+        HashMap<String, String> nutrientsOfInterest = new HashMap<>();
+
+        //these keys specifically are in grams
+        nutrientsOfInterest.put("energy-kcal", "calories"); //kcal
+        //nutrientsOfInterest.put("Water", "water"); //doesn't seem to have
+        nutrientsOfInterest.put("proteins", "protein"); //g
+        nutrientsOfInterest.put("carbohydrates", "carbohydrate"); //g
+        nutrientsOfInterest.put("sugars", "sugar"); //g
+        nutrientsOfInterest.put("fiber", "fiber"); //g
+        nutrientsOfInterest.put("cholesterol", "cholesterol"); //mg
+        nutrientsOfInterest.put("saturated-fat", "saturatedFat"); //g
+        nutrientsOfInterest.put("monounsaturated-fat", "monounsaturatedFat"); //g
+        nutrientsOfInterest.put("polyunsaturated-fat", "polyunsaturatedFat"); //g
+        nutrientsOfInterest.put("trans-fat", "transFat"); //g
+
+        nutrientsOfInterest.put("vitamin-a", "vitaminA"); //µg
+        nutrientsOfInterest.put("vitamin-c", "vitaminC"); //mg
+        nutrientsOfInterest.put("vitamin-d", "vitaminD"); //µg
+        //nutrientsOfInterest.put("vitamin-e", "vitaminE");
+        //nutrientsOfInterest.put("vitamin-k", "vitaminK");
+        //nutrientsOfInterest.put("thiamin", "thiamin");
+        //nutrientsOfInterest.put("riboflavin", "riboflavin");
+        //nutrientsOfInterest.put("niacin", "niacin");
+        //nutrientsOfInterest.put("vitamin-b-6", "vitaminB6");
+        //nutrientsOfInterest.put("folate", "folate");
+        //nutrientsOfInterest.put("vitamin-b-12", "vitaminB12");
+        //nutrientsOfInterest.put("pantothenic-acid", "pantothenicAcid");
+        //nutrientsOfInterest.put("biotin", "biotin");
+        //nutrientsOfInterest.put("choline", "choline");
+        //nutrientsOfInterest.put("carotenoids", "carotenoids");
+
+        nutrientsOfInterest.put("sodium", "sodium"); //g
+        nutrientsOfInterest.put("potassium", "potassium"); //g
+        nutrientsOfInterest.put("calcium", "calcium"); //mg
+        nutrientsOfInterest.put("iron", "iron"); //mg
+        //nutrientsOfInterest.put("chromium", "chromium");
+        //nutrientsOfInterest.put("copper", "copper");
+        //nutrientsOfInterest.put("fluoride", "fluoride");
+        //nutrientsOfInterest.put("iodine", "iodine");
+        //nutrientsOfInterest.put("magnesium", "magnesium");
+        //nutrientsOfInterest.put("manganese", "manganese");
+        //nutrientsOfInterest.put("molybdenum", "molybdenum");
+        //nutrientsOfInterest.put("phosphorous", "phosphorous");
+        //nutrientsOfInterest.put("selenium", "selenium");
+        //nutrientsOfInterest.put("zinc", "zinc");
+        //nutrientsOfInterest.put("chloride", "chloride");
+        //nutrientsOfInterest.put("arsenic", "arsenic");
+        //nutrientsOfInterest.put("boron", "boron");
+        //nutrientsOfInterest.put("nickel", "nickel");
+        //nutrientsOfInterest.put("silicon", "silicon");
+        //nutrientsOfInterest.put("vanadium", "vanadium");
+
+        return nutrientsOfInterest;
+    }
+
+    private float convertOFFResponseUnits(String nutrient, Object value)
+    {
+        if(value.getClass() == Integer.class)
+        {
+            switch(nutrient)
+            {
+                //already in correct units, just round to ints
+                case "energy-kcal":
+                case "proteins":
+                case "carbohydrates":
+                case "sugars":
+                case "fiber":
+                case "saturated-fat":
+                case "monounsaturated-fat":
+                case "polyunsaturated-fat":
+                case "trans-fat":
+                case "sodium":
+                    return ((Integer) value).floatValue();
+                //1000 off since mg
+                case "cholesterol":
+                case "vitamin-c":
+                case "potassium":
+                case "calcium":
+                case "iron":
+                    return ((Integer) value).floatValue() * 1000;
+                //1000000 off since µg
+                case "vitamin-a":
+                case "vitamin-d":
+                    return ((Integer) value).floatValue() * 1000000;
+                default:
+                    return -1;
+            }
+        }
+        else if(value.getClass() == Double.class)
+        {
+            switch(nutrient)
+            {
+                //already in correct units, just round to ints
+                case "energy-kcal":
+                case "proteins":
+                case "carbohydrates":
+                case "sugars":
+                case "fiber":
+                case "saturated-fat":
+                case "monounsaturated-fat":
+                case "polyunsaturated-fat":
+                case "trans-fat":
+                case "sodium":
+                case "potassium":
+                    return ((Double) value).floatValue();
+                //1000 off since mg
+                case "cholesterol":
+                case "vitamin-c":
+                case "calcium":
+                case "iron":
+                    return ((Double) value).floatValue() * 1000;
+                //1000000 off since µg
+                case "vitamin-a":
+                case "vitamin-d":
+                    return ((Double) value).floatValue() * 1000000;
+                default:
+                    return -1;
+            }
+        }
+        else
+            return -2;
     }
 }

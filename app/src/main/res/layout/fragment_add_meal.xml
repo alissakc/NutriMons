@@ -9,12 +9,10 @@
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginLeft="48dp"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="48dp"
-        android:layout_marginRight="48dp"
-        android:layout_marginBottom="48dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -42,19 +40,31 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="0dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="12dp"
                 android:autofillHints=""
                 android:ems="10"
-                android:inputType="text"
                 android:hint="@string/name"
+                android:inputType="text"
                 android:textSize="18sp" />
+
+            <CheckBox
+                android:id="@+id/checkboxBranded"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/checkboxBranded" />
+
+            <Button
+                android:id="@+id/searchFDCButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/searchFDC" />
 
             <TextView
                 android:id="@+id/servingSize"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="0dp"
-                android:layout_marginTop="48dp"
+                android:layout_marginTop="18dp"
                 android:text="@string/serving_size"
                 android:textColor="@color/black"
                 android:textSize="24sp"
@@ -65,7 +75,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="0dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="12dp"
                 android:autofillHints=""
                 android:ems="10"
                 android:hint="@string/serving_size_edit_text"
@@ -78,7 +88,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="0dp"
-                android:layout_marginTop="48dp"
+                android:layout_marginTop="18dp"
                 android:text="@string/serving_weight"
                 android:textColor="@color/black"
                 android:textSize="24sp"
@@ -89,7 +99,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="0dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="12dp"
                 android:autofillHints=""
                 android:ems="10"
                 android:hint="@string/serving_weight_edit_text"
@@ -102,7 +112,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="0dp"
-                android:layout_marginTop="48dp"
+                android:layout_marginTop="18dp"
                 android:text="@string/calories"
                 android:textColor="@color/black"
                 android:textSize="24sp"
@@ -110,10 +120,10 @@
 
             <EditText
                 android:id="@+id/editTextCalories"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="0dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="12dp"
                 android:autofillHints=""
                 android:ems="10"
                 android:hint="@string/calories_per_serving"
@@ -125,15 +135,463 @@
                 android:id="@+id/FDCapiResponse"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="apiRes" />
+                android:text="apiRes"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/advancedMealButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:text="@string/advanced" />
+
+            <LinearLayout
+                android:id="@+id/advancedMealForm"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/advancedMealCalories"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/advancedMealCalories"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    android:visibility="visible" />
+
+                <EditText
+                    android:id="@+id/advancedMealEditCalories"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="12dp"
+                    android:autofillHints=""
+                    android:ems="10"
+                    android:hint="@string/advancedMealEditCalories"
+                    android:inputType="number|text"
+                    android:textSize="18sp"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/advancedMealWater"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/advancedMealWater"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    android:visibility="visible" />
+
+                <EditText
+                    android:id="@+id/advancedMealEditWater"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="12dp"
+                    android:autofillHints=""
+                    android:ems="10"
+                    android:hint="@string/advancedMealEditWater"
+                    android:inputType="number|text"
+                    android:textSize="18sp"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/advancedMealProtein"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/advancedMealProtein"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    android:visibility="visible" />
+
+                <EditText
+                    android:id="@+id/advancedMealEditProtein"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="12dp"
+                    android:autofillHints=""
+                    android:ems="10"
+                    android:hint="@string/advancedMealEditProtein"
+                    android:inputType="number|text"
+                    android:textSize="18sp"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/advancedMealCarbohydrate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/advancedMealCarbohydrate"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    android:visibility="visible" />
+
+                <EditText
+                    android:id="@+id/advancedMealEditCarbohydrate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="12dp"
+                    android:autofillHints=""
+                    android:ems="10"
+                    android:hint="@string/advancedMealEditCarbohydrate"
+                    android:inputType="number|text"
+                    android:textSize="18sp"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/advancedMealSugar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/advancedMealSugar"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    android:visibility="visible" />
+
+                <EditText
+                    android:id="@+id/advancedMealEditSugar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="12dp"
+                    android:autofillHints=""
+                    android:ems="10"
+                    android:hint="@string/advancedMealEditSugar"
+                    android:inputType="number|text"
+                    android:textSize="18sp"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/advancedMealFiber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/advancedMealFiber"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    android:visibility="visible" />
+
+                <EditText
+                    android:id="@+id/advancedMealEditFiber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="12dp"
+                    android:autofillHints=""
+                    android:ems="10"
+                    android:hint="@string/advancedMealEditFiber"
+                    android:inputType="number|text"
+                    android:textSize="18sp"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/advancedMealCholesterol"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/advancedMealCholesterol"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    android:visibility="visible" />
+
+                <EditText
+                    android:id="@+id/advancedMealEditCholesterol"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="12dp"
+                    android:autofillHints=""
+                    android:ems="10"
+                    android:hint="@string/advancedMealEditCholesterol"
+                    android:inputType="number|text"
+                    android:textSize="18sp"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/advancedMealSaturatedFat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/advancedMealSaturatedFat"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    android:visibility="visible" />
+
+                <EditText
+                    android:id="@+id/advancedMealEditSaturatedFat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="12dp"
+                    android:autofillHints=""
+                    android:ems="10"
+                    android:hint="@string/advancedMealEditSaturatedFat"
+                    android:inputType="number|text"
+                    android:textSize="18sp"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/advancedMealMonounsaturatedFat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/advancedMealMonounsaturatedFat"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    android:visibility="visible" />
+
+                <EditText
+                    android:id="@+id/advancedMealEditMonounsaturatedFat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="12dp"
+                    android:autofillHints=""
+                    android:ems="10"
+                    android:hint="@string/advancedMealEditMonounsaturatedFat"
+                    android:inputType="number|text"
+                    android:textSize="18sp"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/advancedMealPolyunsaturatedFat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/advancedMealPolyunsaturatedFat"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    android:visibility="visible" />
+
+                <EditText
+                    android:id="@+id/advancedMealEditPolyunsaturatedFat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="12dp"
+                    android:autofillHints=""
+                    android:ems="10"
+                    android:hint="@string/advancedMealEditPolyunsaturatedFat"
+                    android:inputType="number|text"
+                    android:textSize="18sp"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/advancedMealTransFat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/advancedMealTransFat"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    android:visibility="visible" />
+
+                <EditText
+                    android:id="@+id/advancedMealEditTransFat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="12dp"
+                    android:autofillHints=""
+                    android:ems="10"
+                    android:hint="@string/advancedMealEditTransFat"
+                    android:inputType="number|text"
+                    android:textSize="18sp"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/advancedMealVitaminA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/advancedMealVitaminA"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    android:visibility="visible" />
+
+                <EditText
+                    android:id="@+id/advancedMealEditVitaminA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="12dp"
+                    android:autofillHints=""
+                    android:ems="10"
+                    android:hint="@string/advancedMealEditVitaminA"
+                    android:inputType="number|text"
+                    android:textSize="18sp"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/advancedMealVitaminC"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/advancedMealVitaminC"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    android:visibility="visible" />
+
+                <EditText
+                    android:id="@+id/advancedMealEditVitaminC"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="12dp"
+                    android:autofillHints=""
+                    android:ems="10"
+                    android:hint="@string/advancedMealEditVitaminC"
+                    android:inputType="number|text"
+                    android:textSize="18sp"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/advancedMealVitaminD"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/advancedMealVitaminD"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    android:visibility="visible" />
+
+                <EditText
+                    android:id="@+id/advancedMealEditVitaminD"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="12dp"
+                    android:autofillHints=""
+                    android:ems="10"
+                    android:hint="@string/advancedMealEditVitaminD"
+                    android:inputType="number|text"
+                    android:textSize="18sp"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/advancedMealSodium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/advancedMealSodium"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    android:visibility="visible" />
+
+                <EditText
+                    android:id="@+id/advancedMealEditSodium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="12dp"
+                    android:autofillHints=""
+                    android:ems="10"
+                    android:hint="@string/advancedMealEditSodium"
+                    android:inputType="number|text"
+                    android:textSize="18sp"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/advancedMealPotassium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/advancedMealPotassium"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    android:visibility="visible" />
+
+                <EditText
+                    android:id="@+id/advancedMealEditPotassium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="12dp"
+                    android:autofillHints=""
+                    android:ems="10"
+                    android:hint="@string/advancedMealEditPotassium"
+                    android:inputType="number|text"
+                    android:textSize="18sp"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/advancedMealCalcium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/advancedMealCalcium"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    android:visibility="visible" />
+
+                <EditText
+                    android:id="@+id/advancedMealEditCalcium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="12dp"
+                    android:autofillHints=""
+                    android:ems="10"
+                    android:hint="@string/advancedMealEditCalcium"
+                    android:inputType="number|text"
+                    android:textSize="18sp"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/advancedMealIron"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/advancedMealIron"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    android:visibility="visible" />
+
+                <EditText
+                    android:id="@+id/advancedMealEditIron"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="12dp"
+                    android:autofillHints=""
+                    android:ems="10"
+                    android:hint="@string/advancedMealEditIron"
+                    android:inputType="number|text"
+                    android:textSize="18sp"
+                    android:visibility="visible" />
+
+            </LinearLayout>
 
             <Button
                 android:id="@+id/submitNewMealButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="0dp"
-                android:layout_marginTop="48dp"
-                android:layout_marginBottom="48dp"
+                android:layout_marginTop="36dp"
                 android:text="@string/submit"
                 android:textSize="18sp" />
 
