@@ -1,8 +1,12 @@
 package com.example.nutrimons;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 
@@ -25,6 +29,8 @@ public class MainActivity extends AppCompatActivity implements DrawerController 
     private AppBarConfiguration mAppBarConfiguration;
     DrawerLayout drawer;
     Toolbar toolbar;
+    AppDatabase mDb;
+    NavController navController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +54,11 @@ public class MainActivity extends AppCompatActivity implements DrawerController 
                 R.id.nav_home, R.id.nav_login, R.id.nav_registration, R.id.nav_addMeal, R.id.nav_exercise, R.id.nav_meal, R.id.nav_mealPlan, R.id.nav_nutrientInformation, R.id.nav_nutrientOverview, R.id.nav_profile, R.id.nav_scanBarcode, R.id.nav_tamagotchi, R.id.nav_tamagotchiShop, R.id.nav_water, R.id.nav_calendar)
                 .setDrawerLayout(drawer)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        AppDatabase mDb = AppDatabase.getInstance(getApplicationContext());
+        mDb = AppDatabase.getInstance(getApplicationContext());
         try
         {
             Token t = mDb.tokenDao().getToken();
@@ -83,6 +89,8 @@ public class MainActivity extends AppCompatActivity implements DrawerController 
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.options_menu, menu);
+        menu.add(Menu.NONE, R.id.action_settings, Menu.NONE, "Settings");
+        menu.add(Menu.NONE, R.id.fragment_login, Menu.NONE, "Logout");
         return true;
     }
 
@@ -105,5 +113,30 @@ public class MainActivity extends AppCompatActivity implements DrawerController 
     public void setDrawer_UnLocked() {
         // unlocks navigation drawer
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+
+        switch(item.getItemId())
+        {
+            case R.id.action_settings:
+                //return NavigationUI.onNavDestinationSelected(item, navController) || super.onOptionsItemSelected(item);
+                break;
+            case R.id.fragment_login: //logout
+                Token t = mDb.tokenDao().getToken();
+                t.userID = -1;
+                mDb.tokenDao().insert(t);
+                //return NavigationUI.onNavDestinationSelected(item, navController) || super.onOptionsItemSelected(item); //https://developer.android.com/guide/navigation/navigation-ui
+                Intent mStartActivity = new Intent(MainActivity.this, MainActivity.class);
+                int mPendingIntentId = 999999;
+                PendingIntent mPendingIntent = PendingIntent.getActivity(MainActivity.this, mPendingIntentId, mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
+                AlarmManager mgr = (AlarmManager)MainActivity.this.getSystemService(Context.ALARM_SERVICE);
+                mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 1, mPendingIntent);
+                System.exit(0);
+                return true;
+        }
+        return false;
     }
 }
