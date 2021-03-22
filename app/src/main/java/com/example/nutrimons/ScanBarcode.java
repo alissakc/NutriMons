@@ -262,12 +262,12 @@ public class ScanBarcode extends Fragment {
                             //int valueType = barcode.getValueType();
                             View br = view.findViewById(R.id.barcodeResult);
                             View vf = view.findViewById(R.id.viewFinder);
-                            TextView tv = view.findViewById(R.id.barcodeString);
-                            tv.setText(rawValue);
+                            //TextView tv = view.findViewById(R.id.barcodeString);
+                            //tv.setText(rawValue);
 
                             queue.cancelAll(rawValue);
-                            tv = view.findViewById(R.id.barcodeApiResults);
-                            JsonRequest JReq = callOFFapi(rawValue, tv);
+
+                            JsonRequest JReq = callOFFapi(rawValue);
                             queue.add(JReq);
                             br.setVisibility(View.VISIBLE);
                             vf.setVisibility(View.INVISIBLE);
@@ -287,7 +287,7 @@ public class ScanBarcode extends Fragment {
                 });
     }
 
-    private JsonRequest callOFFapi(String barcodeString, TextView tv) //https://wiki.openfoodfacts.org/API ; also has an app: https://github.com/openfoodfacts/openfoodfacts-androidapp
+    private JsonRequest callOFFapi(String barcodeString) //https://wiki.openfoodfacts.org/API ; also has an app: https://github.com/openfoodfacts/openfoodfacts-androidapp
     {
         final String HEADER = "https://world.openfoodfacts.org/api/v0/product/";
         final String FOOTER = ".json";
@@ -304,6 +304,7 @@ public class ScanBarcode extends Fragment {
                             /*JSONObject result = new JSONObject(response).getJSONObject("list");
                             int maxItems = result.getInt("end");
                             JSONArray resultList = result.getJSONArray("item");*/
+                            TextView tv = view.findViewById(R.id.barcodeApiResults);
                             tv.setText(response.toString()); //ref: https://world.openfoodfacts.org/api/v0/product/0075270410521.json
                             //Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
 
@@ -313,8 +314,9 @@ public class ScanBarcode extends Fragment {
                             //Log.d("json_debug", product.getString("product_name"));
                             //Log.d("json_debug", product.getString("serving_size"));
                             food.mealName = product.getString("product_name");
+                            food.servingSize = product.getString("serving_size");
+                            food.servingsEaten = 1;
 
-                            //com.example.nutrimons.database.Meal food = new com.example.nutrimons.database.Meal(product.getString("product_name"), /*Integer.parseInt(product.getString("serving_size"))*/1, 1, 1);
                             JSONObject nutriments = product.getJSONObject("nutriments");
                             HashMap<String, String> nutrientsOfInterest = generateNutrientsOfInterest();
                             for(int i = 0; i < nutriments.names().length(); ++i)
@@ -370,7 +372,7 @@ public class ScanBarcode extends Fragment {
         view = inflater.inflate(R.layout.fragment_scan_barcode, container, false);
         mDb = AppDatabase.getInstance(getContext());
         mPreviewView = view.findViewById(R.id.viewFinder);
-        food = new com.example.nutrimons.database.Meal("", 1, 1, 1);
+        food = new com.example.nutrimons.database.Meal();
         button = view.findViewById(R.id.camera_capture_button);
         barcodeRetakeButton = view.findViewById(R.id.barcodeRetake);
         barcodeRetakeButton.setOnClickListener(new View.OnClickListener() {
@@ -384,7 +386,8 @@ public class ScanBarcode extends Fragment {
             @Override
             public void onClick(View v) {
                 try{
-                    mDb.mealDao().insert(food);
+                    AddMeal.food = food;
+                    Navigation.findNavController(view).navigate(R.id.action_nav_scanBarcode_to_nav_addMeal);
                 }
                 catch(SQLiteConstraintException e) //still crashes, exception thrown from database.Meal
                 {
@@ -392,7 +395,6 @@ public class ScanBarcode extends Fragment {
                     Toast.makeText(getContext(), "Barcode already scanned", Toast.LENGTH_LONG).show();
                     Navigation.findNavController(view).navigate(R.id.action_nav_scanBarcode_self);
                 }
-                Navigation.findNavController(view).navigate(R.id.action_nav_scanBarcode_to_nav_mealPlan);
             }
         });
         bc = view.findViewById(R.id.barcodePreview);
@@ -463,7 +465,7 @@ public class ScanBarcode extends Fragment {
     {
         if(value.getClass() == Integer.class)
         {
-            switch(nutrient)
+            switch(nutrient) //all values from these names in json are in kcl or grams
             {
                 //already in correct units, just round to ints
                 case "energy-kcal":
@@ -477,14 +479,14 @@ public class ScanBarcode extends Fragment {
                 case "trans-fat":
                 case "sodium":
                     return ((Integer) value).floatValue();
-                //1000 off since mg
+                //1000 off since we use mg
                 case "cholesterol":
                 case "vitamin-c":
                 case "potassium":
                 case "calcium":
                 case "iron":
                     return ((Integer) value).floatValue() * 1000;
-                //1000000 off since µg
+                //1000000 off since we use µg
                 case "vitamin-a":
                 case "vitamin-d":
                     return ((Integer) value).floatValue() * 1000000;
@@ -494,7 +496,7 @@ public class ScanBarcode extends Fragment {
         }
         else if(value.getClass() == Double.class)
         {
-            switch(nutrient)
+            switch(nutrient) //all values from these names in json are in kcl or grams
             {
                 //already in correct units, just round to ints
                 case "energy-kcal":
@@ -509,13 +511,13 @@ public class ScanBarcode extends Fragment {
                 case "sodium":
                 case "potassium":
                     return ((Double) value).floatValue();
-                //1000 off since mg
+                //1000 off since we use mg
                 case "cholesterol":
                 case "vitamin-c":
                 case "calcium":
                 case "iron":
                     return ((Double) value).floatValue() * 1000;
-                //1000000 off since µg
+                //1000000 off since we use µg
                 case "vitamin-a":
                 case "vitamin-d":
                     return ((Double) value).floatValue() * 1000000;

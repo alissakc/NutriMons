@@ -142,8 +142,8 @@
     <string name="name">Name</string>
     <string name="serving_size">Serving Size:</string>
     <string name="serving_size_edit_text">Serving Size</string>
-    <string name="serving_weight">Serving Weight:</string>
-    <string name="serving_weight_edit_text">Serving Weight (in grams)</string>
+    <string name="servings_eaten">Servings Eaten:</string>
+    <string name="servings_eaten_edit_text">Servings Eaten (decimals ok)</string>
     <string name="calories">Calories:</string>
     <string name="submit">Submit</string>
     <string name="calories_per_serving">Calories Per Serving</string>
