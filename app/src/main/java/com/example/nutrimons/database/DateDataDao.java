@@ -41,7 +41,7 @@ public interface DateDataDao {
 
 
     @Query("SELECT water FROM dateData WHERE date LIKE :search")
-    List<Double> findWaterByDate(String search);
+    List<Float> findWaterByDate(String search);
 
 
     // UPDATE QUERIES

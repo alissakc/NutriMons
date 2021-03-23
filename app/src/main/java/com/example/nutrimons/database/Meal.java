@@ -9,6 +9,9 @@ import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /* prevents the table from having two rows that contain the same set of values for the mealName,
 servingSize, servingWeight, and caloriesPerServing columns  */
 @Entity(indices = {@Index(value = {"mealName", "servingSize", "servingsEaten", "calories"},

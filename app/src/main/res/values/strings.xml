@@ -133,6 +133,7 @@
     <string name="add_meal">Add Meal</string>
     <string name="scan_barcode">Scan Barcode</string>
     <string name="exercise">Exercise</string>
+    <string name="dailySummary">Daily Summary</string>
     <string name="nutrients">Nutrients</string>
     <string name="nutrient_information">Nutrient Information</string>
     <string name="nutrient_overview">Nutrient Overview</string>

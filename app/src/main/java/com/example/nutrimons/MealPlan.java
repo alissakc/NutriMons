@@ -40,10 +40,10 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
     // vars
     private Spinner breakfastSpinner, lunchSpinner, dinnerSpinner, snackSpinner;
     private Button save;
-    private final List<String> selectedBreakfast = new ArrayList<>();
-    private final List<String> selectedLunch = new ArrayList<>();
-    private final List<String> selectedDinner = new ArrayList<>();
-    private final List<String> selectedSnack = new ArrayList<>();
+    private final List<Meal> selectedBreakfast = new ArrayList<>();
+    private final List<Meal> selectedLunch = new ArrayList<>();
+    private final List<Meal> selectedDinner = new ArrayList<>();
+    private final List<Meal> selectedSnack = new ArrayList<>();
     private ArrayAdapter<String> breakfastDataAdapter, lunchDataAdapter, dinnerDataAdapter, snackDataAdapter;
 
     // creates instance of database
@@ -137,15 +137,16 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedBreakfast.add(breakfastSpinner.getSelectedItem().toString());
-                selectedLunch.add(lunchSpinner.getSelectedItem().toString());
-                selectedDinner.add(dinnerSpinner.getSelectedItem().toString());
-                selectedSnack.add(snackSpinner.getSelectedItem().toString());
+                selectedBreakfast.add(mDb.mealDao().findByName(breakfastSpinner.getSelectedItem().toString()));
+                selectedLunch.add(mDb.mealDao().findByName(lunchSpinner.getSelectedItem().toString()));
+                selectedDinner.add(mDb.mealDao().findByName(dinnerSpinner.getSelectedItem().toString()));
+                selectedSnack.add(mDb.mealDao().findByName(snackSpinner.getSelectedItem().toString()));
                 long date = System.currentTimeMillis();
                 SimpleDateFormat Date = new SimpleDateFormat("MM/dd/yyyy");
                 String dateString = Date.format(date);
                 if(mDb.dateDataDao().findByDate(dateString) == null){
-                    final com.example.nutrimons.database.DateData dateData = new com.example.nutrimons.database.DateData(dateString, selectedBreakfast, selectedLunch, selectedDinner, selectedSnack, new ArrayList<String>(), 0.0);
+                    final com.example.nutrimons.database.DateData dateData = new com.example.nutrimons.database.DateData(dateString, selectedBreakfast, selectedLunch, selectedDinner, selectedSnack, new ArrayList<String>());
+                    dateData.aggregateNutrients();
                     mDb.dateDataDao().insert(dateData);
                 }
                 else{
@@ -166,7 +167,8 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
                             (selectedLunch.isEmpty()) ? mDb.dateDataDao().findByDate(dateString).lunch : selectedLunch,
                             (selectedDinner.isEmpty()) ? mDb.dateDataDao().findByDate(dateString).dinner : selectedDinner,
                             (selectedSnack.isEmpty()) ? mDb.dateDataDao().findByDate(dateString).snack : selectedSnack,
-                            mDb.dateDataDao().findByDate(dateString).todayExercise, mDb.dateDataDao().findByDate(dateString).water);
+                            mDb.dateDataDao().findByDate(dateString).todayExercise);
+                    dateData.aggregateNutrients();
                     mDb.dateDataDao().updateDateData(dateData);
                     //mDb.dateDataDao().updateMealPlan(selectedBreakfast, selectedLunch, selectedDinner, selectedSnack, dateString);
                 }

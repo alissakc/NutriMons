@@ -47,7 +47,7 @@ public class DailyInfoFragment extends Fragment{
     private String mParam2;
 
     // vars
-    private RecyclerView mealRecyclerView, exerciseRecyclerView;
+    private RecyclerView mealRecyclerView, exerciseRecyclerView, dailySummaryRecyclerView;
     private ImageView gotToDashboard, goToPreviousDate, goToNextDate;
 
     // vars for calendar
@@ -131,12 +131,16 @@ public class DailyInfoFragment extends Fragment{
 
         mealRecyclerView = view.findViewById(R.id.dailyMealList);
         exerciseRecyclerView = view.findViewById(R.id.dailyExerciseList);
+        dailySummaryRecyclerView = view.findViewById(R.id.dailySummary);
 
         mealRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mealRecyclerView.setHasFixedSize(false);
 
         exerciseRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         exerciseRecyclerView.setHasFixedSize(false);
+
+        dailySummaryRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        dailySummaryRecyclerView.setHasFixedSize(false);
 
         /*
         final Observer<List<String>> mealObserver = new Observer<List<String>>() {
@@ -253,15 +257,18 @@ public class DailyInfoFragment extends Fragment{
             DateData temp = mDb.dateDataDao().findByDate(currentDay);
             LinearLayout mealLayout = view.findViewById(R.id.mealLinearView);
             LinearLayout exerciseLayout = view.findViewById(R.id.exerciseLinearView);
+            LinearLayout dailySummaryLayout = view.findViewById(R.id.dailySummaryLinearView);
             mealRecyclerView = view.findViewById(R.id.dailyMealList);
             exerciseRecyclerView = view.findViewById(R.id.dailyExerciseList);
+            dailySummaryRecyclerView = view.findViewById(R.id.dailySummary);
             mealLayout.setVisibility(View.VISIBLE);
             exerciseLayout.setVisibility(View.VISIBLE);
+            dailySummaryLayout.setVisibility(View.VISIBLE);
 
-            List<String> tempBreakfast = (List<String>) mDb.dateDataDao().findBreakfastByDate(currentDay);
-            List<String> tempLunch = (List<String>) mDb.dateDataDao().findLunchByDate(currentDay);
-            List<String> tempDinner = (List<String>) mDb.dateDataDao().findDinnerByDate(currentDay);
-            List<String> tempSnack = (List<String>) mDb.dateDataDao().findSnackByDate(currentDay);
+            List<String> tempBreakfast = (List<String>) temp.breakfastToListString();
+            List<String> tempLunch = (List<String>) temp.lunchToListString();
+            List<String> tempDinner = (List<String>) temp.dinnerToListString();
+            List<String> tempSnack = (List<String>) temp.snackToListString();
 
             // gets list data from the database
             List<String> breakfast = (tempBreakfast.isEmpty() ? null : tempBreakfast);
@@ -326,6 +333,16 @@ public class DailyInfoFragment extends Fragment{
 
             ExerciseAdapter exerciseAdapter = new ExerciseAdapter(exercise);
             exerciseRecyclerView.setAdapter(exerciseAdapter);
+
+
+            dailySummaryRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            dailySummaryRecyclerView.setHasFixedSize(false);
+
+            temp.aggregateNutrients();
+            List<String> dailySummary = (List<String>) temp.dailySummaryList(); //should never be empty
+
+            DailySummaryAdapter dailySummaryAdapter = new DailySummaryAdapter(dailySummary);
+            dailySummaryRecyclerView.setAdapter(dailySummaryAdapter);
 
 
         /*
