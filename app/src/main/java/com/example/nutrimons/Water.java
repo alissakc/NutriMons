@@ -297,6 +297,8 @@ public class Water extends Fragment implements View.OnClickListener{
                     if(mDb.dateDataDao().findByDate(dateString) == null){
                         com.example.nutrimons.database.DateData dateData = new com.example.nutrimons.database.DateData(dateString, new ArrayList<Meal>(), new ArrayList<Meal>(), new ArrayList<Meal>(), new ArrayList<Meal>(), new ArrayList<String>());
                         dateData.water = amountDrank;
+                        for(String s:  dateData.dailySummaryList())
+                            Log.d("nutrient", s);
                         mDb.dateDataDao().insert(dateData);
                     }
                     else{

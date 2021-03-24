@@ -268,10 +268,10 @@ public class DailyInfoFragment extends Fragment{
         exerciseLayout.setVisibility(View.VISIBLE);
         dailySummaryLayout.setVisibility(View.VISIBLE);
 
-        List<String> tempBreakfast = (List<String>) mDb.dateDataDao().findBreakfastByDate(currentDay);
-        List<String> tempLunch = (List<String>) mDb.dateDataDao().findLunchByDate(currentDay);
-        List<String> tempDinner = (List<String>) mDb.dateDataDao().findDinnerByDate(currentDay);
-        List<String> tempSnack = (List<String>) mDb.dateDataDao().findSnackByDate(currentDay);
+        List<String> tempBreakfast = (List<String>) temp.breakfastToListString();
+        List<String> tempLunch = (List<String>) temp.lunchToListString();
+        List<String> tempDinner = (List<String>) temp.dinnerToListString();
+        List<String> tempSnack = (List<String>) temp.snackToListString();
 
         // gets list data from the database
         List<String> breakfast = (tempBreakfast.isEmpty() ? null : tempBreakfast);
@@ -347,7 +347,7 @@ public class DailyInfoFragment extends Fragment{
         if(temp != null){
             dailySummaryLayout.setVisibility(View.VISIBLE);
             temp.aggregateNutrients();
-            dailySummary = (List<String>) temp.dailySummaryList(); //should never be empty
+            dailySummary = (List<String>) temp.dailySummaryList();
         }else{
             dailySummary = new ArrayList<>();
             dailySummary.add("No meals were inputted.");

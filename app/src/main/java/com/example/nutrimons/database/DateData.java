@@ -101,7 +101,7 @@ public class DateData {
 
     public void aggregateNutrients()
     {
-        calories = water = protein = carbohydrate = sugar = fiber = cholesterol = saturatedFat = monounsaturatedFat
+        calories = protein = carbohydrate = sugar = fiber = cholesterol = saturatedFat = monounsaturatedFat
                 = polyunsaturatedFat = transFat = vitaminA = vitaminC = vitaminD = sodium = potassium
                 = calcium = iron = 0;
         addNutrients(breakfast);
@@ -115,7 +115,6 @@ public class DateData {
         for(Meal m : meals)
         {
             this.calories += m.calories;
-            this.water += m.water;
             this.protein += m.protein;
             this.carbohydrate += m.carbohydrate;
             this.sugar += m.sugar;
