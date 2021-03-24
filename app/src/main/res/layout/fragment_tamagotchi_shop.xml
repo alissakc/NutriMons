@@ -97,39 +97,45 @@
                     android:background="#B83737">
 
                     <LinearLayout
+                        android:id="@+id/shopItemsArea"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical" >
+                        android:orientation="vertical">
 
                         <ImageView
                             android:id="@+id/imageView32"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/water" />
+                            android:src="@drawable/water"
+                            android:visibility="gone" />
 
                         <ImageView
                             android:id="@+id/imageView30"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/carbs" />
+                            android:src="@drawable/carbs"
+                            android:visibility="gone" />
 
                         <ImageView
                             android:id="@+id/imageView29"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/cholesterol" />
+                            android:src="@drawable/cholesterol"
+                            android:visibility="gone" />
 
                         <ImageView
                             android:id="@+id/imageView28"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/trans_fat" />
+                            android:src="@drawable/trans_fat"
+                            android:visibility="gone" />
 
                         <ImageView
                             android:id="@+id/imageView27"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/protein" />
+                            android:src="@drawable/protein"
+                            android:visibility="gone" />
                     </LinearLayout>
                 </ScrollView>
 

@@ -59,9 +59,10 @@ public class MainActivity extends AppCompatActivity implements DrawerController 
         NavigationUI.setupWithNavController(navigationView, navController);
 
         mDb = AppDatabase.getInstance(getApplicationContext());
+        Token t = mDb.tokenDao().getToken();
+        //initialize token
         try
         {
-            Token t = mDb.tokenDao().getToken();
             Log.d("tables initialized", String.valueOf(t.areTablesInitialized));
             if(t.areTablesInitialized == false)
             {
@@ -77,6 +78,21 @@ public class MainActivity extends AppCompatActivity implements DrawerController 
             NutrientTablesApi nta = new NutrientTablesApi(mDb);
             nta.Initialize(getAssets());
         }
+
+        //initialize shop
+        try{
+            if(mDb.tokenDao().getToken().isShopInitialized == false)
+            {
+                new InitializeShop(mDb, getAssets());
+                t.isShopInitialized = true;
+                mDb.tokenDao().insert(t);
+            }
+        }
+        catch (NullPointerException e)
+        {
+            new InitializeShop(mDb, getAssets());
+        }
+
     }
 
     @Override

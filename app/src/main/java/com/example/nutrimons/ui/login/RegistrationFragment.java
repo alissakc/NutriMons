@@ -209,6 +209,7 @@ public class RegistrationFragment extends Fragment {
 
                     Token t = new Token(-1);
                     t.areTablesInitialized = true;
+                    t.isShopInitialized = true;
                     mDb.tokenDao().insert(t);
                     
                     Navigation.findNavController(view).navigate(R.id.action_nav_registration_to_nav_login);

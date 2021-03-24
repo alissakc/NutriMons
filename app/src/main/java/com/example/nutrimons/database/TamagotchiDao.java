@@ -6,11 +6,13 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 
+import androidx.room.TypeConverters;
 import androidx.room.Update;
 
 import java.util.List;
 
 @Dao
+@TypeConverters({Converters.class})
 public interface TamagotchiDao {
 
     @Query("SELECT * FROM tamagotchipet")
