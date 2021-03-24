@@ -112,9 +112,15 @@ public class TamagotchiShop extends Fragment {
             ib.setOnClickListener(new View.OnClickListener() {
                                       @Override
                                       public void onClick(View view) {
+                                          //Log.d("clicked", String.valueOf(si.shopItemID));
                                           try {
-                                              tama.shopItems.add(String.valueOf(si.shopItemID));
-                                              mDb.tamagotchiDao().insert(tama);
+                                              if(tama.shopItems.contains(String.valueOf(si.shopItemID)))
+                                                  Toast.makeText(getContext(), "You already own this", Toast.LENGTH_SHORT).show();
+                                              else
+                                              {
+                                                  tama.shopItems.add(String.valueOf(si.shopItemID));
+                                                  mDb.tamagotchiDao().insert(tama);
+                                              }
                                           } catch (SQLiteConstraintException e) {
                                               Toast.makeText(getContext(), "You already own this", Toast.LENGTH_SHORT).show();
                                           }
