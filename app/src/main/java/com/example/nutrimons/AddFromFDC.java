@@ -225,7 +225,7 @@ public class AddFromFDC extends Fragment {
                                 table.addView(row, i + 1);
 
                                 com.example.nutrimons.database.Meal food = new com.example.nutrimons.database.Meal();
-                                food.mealName = mealName;
+                                food.mealName = foodName;
                                 food.servingSize = "100g"; //all units seem to be 100g, no info in json
                                 food.servingsEaten = 1;
 
@@ -281,7 +281,7 @@ public class AddFromFDC extends Fragment {
     {
         HashMap<String, String> nutrientsOfInterest = new HashMap<>();
         nutrientsOfInterest.put("Energy", "calories");
-        nutrientsOfInterest.put("Water", "water");
+        //nutrientsOfInterest.put("Water", "water");
         nutrientsOfInterest.put("Protein", "protein");
         nutrientsOfInterest.put("Carbohydrate, by difference", "carbohydrate");
         nutrientsOfInterest.put("Sugars, total including NLEA", "sugar");

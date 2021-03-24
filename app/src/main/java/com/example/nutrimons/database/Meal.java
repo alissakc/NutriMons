@@ -218,7 +218,7 @@ public class Meal {
         return mealName + "\n" +
                 "Serving Size: " + servingSize + "\n" +
                 "Calories: " + calories + "kcal\n" +
-                "Water: " + water + "g\n" +
+                //"Water: " + water + "g\n" +
                 "Protein: " + protein + "g\n" +
                 "Carbohydrate: " + carbohydrate + "g\n" +
                 "Sugar: " + sugar + "g\n" +
