@@ -139,7 +139,7 @@ public class DateData {
         ArrayList<String> dailyList = new ArrayList<>();
         
         dailyList.add("Calories: " + calories + "kcal");
-        dailyList.add("Water: " + water + "g");
+        dailyList.add("Water: " + water + "L");
         dailyList.add("Protein: " + protein + "g");
         dailyList.add("Carbohydrate: " + carbohydrate + "g");
         dailyList.add("Sugar: " + sugar + "g");

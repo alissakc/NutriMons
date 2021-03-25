@@ -34,7 +34,7 @@ public class Water extends Fragment implements View.OnClickListener{
     // Variables for pie chart
     PieChart waterPieChart;
     private float amountDrank = 0.0f;
-    private float amountNeeded = 120.0f;
+    private float amountNeeded; //Liters
     private float inputAmount;
 
     EditText waterAmountInput;
@@ -80,6 +80,7 @@ public class Water extends Fragment implements View.OnClickListener{
         Log.d("WaterDateString", dateString);
         Log.d("WaterDateString", String.valueOf(dateString.equals("03/13/2021")));
 
+        amountNeeded = Float.parseFloat(mDb.userDao().findByUserID(mDb.tokenDao().getUserID()).water) * 33.81402f; //convert to fl oz
 
 //        com.example.nutrimons.database.DateData dateTest = new com.example.nutrimons.database.DateData(dateString, new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), 1.1);
 //        com.example.nutrimons.database.DateData nullDateTest = null;
@@ -114,7 +115,7 @@ public class Water extends Fragment implements View.OnClickListener{
 
         if(mDb.dateDataDao().findByDate(dateString) == null){
             amountDrank = 0.0f;
-            amountNeeded = 120.0f;
+            amountNeeded = Float.parseFloat(mDb.userDao().findByUserID(mDb.tokenDao().getUserID()).water) * 33.81402f; //convert to fl oz
         }else {
             List<Float> temp = (List<Float>)mDb.dateDataDao().findWaterByDate(dateString);
             amountDrank = ((Float)temp.get(0) == null) ? 0.0f : (Float)temp.get(0);
