@@ -11,6 +11,9 @@ import androidx.room.Index;
 
 import com.example.nutrimons.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity//(indices = {@Index(value = {"user_name"}, unique = false)})
 public class User {
     @PrimaryKey(autoGenerate = true)
@@ -185,5 +188,55 @@ public class User {
                 + " " + vitaminADRI + " " + vitaminAUL + " " + vitaminCDRI + " " + vitaminCUL + " "
                 + " " + vitaminDDRI + " " + vitaminDUL + " " + sodiumDRI + " " + sodiumUL + " "
                 + potassiumDRI + " " + calciumDRI + " " + calciumUL + " " + ironDRI + " " + ironUL;
+    }
+    
+    public List<Float> DRIToFloatList()
+    {
+        ArrayList<Float> dailyList = new ArrayList<>();
+
+        dailyList.add(Float.parseFloat(calories));
+        dailyList.add(Float.parseFloat(water));
+        dailyList.add(Float.parseFloat(proteinDRI));
+        dailyList.add(Float.parseFloat(carbsDRI));
+        dailyList.add(Float.parseFloat(sugarDRI));
+        dailyList.add(Float.parseFloat(fiberDRI));
+        dailyList.add(Float.parseFloat(cholesterolDRI));
+        dailyList.add(Float.parseFloat(saturatedFatsDRI));
+        dailyList.add(Float.parseFloat(unsaturatedFatsDRI));
+        dailyList.add(Float.parseFloat(transFatsDRI));
+        dailyList.add(Float.parseFloat(vitaminADRI));
+        dailyList.add(Float.parseFloat(vitaminCDRI));
+        dailyList.add(Float.parseFloat(vitaminDDRI));
+        dailyList.add(Float.parseFloat(sodiumDRI));
+        dailyList.add(Float.parseFloat(potassiumDRI));
+        dailyList.add(Float.parseFloat(calciumDRI));
+        dailyList.add(Float.parseFloat(ironDRI));
+
+        return dailyList;
+    }
+
+    public List<Float> ULToFloatList()
+    {
+        ArrayList<Float> dailyList = new ArrayList<>();
+
+        dailyList.add(Float.parseFloat(calories));
+        dailyList.add(0f);//null
+        dailyList.add(Float.parseFloat(proteinUL));
+        dailyList.add(Float.parseFloat(carbsUL));
+        dailyList.add(Float.parseFloat(sugarUL));
+        dailyList.add(0f);//null
+        dailyList.add(Float.parseFloat(cholesterolUL));
+        dailyList.add(Float.parseFloat(saturatedFatsUL));
+        dailyList.add(Float.parseFloat(unsaturatedFatsUL));
+        dailyList.add(Float.parseFloat(transFatsUL));
+        dailyList.add(Float.parseFloat(vitaminAUL));
+        dailyList.add(Float.parseFloat(vitaminCUL));
+        dailyList.add(Float.parseFloat(vitaminDUL));
+        dailyList.add(Float.parseFloat(sodiumUL));
+        dailyList.add(0f);//null
+        dailyList.add(Float.parseFloat(calciumUL));
+        dailyList.add(Float.parseFloat(ironUL));
+
+        return dailyList;
     }
 }

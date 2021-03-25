@@ -134,7 +134,7 @@ public class DateData {
         }
     }
 
-    public ArrayList<String> dailySummaryList()
+    public ArrayList<String> nutrientsToStringList()
     {
         ArrayList<String> dailyList = new ArrayList<>();
         
@@ -156,6 +156,31 @@ public class DateData {
         dailyList.add("Calcium: " + calcium + "mg");
         dailyList.add("Iron: " + iron + "mg");
         
+        return dailyList;
+    }
+
+    public ArrayList<Float> nutrientsToFloatList()
+    {
+        ArrayList<Float> dailyList = new ArrayList<>();
+
+        dailyList.add(calories);
+        dailyList.add(water);
+        dailyList.add(protein);
+        dailyList.add(carbohydrate);
+        dailyList.add(sugar);
+        dailyList.add(fiber);
+        dailyList.add(cholesterol);
+        dailyList.add(saturatedFat);
+        dailyList.add((monounsaturatedFat + polyunsaturatedFat));
+        dailyList.add(transFat);
+        dailyList.add(vitaminA);
+        dailyList.add(vitaminC);
+        dailyList.add(vitaminD);
+        dailyList.add(sodium);
+        dailyList.add(potassium);
+        dailyList.add(calcium);
+        dailyList.add(iron);
+
         return dailyList;
     }
 

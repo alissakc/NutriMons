@@ -3,16 +3,11 @@ package com.example.nutrimons;
 import android.app.ActionBar;
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +25,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Stream;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -347,7 +341,7 @@ public class DailyInfoFragment extends Fragment{
         if(temp != null){
             dailySummaryLayout.setVisibility(View.VISIBLE);
             temp.aggregateNutrients();
-            dailySummary = (List<String>) temp.dailySummaryList();
+            dailySummary = (List<String>) temp.nutrientsToStringList();
         }else{
             dailySummary = new ArrayList<>();
             dailySummary.add("No meals were inputted.");

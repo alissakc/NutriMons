@@ -4,9 +4,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,7 +14,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.nutrimons.database.AppDatabase;
-import com.example.nutrimons.database.DateData;
 import com.example.nutrimons.database.Meal;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
@@ -297,7 +293,7 @@ public class Water extends Fragment implements View.OnClickListener{
                     if(mDb.dateDataDao().findByDate(dateString) == null){
                         com.example.nutrimons.database.DateData dateData = new com.example.nutrimons.database.DateData(dateString, new ArrayList<Meal>(), new ArrayList<Meal>(), new ArrayList<Meal>(), new ArrayList<Meal>(), new ArrayList<String>());
                         dateData.water = amountDrank;
-                        for(String s:  dateData.dailySummaryList())
+                        for(String s:  dateData.nutrientsToStringList())
                             Log.d("nutrient", s);
                         mDb.dateDataDao().insert(dateData);
                     }
