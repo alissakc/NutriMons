@@ -103,7 +103,7 @@ public class DateData {
     {
         calories = protein = carbohydrate = sugar = fiber = cholesterol = saturatedFat = monounsaturatedFat
                 = polyunsaturatedFat = transFat = vitaminA = vitaminC = vitaminD = sodium = potassium
-                = calcium = iron = 0;
+                = calcium = iron = 0f;
         addNutrients(breakfast);
         addNutrients(lunch);
         addNutrients(dinner);

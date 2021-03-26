@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.example.nutrimons.database.AppDatabase;
 import com.example.nutrimons.database.DateData;
+import com.example.nutrimons.database.Meal;
 import com.example.nutrimons.database.User;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -95,6 +96,7 @@ public class NutrientOverview extends Fragment {
         mDb = AppDatabase.getInstance(getContext());
         DateData dateData = mDb.dateDataDao().findByDate(dateString);
         dateData.aggregateNutrients();
+
         List<String> nuts = dateData.nutrientsToStringList();
         NUTRIENTS = nuts.toArray(NUTRIENTS);
 

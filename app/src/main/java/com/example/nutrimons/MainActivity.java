@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.Menu;
 
 import com.example.nutrimons.database.AppDatabase;
+import com.example.nutrimons.database.DateData;
+import com.example.nutrimons.database.Meal;
 import com.example.nutrimons.database.Token;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -23,6 +25,9 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements DrawerController {
 
@@ -50,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements DrawerController 
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
+
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_login, R.id.nav_registration, R.id.nav_addMeal, R.id.nav_exercise, R.id.nav_meal, R.id.nav_mealPlan, R.id.nav_nutrientInformation, R.id.nav_nutrientOverview, R.id.nav_profile, R.id.nav_scanBarcode, R.id.nav_tamagotchi, R.id.nav_tamagotchiShop, R.id.nav_water, R.id.nav_calendar)
                 .setDrawerLayout(drawer)
@@ -93,6 +99,19 @@ public class MainActivity extends AppCompatActivity implements DrawerController 
             new InitializeShop(mDb, getAssets());
         }
 
+        //initialize dateData
+        long date = System.currentTimeMillis();
+        SimpleDateFormat Date = new SimpleDateFormat("MM/dd/yyyy");
+        String dateString = Date.format(date);
+        DateData dateData = mDb.dateDataDao().findByDate(dateString);
+        try {
+            dateData.aggregateNutrients();
+        }
+        catch(NullPointerException e)
+        {
+            dateData = new DateData(dateString, new ArrayList<com.example.nutrimons.database.Meal>(), new ArrayList<com.example.nutrimons.database.Meal>(), new ArrayList<com.example.nutrimons.database.Meal>(), new ArrayList<Meal>(), new ArrayList<String>());
+            mDb.dateDataDao().insert(dateData);
+        }
     }
 
     @Override

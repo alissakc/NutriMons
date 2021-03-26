@@ -67,12 +67,12 @@ public class Dashboard extends Fragment  {
     private BarChart macrosChart;
 
     // vars for horizontal bar chart
-    private static /*final*/ int MAX_X_VALUE = 3;
+    private static /*final*/ int MAX_X_VALUE;
     //private static final int MAX_Y_VALUE = 50;
     //private static final int MIN_Y_VALUE = 5;
     private static final String SET_LABEL = "Nutrient Overview";
     private static final String[] MACRO_NUTRIENTS = { "PROTEINS %", "CARBOHYDRATES %", "FATS %"};
-    private static List<Float> NUTRIENT_VALUES = new ArrayList<>(), NUTRIENTS_DRI = new ArrayList<>();
+    private List<Float> NUTRIENT_VALUES = new ArrayList<>(), NUTRIENTS_DRI = new ArrayList<>();
 
     private String dateString;
 
@@ -172,59 +172,67 @@ public class Dashboard extends Fragment  {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
-        try {
-            mDb = AppDatabase.getInstance(getContext());
+        mDb = AppDatabase.getInstance(getContext());
 
-            // Button and image initialization
+        // Button and image initialization
 //        gotToProfile = view.findViewById(R.id.imageProfile);
 //        goToMeal = view.findViewById(R.id.dashboardAddMeal);
 //        goToWater = view.findViewById(R.id.dashboardAddWater);
 //        goToExercise = view.findViewById(R.id.dashboardAddExercise);
-            factTextView = view.findViewById(R.id.textViewFunFactText);
+        factTextView = view.findViewById(R.id.textViewFunFactText);
 
-            // gets current date
-            long dateLong = System.currentTimeMillis();
-            SimpleDateFormat Date = new SimpleDateFormat("MM/dd/yyyy");
-            String dateString = Date.format(dateLong);
+        // gets current date
+        long dateLong = System.currentTimeMillis();
+        SimpleDateFormat Date = new SimpleDateFormat("MM/dd/yyyy");
+        String dateString = Date.format(dateLong);
 
-            mDb = AppDatabase.getInstance(getContext());
-            DateData dateData = mDb.dateDataDao().findByDate(dateString);
-            dateData.aggregateNutrients();
+        DateData dateData = mDb.dateDataDao().findByDate(dateString);
+        dateData.aggregateNutrients();
+        mDb.dateDataDao().updateDateData(dateData);
 
-            List<Float> nutValuesTemp = dateData.nutrientsToFloatList();
-            NUTRIENT_VALUES.add(nutValuesTemp.get(2)); //protein
-            NUTRIENT_VALUES.add(nutValuesTemp.get(3)); //carbs
-            NUTRIENT_VALUES.add(nutValuesTemp.get(7) + nutValuesTemp.get(8) + nutValuesTemp.get(9)); //fats
+        List<Float> nutValuesTemp = dateData.nutrientsToFloatList();
+        NUTRIENT_VALUES.add(nutValuesTemp.get(2)); //protein
+        NUTRIENT_VALUES.add(nutValuesTemp.get(3)); //carbs
+        NUTRIENT_VALUES.add(nutValuesTemp.get(7) + nutValuesTemp.get(8) + nutValuesTemp.get(9)); //fats
+        NUTRIENT_VALUES.add(nutValuesTemp.get(0)); //calories
 
-            MAX_X_VALUE = MACRO_NUTRIENTS.length;
+        MAX_X_VALUE = MACRO_NUTRIENTS.length;
 
-            User u = mDb.userDao().findByUserID(mDb.tokenDao().getUserID());
-            List<Float> nutrientDRIsTemp = u.DRIToFloatList();
-            NUTRIENTS_DRI.add(nutrientDRIsTemp.get(2));
-            NUTRIENTS_DRI.add(nutrientDRIsTemp.get(3));
-            NUTRIENTS_DRI.add(nutrientDRIsTemp.get(7) + nutrientDRIsTemp.get(8) + nutrientDRIsTemp.get(9));
+        User u = mDb.userDao().findByUserID(mDb.tokenDao().getUserID());
+        List<Float> nutrientDRIsTemp = u.DRIToFloatList();
+        NUTRIENTS_DRI.add(nutrientDRIsTemp.get(2));
+        NUTRIENTS_DRI.add(nutrientDRIsTemp.get(3));
+        NUTRIENTS_DRI.add(nutrientDRIsTemp.get(7) + nutrientDRIsTemp.get(8) + nutrientDRIsTemp.get(9));
+        NUTRIENTS_DRI.add(nutrientDRIsTemp.get(0));
 
-            //create and show the piechart for calories
-            caloriesPieChart = view.findViewById(R.id.caloriesPieChart_view);
-            initPieChart();
-            showPieChart();
+        for(int i = 0; i < NUTRIENT_VALUES.size(); ++i)
+        {
+            Log.d("nuts", String.valueOf(NUTRIENT_VALUES.get(i)));
+            Log.d("nuts", String.valueOf(NUTRIENTS_DRI.get(i)));
+        }
 
-            //create and show the horizontal bar chart for macros
-            macrosChart = view.findViewById(R.id.macrosChart_view);
-            BarData data = createChartData();
-            configureChartAppearance();
-            prepareChartData(data);
+        Log.d("calories", String.valueOf(NUTRIENT_VALUES.get(3)));
+        Log.d("calories", String.valueOf(NUTRIENTS_DRI.get(3)));
 
-            // assign listener for buttons
+        //create and show the piechart for calories
+        caloriesPieChart = view.findViewById(R.id.caloriesPieChart_view);
+        initPieChart();
+        showPieChart();
+
+        //create and show the horizontal bar chart for macros
+        macrosChart = view.findViewById(R.id.macrosChart_view);
+        BarData data = createChartData();
+        configureChartAppearance();
+        prepareChartData(data);
+
+        // assign listener for buttons
 //        gotToProfile.setOnClickListener(this);
 //        goToMeal.setOnClickListener(this);
 //        goToWater.setOnClickListener(this);
 //        goToExercise.setOnClickListener(this);
 
-            updateFact();
-        }
-        catch(NullPointerException e) {
-            Toast.makeText(getContext(), "Please enter a meal to see charts", Toast.LENGTH_LONG).show(); }
+        updateFact();
+
 
         handler.postDelayed(runnable = new Runnable() {
             public void run() {
@@ -298,15 +306,13 @@ public class Dashboard extends Fragment  {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-
-
             }
         });
 
         return view;
     }
 
-    @Override
+    /*@Override
     public void onResume()
     {
 
@@ -331,7 +337,7 @@ public class Dashboard extends Fragment  {
             Log.d("new token", "id: " + mDb.tokenDao().getUserID());
             Navigation.findNavController(v).navigate(R.id.action_nav_dashboard_to_nav_registration);
         }
-    }
+    }*/
 
 //    @Override
 //    public void onClick(View v) {
@@ -363,11 +369,14 @@ public class Dashboard extends Fragment  {
         ArrayList<PieEntry> pieEntries = new ArrayList<>();
         String label = "(Calories)";
 
+        //Log.d("calories", String.valueOf(NUTRIENT_VALUES.get(3)));
+        //Log.d("calories", String.valueOf(NUTRIENTS_DRI.get(3)));
+
         //initializing data
         Map<String, Double> typeAmountMap = new HashMap<>();
-        typeAmountMap.put("Consumed", (double) NUTRIENT_VALUES.get(0));
-        if(NUTRIENTS_DRI.get(0) - NUTRIENT_VALUES.get(0) > 0)
-            typeAmountMap.put("Remaining", (double) NUTRIENTS_DRI.get(0) - NUTRIENT_VALUES.get(0));
+        typeAmountMap.put("Consumed", (double) NUTRIENT_VALUES.get(3));
+        if(NUTRIENTS_DRI.get(3) - NUTRIENT_VALUES.get(3) > 0)
+            typeAmountMap.put("Remaining", (double) NUTRIENTS_DRI.get(3) - NUTRIENT_VALUES.get(3));
         else
             typeAmountMap.put("Remaining", 0d);
 
@@ -470,6 +479,7 @@ public class Dashboard extends Fragment  {
         for (int i = 0; i < MAX_X_VALUE; i++) {
             float x = i;
             float y = NUTRIENT_VALUES.get(i) / NUTRIENTS_DRI.get(i) * 100;
+            Log.d("nuts", NUTRIENT_VALUES.get(i) + " " + NUTRIENTS_DRI.get(i) );
             values.add(new BarEntry(x, y));
         }
         BarDataSet set1 = new BarDataSet(values, SET_LABEL);

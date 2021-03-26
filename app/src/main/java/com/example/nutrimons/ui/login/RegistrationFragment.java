@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nutrimons.MainActivity;
+import com.example.nutrimons.NutrientTablesApi;
 import com.example.nutrimons.R;
 import com.example.nutrimons.database.AppDatabase;
 import com.example.nutrimons.database.TamagotchiPet;
@@ -202,9 +203,21 @@ public class RegistrationFragment extends Fragment {
                     System.out.println("INSERTING INTO DATABASE");
                     mDb.userDao().insert(user);
 
+                    User u2 = mDb.userDao().findByEmail(user.email);
+                    u2.profileFocus = "Maintain Weight";
+                    u2.age = "25";
+                    u2.sex = "Male";
+                    u2.weight = "160";
+                    u2.height = "70";
+                    u2.activityLevel = "Sedentary";
+                    mDb.userDao().insert(u2);
+                    Log.d("user", u2.toString());
+
+                    NutrientTablesApi nta = new NutrientTablesApi(mDb);
+                    nta.updateUserNutrients(u2.userID);
 
                     TamagotchiPet tama = new TamagotchiPet();
-                    tama.userId = mDb.userDao().findByEmail(user.email).userID;
+                    tama.userId = u2.userID;
                     mDb.tamagotchiDao().insert(tama);
 
                     Token t = new Token(-1);
