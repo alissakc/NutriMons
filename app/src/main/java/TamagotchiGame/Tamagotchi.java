@@ -244,10 +244,15 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
         Long currTimeConvert = testingTime(currentDateTime).getTime();
         System.out.println("CURRENT: "+currTimeConvert);
 
+
         //Get last logged on
         String lastLogIn = mDb.tamagotchiDao().getLastLoggedIn();
-        Long lastLogInConvert = testingTime(lastLogIn).getTime();
-        System.out.println("LAST: "+lastLogInConvert);
+        Long lastLogInConvert = testingTime(currentDateTime).getTime();;
+        if (lastLogIn != null) {
+            lastLogInConvert = testingTime(lastLogIn).getTime();
+            //System.out.println("LAST: " + lastLogInConvert);
+        }
+
 
 
         int difference = (int)(currTimeConvert-lastLogInConvert)/1000;
