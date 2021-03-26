@@ -9,7 +9,7 @@ import androidx.room.TypeConverters;
 
 // Meal, Exercise, and User are classes annotated with @Entity
 @Database(entities = {Meal.class, Exercise.class, User.class, DateData.class, ElementDRIs.class, ElementULs.class, MacronutrientDRIs.class,
-  MacronutrientRanges.class, VitaminDRIs.class, VitaminULs.class, Token.class, TamagotchiPet.class}, version = 1)
+  MacronutrientRanges.class, VitaminDRIs.class, VitaminULs.class, Token.class, TamagotchiPet.class, ShopItem.class}, version = 1)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -44,4 +44,5 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract VitaminULsDAO vitaminULsDAO();
     public abstract TokenDao tokenDao();
     public abstract TamagotchiDao tamagotchiDao();
+    public abstract ShopItemDao shopItemDao();
 }

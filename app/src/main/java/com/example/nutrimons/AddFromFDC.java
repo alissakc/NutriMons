@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -81,8 +82,8 @@ public class AddFromFDC extends Fragment {
                 @Override
                 public void onClick(View view) {
                     try{
-                        mDb.mealDao().insert(food);
-                        Navigation.findNavController(view).navigate(R.id.action_nav_addFromFDC_to_nav_mealPlan);
+                        AddMeal.food = food;
+                        Navigation.findNavController(view).navigate(R.id.action_nav_addFromFDC_to_nav_addMeal);
                     }
                     catch(SQLiteConstraintException e)
                     {
@@ -223,7 +224,10 @@ public class AddFromFDC extends Fragment {
 
                                 table.addView(row, i + 1);
 
-                                com.example.nutrimons.database.Meal food = new com.example.nutrimons.database.Meal(foodName, 1, 1, 1);
+                                com.example.nutrimons.database.Meal food = new com.example.nutrimons.database.Meal();
+                                food.mealName = foodName;
+                                food.servingSize = "100g"; //all units seem to be 100g, no info in json
+                                food.servingsEaten = 1;
 
                                 JSONArray foodNutrients = foodArray.getJSONObject(i).getJSONArray("foodNutrients");
                                 //Log.d("Number of food nutrients", String.valueOf(foodNutrients.length()));
@@ -277,7 +281,7 @@ public class AddFromFDC extends Fragment {
     {
         HashMap<String, String> nutrientsOfInterest = new HashMap<>();
         nutrientsOfInterest.put("Energy", "calories");
-        nutrientsOfInterest.put("Water", "water");
+        //nutrientsOfInterest.put("Water", "water");
         nutrientsOfInterest.put("Protein", "protein");
         nutrientsOfInterest.put("Carbohydrate, by difference", "carbohydrate");
         nutrientsOfInterest.put("Sugars, total including NLEA", "sugar");
@@ -288,9 +292,9 @@ public class AddFromFDC extends Fragment {
         nutrientsOfInterest.put("Fatty acids, total polyunsaturated", "polyunsaturatedFat");
         nutrientsOfInterest.put("Fatty acids, total trans", "transFat");
 
-        nutrientsOfInterest.put("Vitamin A, IU", "vitaminA");
+        nutrientsOfInterest.put("Vitamin A, RAE", "vitaminA");
         nutrientsOfInterest.put("Vitamin C, total ascorbic acid", "vitaminC");
-        nutrientsOfInterest.put("Vitamin D (D2 + D3), International Units", "vitaminD");
+        nutrientsOfInterest.put("Vitamin D (D2 + D3)", "vitaminD");
         //nutrientsOfInterest.put("Vitamin E, added", "vitaminE");
         //nutrientsOfInterest.put("Vitamin K (phylloquinone)", "vitaminK");
         //nutrientsOfInterest.put("Thiamin", "thiamin");

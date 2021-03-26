@@ -62,7 +62,7 @@ public class LoginFragment extends Fragment {
         try
         {
             Token t = mDb.tokenDao().getToken();
-            if(t.userID != -1) //-1 means at least one user registered, but not logged in
+            if(t.userID > 0) //less than 0 means at least one user registered, but not logged in
             {
                 Log.d("token found", "" + t.userID);
                 Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_home);

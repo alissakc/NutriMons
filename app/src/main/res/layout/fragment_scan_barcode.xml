@@ -43,26 +43,12 @@ tools:context=".ScanBarcode">
             android:src="@drawable/barcode"
             app:srcCompat="@drawable/barcode" />
 
-        <TextView
+        <!--<TextView
             android:id="@+id/barcodeString"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/barcode_string" />
-
-        <Button
-            android:id="@+id/barcodeRetake"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/barcodeRetake" />
-
-        <Button
-            android:id="@+id/barcodeAccept"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/barcodeAccept" />
+            android:text="@string/barcode_string" />-->
 
         <TextView
             android:id="@+id/barcodeApiResults"
@@ -70,6 +56,28 @@ tools:context=".ScanBarcode">
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/barcode_api_json" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/barcodeRetake"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:text="@string/barcodeRetake" />
+
+            <Button
+                android:id="@+id/barcodeAccept"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="@string/barcodeAccept" />
+        </LinearLayout>
 
     </LinearLayout>
 

@@ -20,6 +20,8 @@ import android.widget.Toast;
 
 import com.example.nutrimons.database.AppDatabase;
 
+import static java.lang.Float.parseFloat;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link AddMeal#newInstance} factory method to
@@ -38,17 +40,18 @@ public class AddMeal extends Fragment {
 
     // vars
     private Button addButton, searchFDCButton, advancedMealButton;
-    private String mealName;
-    private int servingSize, servingWeight, caloriesPerServing, advCalories, advWater, advProtein,
+    private String mealName, servingSize;
+    private float servingsEaten, advCalories, advWater, advProtein,
         advCarbohydrate, advSugar, advFiber, advCholesterol, advSaturatedFat, advMonounsaturatedFat,
         advPolyunsaturatedFat, advTransFat, advVitaminA, advVitaminC, advVitaminD, advSodium,
         advPotassium, advCalcium, advIron;
-    private EditText mealNameText, servingSizeText, servingWeightText, caloriesPerServingText,
+    private EditText mealNameText, servingSizeText, servingsEatenText,
         advCaloriesText, advWaterText, advProteinText, advCarbohydrateText, advSugarText, advFiberText,
         advCholesterolText, advSaturatedFatText, advMonounsaturatedFatText, advPolyunsaturatedFatText,
         advTransFatText, advVitaminAText, advVitaminCText, advVitaminDText, advSodiumText,
         advPotassiumText, advCalciumText, advIronText;
     private View advancedMealForm;
+    public static com.example.nutrimons.database.Meal food;
 
     // creates instance of database
     private AppDatabase mDb;
@@ -105,10 +108,9 @@ public class AddMeal extends Fragment {
         // new meal
         mealNameText = (EditText) view.findViewById(R.id.editTextFoodName);
         servingSizeText = (EditText) view.findViewById(R.id.editTextServingSize);
-        servingWeightText = (EditText) view.findViewById(R.id.editTextServingWeight);
-        caloriesPerServingText = (EditText) view.findViewById(R.id.editTextCalories);
-
+        servingsEatenText = (EditText) view.findViewById(R.id.editTextServingsEaten);
         advCaloriesText = (EditText) view.findViewById(R.id.advancedMealEditCalories);
+        
         advWaterText = (EditText) view.findViewById(R.id.advancedMealEditWater);
         advProteinText = (EditText) view.findViewById(R.id.advancedMealEditProtein);
         advCarbohydrateText = (EditText) view.findViewById(R.id.advancedMealEditCarbohydrate);
@@ -126,6 +128,51 @@ public class AddMeal extends Fragment {
         advPotassiumText = (EditText) view.findViewById(R.id.advancedMealEditPotassium);
         advCalciumText = (EditText) view.findViewById(R.id.advancedMealEditCalcium);
         advIronText = (EditText) view.findViewById(R.id.advancedMealEditIron);
+
+        if(food != null) {
+            mealName = food.mealName;
+            mealNameText.setText(food.mealName);
+            servingSize = food.servingSize;
+            servingSizeText.setText(food.servingSize);
+            servingsEaten = food.servingsEaten;
+            servingsEatenText.setText(String.valueOf(food.servingsEaten));
+            advCalories = food.calories;
+            advCaloriesText.setText(String.valueOf(food.calories));
+            advWater = food.water;
+            advWaterText.setText(String.valueOf(food.water));
+            advProtein = food.protein;
+            advProteinText.setText(String.valueOf(food.protein));
+            advCarbohydrate = food.carbohydrate;
+            advCarbohydrateText.setText(String.valueOf(food.carbohydrate));
+            advSugar = food.sugar;
+            advSugarText.setText(String.valueOf(food.sugar));
+            advFiber = food.fiber;
+            advFiberText.setText(String.valueOf(food.fiber));
+            advCholesterol = food.cholesterol;
+            advCholesterolText.setText(String.valueOf(food.cholesterol));
+            advSaturatedFat = food.saturatedFat;
+            advSaturatedFatText.setText(String.valueOf(food.saturatedFat));
+            advMonounsaturatedFat = food.monounsaturatedFat;
+            advMonounsaturatedFatText.setText(String.valueOf(food.monounsaturatedFat));
+            advPolyunsaturatedFat = food.polyunsaturatedFat;
+            advPolyunsaturatedFatText.setText(String.valueOf(food.polyunsaturatedFat));
+            advTransFat = food.transFat;
+            advTransFatText.setText(String.valueOf(food.transFat));
+            advVitaminA = food.vitaminA;
+            advVitaminAText.setText(String.valueOf(food.vitaminA));
+            advVitaminC = food.vitaminC;
+            advVitaminCText.setText(String.valueOf(food.vitaminC));
+            advVitaminD = food.vitaminD;
+            advVitaminDText.setText(String.valueOf(food.vitaminD));
+            advSodium = food.sodium;
+            advSodiumText.setText(String.valueOf(food.sodium));
+            advPotassium = food.potassium;
+            advPotassiumText.setText(String.valueOf(food.potassium));
+            advCalcium = food.calcium;
+            advCalciumText.setText(String.valueOf(food.calcium));
+            advIron = food.iron;
+            advIronText.setText(String.valueOf(food.iron));
+        }
 
         checkboxbrandedButton = (CompoundButton) view.findViewById(R.id.checkboxBranded);
         checkboxbrandedButton.setOnClickListener(new View.OnClickListener() {
@@ -180,93 +227,85 @@ public class AddMeal extends Fragment {
                 //Toast.makeText(getContext(), "Created entry", Toast.LENGTH_SHORT).show();
                 try {
                     mealName = mealNameText.getText().toString();
-                    servingSize = Integer.parseInt(servingSizeText.getText().toString());
-                    servingWeight = Integer.parseInt(servingWeightText.getText().toString());
-                    caloriesPerServing = Integer.parseInt(caloriesPerServingText.getText().toString());
-
-                    if(advCaloriesText.getText().toString().isEmpty())
-                        advCalories = 0;
-                    else
-                        advCalories = Integer.parseInt(advCaloriesText.getText().toString());
+                    servingSize = servingSizeText.getText().toString();
+                    servingsEaten = Float.parseFloat(servingsEatenText.getText().toString());
+                    advCalories = Float.parseFloat(advCaloriesText.getText().toString());
+                        
                     if(advWaterText.getText().toString().isEmpty())
                         advWater = 0;
                     else
-                        advWater = Integer.parseInt(advWaterText.getText().toString());
+                        advWater = Float.parseFloat(advWaterText.getText().toString());
                     if (advProteinText.getText().toString().isEmpty())
                         advProtein = 0;
                     else
-                        advProtein = Integer.parseInt(advProteinText.getText().toString());
+                        advProtein = Float.parseFloat(advProteinText.getText().toString());
                     if (advCarbohydrateText.getText().toString().isEmpty())
                         advCarbohydrate = 0;
                     else
-                        advCarbohydrate = Integer.parseInt(advCarbohydrateText.getText().toString());
+                        advCarbohydrate = Float.parseFloat(advCarbohydrateText.getText().toString());
                     if (advSugarText.getText().toString().isEmpty())
                         advSugar = 0;
                     else
-                        advSugar = Integer.parseInt(advSugarText.getText().toString());
+                        advSugar = Float.parseFloat(advSugarText.getText().toString());
                     if (advFiberText.getText().toString().isEmpty())
                         advFiber = 0;
                     else
-                        advFiber = Integer.parseInt(advFiberText.getText().toString());
+                        advFiber = Float.parseFloat(advFiberText.getText().toString());
                     if (advCholesterolText.getText().toString().isEmpty())
                         advCholesterol = 0;
                     else
-                        advCholesterol = Integer.parseInt(advCholesterolText.getText().toString());
+                        advCholesterol = Float.parseFloat(advCholesterolText.getText().toString());
                     if (advSaturatedFatText.getText().toString().isEmpty())
                         advSaturatedFat = 0;
                     else
-                        advSaturatedFat = Integer.parseInt(advSaturatedFatText.getText().toString());
+                        advSaturatedFat = Float.parseFloat(advSaturatedFatText.getText().toString());
                     if (advMonounsaturatedFatText.getText().toString().isEmpty())
                         advMonounsaturatedFat = 0;
                     else
-                        advMonounsaturatedFat = Integer.parseInt(advMonounsaturatedFatText.getText().toString());
+                        advMonounsaturatedFat = Float.parseFloat(advMonounsaturatedFatText.getText().toString());
                     if (advPolyunsaturatedFatText.getText().toString().isEmpty())
                         advPolyunsaturatedFat = 0;
                     else
-                        advPolyunsaturatedFat = Integer.parseInt(advPolyunsaturatedFatText.getText().toString());
+                        advPolyunsaturatedFat = Float.parseFloat(advPolyunsaturatedFatText.getText().toString());
                     if (advTransFatText.getText().toString().isEmpty())
                         advTransFat = 0;
                     else
-                        advTransFat = Integer.parseInt(advTransFatText.getText().toString());
+                        advTransFat = Float.parseFloat(advTransFatText.getText().toString());
                     if (advVitaminAText.getText().toString().isEmpty())
                         advVitaminA = 0;
                     else
-                        advVitaminA = Integer.parseInt(advVitaminAText.getText().toString());
+                        advVitaminA = Float.parseFloat(advVitaminAText.getText().toString());
                     if (advVitaminCText.getText().toString().isEmpty())
                         advVitaminC = 0;
                     else
-                        advVitaminC = Integer.parseInt(advVitaminCText.getText().toString());
+                        advVitaminC = Float.parseFloat(advVitaminCText.getText().toString());
                     if (advVitaminDText.getText().toString().isEmpty())
                         advVitaminD = 0;
                     else
-                        advVitaminD = Integer.parseInt(advVitaminDText.getText().toString());
+                        advVitaminD = Float.parseFloat(advVitaminDText.getText().toString());
                     if (advSodiumText.getText().toString().isEmpty())
                         advSodium = 0;
                     else
-                        advSodium = Integer.parseInt(advSodiumText.getText().toString());
+                        advSodium = Float.parseFloat(advSodiumText.getText().toString());
                     if (advPotassiumText.getText().toString().isEmpty())
                         advPotassium = 0;
                     else
-                        advPotassium = Integer.parseInt(advPotassiumText.getText().toString());
+                        advPotassium = Float.parseFloat(advPotassiumText.getText().toString());
                     if (advCalciumText.getText().toString().isEmpty())
                         advCalcium = 0;
                     else
-                        advCalcium = Integer.parseInt(advCalciumText.getText().toString());
+                        advCalcium = Float.parseFloat(advCalciumText.getText().toString());
                     if (advIronText.getText().toString().isEmpty())
                         advIron = 0;
                     else
-                        advIron = Integer.parseInt(advIronText.getText().toString());
+                        advIron = Float.parseFloat(advIronText.getText().toString());
 
                     final com.example.nutrimons.database.Meal meal = new com.example.nutrimons.database.Meal(
-                            mealName, servingSize, servingWeight, caloriesPerServing,
+                            mealName, servingSize, servingsEaten,
                             advCalories, advWater, advProtein, advCarbohydrate, advSugar,
                             advFiber, advCholesterol, advSaturatedFat, advMonounsaturatedFat,
                             advPolyunsaturatedFat, advTransFat, advVitaminA, advVitaminC, advVitaminD,
                             advSodium, advPotassium, advCalcium, advIron);
-                    /*meal.setAdvFields(advCalories, advWater, advProtein, advCarbohydrate, advSugar,
-                            advFiber, advCholesterol, advSaturatedFat, advMonounsaturatedFat,
-                            advPolyunsaturatedFat, advTransFat, advVitaminA, advVitaminC, advVitaminD,
-                            advSodium, advPotassium, advCalcium, advIron);*/
                     mDb.mealDao().insert(meal);
                     Log.d("meal", mDb.mealDao().findByName(mealName).toTextViewString());
 
@@ -278,8 +317,8 @@ public class AddMeal extends Fragment {
                     Toast.makeText(getContext(), "Error. Please fill out all of these fields", Toast.LENGTH_LONG).show();
                     mealNameText.setError("");
                     servingSizeText.setError("");
-                    servingWeightText.setError("");
-                    caloriesPerServingText.setError("");
+                    servingsEatenText.setError("");
+                    advCaloriesText.setError("");
                     e.printStackTrace();
                 }
                 catch (NumberFormatException e)
@@ -287,8 +326,8 @@ public class AddMeal extends Fragment {
                     Toast.makeText(getContext(), "Error. Please fill out at all of these fields", Toast.LENGTH_LONG).show();
                     mealNameText.setError("");
                     servingSizeText.setError("");
-                    servingWeightText.setError("");
-                    caloriesPerServingText.setError("");
+                    servingsEatenText.setError("");
+                    advCaloriesText.setError("");
                     e.printStackTrace();
                 }
                 catch(SQLiteConstraintException e) //doesn't currently catch

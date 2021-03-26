@@ -79,55 +79,55 @@
                 android:autofillHints=""
                 android:ems="10"
                 android:hint="@string/serving_size_edit_text"
-                android:inputType="number|text"
+                android:inputType="text"
                 android:textSize="18sp"
                 android:visibility="visible" />
 
             <TextView
-                android:id="@+id/servingWeight"
+                android:id="@+id/servingsEaten"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="18dp"
-                android:text="@string/serving_weight"
+                android:text="@string/servings_eaten"
                 android:textColor="@color/black"
                 android:textSize="24sp"
                 android:visibility="visible" />
 
             <EditText
-                android:id="@+id/editTextServingWeight"
+                android:id="@+id/editTextServingsEaten"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="12dp"
                 android:autofillHints=""
                 android:ems="10"
-                android:hint="@string/serving_weight_edit_text"
-                android:inputType="number|text"
+                android:hint="@string/servings_eaten_edit_text"
+                android:inputType="number|numberDecimal"
                 android:textSize="18sp"
                 android:visibility="visible" />
 
             <TextView
-                android:id="@+id/calories"
+                android:id="@+id/advancedMealCalories"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="18dp"
-                android:text="@string/calories"
+                android:text="@string/advancedMealCalories"
                 android:textColor="@color/black"
                 android:textSize="24sp"
                 android:visibility="visible" />
 
             <EditText
-                android:id="@+id/editTextCalories"
+                android:id="@+id/advancedMealEditCalories"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="12dp"
                 android:autofillHints=""
                 android:ems="10"
-                android:hint="@string/calories_per_serving"
-                android:inputType="number|text"
+                android:hint="@string/advancedMealEditCalories"
+                android:inputType="number|numberDecimal"
                 android:textSize="18sp"
                 android:visibility="visible" />
 
@@ -153,30 +153,6 @@
                 android:visibility="gone">
 
                 <TextView
-                    android:id="@+id/advancedMealCalories"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:layout_marginTop="18dp"
-                    android:text="@string/advancedMealCalories"
-                    android:textColor="@color/black"
-                    android:textSize="24sp"
-                    android:visibility="visible" />
-
-                <EditText
-                    android:id="@+id/advancedMealEditCalories"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:layout_marginTop="12dp"
-                    android:autofillHints=""
-                    android:ems="10"
-                    android:hint="@string/advancedMealEditCalories"
-                    android:inputType="number|text"
-                    android:textSize="18sp"
-                    android:visibility="visible" />
-
-                <TextView
                     android:id="@+id/advancedMealWater"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -185,7 +161,7 @@
                     android:text="@string/advancedMealWater"
                     android:textColor="@color/black"
                     android:textSize="24sp"
-                    android:visibility="visible" />
+                    android:visibility="gone" />
 
                 <EditText
                     android:id="@+id/advancedMealEditWater"
@@ -196,9 +172,9 @@
                     android:autofillHints=""
                     android:ems="10"
                     android:hint="@string/advancedMealEditWater"
-                    android:inputType="number|text"
+                    android:inputType="number|numberDecimal"
                     android:textSize="18sp"
-                    android:visibility="visible" />
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/advancedMealProtein"
@@ -220,7 +196,7 @@
                     android:autofillHints=""
                     android:ems="10"
                     android:hint="@string/advancedMealEditProtein"
-                    android:inputType="number|text"
+                    android:inputType="number|numberDecimal"
                     android:textSize="18sp"
                     android:visibility="visible" />
 
@@ -244,7 +220,7 @@
                     android:autofillHints=""
                     android:ems="10"
                     android:hint="@string/advancedMealEditCarbohydrate"
-                    android:inputType="number|text"
+                    android:inputType="number|numberDecimal"
                     android:textSize="18sp"
                     android:visibility="visible" />
 
@@ -268,7 +244,7 @@
                     android:autofillHints=""
                     android:ems="10"
                     android:hint="@string/advancedMealEditSugar"
-                    android:inputType="number|text"
+                    android:inputType="number|numberDecimal"
                     android:textSize="18sp"
                     android:visibility="visible" />
 
@@ -292,7 +268,7 @@
                     android:autofillHints=""
                     android:ems="10"
                     android:hint="@string/advancedMealEditFiber"
-                    android:inputType="number|text"
+                    android:inputType="number|numberDecimal"
                     android:textSize="18sp"
                     android:visibility="visible" />
 
@@ -316,7 +292,7 @@
                     android:autofillHints=""
                     android:ems="10"
                     android:hint="@string/advancedMealEditCholesterol"
-                    android:inputType="number|text"
+                    android:inputType="number|numberDecimal"
                     android:textSize="18sp"
                     android:visibility="visible" />
 
@@ -340,7 +316,7 @@
                     android:autofillHints=""
                     android:ems="10"
                     android:hint="@string/advancedMealEditSaturatedFat"
-                    android:inputType="number|text"
+                    android:inputType="number|numberDecimal"
                     android:textSize="18sp"
                     android:visibility="visible" />
 
@@ -364,7 +340,7 @@
                     android:autofillHints=""
                     android:ems="10"
                     android:hint="@string/advancedMealEditMonounsaturatedFat"
-                    android:inputType="number|text"
+                    android:inputType="number|numberDecimal"
                     android:textSize="18sp"
                     android:visibility="visible" />
 
@@ -388,7 +364,7 @@
                     android:autofillHints=""
                     android:ems="10"
                     android:hint="@string/advancedMealEditPolyunsaturatedFat"
-                    android:inputType="number|text"
+                    android:inputType="number|numberDecimal"
                     android:textSize="18sp"
                     android:visibility="visible" />
 
@@ -412,7 +388,7 @@
                     android:autofillHints=""
                     android:ems="10"
                     android:hint="@string/advancedMealEditTransFat"
-                    android:inputType="number|text"
+                    android:inputType="number|numberDecimal"
                     android:textSize="18sp"
                     android:visibility="visible" />
 
@@ -436,7 +412,7 @@
                     android:autofillHints=""
                     android:ems="10"
                     android:hint="@string/advancedMealEditVitaminA"
-                    android:inputType="number|text"
+                    android:inputType="number|numberDecimal"
                     android:textSize="18sp"
                     android:visibility="visible" />
 
@@ -460,7 +436,7 @@
                     android:autofillHints=""
                     android:ems="10"
                     android:hint="@string/advancedMealEditVitaminC"
-                    android:inputType="number|text"
+                    android:inputType="number|numberDecimal"
                     android:textSize="18sp"
                     android:visibility="visible" />
 
@@ -484,7 +460,7 @@
                     android:autofillHints=""
                     android:ems="10"
                     android:hint="@string/advancedMealEditVitaminD"
-                    android:inputType="number|text"
+                    android:inputType="number|numberDecimal"
                     android:textSize="18sp"
                     android:visibility="visible" />
 
@@ -508,7 +484,7 @@
                     android:autofillHints=""
                     android:ems="10"
                     android:hint="@string/advancedMealEditSodium"
-                    android:inputType="number|text"
+                    android:inputType="number|numberDecimal"
                     android:textSize="18sp"
                     android:visibility="visible" />
 
@@ -532,7 +508,7 @@
                     android:autofillHints=""
                     android:ems="10"
                     android:hint="@string/advancedMealEditPotassium"
-                    android:inputType="number|text"
+                    android:inputType="number|numberDecimal"
                     android:textSize="18sp"
                     android:visibility="visible" />
 
@@ -556,7 +532,7 @@
                     android:autofillHints=""
                     android:ems="10"
                     android:hint="@string/advancedMealEditCalcium"
-                    android:inputType="number|text"
+                    android:inputType="number|numberDecimal"
                     android:textSize="18sp"
                     android:visibility="visible" />
 
@@ -580,7 +556,7 @@
                     android:autofillHints=""
                     android:ems="10"
                     android:hint="@string/advancedMealEditIron"
-                    android:inputType="number|text"
+                    android:inputType="number|numberDecimal"
                     android:textSize="18sp"
                     android:visibility="visible" />
 
@@ -596,6 +572,7 @@
                 android:textSize="18sp" />
 
         </LinearLayout>
+
     </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

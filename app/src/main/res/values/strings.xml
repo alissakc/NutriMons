@@ -6,6 +6,7 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="action_logout">Logout</string>
 
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
@@ -132,6 +133,7 @@
     <string name="add_meal">Add Meal</string>
     <string name="scan_barcode">Scan Barcode</string>
     <string name="exercise">Exercise</string>
+    <string name="dailySummary">Daily Summary</string>
     <string name="nutrients">Nutrients</string>
     <string name="nutrient_information">Nutrient Information</string>
     <string name="nutrient_overview">Nutrient Overview</string>
@@ -142,8 +144,8 @@
     <string name="name">Name</string>
     <string name="serving_size">Serving Size:</string>
     <string name="serving_size_edit_text">Serving Size</string>
-    <string name="serving_weight">Serving Weight:</string>
-    <string name="serving_weight_edit_text">Serving Weight (in grams)</string>
+    <string name="servings_eaten">Servings Eaten:</string>
+    <string name="servings_eaten_edit_text">Servings Eaten (decimals ok)</string>
     <string name="calories">Calories:</string>
     <string name="submit">Submit</string>
     <string name="calories_per_serving">Calories Per Serving</string>
@@ -339,4 +341,5 @@
     <string name="advancedMealEditCalcium">Calcium per serving</string>
     <string name="advancedMealIron">Iron</string>
     <string name="advancedMealEditIron">Iron per serving</string>
+    <string name="remove_meal">Remove Meal</string>
 </resources>

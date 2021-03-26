@@ -9,9 +9,12 @@ import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /* prevents the table from having two rows that contain the same set of values for the mealName,
 servingSize, servingWeight, and caloriesPerServing columns  */
-@Entity(indices = {@Index(value = {"meal_name", "serving_size", "serving_weight", "calories_per_serving"},
+@Entity(indices = {@Index(value = {"mealName", "servingSize", "servingsEaten", "calories"},
         unique = true)})
 public class Meal {
 
@@ -19,17 +22,14 @@ public class Meal {
     @NonNull
     public Integer mealID;
 
-    @ColumnInfo(name = "meal_name")
+    @ColumnInfo(name = "mealName")
     public String mealName;
 
-    @ColumnInfo(name = "serving_size")
-    public int servingSize;
+    @ColumnInfo(name = "servingSize")
+    public String servingSize;
 
-    @ColumnInfo(name = "serving_weight")
-    public int servingWeight;
-
-    @ColumnInfo(name = "calories_per_serving")
-    public int caloriesPerServing;
+    @ColumnInfo(name = "servingsEaten")
+    public float servingsEaten;
 
     @ColumnInfo(name = "calories")
     public float calories;
@@ -85,15 +85,17 @@ public class Meal {
     @ColumnInfo(name = "iron")
     public float iron;
 
-    public Meal(String mealName, int servingSize, int servingWeight, int caloriesPerServing) {
+    public Meal(String mealName, String servingsSize, float servingsEaten, float calories) {
         this.mealName = mealName;
-        this.servingSize = servingSize;
-        this.servingWeight = servingWeight;
-        this.caloriesPerServing = caloriesPerServing;
+        this.servingSize = servingsSize;
+        this.servingsEaten = servingsEaten;
+        this.calories = calories;
     }
 
+    public Meal() {}
+
     @Ignore
-    public Meal(String mealName, int servingSize, int servingWeight, int caloriesPerServing,
+    public Meal(String mealName, String servingSize, float servingsEaten,
                 float calories, float water, float protein, float carbohydrate, float sugar, float fiber,
                 float cholesterol, float saturatedFat, float monounsaturatedFat, float polyunsaturatedFat,
                 float transFat, float vitaminA, float vitaminC, float vitaminD, float sodium, float potassium,
@@ -101,8 +103,7 @@ public class Meal {
     {
         this.mealName = mealName;
         this.servingSize = servingSize;
-        this.servingWeight = servingWeight;
-        this.caloriesPerServing = caloriesPerServing;
+        this.servingsEaten = servingsEaten;
         this.calories = calories;
         this.water = water;
         this.protein = protein;
@@ -215,9 +216,9 @@ public class Meal {
     public String toTextViewString()
     {
         return mealName + "\n" +
-                "Serving Size:" + servingSize + "\n" +
+                "Serving Size: " + servingSize + "\n" +
                 "Calories: " + calories + "kcal\n" +
-                "Water: " + water + "g\n" +
+                //"Water: " + water + "g\n" +
                 "Protein: " + protein + "g\n" +
                 "Carbohydrate: " + carbohydrate + "g\n" +
                 "Sugar: " + sugar + "g\n" +
@@ -232,6 +233,38 @@ public class Meal {
                 "Sodium: " + sodium + "g\n" +
                 "Potassium: " + potassium + "g\n" +
                 "Calcium: " + calcium + "mg\n" +
-                "Iron: " + iron + "mg\n";
+                "Iron: " + iron + "mg";
+    }
+
+    public String getUnits(String nutrient)
+    {
+        switch(nutrient)
+        {
+            case "calories":
+                return "kcal";
+            case "water":
+                return "L";
+            case "protein":
+            case "carbohydrate":
+            case "sugar":
+            case "fiber":
+            case "saturatedFat":
+            case "monounsaturatedFat":
+            case "polyunsaturatedFat":
+            case "transFat":
+            case "sodium":
+                return "g";
+            case "cholesterol":
+            case "vitaminC":
+            case "potassium":
+            case "calcium":
+            case "iron":
+                return "mg";
+            case "vitaminA":
+            case "vitaminD":
+                return "µg";
+            default:
+                return "";
+        }
     }
 }

@@ -15,19 +15,19 @@ import io.reactivex.rxjava3.core.Single;
 @Dao
 public interface MealDao {
 
-    @Query("SELECT * FROM meal ORDER BY meal_name ASC")
+    @Query("SELECT * FROM meal ORDER BY mealName ASC")
     LiveData<List<Meal>> getAll();
 
-    @Query("SELECT mealID FROM meal WHERE meal_name =:meal_name")
-    int getID(String meal_name);
+    @Query("SELECT mealID FROM meal WHERE mealName =:mealName")
+    int getID(String mealName);
 
-    @Query("SELECT meal_name FROM meal ORDER BY meal_name ASC")
+    @Query("SELECT mealName FROM meal ORDER BY mealName ASC")
     List<String> getAllNames();
 
     @Query("SELECT * FROM meal WHERE mealID IN (:mealIds)")
     List<Meal> loadAllByIds(int[] mealIds);
 
-    @Query("SELECT * FROM meal WHERE meal_name LIKE :search")
+    @Query("SELECT * FROM meal WHERE mealName LIKE :search")
     Meal findByName(String search);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

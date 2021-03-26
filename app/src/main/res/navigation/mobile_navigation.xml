@@ -78,6 +78,9 @@
         <action
             android:id="@+id/action_nav_scanBarcode_self"
             app:destination="@id/nav_scanBarcode" />
+        <action
+            android:id="@+id/action_nav_scanBarcode_to_nav_addMeal"
+            app:destination="@id/nav_addMeal" />
     </fragment>
     <fragment
         android:id="@+id/nav_mealPlan"
@@ -189,5 +192,8 @@
         <action
             android:id="@+id/action_nav_addFromFDC_to_nav_mealPlan"
             app:destination="@id/nav_mealPlan" />
+        <action
+            android:id="@+id/action_nav_addFromFDC_to_nav_addMeal"
+            app:destination="@id/nav_addMeal" />
     </fragment>
 </navigation>

@@ -4,9 +4,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.nutrimons.database.AppDatabase;
+import com.example.nutrimons.database.Meal;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
@@ -35,9 +33,9 @@ import java.util.Map;
 public class Water extends Fragment implements View.OnClickListener{
     // Variables for pie chart
     PieChart waterPieChart;
-    private Double amountDrank = 0.0;
-    private Double amountNeeded = 120.0;
-    private Double inputAmount;
+    private float amountDrank = 0.0f;
+    private float amountNeeded; //Liters
+    private float inputAmount;
 
     EditText waterAmountInput;
     Button submitWater;
@@ -82,6 +80,7 @@ public class Water extends Fragment implements View.OnClickListener{
         Log.d("WaterDateString", dateString);
         Log.d("WaterDateString", String.valueOf(dateString.equals("03/13/2021")));
 
+        amountNeeded = Float.parseFloat(mDb.userDao().findByUserID(mDb.tokenDao().getUserID()).water) * 33.81402f; //convert to fl oz
 
 //        com.example.nutrimons.database.DateData dateTest = new com.example.nutrimons.database.DateData(dateString, new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), 1.1);
 //        com.example.nutrimons.database.DateData nullDateTest = null;
@@ -115,11 +114,11 @@ public class Water extends Fragment implements View.OnClickListener{
 //        }
 
         if(mDb.dateDataDao().findByDate(dateString) == null){
-            amountDrank = 0.0;
-            amountNeeded = 120.0;
+            amountDrank = 0.0f;
+            amountNeeded = Float.parseFloat(mDb.userDao().findByUserID(mDb.tokenDao().getUserID()).water) * 33.81402f; //convert to fl oz
         }else {
-            List<Double> temp = (List<Double>)mDb.dateDataDao().findWaterByDate(dateString);
-            amountDrank = ((Double)temp.get(0) == null) ? 0.0 : (Double)temp.get(0);
+            List<Float> temp = (List<Float>)mDb.dateDataDao().findWaterByDate(dateString);
+            amountDrank = ((Float)temp.get(0) == null) ? 0.0f : (Float)temp.get(0);
             amountNeeded -= amountDrank;
         }
 //        try{
@@ -182,7 +181,7 @@ public class Water extends Fragment implements View.OnClickListener{
         }
 
         //initializing data
-        Map<String, Double> typeAmountMap = new HashMap<>();
+        Map<String, Float> typeAmountMap = new HashMap<>();
         typeAmountMap.put("Consumed", amountDrank);
         if (amountNeeded > 0) {
             typeAmountMap.put("Needed", amountNeeded);
@@ -273,12 +272,12 @@ public class Water extends Fragment implements View.OnClickListener{
     }
 
     //convert oz to milli
-    private double convertOztoMilli(double oz){
+    private float convertOztoMilli(float oz){
         oz *= 29.5735;
         return oz;
     }
 
-    private double convertMillitoOz(double ml){
+    private float convertMillitoOz(float ml){
         ml /= 29.5735;
         return ml;
     }
@@ -287,22 +286,21 @@ public class Water extends Fragment implements View.OnClickListener{
         switch (v.getId()) {
             case (R.id.waterSubmitButton):
                 try {
-                    inputAmount = Double.parseDouble(waterAmountInput.getText().toString());
+                    inputAmount = Float.parseFloat(waterAmountInput.getText().toString());
                     amountDrank += inputAmount;
                     long date = System.currentTimeMillis();
                     SimpleDateFormat Date = new SimpleDateFormat("MM/dd/yyyy");
                     String dateString = Date.format(date);
                     if(mDb.dateDataDao().findByDate(dateString) == null){
-                        final com.example.nutrimons.database.DateData dateData = new com.example.nutrimons.database.DateData(dateString, new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(),amountDrank);
+                        com.example.nutrimons.database.DateData dateData = new com.example.nutrimons.database.DateData(dateString, new ArrayList<Meal>(), new ArrayList<Meal>(), new ArrayList<Meal>(), new ArrayList<Meal>(), new ArrayList<String>());
+                        dateData.water = amountDrank;
+                        for(String s:  dateData.nutrientsToStringList())
+                            Log.d("nutrient", s);
                         mDb.dateDataDao().insert(dateData);
                     }
                     else{
-                        final com.example.nutrimons.database.DateData dateData = new com.example.nutrimons.database.DateData(dateString,
-                                mDb.dateDataDao().findByDate(dateString).breakfast,
-                                mDb.dateDataDao().findByDate(dateString).lunch,
-                                mDb.dateDataDao().findByDate(dateString).dinner,
-                                mDb.dateDataDao().findByDate(dateString).snack,
-                                mDb.dateDataDao().findByDate(dateString).todayExercise, amountDrank);
+                        com.example.nutrimons.database.DateData dateData = mDb.dateDataDao().findByDate(dateString);
+                        dateData.water = amountDrank;
                         mDb.dateDataDao().updateDateData(dateData);
                         //mDb.dateDataDao().updateMealPlan(selectedBreakfast, selectedLunch, selectedDinner, selectedSnack, dateString);
                     }

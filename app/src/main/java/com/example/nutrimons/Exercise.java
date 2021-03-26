@@ -165,16 +165,17 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
                 SimpleDateFormat Date = new SimpleDateFormat("MM/dd/yyyy");
                 String dateString = Date.format(date);
                 if(mDb.dateDataDao().findByDate(dateString) == null){
-                    final DateData dateData = new DateData(dateString, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), exerciseList, 0.0);
+                    final DateData dateData = new DateData(dateString, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), exerciseList);
                     mDb.dateDataDao().insert(dateData);
                 }
                 else{
+                    DateData dd = mDb.dateDataDao().findByDate(dateString);
                     final com.example.nutrimons.database.DateData dateData = new com.example.nutrimons.database.DateData(dateString,
-                            mDb.dateDataDao().findByDate(dateString).breakfast,
-                            mDb.dateDataDao().findByDate(dateString).lunch,
-                            mDb.dateDataDao().findByDate(dateString).dinner,
-                            mDb.dateDataDao().findByDate(dateString).snack,
-                            exerciseList, mDb.dateDataDao().findByDate(dateString).water);
+                            dd.breakfast,
+                            dd.lunch,
+                            dd.dinner,
+                            dd.snack,
+                            exerciseList);
                     mDb.dateDataDao().updateDateData(dateData);
                     //mDb.dateDataDao().updateExercise(exerciseList, dateString);
                 }

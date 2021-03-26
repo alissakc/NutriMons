@@ -2,10 +2,10 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="Apple"
-    android:textSize="20sp"
-    android:gravity="center"
-    android:textStyle="bold"
-    android:padding="10dp"
     android:layout_margin="5dp"
-    />
+    android:gravity="center"
+    android:padding="10dp"
+    android:text="Apple"
+    android:textAlignment="center"
+    android:textSize="20sp"
+    android:textStyle="bold" />
