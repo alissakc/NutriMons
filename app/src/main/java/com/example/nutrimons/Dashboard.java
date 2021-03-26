@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.nutrimons.database.AppDatabase;
 import com.example.nutrimons.database.DateData;
@@ -171,55 +172,59 @@ public class Dashboard extends Fragment  {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
-        mDb = AppDatabase.getInstance(getContext());
+        try {
+            mDb = AppDatabase.getInstance(getContext());
 
-        // Button and image initialization
+            // Button and image initialization
 //        gotToProfile = view.findViewById(R.id.imageProfile);
 //        goToMeal = view.findViewById(R.id.dashboardAddMeal);
 //        goToWater = view.findViewById(R.id.dashboardAddWater);
 //        goToExercise = view.findViewById(R.id.dashboardAddExercise);
-        factTextView = view.findViewById(R.id.textViewFunFactText);
+            factTextView = view.findViewById(R.id.textViewFunFactText);
 
-        // gets current date
-        long dateLong = System.currentTimeMillis();
-        SimpleDateFormat Date = new SimpleDateFormat("MM/dd/yyyy");
-        String dateString = Date.format(dateLong);
+            // gets current date
+            long dateLong = System.currentTimeMillis();
+            SimpleDateFormat Date = new SimpleDateFormat("MM/dd/yyyy");
+            String dateString = Date.format(dateLong);
 
-        mDb = AppDatabase.getInstance(getContext());
-        DateData dateData = mDb.dateDataDao().findByDate(dateString);
-        dateData.aggregateNutrients();
+            mDb = AppDatabase.getInstance(getContext());
+            DateData dateData = mDb.dateDataDao().findByDate(dateString);
+            dateData.aggregateNutrients();
 
-        List<Float> nutValuesTemp = dateData.nutrientsToFloatList();
-        NUTRIENT_VALUES.add(nutValuesTemp.get(2)); //protein
-        NUTRIENT_VALUES.add(nutValuesTemp.get(3)); //carbs
-        NUTRIENT_VALUES.add(nutValuesTemp.get(7) + nutValuesTemp.get(8) + nutValuesTemp.get(9)); //fats
+            List<Float> nutValuesTemp = dateData.nutrientsToFloatList();
+            NUTRIENT_VALUES.add(nutValuesTemp.get(2)); //protein
+            NUTRIENT_VALUES.add(nutValuesTemp.get(3)); //carbs
+            NUTRIENT_VALUES.add(nutValuesTemp.get(7) + nutValuesTemp.get(8) + nutValuesTemp.get(9)); //fats
 
-        MAX_X_VALUE = MACRO_NUTRIENTS.length;
+            MAX_X_VALUE = MACRO_NUTRIENTS.length;
 
-        User u = mDb.userDao().findByUserID(mDb.tokenDao().getUserID());
-        List<Float> nutrientDRIsTemp = u.DRIToFloatList();
-        NUTRIENTS_DRI.add(nutrientDRIsTemp.get(2));
-        NUTRIENTS_DRI.add(nutrientDRIsTemp.get(3));
-        NUTRIENTS_DRI.add(nutrientDRIsTemp.get(7) + nutrientDRIsTemp.get(8) + nutrientDRIsTemp.get(9));
+            User u = mDb.userDao().findByUserID(mDb.tokenDao().getUserID());
+            List<Float> nutrientDRIsTemp = u.DRIToFloatList();
+            NUTRIENTS_DRI.add(nutrientDRIsTemp.get(2));
+            NUTRIENTS_DRI.add(nutrientDRIsTemp.get(3));
+            NUTRIENTS_DRI.add(nutrientDRIsTemp.get(7) + nutrientDRIsTemp.get(8) + nutrientDRIsTemp.get(9));
 
-        //create and show the piechart for calories
-        caloriesPieChart = view.findViewById(R.id.caloriesPieChart_view);
-        initPieChart();
-        showPieChart();
+            //create and show the piechart for calories
+            caloriesPieChart = view.findViewById(R.id.caloriesPieChart_view);
+            initPieChart();
+            showPieChart();
 
-        //create and show the horizontal bar chart for macros
-        macrosChart = view.findViewById(R.id.macrosChart_view);
-        BarData data = createChartData();
-        configureChartAppearance();
-        prepareChartData(data);
+            //create and show the horizontal bar chart for macros
+            macrosChart = view.findViewById(R.id.macrosChart_view);
+            BarData data = createChartData();
+            configureChartAppearance();
+            prepareChartData(data);
 
-        // assign listener for buttons
+            // assign listener for buttons
 //        gotToProfile.setOnClickListener(this);
 //        goToMeal.setOnClickListener(this);
 //        goToWater.setOnClickListener(this);
 //        goToExercise.setOnClickListener(this);
 
-        updateFact();
+            updateFact();
+        }
+        catch(NullPointerException e) {
+            Toast.makeText(getContext(), "Please enter a meal to see charts", Toast.LENGTH_LONG).show(); }
 
         handler.postDelayed(runnable = new Runnable() {
             public void run() {
