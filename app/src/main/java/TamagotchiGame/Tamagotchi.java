@@ -22,18 +22,22 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.nutrimons.Profile;
 import com.example.nutrimons.R;
 import com.example.nutrimons.database.AppDatabase;
 import com.example.nutrimons.database.TamagotchiPet;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+
 import java.util.stream.IntStream;
 
 /**
@@ -68,13 +72,15 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
     EditText petName;
     String name;
 
+    //Edit level
+    TextView levelingView;
+
     // vars to go to store
     Button goToStore;
 
     //var for feeding pet
     ProgressBar healthBar;
     Button feedButton;
-    int healthCounter;
 
     //var for giving pet water
     ProgressBar waterBar;
@@ -176,39 +182,38 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
         goToStore.setOnClickListener(this);
 
 
-        //editing name
+        //Editing name
         petName = view.findViewById(R.id.petName);
 
-        //time
-        Date currentTime = Calendar.getInstance().getTime();
-        Log.d("clock", String.valueOf(currentTime.getMinutes()));
+        //Level Number
+        levelingView = view.findViewById(R.id.levelNum);
+        levelingView.setText("Level: "+String.valueOf(tama.level));
+        
 
         //feeding pet
         feedButton = view.findViewById(R.id.feedButton);
         healthBar = view.findViewById(R.id.healthBar);
-        healthCounter = tama.healthLevel;
-        healthBar.setProgress(healthCounter);
-        feedButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                healthCounter++;
-                //healthCounter = 0;
-                healthBar.setProgress(healthCounter);
-                tama.healthLevel = healthCounter;
-                mDb.tamagotchiDao().insert(tama);
+        healthBar.setProgress(tama.healthLevel);
+        feedButton.setOnClickListener(v -> {
+            healthBar.setProgress(++tama.healthLevel);
+
+            if (tama.healthLevel > 20)
+            {
+                tama.healthLevel = 20;
             }
+            mDb.tamagotchiDao().insert(tama);
         });
 
         //giving water
         waterBar = view.findViewById(R.id.waterBar);
         waterButton = view.findViewById(R.id.waterButton);
-        waterCounter = tama.waterLevel;
-        waterBar.setProgress(waterCounter);
+        waterBar.setProgress(tama.waterLevel);
         waterButton.setOnClickListener(v -> {
-            waterCounter++;
-            //waterCounter = 0;
-            waterBar.setProgress(waterCounter);
-            tama.waterLevel = waterCounter;
+            waterBar.setProgress(++tama.waterLevel);
+            if (tama.waterLevel > 20)
+            {
+                tama.waterLevel = 20;
+            }
             mDb.tamagotchiDao().insert(tama);
         });
 
@@ -229,6 +234,44 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
                 TamagotchiPet.setImageResource(images[currentImage]);
             }
         });
+
+        //time
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+        //Get current time(String) then convert to milliseconds(long)
+        String currentDateTime = sdf.format(c.getTime());
+        Long currTimeConvert = testingTime(currentDateTime).getTime();
+        System.out.println("CURRENT: "+currTimeConvert);
+
+        //Get last logged on
+        String lastLogIn = mDb.tamagotchiDao().getLastLoggedIn();
+        Long lastLogInConvert = testingTime(lastLogIn).getTime();
+        System.out.println("LAST: "+lastLogInConvert);
+
+
+        int difference = (int)(currTimeConvert-lastLogInConvert)/1000;
+        Log.d("TWO NUM", String.valueOf(currTimeConvert+" "+lastLogInConvert));
+        Log.d("DIFFERENCE", String.valueOf(difference));
+
+
+        //Lowering the health by time
+        int lowerHealthWater = difference/60;
+
+        tama.healthLevel -= lowerHealthWater;
+        if (tama.healthLevel < 0)
+        {
+            tama.healthLevel = 0;
+        }
+
+        tama.waterLevel -= lowerHealthWater;
+        if (tama.waterLevel < 0)
+        {
+            tama.waterLevel = 0;
+        }
+        mDb.tamagotchiDao().insert(tama);
+        healthBar.setProgress(tama.healthLevel);
+        waterBar.setProgress(tama.waterLevel);
 
 
         //Get Screen Size
@@ -276,6 +319,8 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
                                     coins = tama.coins;
                                     coins++;
                                     tama.coins++;
+                                    tama.totalClicks++;
+                                    levelByClicking(tama, view);
                                     mDb.tamagotchiDao().insert(tama);
                                 }
                             });
@@ -290,6 +335,50 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
         },0,100);
 
         return view;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();  // Always call the superclass method first
+        System.out.println("STOP BITCHES");
+        TamagotchiPet tama = mDb.tamagotchiDao().findByUserId(mDb.tokenDao().getUserID());
+        //update last logged on
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+        //Get current time(String) then convert to milliseconds(long)
+        String currentDateTime = sdf.format(c.getTime());
+        tama.lastLoggedIn = currentDateTime;
+        mDb.tamagotchiDao().insert(tama);
+    }
+
+    private Date testingTime(String dtStart) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        Date date = new Date();
+        try {
+            date = format.parse(dtStart);
+            System.out.println(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
+
+
+
+
+    private void levelByClicking(TamagotchiPet tama, View view)
+    {
+        if (tama.totalClicks%100==0)
+        {
+            tama.level++;
+        }
+        mDb.tamagotchiDao().insert(tama);
+        levelingView = view.findViewById(R.id.levelNum);
+        levelingView.setText(String.valueOf(tama.level));
+
+
+
     }
 
 

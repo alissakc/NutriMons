@@ -65,11 +65,10 @@
                     android:text="Bobby" />
 
                 <TextView
-                    android:id="@+id/textView19"
+                    android:id="@+id/levelNum"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Level 9000"
                     android:textColor="@color/black" />
 
 

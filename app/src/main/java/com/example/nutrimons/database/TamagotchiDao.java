@@ -40,6 +40,12 @@ public interface TamagotchiDao {
     @Query("SELECT coins FROM tamagotchipet")
     int getCoins();
 
+    @Query("SELECT lastLoggedIn FROM tamagotchipet")
+    String getLastLoggedIn();
+
+    @Query("SELECT totalClicks FROM tamagotchipet")
+    int getTotalClicls();
+
     @Update
     void updateTamagotchi(TamagotchiPet tamagotchipet);
 

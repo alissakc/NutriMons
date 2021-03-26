@@ -5,6 +5,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+
 import TamagotchiGame.Tamagotchi;
 
 @Entity
@@ -34,10 +35,13 @@ public class TamagotchiPet {
     @ColumnInfo(name = "coins")
     public int coins;
 
-    public TamagotchiPet(int healthLevel)
-    {
-        this.healthLevel = healthLevel;
-    }
+    @ColumnInfo(name = "totalClicks")
+    public int totalClicks;
+
+    @ColumnInfo(name = "lastLoggedIn")
+    public String lastLoggedIn;
+
+
     public TamagotchiPet()
     {
     }
