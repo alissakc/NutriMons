@@ -17,10 +17,11 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TableLayout
+            <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp">
+                android:padding="10dp"
+                android:columnCount="1">
 
                 <TableRow
                     android:layout_width="match_parent"
@@ -47,17 +48,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
-                        android:text="@string/nutrient_info_image"
-                        android:textColor="@color/black"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="2dp"
                         android:text="@string/nutrient_info_description"
                         android:textColor="@color/black"
-                        android:textStyle="bold" />
+                        android:textStyle="normal" />
 
                 </TableRow>
 
@@ -68,7 +61,7 @@
 
                     <ImageButton
                         android:id="@+id/caloriesLink"
-                        android:layout_width="40dp"
+                        android:layout_width="50dp"
                         android:layout_height="match_parent"
                         android:onClick="onClick"
                         android:src="@android:drawable/btn_plus" />
@@ -81,17 +74,6 @@
                         android:text="@string/calories_name"
                         android:textColor="@color/black"
                         android:textStyle="bold" />
-
-                    <ImageView
-                        android:id="@+id/caloriesImage"
-                        android:layout_width="16dp"
-                        android:layout_height="20dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginRight="5dp"
-                        android:contentDescription="@string/calories_image"
-                        android:padding="2dp"
-                        app:srcCompat="@drawable/calories" />
 
                     <TextView
                         android:id="@+id/caloriesDescription"
@@ -123,7 +105,7 @@
 
                     <ImageButton
                         android:id="@+id/proteinLink"
-                        android:layout_width="40dp"
+                        android:layout_width="50dp"
                         android:layout_height="match_parent"
                         android:onClick="onClick"
                         android:src="@android:drawable/btn_plus" />
@@ -136,17 +118,6 @@
                         android:text="@string/protein_name"
                         android:textColor="@color/black"
                         android:textStyle="bold" />
-
-                    <ImageView
-                        android:id="@+id/proteinImage"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginRight="5dp"
-                        android:contentDescription="@string/protein_image"
-                        android:padding="2dp"
-                        app:srcCompat="@drawable/protein" />
 
                     <TextView
                         android:id="@+id/proteinDescription"
@@ -178,7 +149,7 @@
 
                     <ImageButton
                         android:id="@+id/carbsLink"
-                        android:layout_width="40dp"
+                        android:layout_width="50dp"
                         android:layout_height="match_parent"
                         android:onClick="onClick"
                         android:src="@android:drawable/btn_plus" />
@@ -191,17 +162,6 @@
                         android:text="@string/carbs_name"
                         android:textColor="@color/black"
                         android:textStyle="bold" />
-
-                    <ImageView
-                        android:id="@+id/carbsImage"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginRight="5dp"
-                        android:contentDescription="@string/carbs_image"
-                        android:padding="2dp"
-                        app:srcCompat="@drawable/carbs" />
 
                     <TextView
                         android:id="@+id/carbsDescription"
@@ -233,7 +193,7 @@
 
                     <ImageButton
                         android:id="@+id/sugarLink"
-                        android:layout_width="40dp"
+                        android:layout_width="50dp"
                         android:layout_height="match_parent"
                         android:onClick="onClick"
                         android:src="@android:drawable/btn_plus" />
@@ -246,17 +206,6 @@
                         android:text="@string/sugar_name"
                         android:textColor="@color/black"
                         android:textStyle="bold" />
-
-                    <ImageView
-                        android:id="@+id/sugarImage"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginRight="5dp"
-                        android:contentDescription="@string/sugar_image"
-                        android:padding="2dp"
-                        app:srcCompat="@drawable/sugar" />
 
                     <TextView
                         android:id="@+id/sugarDescription"
@@ -288,7 +237,7 @@
 
                     <ImageButton
                         android:id="@+id/fiberLink"
-                        android:layout_width="40dp"
+                        android:layout_width="50dp"
                         android:layout_height="match_parent"
                         android:onClick="onClick"
                         android:src="@android:drawable/btn_plus" />
@@ -301,17 +250,6 @@
                         android:text="@string/fiber_name"
                         android:textColor="@color/black"
                         android:textStyle="bold" />
-
-                    <ImageView
-                        android:id="@+id/fiberImage"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginRight="5dp"
-                        android:contentDescription="@string/fiber_image"
-                        android:padding="2dp"
-                        app:srcCompat="@drawable/fibers" />
 
                     <TextView
                         android:id="@+id/fiberDescription"
@@ -343,7 +281,7 @@
 
                     <ImageButton
                         android:id="@+id/fatsLink"
-                        android:layout_width="40dp"
+                        android:layout_width="50dp"
                         android:layout_height="match_parent"
                         android:onClick="onClick"
                         android:src="@android:drawable/btn_plus" />
@@ -356,17 +294,6 @@
                         android:text="@string/fats_name"
                         android:textColor="@color/black"
                         android:textStyle="bold" />
-
-                    <ImageView
-                        android:id="@+id/fatsImage"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginRight="5dp"
-                        android:contentDescription="@string/fats_image"
-                        android:padding="2dp"
-                        app:srcCompat="@drawable/fats" />
 
                     <TextView
                         android:id="@+id/fatsDescription"
@@ -398,7 +325,7 @@
 
                     <ImageButton
                         android:id="@+id/cholesterolLink"
-                        android:layout_width="40dp"
+                        android:layout_width="50dp"
                         android:layout_height="match_parent"
                         android:onClick="onClick"
                         android:src="@android:drawable/btn_plus" />
@@ -411,17 +338,6 @@
                         android:text="@string/cholesterol_name"
                         android:textColor="@color/black"
                         android:textStyle="bold" />
-
-                    <ImageView
-                        android:id="@+id/cholesterolImage"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginRight="5dp"
-                        android:contentDescription="@string/cholesterol_name"
-                        android:padding="2dp"
-                        app:srcCompat="@drawable/cholesterol" />
 
                     <TextView
                         android:id="@+id/cholesterolDescription"
@@ -453,7 +369,7 @@
 
                     <ImageButton
                         android:id="@+id/saturatedFatsLink"
-                        android:layout_width="40dp"
+                        android:layout_width="50dp"
                         android:layout_height="match_parent"
                         android:onClick="onClick"
                         android:src="@android:drawable/btn_plus" />
@@ -466,17 +382,6 @@
                         android:text="@string/saturated_fats_name"
                         android:textColor="@color/black"
                         android:textStyle="bold" />
-
-                    <ImageView
-                        android:id="@+id/saturatedFatsImage"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginRight="5dp"
-                        android:contentDescription="@string/saturated_fats_image"
-                        android:padding="2dp"
-                        app:srcCompat="@drawable/saturated_fat" />
 
                     <TextView
                         android:id="@+id/saturatedFatsDescription"
@@ -508,7 +413,7 @@
 
                     <ImageButton
                         android:id="@+id/unsaturatedFatsLink"
-                        android:layout_width="40dp"
+                        android:layout_width="50dp"
                         android:layout_height="match_parent"
                         android:onClick="onClick"
                         android:src="@android:drawable/btn_plus" />
@@ -521,17 +426,6 @@
                         android:text="@string/unsaturated_fats_name"
                         android:textColor="@color/black"
                         android:textStyle="bold" />
-
-                    <ImageView
-                        android:id="@+id/unsaturatedFatsImage"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginRight="5dp"
-                        android:contentDescription="@string/unsaturated_fats_image"
-                        android:padding="2dp"
-                        app:srcCompat="@drawable/unsaturated_fat" />
 
                     <TextView
                         android:id="@+id/unsaturatedFatsDescription"
@@ -576,7 +470,7 @@
 
                     <ImageButton
                         android:id="@+id/transFatsLink"
-                        android:layout_width="40dp"
+                        android:layout_width="50dp"
                         android:layout_height="match_parent"
                         android:onClick="onClick"
                         android:src="@android:drawable/btn_plus" />
@@ -589,17 +483,6 @@
                         android:text="@string/trans_fats_name"
                         android:textColor="@color/black"
                         android:textStyle="bold" />
-
-                    <ImageView
-                        android:id="@+id/transFatsImage"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginRight="5dp"
-                        android:contentDescription="@string/trans_fats_image"
-                        android:padding="2dp"
-                        app:srcCompat="@drawable/trans_fat" />
 
                     <TextView
                         android:id="@+id/transFatsDescription"
@@ -631,7 +514,7 @@
 
                     <ImageButton
                         android:id="@+id/vitaminALink"
-                        android:layout_width="40dp"
+                        android:layout_width="50dp"
                         android:layout_height="match_parent"
                         android:onClick="onClick"
                         android:src="@android:drawable/btn_plus" />
@@ -644,17 +527,6 @@
                         android:text="@string/vitamin_a_name"
                         android:textColor="@color/black"
                         android:textStyle="bold" />
-
-                    <ImageView
-                        android:id="@+id/vitaminAImage"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginRight="5dp"
-                        android:contentDescription="@string/vitamin_a_image"
-                        android:padding="2dp"
-                        app:srcCompat="@drawable/vita" />
 
                     <TextView
                         android:id="@+id/vitaminADescription"
@@ -686,7 +558,7 @@
 
                     <ImageButton
                         android:id="@+id/vitaminCLink"
-                        android:layout_width="40dp"
+                        android:layout_width="50dp"
                         android:layout_height="match_parent"
                         android:onClick="onClick"
                         android:src="@android:drawable/btn_plus" />
@@ -699,17 +571,6 @@
                         android:text="@string/vitamin_c_name"
                         android:textColor="@color/black"
                         android:textStyle="bold" />
-
-                    <ImageView
-                        android:id="@+id/vitaminCImage"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginRight="5dp"
-                        android:contentDescription="@string/vitamin_c_image"
-                        android:padding="2dp"
-                        app:srcCompat="@drawable/vitc" />
 
                     <TextView
                         android:id="@+id/vitaminCDescription"
@@ -741,7 +602,7 @@
 
                     <ImageButton
                         android:id="@+id/vitaminDLink"
-                        android:layout_width="40dp"
+                        android:layout_width="50dp"
                         android:layout_height="match_parent"
                         android:onClick="onClick"
                         android:src="@android:drawable/btn_plus" />
@@ -754,17 +615,6 @@
                         android:text="@string/vitamin_d_name"
                         android:textColor="@color/black"
                         android:textStyle="bold" />
-
-                    <ImageView
-                        android:id="@+id/vitaminDImage"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginRight="5dp"
-                        android:contentDescription="@string/vitamin_d_image"
-                        android:padding="2dp"
-                        app:srcCompat="@drawable/vitd" />
 
                     <TextView
                         android:id="@+id/vitaminDDescription"
@@ -796,7 +646,7 @@
 
                     <ImageButton
                         android:id="@+id/sodiumLink"
-                        android:layout_width="40dp"
+                        android:layout_width="50dp"
                         android:layout_height="match_parent"
                         android:onClick="onClick"
                         android:src="@android:drawable/btn_plus" />
@@ -809,17 +659,6 @@
                         android:text="@string/sodium_name"
                         android:textColor="@color/black"
                         android:textStyle="bold" />
-
-                    <ImageView
-                        android:id="@+id/sodiumImage"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginRight="5dp"
-                        android:contentDescription="@string/sodium_image"
-                        android:padding="2dp"
-                        app:srcCompat="@drawable/sodium" />
 
                     <TextView
                         android:id="@+id/sodiumDescription"
@@ -851,7 +690,7 @@
 
                     <ImageButton
                         android:id="@+id/potassiumLink"
-                        android:layout_width="40dp"
+                        android:layout_width="50dp"
                         android:layout_height="match_parent"
                         android:onClick="onClick"
                         android:src="@android:drawable/btn_plus" />
@@ -864,17 +703,6 @@
                         android:text="@string/potassium_name"
                         android:textColor="@color/black"
                         android:textStyle="bold" />
-
-                    <ImageView
-                        android:id="@+id/potassiumImage"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginRight="5dp"
-                        android:contentDescription="@string/potassium_image"
-                        android:padding="2dp"
-                        app:srcCompat="@drawable/potassium" />
 
                     <TextView
                         android:id="@+id/potassiumDescription"
@@ -906,7 +734,7 @@
 
                     <ImageButton
                         android:id="@+id/calciumLink"
-                        android:layout_width="40dp"
+                        android:layout_width="50dp"
                         android:layout_height="match_parent"
                         android:onClick="onClick"
                         android:src="@android:drawable/btn_plus" />
@@ -919,17 +747,6 @@
                         android:text="@string/calcium_name"
                         android:textColor="@color/black"
                         android:textStyle="bold" />
-
-                    <ImageView
-                        android:id="@+id/calciumImage"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginRight="5dp"
-                        android:contentDescription="@string/calcium_image"
-                        android:padding="2dp"
-                        app:srcCompat="@drawable/calcium" />
 
                     <TextView
                         android:id="@+id/calciumDescription"
@@ -961,7 +778,7 @@
 
                     <ImageButton
                         android:id="@+id/ironLink"
-                        android:layout_width="40dp"
+                        android:layout_width="50dp"
                         android:layout_height="match_parent"
                         android:onClick="onClick"
                         android:src="@android:drawable/btn_plus" />
@@ -974,17 +791,6 @@
                         android:text="@string/iron_name"
                         android:textColor="@color/black"
                         android:textStyle="bold" />
-
-                    <ImageView
-                        android:id="@+id/ironImage"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginRight="5dp"
-                        android:contentDescription="@string/iron_image"
-                        android:padding="2dp"
-                        app:srcCompat="@drawable/iron" />
 
                     <TextView
                         android:id="@+id/ironDescription"
@@ -1009,7 +815,7 @@
                         android:visibility="gone" />
                 </TableRow>
 
-            </TableLayout>
+            </GridLayout>
 
             <Button
                 android:id="@+id/NLMnutrientInfo"
