@@ -1,5 +1,6 @@
 package com.example.nutrimons;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -7,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -31,8 +33,8 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
     @NonNull
     @Override
     public MealViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        TextView textView = (TextView)LayoutInflater.from(parent.getContext()).inflate(R.layout.meal_exercise_list_item, parent,false);
-        return new MealViewHolder(textView);
+        View view  = LayoutInflater.from(parent.getContext()).inflate(R.layout.meal_exercise_list_item, parent,false);
+        return new MealViewHolder(view);
     }
 
     @Override
@@ -49,11 +51,13 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
     public static class  MealViewHolder extends RecyclerView.ViewHolder{
 
         public TextView mealName;
-        public MealViewHolder(@NonNull TextView itemView) {
+        public CheckBox checkbox;
+        public MealViewHolder(@NonNull View itemView) {
             super(itemView);
-            mealName = itemView;
+            mealName = itemView.findViewById(R.id.recycler_view_item);
         }
     }
+
 
    /* public void deleteItem(int position) {
         mRecentlyDeletedItem = mealList.get(position);

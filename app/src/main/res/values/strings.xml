@@ -342,4 +342,9 @@
     <string name="advancedMealIron">Iron</string>
     <string name="advancedMealEditIron">Iron per serving</string>
     <string name="remove_meal">Remove Meal</string>
+    <string name="apple">Apple</string>
+    <string name="selected_date">Selected Date</string>
+    <string name="calendar">Calendar</string>
+    <string name="remove_exercise">Remove Exercise</string>
+    <string name="date">Date</string>
 </resources>

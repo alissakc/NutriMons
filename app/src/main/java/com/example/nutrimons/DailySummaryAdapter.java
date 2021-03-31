@@ -1,6 +1,7 @@
 package com.example.nutrimons;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -20,7 +21,7 @@ public class DailySummaryAdapter extends RecyclerView.Adapter<DailySummaryAdapte
     @NonNull
     @Override
     public DailySummaryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        TextView textView = (TextView)LayoutInflater.from(parent.getContext()).inflate(R.layout.meal_exercise_list_item, parent,false);
+        TextView textView = (TextView)LayoutInflater.from(parent.getContext()).inflate(R.layout.daily_summary_list_item, parent,false);
         return new DailySummaryViewHolder(textView);
     }
 

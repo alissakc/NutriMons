@@ -279,62 +279,77 @@ public class DailyInfoFragment extends Fragment {
             meals.add("No meals were inputted.");
         } else {
             if (breakfast != null) {
-                for (String b : breakfast) {
-                    if (!b.equalsIgnoreCase("[null]")) {
-                        int i = b.indexOf("mealName");
-                        int j = b.indexOf("monounsaturatedFat");
-                        char[] s = new char[100];
-                        b.getChars(i+11,j-3,s,0);
-                        String ss = new String(s);
-                        //b = b.replaceAll("\\W", "");
-                        meals.add(ss);
+                if(!breakfast.isEmpty()){
+                    for (String b : breakfast) {
+                        if (!b.equalsIgnoreCase("[null]")) {
+                            if(!b.equalsIgnoreCase("[]")){
+                                int i = b.indexOf("mealName");
+                                int j = b.indexOf("monounsaturatedFat");
+                                char[] s = new char[100];
+                                b.getChars(i+11,j-3,s,0);
+                                String ss = new String(s);
+                                //b = b.replaceAll("\\W", "");
+                                meals.add(ss);
+                            }
+                        }
                     }
                 }
             }
             if (lunch != null) {
-                for (String l : lunch) {
-                    if (!l.equalsIgnoreCase("[null]")) {
-                        int i = l.indexOf("mealName");
-                        int j = l.indexOf("monounsaturatedFat");
-                        char[] s = new char[100];
-                        l.getChars(i+11,j-3,s,0);
-                        String ss = new String(s);
-                        //l = l.replaceAll("\\W", "");
-                        meals.add(ss);
+                if(!lunch.isEmpty()){
+                    for (String l : lunch) {
+                        if (!l.equalsIgnoreCase("[null]")) {
+                            if(!l.equalsIgnoreCase("[]")){
+                                int i = l.indexOf("mealName");
+                                int j = l.indexOf("monounsaturatedFat");
+//                                String ss = l.substring(i+11,j-3);
+                                char[] s = new char[100];
+                                l.getChars(i+11,j-3,s,0);
+                                String ss = new String(s);
+                                //l = l.replaceAll("\\W", "");
+                                meals.add(ss);
+                            }
+                        }
                     }
                 }
             }
             if (dinner != null) {
-                for (String d : dinner) {
-                    if (!d.equalsIgnoreCase("[null]")) {
-                        int i = d.indexOf("mealName");
-                        int j = d.indexOf("monounsaturatedFat");
-                        char[] s = new char[100];
-                        d.getChars(i+11,j-3,s,0);
-                        String ss = new String(s);
-                        //d = d.replaceAll("\\W", "");
-                        meals.add(ss);
+                if(!dinner.isEmpty()){
+                    for (String d : dinner) {
+                        if (!d.equalsIgnoreCase("[null]")) {
+                            if(!d.equalsIgnoreCase("[]")){
+                                int i = d.indexOf("mealName");
+                                int j = d.indexOf("monounsaturatedFat");
+                                char[] s = new char[100];
+                                d.getChars(i+11,j-3,s,0);
+                                String ss = new String(s);
+                                //d = d.replaceAll("\\W", "");
+                                meals.add(ss);
+                            }
+                        }
                     }
                 }
             }
             if (snack != null) {
-                for (String s : snack) {
-                    if (!s.equalsIgnoreCase("[null]")) {
-                        int i = s.indexOf("mealName");
-                        int j = s.indexOf("monounsaturatedFat");
-                        char[] sl = new char[100];
-                        s.getChars(i+11,j-3,sl,0);
-                        String ss = new String(sl);
-                        //s = s.replaceAll("\\W", "");
-                        meals.add(ss);
+                if(!snack.isEmpty()){
+                    for (String s : snack) {
+                        if (!s.equalsIgnoreCase("[null]")) {
+                            if(!s.equalsIgnoreCase("[]")){
+                                int i = s.indexOf("mealName");
+                                int j = s.indexOf("monounsaturatedFat");
+                                char[] sl = new char[100];
+                                s.getChars(i+11,j-3,sl,0);
+                                String ss = new String(sl);
+                                //s = s.replaceAll("\\W", "");
+                                meals.add(ss);
+                            }
+                        }
                     }
                 }
             }
         }
 
-        mealRecyclerView.setLayoutManager(new
-
-                LinearLayoutManager(getContext()));
+        mealRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mealRecyclerView.setHasFixedSize(false);
 
         MealAdapter mealAdapter = new MealAdapter(meals);

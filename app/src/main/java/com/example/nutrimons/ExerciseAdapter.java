@@ -1,6 +1,7 @@
 package com.example.nutrimons;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -20,8 +21,8 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
     @NonNull
     @Override
     public ExerciseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        TextView textView = (TextView)LayoutInflater.from(parent.getContext()).inflate(R.layout.meal_exercise_list_item, parent,false);
-        return new ExerciseViewHolder(textView);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.meal_exercise_list_item, parent,false);
+        return new ExerciseViewHolder(view);
     }
 
     @Override
@@ -38,9 +39,9 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
     public static class ExerciseViewHolder extends RecyclerView.ViewHolder{
 
         public TextView exerciseName;
-        public ExerciseViewHolder(@NonNull TextView itemView) {
+        public ExerciseViewHolder(@NonNull View itemView) {
             super(itemView);
-            exerciseName = itemView;
+            exerciseName = itemView.findViewById(R.id.recycler_view_item);
         }
     }
 }
