@@ -51,15 +51,15 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
     private String mParam1;
     private String mParam2;
 
-    private Spinner spinner;
+    private Spinner profileFocusSpinner, sexSpinner, activityLevelSpinner;
 
     private ImageView profilePicture;
     private ImageButton editProfilePicture;
     private Button showNutrientRecs, saveProfile;
 
     private String profileFocus, name, email, password, birthday, financialSource, financialHistory, financialPlan, nutriCoins, age, sex, weight, height, ethnicity, healthHistory, healthGoals, activityLevel;
-    private EditText nameText, emailText, passwordText, birthdayText, financialSourceText, financialHistoryText, financialPlanText, nutriCoinsText, ageText, sexText, weightText, heightText, ethnicityText, healthHistoryText, healthGoalsText, activityLevelText;
-    private int nameId, emailId, passwordId, birthdayId, financialSourceId, financialHistoryId, financialPlanId, nutriCoinsId, ageId, sexId, weightId, heightId, ethnicityId, healthHistoryId, healthGoalsId, activityLevelId;
+    private EditText nameText, emailText, passwordText, birthdayText, financialSourceText, financialHistoryText, financialPlanText, nutriCoinsText, ageText, weightText, heightText, ethnicityText, healthHistoryText, healthGoalsText;
+    private int nameId, emailId, passwordId, birthdayId, financialSourceId, financialHistoryId, financialPlanId, nutriCoinsId, ageId, weightId, heightId, ethnicityId, healthHistoryId, healthGoalsId;
 
     private View view;
 
@@ -69,7 +69,7 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
     private int userID;
     Context context;
 
-    ArrayAdapter<String> dataAdapter;
+    ArrayAdapter<String> profileFocusDataAdapter, sexDataAdapter, activityLevelDataAdapter;
 
     public Profile() {
         // Required empty public constructor
@@ -127,22 +127,53 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
                 });
 
         //spinner stuff, see MealPlan
-        spinner = (Spinner) view.findViewById(R.id.profileFocusSpinner);
-        spinner.setOnItemSelectedListener(this);
-
+        profileFocusSpinner = (Spinner) view.findViewById(R.id.profileFocusSpinner);
+        profileFocusSpinner.setOnItemSelectedListener(this);
+        //set dropdown strings
         List<String> profileFocuses = new ArrayList<String>();
         profileFocuses.add("Select Focus");
         profileFocuses.add("Lose Weight");
         profileFocuses.add("Maintain Weight");
         profileFocuses.add("Gain Muscle");
-
         // Creating adapter for spinners
-        dataAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, profileFocuses);
+        profileFocusDataAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, profileFocuses);
         // Drop down layout style - list view with radio button
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
+        profileFocusDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // attaching data adapter to spinners
-        spinner.setAdapter(dataAdapter);
+        profileFocusSpinner.setAdapter(profileFocusDataAdapter);
+
+        //spinner stuff, see MealPlan
+        sexSpinner = (Spinner) view.findViewById(R.id.sexSpinner);
+        sexSpinner.setOnItemSelectedListener(this);
+        //set dropdown strings
+        List<String> sexes = new ArrayList<String>();
+        sexes.add("Select Sex");
+        sexes.add("Male");
+        sexes.add("Female");
+        // Creating adapter for spinners
+        sexDataAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, sexes);
+        // Drop down layout style - list view with radio button
+        sexDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // attaching data adapter to spinners
+        sexSpinner.setAdapter(sexDataAdapter);
+
+        //spinner stuff, see MealPlan
+        activityLevelSpinner = (Spinner) view.findViewById(R.id.activityLevelSpinner);
+        activityLevelSpinner.setOnItemSelectedListener(this);
+        //set dropdown strings
+        List<String> activityLevels = new ArrayList<String>();
+        activityLevels.add("Select Activity Level");
+        activityLevels.add("Sedentary");
+        activityLevels.add("Lightly Active");
+        activityLevels.add("Moderately Active");
+        activityLevels.add("Very Active");
+        activityLevels.add("Extremely Active");
+        // Creating adapter for spinners
+        activityLevelDataAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, activityLevels);
+        // Drop down layout style - list view with radio button
+        activityLevelDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // attaching data adapter to spinners
+        activityLevelSpinner.setAdapter(activityLevelDataAdapter);
 
         profilePicture = view.findViewById(R.id.profilePicture);
         editProfilePicture = view.findViewById(R.id.editProfilePicture);
@@ -162,13 +193,13 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
         financialPlanText = view.findViewById(R.id.financialPlan);
         nutriCoinsText = view.findViewById(R.id.nutriCoins);
         ageText = view.findViewById(R.id.age);
-        sexText = view.findViewById(R.id.sex);
+        //sexText = view.findViewById(R.id.sex);
         weightText = view.findViewById(R.id.weight);
         heightText = view.findViewById(R.id.height);
         ethnicityText = view.findViewById(R.id.ethnicity);
         healthHistoryText = view.findViewById(R.id.healthHistory);
         healthGoalsText = view.findViewById(R.id.healthGoals);
-        activityLevelText = view.findViewById(R.id.activityLevel);
+        //activityLevelText = view.findViewById(R.id.activityLevel);
 
         nameText.addTextChangedListener(new TextChangedListener<EditText>(nameText, name));
         emailText.addTextChangedListener(new TextChangedListener<EditText>(emailText, email));
@@ -179,13 +210,13 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
         financialPlanText.addTextChangedListener(new TextChangedListener<EditText>(financialPlanText, financialPlan));
         nutriCoinsText.addTextChangedListener(new TextChangedListener<EditText>(nutriCoinsText, nutriCoins));
         ageText.addTextChangedListener(new TextChangedListener<EditText>(ageText, age));
-        sexText.addTextChangedListener(new TextChangedListener<EditText>(sexText, sex));
+        //sexText.addTextChangedListener(new TextChangedListener<EditText>(sexText, sex));
         weightText.addTextChangedListener(new TextChangedListener<EditText>(weightText, weight));
         heightText.addTextChangedListener(new TextChangedListener<EditText>(heightText, height));
         ethnicityText.addTextChangedListener(new TextChangedListener<EditText>(ethnicityText, ethnicity));
         healthHistoryText.addTextChangedListener(new TextChangedListener<EditText>(healthHistoryText, healthHistory));
         healthGoalsText.addTextChangedListener(new TextChangedListener<EditText>(healthGoalsText, healthGoals));
-        activityLevelText.addTextChangedListener(new TextChangedListener<EditText>(activityLevelText, activityLevel));
+        //activityLevelText.addTextChangedListener(new TextChangedListener<EditText>(activityLevelText, activityLevel));
 
         nameId = (nameText.getId());
         emailId = (emailText.getId());
@@ -196,13 +227,13 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
         financialPlanId = (financialPlanText.getId());
         nutriCoinsId = (nutriCoinsText.getId());
         ageId = (ageText.getId());
-        sexId = (sexText.getId());
+        //sexId = (sexText.getId());
         weightId = (weightText.getId());
         heightId = (heightText.getId());
         ethnicityId = (ethnicityText.getId());
         healthHistoryId = (healthHistoryText.getId());
         healthGoalsId = (healthGoalsText.getId());
-        activityLevelId = (activityLevelText.getId());
+        //activityLevelId = (activityLevelText.getId());
 
         mDb = AppDatabase.getInstance(getContext());
         nta = new NutrientTablesApi(mDb);
@@ -212,13 +243,6 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
         context = getContext();
 
         return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        userID = mDb.tokenDao().getUserID();
-        getFields();
     }
 
     @Override
@@ -254,11 +278,20 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // On selecting a spinner item
-        profileFocus = parent.getItemAtPosition(position).toString();
-
-        //***save selected data to database here***
-
         // Showing selected spinner item
+        //Toast.makeText(parent.getContext(), "Selected: " + parent.getId(), Toast.LENGTH_SHORT).show();
+        switch(parent.getId())
+        {
+            case R.id.profileFocusSpinner:
+                profileFocus = parent.getItemAtPosition(position).toString();
+                break;
+            case R.id.sexSpinner:
+                sex = parent.getItemAtPosition(position).toString();
+                break;
+            case R.id.activityLevelSpinner:
+                activityLevel = parent.getItemAtPosition(position).toString();
+                break;
+        }
         //Toast.makeText(parent.getContext(), "Selected: " + profileFocus, Toast.LENGTH_SHORT).show();
     }
 
@@ -411,8 +444,6 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
                 nutriCoins = str;
             else if(((EditText) target).getId() == ageId)
                 age = str;
-            else if(((EditText) target).getId() == sexId)
-                sex = str;
             else if(((EditText) target).getId() == weightId)
                 weight = str;
             else if(((EditText) target).getId() == heightId)
@@ -423,8 +454,6 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
                 healthHistory = str;
             else if(((EditText) target).getId() == healthGoalsId)
                 healthGoals = str;
-            else if(((EditText) target).getId() == activityLevelId)
-                activityLevel = str;
             //Log.d("debug", String.valueOf(((EditText) target).getId()));
             //Toast.makeText(getContext(), "value is now: " + str, Toast.LENGTH_SHORT).show();
         }
@@ -520,26 +549,22 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
         catch (NullPointerException e)
         {
             Toast.makeText(getContext(), "Error. Please fill these fields and click Save All Changes to use this function", Toast.LENGTH_LONG).show();
-            TextView errorText = (TextView) spinner.getSelectedView();
+            TextView errorText = (TextView) profileFocusSpinner.getSelectedView();
             errorText.setError("");
             errorText.setTextColor(Color.RED);
             ageText.setError("");
-            sexText.setError("");
             weightText.setError("");
             heightText.setError("");
-            activityLevelText.setError("");
         }
         catch (NumberFormatException e)
         {
             Toast.makeText(getContext(), "Error. Please enter only integers into these fields", Toast.LENGTH_LONG).show();
-            TextView errorText = (TextView) spinner.getSelectedView();
+            TextView errorText = (TextView) profileFocusSpinner.getSelectedView();
             errorText.setError("");
             errorText.setTextColor(Color.RED);
             ageText.setError("");
-            sexText.setError("");
             weightText.setError("");
             heightText.setError("");
-            activityLevelText.setError("");
         }
     }
 
@@ -548,21 +573,54 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
         User u = mDb.userDao().findByUserID(userID);
         String pfp = u.profilePicture;
         try {
-            if (!pfp.equals(""))
+            if (pfp != null)
                 profilePicture.setImageBitmap(StringToBitMap(pfp));
-
             switch (u.profileFocus) {
                 case "Lose Weight":
                     profileFocus = "Lose Weight";
-                    spinner.setSelection(1); //needs refactoring to find the text from the arraylist
+                    profileFocusSpinner.setSelection(1); //needs refactoring to find the text from the arraylist
                     break;
                 case "Maintain Weight":
                     profileFocus = "Maintain Weight";
-                    spinner.setSelection(2);
+                    profileFocusSpinner.setSelection(2);
                     break;
                 case "Gain Muscle":
                     profileFocus = "Gain Muscle";
-                    spinner.setSelection(3);
+                    profileFocusSpinner.setSelection(3);
+                    break;
+                default:
+            }
+            switch (u.sex) {
+                case "Male":
+                    sex = "Male";
+                    sexSpinner.setSelection(1); //needs refactoring to find the text from the arraylist
+                    break;
+                case "Female":
+                    sex = "Female";
+                    sexSpinner.setSelection(2);
+                    break;
+                default:
+            }
+            switch (u.activityLevel) {
+                case "Sedentary":
+                    activityLevel = "Sedentary";
+                    activityLevelSpinner.setSelection(1); //needs refactoring to find the text from the arraylist
+                    break;
+                case "Lightly Active":
+                    activityLevel = "Lightly Active";
+                    activityLevelSpinner.setSelection(2);
+                    break;
+                case "Moderately Active":
+                    activityLevel = "Moderately Active";
+                    activityLevelSpinner.setSelection(3);
+                    break;
+                case "Very Active":
+                    activityLevel = "Very Active";
+                    activityLevelSpinner.setSelection(3);
+                    break;
+                case "Extremely Active":
+                    activityLevel = "Extremely Active";
+                    activityLevelSpinner.setSelection(3);
                     break;
                 default:
             }
@@ -576,11 +634,9 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
         birthday = u.birthday;
 
         age = u.age;
-        sex = u.sex;
         weight = u.weight;
         height = u.height;
         ethnicity = u.ethnicity;
-        activityLevel = u.activityLevel;
         healthHistory = u.healthHistory;
 
         financialSource = u.financialSource;
@@ -596,11 +652,9 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
         birthdayText.setText(birthday);
 
         ageText.setText(age);
-        sexText.setText(sex);
         weightText.setText(weight);
         heightText.setText(height);
         ethnicityText.setText(ethnicity);
-        activityLevelText.setText(activityLevel);
         healthHistoryText.setText(healthHistory);
 
         financialSourceText.setText(financialSource);

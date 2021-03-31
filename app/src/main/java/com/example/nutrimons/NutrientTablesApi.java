@@ -376,8 +376,8 @@ public class NutrientTablesApi {
         }
 
         if(u.sex.equals("Male")) //Mifflin-St Jeor Equation https://en.wikipedia.org/wiki/Basal_metabolic_rate
-            return (int)((10 * Integer.parseInt(u.weight) / 2.2 /*pounds*/ + 6.25 * 2.54 * Integer.parseInt(u.height) /*inches*/ - 5 * Float.parseFloat(u.age) + 5) * al) + focusMod;
+            return (int)((10 * Float.parseFloat(u.weight) / 2.2 /*pounds*/ + 6.25 * 2.54 * Float.parseFloat(u.height) /*inches*/ - 5 * Float.parseFloat(u.age) + 5) * al) + focusMod;
         else
-            return (int)((10 * Integer.parseInt(u.weight) / 2.2 /*pounds*/ + 6.25 * 2.54 * Integer.parseInt(u.height) /*inches*/ - 5 * Float.parseFloat(u.age) - 161) * al) + focusMod;
+            return (int)((10 * Float.parseFloat(u.weight) / 2.2 /*pounds*/ + 6.25 * 2.54 * Float.parseFloat(u.height) /*inches*/ - 5 * Float.parseFloat(u.age) - 161) * al) + focusMod;
     }
 }

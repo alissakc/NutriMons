@@ -781,6 +781,7 @@
                     android:id="@+id/age"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
                     android:text="71" />
             </LinearLayout>
 
@@ -795,11 +796,12 @@
                     android:text="@string/sex"
                     android:textColor="@color/black" />
 
-                <EditText
-                    android:id="@+id/sex"
-                    android:layout_width="wrap_content"
+                <Spinner
+                    android:id="@+id/sexSpinner"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Male" />
+                    android:layout_weight="1" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -817,6 +819,7 @@
                     android:id="@+id/weight"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
                     android:text="280" />
             </LinearLayout>
 
@@ -835,6 +838,7 @@
                     android:id="@+id/height"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
                     android:text="68" />
             </LinearLayout>
 
@@ -864,14 +868,15 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
                     android:text="@string/activity_level"
                     android:textColor="@color/black" />
 
-                <EditText
-                    android:id="@+id/activityLevel"
-                    android:layout_width="wrap_content"
+                <Spinner
+                    android:id="@+id/activityLevelSpinner"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Sedentary" />
+                    android:layout_weight="1" />
             </LinearLayout>
 
             <TextView
@@ -987,6 +992,7 @@
                     android:id="@+id/nutriCoins"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
                     android:text="420" />
             </LinearLayout>
 
