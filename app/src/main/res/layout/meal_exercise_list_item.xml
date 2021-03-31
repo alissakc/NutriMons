@@ -5,7 +5,8 @@
     android:layout_margin="5dp"
     android:gravity="center"
     android:padding="10dp"
-    android:text="Apple"
+    android:text="@string/apple"
     android:textAlignment="center"
     android:textSize="20sp"
     android:textStyle="bold" />
+

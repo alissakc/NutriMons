@@ -68,17 +68,45 @@
                 android:orientation="vertical"
                 android:id="@+id/mealLinearView">
 
-                <TextView
-                    android:id="@+id/dailyMealTextView"
+                <LinearLayout
+                    android:id="@+id/editMealLinearLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/teal_200"
-                    android:text="@string/meal"
-                    android:textAlignment="center"
-                    android:textAllCaps="true"
-                    android:textColor="@color/black"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:background="@color/teal_200">
+
+                    <ImageButton
+                        android:id="@+id/addMealToDailyInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@color/teal_200"
+                        android:paddingLeft="10dp"
+                        android:src="@drawable/ic_add_meal"
+                        android:text="@string/add_meal" />
+
+                    <TextView
+                        android:id="@+id/dailyMealTextView"
+                        android:layout_width="280dp"
+                        android:layout_height="wrap_content"
+                        android:background="@color/teal_200"
+                        android:text="@string/meal"
+                        android:textAlignment="center"
+                        android:textAllCaps="true"
+                        android:textColor="@color/black"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                    <ImageButton
+                        android:id="@+id/removeMealFromDailyInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@color/teal_200"
+                        android:paddingRight="10dp"
+                        android:src="@drawable/ic_delete"
+                        android:text="@string/remove_meal" />
+                </LinearLayout>
+
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/dailyMealList"
@@ -90,32 +118,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="20dp" />
 
-            <LinearLayout
-                android:id="@+id/editMealLinearLayout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/addMealToDailyInfo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="20dp"
-                    android:layout_weight="1"
-                    android:text="@string/add_meal" />
-
-                <Button
-                    android:id="@+id/removeMealFromDailyInfo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_weight="1"
-                    android:text="@string/remove_meal" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="20dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -123,56 +125,54 @@
                 android:orientation="vertical"
                 android:id="@+id/exerciseLinearView">
 
-                <TextView
-                    android:id="@+id/dailyExerciseTextView"
+                <LinearLayout
+                    android:id="@+id/editExerciseLinearLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/teal_200"
-                    android:text="@string/exercise"
-                    android:textAlignment="center"
-                    android:textAllCaps="true"
-                    android:textColor="@color/black"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:background="@color/teal_200">
+
+                    <ImageButton
+                        android:id="@+id/addExerciseToDailyInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@color/teal_200"
+                        android:paddingLeft="10dp"
+                        android:src="@drawable/ic_add_meal"
+                        android:text="@string/add_exercise" />
+
+                    <TextView
+                        android:id="@+id/dailyExerciseTextView"
+                        android:layout_width="280dp"
+                        android:layout_height="wrap_content"
+                        android:background="@color/teal_200"
+                        android:text="@string/exercise"
+                        android:textAlignment="center"
+                        android:textAllCaps="true"
+                        android:textColor="@color/black"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                    <ImageButton
+                        android:id="@+id/removeExerciseFromDailyInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@color/teal_200"
+                        android:paddingRight="10dp"
+                        android:src="@drawable/ic_delete"
+                        android:text="Remove Exercise" />
+                </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/dailyExerciseList"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </LinearLayout>
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="20dp" />
 
-
-
-            <LinearLayout
-                android:id="@+id/editExerciseLinearLayout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/addExerciseToDailyInfo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="20dp"
-                    android:layout_weight="1"
-                    android:text="@string/add_exercise" />
-
-                <Button
-                    android:id="@+id/removeExerciseFromDailyInfo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_weight="1"
-                    android:text="Remove Exercise" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="20dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"

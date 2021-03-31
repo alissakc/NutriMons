@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements DrawerController 
         }
         catch(NullPointerException e)
         {
-            dateData = new DateData(dateString, new ArrayList<com.example.nutrimons.database.Meal>(), new ArrayList<com.example.nutrimons.database.Meal>(), new ArrayList<com.example.nutrimons.database.Meal>(), new ArrayList<Meal>(), new ArrayList<String>());
+            dateData = new DateData(dateString, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<String>());
             mDb.dateDataDao().insert(dateData);
         }
     }

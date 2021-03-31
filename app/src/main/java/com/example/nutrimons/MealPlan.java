@@ -1,5 +1,6 @@
 package com.example.nutrimons;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,9 +19,11 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 
 import com.example.nutrimons.database.AppDatabase;
+import com.example.nutrimons.database.DateData;
 import com.example.nutrimons.database.Exercise;
 import com.example.nutrimons.database.Meal;
 import com.google.android.material.navigation.NavigationView;
@@ -30,12 +33,10 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_DATE = null;
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private String date;
 
     // vars
     private Spinner breakfastSpinner, lunchSpinner, dinnerSpinner, snackSpinner;
@@ -53,20 +54,22 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
         // Required empty public constructor
     }
 
+    public MealPlan(String date) {
+        newInstance(date);
+    }
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param date Parameter 1.
      * @return A new instance of fragment MealPlan.
      */
     // TODO: Rename and change types and number of parameters
-    public static MealPlan newInstance(String param1, String param2) {
+    public static MealPlan newInstance(String date) {
         MealPlan fragment = new MealPlan();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_DATE, date);
         fragment.setArguments(args);
         return fragment;
     }
@@ -84,6 +87,23 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
 
         // database
         mDb = AppDatabase.getInstance(getContext());
+
+        //
+        String dateString = "";
+        Bundle bundle = this.getArguments();
+        if (bundle == null) {
+            // gets current date
+            long date = System.currentTimeMillis();
+            SimpleDateFormat Date = new SimpleDateFormat("MM/dd/yyyy");
+            dateString = Date.format(date);
+        } else {
+            String date = bundle.getString("key");
+            if (date.indexOf(2) != '/') {
+                dateString = "0" + date;
+            } else {
+                dateString = date;
+            }
+        }
 
         // Spinner element
         breakfastSpinner = (Spinner) view.findViewById(R.id.breakfastMultipleItemSelectionSpinner);
@@ -134,46 +154,99 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
         snackSpinner.setAdapter(snackDataAdapter);
 
         save = view.findViewById(R.id.saveMealPlanButton);
+        String finalDateString = dateString;
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+/*                selectedBreakfast.add(breakfastSpinner.getSelectedItem().toString());
+                selectedLunch.add(lunchSpinner.getSelectedItem().toString());
+                selectedDinner.add(dinnerSpinner.getSelectedItem().toString());
+                selectedSnack.add(snackSpinner.getSelectedItem().toString());*/
                 selectedBreakfast.add(mDb.mealDao().findByName(breakfastSpinner.getSelectedItem().toString()));
                 selectedLunch.add(mDb.mealDao().findByName(lunchSpinner.getSelectedItem().toString()));
                 selectedDinner.add(mDb.mealDao().findByName(dinnerSpinner.getSelectedItem().toString()));
                 selectedSnack.add(mDb.mealDao().findByName(snackSpinner.getSelectedItem().toString()));
-                long date = System.currentTimeMillis();
-                SimpleDateFormat Date = new SimpleDateFormat("MM/dd/yyyy");
-                String dateString = Date.format(date);
-                if(mDb.dateDataDao().findByDate(dateString) == null){
-                    final com.example.nutrimons.database.DateData dateData = new com.example.nutrimons.database.DateData(dateString, selectedBreakfast, selectedLunch, selectedDinner, selectedSnack, new ArrayList<String>());
+
+                if (mDb.dateDataDao().findByDate(finalDateString) == null) {
+                    final com.example.nutrimons.database.DateData dateData = new com.example.nutrimons.database.DateData(finalDateString, selectedBreakfast, selectedLunch, selectedDinner, selectedSnack, new ArrayList<String>());
                     dateData.aggregateNutrients();
                     mDb.dateDataDao().insert(dateData);
-                }
-                else{
-                    if(breakfastSpinner.getSelectedItem().toString().equalsIgnoreCase("Select an item")){
+                } else {
+                    // checks to see if nothing was selected
+                    if (breakfastSpinner.getSelectedItem().toString().equalsIgnoreCase("Select an item")) {
                         selectedBreakfast.clear();
+                    } else {
+                        // checks for existing meals
+                        if (!mDb.dateDataDao().findBreakfastByDate(finalDateString).isEmpty()) {
+                            for (String s : mDb.dateDataDao().findBreakfastByDate(finalDateString)) {
+                                selectedBreakfast.add(mDb.mealDao().findByName(s));
+//                                selectedBreakfast.add(s);
+                            }
+                        }
                     }
-                    if(lunchSpinner.getSelectedItem().toString().equalsIgnoreCase("Select an item")){
+                    if (lunchSpinner.getSelectedItem().toString().equalsIgnoreCase("Select an item")) {
                         selectedLunch.clear();
+                    } else {
+                        // checks for existing meals
+                        if (!mDb.dateDataDao().findLunchByDate(finalDateString).isEmpty()) {
+                            for (String s : mDb.dateDataDao().findLunchByDate(finalDateString)) {
+//                                selectedLunch.add(s);
+                                selectedLunch.add(mDb.mealDao().findByName(s));
+                            }
+                        }
                     }
-                    if(dinnerSpinner.getSelectedItem().toString().equalsIgnoreCase("Select an item")){
+                    if (dinnerSpinner.getSelectedItem().toString().equalsIgnoreCase("Select an item")) {
                         selectedDinner.clear();
+                    } else {
+                        // checks for existing meals
+                        if (!mDb.dateDataDao().findDinnerByDate(finalDateString).isEmpty()) {
+                            for (String s : mDb.dateDataDao().findDinnerByDate(finalDateString)) {
+//                                selectedDinner.add(s);
+                                selectedDinner.add(mDb.mealDao().findByName(s));
+                            }
+                        }
                     }
-                    if(snackSpinner.getSelectedItem().toString().equalsIgnoreCase("Select an item")){
+                    if (snackSpinner.getSelectedItem().toString().equalsIgnoreCase("Select an item")) {
                         selectedSnack.clear();
+                    } else {
+                        // checks for existing meals
+                        if (!mDb.dateDataDao().findSnackByDate(finalDateString).isEmpty()) {
+                            for (String s : mDb.dateDataDao().findSnackByDate(finalDateString)) {
+//                                selectedSnack.add(s);
+                                selectedSnack.add(mDb.mealDao().findByName(s));
+                            }
+                        }
                     }
-                    final com.example.nutrimons.database.DateData dateData = new com.example.nutrimons.database.DateData(dateString,
-                            (selectedBreakfast.isEmpty()) ? mDb.dateDataDao().findByDate(dateString).breakfast : selectedBreakfast,
-                            (selectedLunch.isEmpty()) ? mDb.dateDataDao().findByDate(dateString).lunch : selectedLunch,
-                            (selectedDinner.isEmpty()) ? mDb.dateDataDao().findByDate(dateString).dinner : selectedDinner,
-                            (selectedSnack.isEmpty()) ? mDb.dateDataDao().findByDate(dateString).snack : selectedSnack,
-                            mDb.dateDataDao().findByDate(dateString).todayExercise);
+
+                    final com.example.nutrimons.database.DateData dateData = new com.example.nutrimons.database.DateData(finalDateString,
+                            (selectedBreakfast.isEmpty()) ? mDb.dateDataDao().findByDate(finalDateString).breakfast : selectedBreakfast,
+                            (selectedLunch.isEmpty()) ? mDb.dateDataDao().findByDate(finalDateString).lunch : selectedLunch,
+                            (selectedDinner.isEmpty()) ? mDb.dateDataDao().findByDate(finalDateString).dinner : selectedDinner,
+                            (selectedSnack.isEmpty()) ? mDb.dateDataDao().findByDate(finalDateString).snack : selectedSnack,
+                            mDb.dateDataDao().findByDate(finalDateString).todayExercise);
                     dateData.aggregateNutrients();
                     mDb.dateDataDao().updateDateData(dateData);
                     //mDb.dateDataDao().updateMealPlan(selectedBreakfast, selectedLunch, selectedDinner, selectedSnack, dateString);
                 }
-                // navigates to the dashboard
-                Navigation.findNavController(view).navigate(R.id.action_nav_mealPlan_to_nav_home);
+
+                long date = System.currentTimeMillis();
+                SimpleDateFormat Date = new SimpleDateFormat("MM/dd/yyyy");
+                String currentDate = Date.format(date);
+                if (finalDateString != currentDate) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("key", finalDateString);
+                    DailyInfoFragment fragment = new DailyInfoFragment();
+                    fragment.setArguments(bundle);
+                    FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    ActionBar actionBar = getActivity().getActionBar();
+                    if (actionBar != null) {
+                        actionBar.setTitle("Daily Information");
+                    }
+                    transaction.replace(R.id.fragment_meal_plan, fragment).addToBackStack(null).commit();
+                } else {
+                    // navigates to the dashboard
+                    Navigation.findNavController(view).navigate(R.id.action_nav_mealPlan_to_nav_home);
+                }
             }
         });
 

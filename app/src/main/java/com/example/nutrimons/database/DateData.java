@@ -17,22 +17,22 @@ public class DateData {
 
     @PrimaryKey
     @NonNull
-    @ColumnInfo(name="date")
+    @ColumnInfo(name = "date")
     public String date;
 
-    @ColumnInfo(name="breakfast")
+    @ColumnInfo(name = "breakfast")
     public final List<Meal> breakfast;
 
-    @ColumnInfo(name="lunch")
+    @ColumnInfo(name = "lunch")
     public final List<Meal> lunch;
 
-    @ColumnInfo(name="dinner")
+    @ColumnInfo(name = "dinner")
     public final List<Meal> dinner;
 
-    @ColumnInfo(name="snack")
+    @ColumnInfo(name = "snack")
     public final List<Meal> snack;
 
-    @ColumnInfo(name="exercise")
+    @ColumnInfo(name = "exercise")
     public final List<String> todayExercise;
 
 
@@ -99,45 +99,45 @@ public class DateData {
         this.todayExercise = todayExercise;
     }
 
-    public void aggregateNutrients()
-    {
+    public void aggregateNutrients() {
         calories = protein = carbohydrate = sugar = fiber = cholesterol = saturatedFat = monounsaturatedFat
                 = polyunsaturatedFat = transFat = vitaminA = vitaminC = vitaminD = sodium = potassium
                 = calcium = iron = 0f;
-        addNutrients(breakfast);
-        addNutrients(lunch);
-        addNutrients(dinner);
-        addNutrients(snack);
+        if(!breakfast.isEmpty()) addNutrients(breakfast);
+        if(!lunch.isEmpty()) addNutrients(lunch);
+        if(!dinner.isEmpty()) addNutrients(dinner);
+        if(!snack.isEmpty()) addNutrients(snack);
     }
 
-    private void addNutrients(List<Meal> meals)
-    {
-        for(Meal m : meals)
-        {
-            this.calories += m.calories;
-            this.protein += m.protein;
-            this.carbohydrate += m.carbohydrate;
-            this.sugar += m.sugar;
-            this.fiber += m.fiber;
-            this.cholesterol += m.cholesterol;
-            this.saturatedFat += m.saturatedFat;
-            this.monounsaturatedFat += m.monounsaturatedFat;
-            this.polyunsaturatedFat += m.polyunsaturatedFat;
-            this.transFat += m.transFat;
-            this.vitaminA += m.vitaminA;
-            this.vitaminC += m.vitaminC;
-            this.vitaminD += m.vitaminD;
-            this.sodium += m.sodium;
-            this.potassium += m.potassium;
-            this.calcium += m.calcium;
-            this.iron += m.iron;
+    private void addNutrients(List<Meal> meals) {
+        for (Meal m : meals) {
+            if(m != null){
+                this.calories += m.calories;
+                this.protein += m.protein;
+                this.carbohydrate += m.carbohydrate;
+                this.sugar += m.sugar;
+                this.fiber += m.fiber;
+                this.cholesterol += m.cholesterol;
+                this.saturatedFat += m.saturatedFat;
+                this.monounsaturatedFat += m.monounsaturatedFat;
+                this.polyunsaturatedFat += m.polyunsaturatedFat;
+                this.transFat += m.transFat;
+                this.vitaminA += m.vitaminA;
+                this.vitaminC += m.vitaminC;
+                this.vitaminD += m.vitaminD;
+                this.sodium += m.sodium;
+                this.potassium += m.potassium;
+                this.calcium += m.calcium;
+                this.iron += m.iron;
+            }
+
         }
     }
 
-    public ArrayList<String> nutrientsToStringList()
-    {
+
+    public ArrayList<String> nutrientsToStringList() {
         ArrayList<String> dailyList = new ArrayList<>();
-        
+
         dailyList.add("Calories: " + calories + "kcal");
         dailyList.add("Water: " + water + "L");
         dailyList.add("Protein: " + protein + "g");
@@ -155,12 +155,11 @@ public class DateData {
         dailyList.add("Potassium: " + potassium + "g");
         dailyList.add("Calcium: " + calcium + "mg");
         dailyList.add("Iron: " + iron + "mg");
-        
+
         return dailyList;
     }
 
-    public ArrayList<Float> nutrientsToFloatList()
-    {
+    public ArrayList<Float> nutrientsToFloatList() {
         ArrayList<Float> dailyList = new ArrayList<>();
 
         dailyList.add(calories);
@@ -184,7 +183,7 @@ public class DateData {
         return dailyList;
     }
 
-    public ArrayList<String> breakfastToListString()
+   /* public ArrayList<String> breakfastToListString()
     {
         ArrayList<String> mealList = new ArrayList<String>();
 
@@ -230,5 +229,5 @@ public class DateData {
         }
 
         return mealList;
-    }
+    }*/
 }
