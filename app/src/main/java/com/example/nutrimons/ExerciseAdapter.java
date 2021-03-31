@@ -3,6 +3,7 @@ package com.example.nutrimons;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -39,9 +40,12 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
     public static class ExerciseViewHolder extends RecyclerView.ViewHolder{
 
         public TextView exerciseName;
+        public CheckBox checkbox;
+        
         public ExerciseViewHolder(@NonNull View itemView) {
             super(itemView);
             exerciseName = itemView.findViewById(R.id.recycler_view_item);
+            checkbox = itemView.findViewById(R.id.checkBox_select);
         }
     }
 }

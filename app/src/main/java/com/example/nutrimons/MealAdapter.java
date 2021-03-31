@@ -52,9 +52,11 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
 
         public TextView mealName;
         public CheckBox checkbox;
+
         public MealViewHolder(@NonNull View itemView) {
             super(itemView);
             mealName = itemView.findViewById(R.id.recycler_view_item);
+            checkbox = itemView.findViewById(R.id.checkBox_select);
         }
     }
 

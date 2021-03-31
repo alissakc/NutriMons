@@ -1,5 +1,6 @@
 package com.example.nutrimons;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -93,6 +94,23 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
         // database
         mDb = AppDatabase.getInstance(getContext());
 
+        // checks if the there is a bundle from FragmentTransaction
+        String dateString = "";
+        Bundle bundle = this.getArguments();
+        if (bundle == null) {
+            // gets current date
+            long date = System.currentTimeMillis();
+            SimpleDateFormat Date = new SimpleDateFormat("MM/dd/yyyy");
+            dateString = Date.format(date);
+        } else {
+            String date = bundle.getString("key");
+            if (date.charAt(2) != '/') {
+                dateString = "0" + date;
+            } else {
+                dateString = date;
+            }
+        }
+
         List<String> exercises = (List<String>) mDb.exerciseDao().getAllNames();
         exercises.add(0, "Select an item");
 
@@ -120,7 +138,7 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
         */
 
         // Creating adapter for spinners
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, exercises);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_item, exercises);
 
         // Drop down layout style - list view with radio button
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -137,6 +155,7 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
         unitNameText = (EditText) view.findViewById(R.id.editTextUnitName);
         durationText = (EditText) view.findViewById(R.id.editTextDuration);
 
+        String finalDateString = dateString;
         //assign listener
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,12 +164,14 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
                 caloriesPerUnit = Integer.parseInt(caloriesPerUnitText.getText().toString());
                 unitName = unitNameText.getText().toString();
                 duration = Float.parseFloat(durationText.getText().toString());
-
                 final com.example.nutrimons.database.Exercise exercise = new com.example.nutrimons.database.Exercise(exerciseName, caloriesPerUnit, unitName, duration);
                 mDb.exerciseDao().insert(exercise);
                 Toast.makeText(getContext(), "Created entry", Toast.LENGTH_SHORT).show();
                 // refreshes exercise page
+                Bundle bundle = new Bundle();
+                bundle.putString("key", finalDateString);
                 Exercise fragment = new Exercise();
+                fragment.setArguments(bundle);
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.fragment_exercise, fragment).addToBackStack(null).commit();
             }
@@ -161,16 +182,25 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
             @Override
             public void onClick(View v) {
                 exerciseList.add(exerciseSpinner.getSelectedItem().toString());
-                long date = System.currentTimeMillis();
-                SimpleDateFormat Date = new SimpleDateFormat("MM/dd/yyyy");
-                String dateString = Date.format(date);
-                if(mDb.dateDataDao().findByDate(dateString) == null){
-                    final DateData dateData = new DateData(dateString, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), exerciseList);
+                if(mDb.dateDataDao().findByDate(finalDateString) == null){
+                    final DateData dateData = new DateData(finalDateString, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), exerciseList);
                     mDb.dateDataDao().insert(dateData);
                 }
                 else{
-                    DateData dd = mDb.dateDataDao().findByDate(dateString);
-                    final com.example.nutrimons.database.DateData dateData = new com.example.nutrimons.database.DateData(dateString,
+                    DateData dd = mDb.dateDataDao().findByDate(finalDateString);
+                    if(mDb.dateDataDao().findExercisesByDate(finalDateString) != null){
+                        if(!mDb.dateDataDao().findExercisesByDate(finalDateString).isEmpty()){
+                            for (String s : mDb.dateDataDao().findExercisesByDate(finalDateString)) {
+                                if (!s.equalsIgnoreCase("[null]")) {
+                                    if (!s.equalsIgnoreCase("[]")) {
+                                        s = s.replaceAll("\\W", "");
+                                        exerciseList.add(s);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    final com.example.nutrimons.database.DateData dateData = new com.example.nutrimons.database.DateData(finalDateString,
                             dd.breakfast,
                             dd.lunch,
                             dd.dinner,
@@ -179,10 +209,30 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
                     mDb.dateDataDao().updateDateData(dateData);
                     //mDb.dateDataDao().updateExercise(exerciseList, dateString);
                 }
-                // refreshes exercise page
-                Exercise fragment = new Exercise();
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_exercise, fragment).addToBackStack(null).commit();
+
+                long date = System.currentTimeMillis();
+                SimpleDateFormat Date = new SimpleDateFormat("MM/dd/yyyy");
+                String currentDate = Date.format(date);
+                if (!finalDateString .equalsIgnoreCase(currentDate)) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("key", finalDateString);
+                    DailyInfoFragment fragment = new DailyInfoFragment();
+                    fragment.setArguments(bundle);
+                    FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    ActionBar actionBar = getActivity().getActionBar();
+                    if (actionBar != null) {
+                        actionBar.setTitle("Daily Information");
+                    }
+                    transaction.replace(R.id.fragment_exercise, fragment).addToBackStack(null).commit();
+                } else {
+                    // refreshes exercise page
+                    Bundle bundle = new Bundle();
+                    bundle.putString("key", finalDateString);
+                    Exercise fragment = new Exercise();
+                    fragment.setArguments(bundle);
+                    FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.fragment_exercise, fragment).addToBackStack(null).commit();
+                }
             }
         });
         return view;

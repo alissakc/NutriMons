@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -280,16 +281,20 @@ public class DailyInfoFragment extends Fragment {
         } else {
             if (breakfast != null) {
                 if(!breakfast.isEmpty()){
+                    String[] tempB;
                     for (String b : breakfast) {
                         if (!b.equalsIgnoreCase("[null]")) {
                             if(!b.equalsIgnoreCase("[]")){
-                                int i = b.indexOf("mealName");
-                                int j = b.indexOf("monounsaturatedFat");
-                                char[] s = new char[100];
-                                b.getChars(i+11,j-3,s,0);
-                                String ss = new String(s);
-                                //b = b.replaceAll("\\W", "");
-                                meals.add(ss);
+                                tempB = b.split(Pattern.quote("}"));
+                                for(int i = 0; i < tempB.length; i++){
+                                    if(!tempB[i].replaceAll("\\W", "").equalsIgnoreCase("null")){
+                                        int k = tempB[i].indexOf("mealName");
+                                        int j = tempB[i].indexOf("monounsaturatedFat");
+                                        String ss = tempB[i].substring(k+11,j-3);
+                                        meals.add(ss);
+                                    }
+                                }
+
                             }
                         }
                     }
@@ -358,9 +363,7 @@ public class DailyInfoFragment extends Fragment {
                 ItemTouchHelper(new MealAdapter.SwipeToDeleteMealCallback(mealAdapter));
         itemTouchHelper.attachToRecyclerView(mealRecyclerView);*/
 
-        exerciseRecyclerView.setLayoutManager(new
-
-                LinearLayoutManager(getContext()));
+        exerciseRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         exerciseRecyclerView.setHasFixedSize(false);
 
         List<String> tempExercise = (List<String>) mDb.dateDataDao().findExercisesByDate(currentDay);
@@ -371,9 +374,17 @@ public class DailyInfoFragment extends Fragment {
             exercise.add("No exercises were inputted.");
         } else {
             exercise = new ArrayList<>();
+            String[] tempE;
             for (String e : tempExercise) {
-                e = e.replaceAll("\\W", "");
-                exercise.add(e);
+                if (!e.equalsIgnoreCase("[null]")) {
+                    if (!e.equalsIgnoreCase("[]")) {
+                        tempE = e.split(",");
+                        for(int i = 0; i < tempE.length; i++){
+                            e = tempE[i].replaceAll("\\W", "");
+                            exercise.add(e);
+                        }
+                    }
+                }
             }
         }
 
@@ -381,9 +392,7 @@ public class DailyInfoFragment extends Fragment {
         exerciseRecyclerView.setAdapter(exerciseAdapter);
 
 
-        dailySummaryRecyclerView.setLayoutManager(new
-
-                LinearLayoutManager(getContext()));
+        dailySummaryRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         dailySummaryRecyclerView.setHasFixedSize(false);
 
         List<String> dailySummary;
@@ -504,7 +513,6 @@ public class DailyInfoFragment extends Fragment {
                     actionBar.setTitle("Meal Plan");
                 }
                 transaction.replace(R.id.fragment_daily_info, fragment).addToBackStack(null).commit();
-
             }
         });
 
@@ -522,7 +530,16 @@ public class DailyInfoFragment extends Fragment {
         addExerciseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Bundle bundle = new Bundle();
+                bundle.putString("key", currentDate.getText().toString());
+                Exercise fragment = new Exercise();
+                fragment.setArguments(bundle);
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                ActionBar actionBar = getActivity().getActionBar();
+                if (actionBar != null) {
+                    actionBar.setTitle("Exercise");
+                }
+                transaction.replace(R.id.fragment_daily_info, fragment).addToBackStack(null).commit();
             }
         });
 
