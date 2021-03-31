@@ -288,13 +288,14 @@ public class DailyInfoFragment extends Fragment {
                                 tempB = b.split(Pattern.quote("}"));
                                 for(int i = 0; i < tempB.length; i++){
                                     if(!tempB[i].replaceAll("\\W", "").equalsIgnoreCase("null")){
-                                        int k = tempB[i].indexOf("mealName");
-                                        int j = tempB[i].indexOf("monounsaturatedFat");
-                                        String ss = tempB[i].substring(k+11,j-3);
-                                        meals.add(ss);
+                                        if(!tempB[i].replaceAll("\\W", "").equalsIgnoreCase("")){
+                                            int k = tempB[i].indexOf("mealName");
+                                            int j = tempB[i].indexOf("monounsaturatedFat");
+                                            String ss = tempB[i].substring(k+11,j-3);
+                                            meals.add(ss);
+                                        }
                                     }
                                 }
-
                             }
                         }
                     }
@@ -302,17 +303,21 @@ public class DailyInfoFragment extends Fragment {
             }
             if (lunch != null) {
                 if(!lunch.isEmpty()){
+                    String[] tempL;
                     for (String l : lunch) {
                         if (!l.equalsIgnoreCase("[null]")) {
                             if(!l.equalsIgnoreCase("[]")){
-                                int i = l.indexOf("mealName");
-                                int j = l.indexOf("monounsaturatedFat");
-//                                String ss = l.substring(i+11,j-3);
-                                char[] s = new char[100];
-                                l.getChars(i+11,j-3,s,0);
-                                String ss = new String(s);
-                                //l = l.replaceAll("\\W", "");
-                                meals.add(ss);
+                                tempL = l.split(Pattern.quote("}"));
+                                for(int i = 0; i < tempL.length; i++){
+                                    if(!tempL[i].replaceAll("\\W", "").equalsIgnoreCase("null")){
+                                        if(!tempL[i].replaceAll("\\W", "").equalsIgnoreCase("")){
+                                            int k = tempL[i].indexOf("mealName");
+                                            int j = tempL[i].indexOf("monounsaturatedFat");
+                                            String ss = tempL[i].substring(k+11,j-3);
+                                            meals.add(ss);
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -320,16 +325,21 @@ public class DailyInfoFragment extends Fragment {
             }
             if (dinner != null) {
                 if(!dinner.isEmpty()){
+                    String[] tempD;
                     for (String d : dinner) {
                         if (!d.equalsIgnoreCase("[null]")) {
                             if(!d.equalsIgnoreCase("[]")){
-                                int i = d.indexOf("mealName");
-                                int j = d.indexOf("monounsaturatedFat");
-                                char[] s = new char[100];
-                                d.getChars(i+11,j-3,s,0);
-                                String ss = new String(s);
-                                //d = d.replaceAll("\\W", "");
-                                meals.add(ss);
+                                tempD = d.split(Pattern.quote("}"));
+                                for(int i = 0; i < tempD.length; i++){
+                                    if(!tempD[i].replaceAll("\\W", "").equalsIgnoreCase("null")){
+                                        if(!tempD[i].replaceAll("\\W", "").equalsIgnoreCase("")){
+                                            int k = tempD[i].indexOf("mealName");
+                                            int j = tempD[i].indexOf("monounsaturatedFat");
+                                            String ss = tempD[i].substring(k+11,j-3);
+                                            meals.add(ss);
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -337,16 +347,21 @@ public class DailyInfoFragment extends Fragment {
             }
             if (snack != null) {
                 if(!snack.isEmpty()){
+                    String[] tempS;
                     for (String s : snack) {
                         if (!s.equalsIgnoreCase("[null]")) {
                             if(!s.equalsIgnoreCase("[]")){
-                                int i = s.indexOf("mealName");
-                                int j = s.indexOf("monounsaturatedFat");
-                                char[] sl = new char[100];
-                                s.getChars(i+11,j-3,sl,0);
-                                String ss = new String(sl);
-                                //s = s.replaceAll("\\W", "");
-                                meals.add(ss);
+                                tempS = s.split(Pattern.quote("}"));
+                                for(int i = 0; i < tempS.length; i++){
+                                    if(!tempS[i].replaceAll("\\W", "").equalsIgnoreCase("null")){
+                                        if(!tempS[i].replaceAll("\\W", "").equalsIgnoreCase("")){
+                                            int k = tempS[i].indexOf("mealName");
+                                            int j = tempS[i].indexOf("monounsaturatedFat");
+                                            String ss = tempS[i].substring(k+11,j-3);
+                                            meals.add(ss);
+                                        }
+                                    }
+                                }
                             }
                         }
                     }

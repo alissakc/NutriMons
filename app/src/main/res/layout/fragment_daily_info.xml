@@ -118,7 +118,8 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/dailyMealList"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:scrollbars="vertical" />
             </LinearLayout>
 
             <View
@@ -176,7 +177,8 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/dailyExerciseList"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:scrollbars="vertical" />
             </LinearLayout>
             <View
                 android:layout_width="match_parent"
@@ -204,7 +206,8 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/dailySummary"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:scrollbars="vertical" />
             </LinearLayout>
             <View
                 android:layout_width="match_parent"
