@@ -82,11 +82,12 @@ public class ScanBarcode extends Fragment {
     Button button, barcodeRetakeButton, barcodeAcceptButton;
     ImageView bc;
     ImageCapture imageCapture;
-    Executor executor = Executors.newSingleThreadExecutor();
     Context context;
     RequestQueue queue;
     AppDatabase mDb;
     com.example.nutrimons.database.Meal food;
+
+    final String HEADER = "https://world.openfoodfacts.org/api/v0/product/", FOOTER = ".json";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -133,9 +134,7 @@ public class ScanBarcode extends Fragment {
         RxPermissions rxPermissions = new RxPermissions(this);
         rxPermissions
                 .request(Manifest.permission.CAMERA,
-                        Manifest.permission.INTERNET/*,
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE*/) // ask single or multiple permission once
+                        Manifest.permission.INTERNET)
                 .subscribe(granted -> {
                     if (granted) {
                         // All requested permissions are granted
@@ -204,7 +203,7 @@ public class ScanBarcode extends Fragment {
                             @Override
                             public void onCaptureSuccess(ImageProxy image) {
                                 // insert your code here.
-                                Bitmap bitmap = getBitmap(image); //show image taken in corner
+                                Bitmap bitmap = getBitmap(image); //show image taken up top
                                 bc.setImageBitmap(bitmap);
 
                                 @SuppressLint("UnsafeExperimentalUsageError") Image mediaImage = image.getImage();
@@ -212,7 +211,6 @@ public class ScanBarcode extends Fragment {
                                     InputImage inputImage = InputImage.fromMediaImage(mediaImage, image.getImageInfo().getRotationDegrees());
                                     scanBarcode(inputImage);
                                 }
-                                //Toast.makeText(context, "Image taken", Toast.LENGTH_SHORT).show();
                             }
                             @Override
                             public void onError(ImageCaptureException error) {
@@ -252,18 +250,10 @@ public class ScanBarcode extends Fragment {
                     @Override
                     public void onSuccess(List<Barcode> barcodes) {
                         // Task completed successfully
-                        // [START_EXCLUDE]
-                        // [START get_barcodes]
                         for (Barcode barcode: barcodes) {
-                            //Rect bounds = barcode.getBoundingBox();
-                            //Point[] corners = barcode.getCornerPoints();
-
                             String rawValue = barcode.getRawValue();
-                            //int valueType = barcode.getValueType();
                             View br = view.findViewById(R.id.barcodeResult);
                             View vf = view.findViewById(R.id.viewFinder);
-                            //TextView tv = view.findViewById(R.id.barcodeString);
-                            //tv.setText(rawValue);
 
                             queue.cancelAll(rawValue);
 
@@ -273,15 +263,11 @@ public class ScanBarcode extends Fragment {
                             vf.setVisibility(View.INVISIBLE);
                             button.setVisibility(View.INVISIBLE);
                         }
-                        // [END get_barcodes]
-                        // [END_EXCLUDE]
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        // Task failed with an exception
-                        // ...
                         Toast.makeText(context, "Error Processing Barcode", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -289,9 +275,6 @@ public class ScanBarcode extends Fragment {
 
     private JsonRequest callOFFapi(String barcodeString) //https://wiki.openfoodfacts.org/API ; also has an app: https://github.com/openfoodfacts/openfoodfacts-androidapp
     {
-        final String HEADER = "https://world.openfoodfacts.org/api/v0/product/";
-        final String FOOTER = ".json";
-
         String searchURL = HEADER + barcodeString + FOOTER;
 
         return new JsonObjectRequest(Request.Method.GET, searchURL, new JSONObject(),
@@ -301,18 +284,10 @@ public class ScanBarcode extends Fragment {
                         // try/catch block for returned JSON data
                         // see API's documentation for returned format
                         try {
-                            /*JSONObject result = new JSONObject(response).getJSONObject("list");
-                            int maxItems = result.getInt("end");
-                            JSONArray resultList = result.getJSONArray("item");*/
                             TextView tv = view.findViewById(R.id.barcodeApiResults);
                             tv.setText(response.toString()); //ref: https://world.openfoodfacts.org/api/v0/product/0075270410521.json
-                            //Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
 
-                            //Log.d("json_debug", response.toString());
                             JSONObject product = response.getJSONObject("product");
-                            //Log.d("json_debug", product.getString("image_front_url"));
-                            //Log.d("json_debug", product.getString("product_name"));
-                            //Log.d("json_debug", product.getString("serving_size"));
                             food.mealName = product.getString("product_name");
                             food.servingSize = product.getString("serving_size");
                             food.servingsEaten = 1;
@@ -324,18 +299,15 @@ public class ScanBarcode extends Fragment {
                                 String key = nutriments.names().getString(i);
                                 if(nutrientsOfInterest.containsKey(key))
                                 {
-                                    Log.d("json_debug", "key: " + key + " // value: " + convertOFFResponseUnits(key, nutriments.get(key)));
                                     food.setFieldFromString(nutrientsOfInterest.get(key), convertOFFResponseUnits(key, nutriments.get(key)));
                                 }
                             }
 
-                            Toast.makeText(context, "api request sent response", Toast.LENGTH_SHORT).show();
                             TextView body = view.findViewById(R.id.barcodeApiResults);
                             body.setText(food.toTextViewString());
 
                             // catch for the JSON parsing error
                         } catch (Exception e/*JSONException e*/) {
-                            //Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
                             Toast.makeText(context, "error with api response", Toast.LENGTH_SHORT).show();
                             e.printStackTrace();
                         }
@@ -389,7 +361,7 @@ public class ScanBarcode extends Fragment {
                     AddMeal.food = food;
                     Navigation.findNavController(view).navigate(R.id.action_nav_scanBarcode_to_nav_addMeal);
                 }
-                catch(SQLiteConstraintException e) //still crashes, exception thrown from database.Meal
+                catch(SQLiteConstraintException e)
                 {
                     e.printStackTrace();
                     Toast.makeText(getContext(), "Barcode already scanned", Toast.LENGTH_LONG).show();
@@ -408,7 +380,6 @@ public class ScanBarcode extends Fragment {
     {
         HashMap<String, String> nutrientsOfInterest = new HashMap<>();
 
-        //these keys specifically are in grams
         nutrientsOfInterest.put("energy-kcal", "calories"); //kcal
         //nutrientsOfInterest.put("Water", "water"); //doesn't seem to have
         nutrientsOfInterest.put("proteins", "protein"); //g

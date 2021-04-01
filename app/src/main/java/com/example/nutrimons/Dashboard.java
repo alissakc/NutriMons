@@ -67,9 +67,7 @@ public class Dashboard extends Fragment  {
     private BarChart macrosChart;
 
     // vars for horizontal bar chart
-    private static /*final*/ int MAX_X_VALUE;
-    //private static final int MAX_Y_VALUE = 50;
-    //private static final int MIN_Y_VALUE = 5;
+    private static int MAX_X_VALUE;
     private static final String SET_LABEL = "Nutrient Overview";
     private static final String[] MACRO_NUTRIENTS = { "PROTEINS %", "CARBOHYDRATES %", "FATS %"};
     private List<Float> NUTRIENT_VALUES = new ArrayList<>(), NUTRIENTS_DRI = new ArrayList<>();
@@ -204,15 +202,6 @@ public class Dashboard extends Fragment  {
         NUTRIENTS_DRI.add(nutrientDRIsTemp.get(3));
         NUTRIENTS_DRI.add(nutrientDRIsTemp.get(7) + nutrientDRIsTemp.get(8) + nutrientDRIsTemp.get(9));
         NUTRIENTS_DRI.add(nutrientDRIsTemp.get(0));
-
-        for(int i = 0; i < NUTRIENT_VALUES.size(); ++i)
-        {
-            Log.d("nuts", String.valueOf(NUTRIENT_VALUES.get(i)));
-            Log.d("nuts", String.valueOf(NUTRIENTS_DRI.get(i)));
-        }
-
-        Log.d("calories", String.valueOf(NUTRIENT_VALUES.get(3)));
-        Log.d("calories", String.valueOf(NUTRIENTS_DRI.get(3)));
 
         //create and show the piechart for calories
         caloriesPieChart = view.findViewById(R.id.caloriesPieChart_view);
@@ -368,9 +357,6 @@ public class Dashboard extends Fragment  {
 
         ArrayList<PieEntry> pieEntries = new ArrayList<>();
         String label = "(Calories)";
-
-        //Log.d("calories", String.valueOf(NUTRIENT_VALUES.get(3)));
-        //Log.d("calories", String.valueOf(NUTRIENTS_DRI.get(3)));
 
         //initializing data
         Map<String, Double> typeAmountMap = new HashMap<>();

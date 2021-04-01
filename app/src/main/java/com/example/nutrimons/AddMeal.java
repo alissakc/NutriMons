@@ -41,12 +41,12 @@ public class AddMeal extends Fragment {
     // vars
     private Button addButton, searchFDCButton, advancedMealButton;
     private String mealName, servingSize;
-    private float servingsEaten, advCalories, advWater, advProtein,
+    private float servingsEaten, advCalories, advProtein,
         advCarbohydrate, advSugar, advFiber, advCholesterol, advSaturatedFat, advMonounsaturatedFat,
         advPolyunsaturatedFat, advTransFat, advVitaminA, advVitaminC, advVitaminD, advSodium,
         advPotassium, advCalcium, advIron;
     private EditText mealNameText, servingSizeText, servingsEatenText,
-        advCaloriesText, advWaterText, advProteinText, advCarbohydrateText, advSugarText, advFiberText,
+        advCaloriesText, advProteinText, advCarbohydrateText, advSugarText, advFiberText,
         advCholesterolText, advSaturatedFatText, advMonounsaturatedFatText, advPolyunsaturatedFatText,
         advTransFatText, advVitaminAText, advVitaminCText, advVitaminDText, advSodiumText,
         advPotassiumText, advCalciumText, advIronText;
@@ -111,8 +111,7 @@ public class AddMeal extends Fragment {
         servingSizeText = (EditText) view.findViewById(R.id.editTextServingSize);
         servingsEatenText = (EditText) view.findViewById(R.id.editTextServingsEaten);
         advCaloriesText = (EditText) view.findViewById(R.id.advancedMealEditCalories);
-        
-        advWaterText = (EditText) view.findViewById(R.id.advancedMealEditWater);
+
         advProteinText = (EditText) view.findViewById(R.id.advancedMealEditProtein);
         advCarbohydrateText = (EditText) view.findViewById(R.id.advancedMealEditCarbohydrate);
         advSugarText = (EditText) view.findViewById(R.id.advancedMealEditSugar);
@@ -139,8 +138,6 @@ public class AddMeal extends Fragment {
             servingsEatenText.setText(String.valueOf(food.servingsEaten));
             advCalories = food.calories;
             advCaloriesText.setText(String.valueOf(food.calories));
-            advWater = food.water;
-            advWaterText.setText(String.valueOf(food.water));
             advProtein = food.protein;
             advProteinText.setText(String.valueOf(food.protein));
             advCarbohydrate = food.carbohydrate;
@@ -191,22 +188,11 @@ public class AddMeal extends Fragment {
             @Override
             public void onClick(View v) {
                 mealName = mealNameText.getText().toString();
-                Log.d("mealname", mealName);
+                AddFromFDC fragment = new AddFromFDC();
 
-                /*//FragmentManager fm = getFragmentManager();
-                AddFromFDC fragment = new AddFromFDC();
-                //Fragment addFromFDC = new Fragment();
-                Bundle bundle = new Bundle();
-                bundle.putString("mealName", mealName);
-                bundle.putBoolean("isBranded", isBranded);
-                //addFromFDC.setArguments(bundle);
-                fragment.setArguments(bundle);
-                /*fm.beginTransaction()
-                        .replace(placeholder, fragment, tabId)
-                        .commit();*/
-                AddFromFDC fragment = new AddFromFDC();
                 fragment.mealName = mealName;
                 fragment.isBranded = isBranded;
+
                 Navigation.findNavController(view).navigate(R.id.nav_addFromFDC);
             }
         });
@@ -225,17 +211,12 @@ public class AddMeal extends Fragment {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(getContext(), "Created entry", Toast.LENGTH_SHORT).show();
                 try {
                     mealName = mealNameText.getText().toString();
                     servingSize = servingSizeText.getText().toString();
                     servingsEaten = Float.parseFloat(servingsEatenText.getText().toString());
                     advCalories = Float.parseFloat(advCaloriesText.getText().toString());
-                        
-                    if(advWaterText.getText().toString().isEmpty())
-                        advWater = 0;
-                    else
-                        advWater = Float.parseFloat(advWaterText.getText().toString());
+
                     if (advProteinText.getText().toString().isEmpty())
                         advProtein = 0;
                     else
@@ -303,12 +284,11 @@ public class AddMeal extends Fragment {
 
                     final com.example.nutrimons.database.Meal meal = new com.example.nutrimons.database.Meal(
                             mealName, servingSize, servingsEaten,
-                            advCalories, advWater, advProtein, advCarbohydrate, advSugar,
+                            advCalories, 0, advProtein, advCarbohydrate, advSugar,
                             advFiber, advCholesterol, advSaturatedFat, advMonounsaturatedFat,
                             advPolyunsaturatedFat, advTransFat, advVitaminA, advVitaminC, advVitaminD,
                             advSodium, advPotassium, advCalcium, advIron);
                     mDb.mealDao().insert(meal);
-                    Log.d("meal", mDb.mealDao().findByName(mealName).toTextViewString());
 
                     // navigates to meal plan
                     Navigation.findNavController(view).navigate(R.id.action_nav_addMeal_to_nav_mealPlan);

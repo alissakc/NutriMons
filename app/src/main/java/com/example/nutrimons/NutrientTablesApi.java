@@ -45,7 +45,6 @@ public class NutrientTablesApi {
             for(int i = 0; i < wb.getNumberOfSheets(); ++i) //iterate over sheets
             {
                 Sheet sheet = wb.getSheet(i); //get sheet
-                //Log.d("sheet: " + i, sheet.getName());
 
                 if(sheet.getName().equals("MacronutrientRanges"))
                 {
@@ -53,7 +52,6 @@ public class NutrientTablesApi {
                     {
                         String headerVal = sheet.getCell(j, 0).getContents().replace("−", "-");
                         ArrayList<String> values = new ArrayList<>();
-                        //Log.d("j: " + j, headerVal);
 
                         switch(headerVal)
                         {
@@ -77,7 +75,6 @@ public class NutrientTablesApi {
                         {
                             for(int k = 1; k < sheet.getRows(); ++k) //iterate over rows
                             {
-                                //Log.d("k: " + k, sheet.getCell(j, k).getContents());
                                 String val = sheet.getCell(j, k).getContents().replaceAll("[^\\.\\-0123456789]","").replace("−", "-"); //assign cells (j,k), remove * and letters
                                 if(val.contains("ND") || val.equals(""))
                                     values.add("0");
@@ -87,9 +84,6 @@ public class NutrientTablesApi {
 
                             //checks each row, verifying integrity of db tables
                             try { mDb.macronutrientRangesDAO().findByGroup(headerVal).toString(); } //if found, don't repopulate/
-                                /*MacronutrientRanges mr = new MacronutrientRanges(values); //code to replace content
-                                mr.groupID = temp.groupID;
-                                mDb.macronutrientRangesDAO().insert(mr);*/
                             catch (NullPointerException e) { mDb.macronutrientRangesDAO().insert(new MacronutrientRanges(values)); } //if not populated, populate
 
                         }
@@ -162,16 +156,6 @@ public class NutrientTablesApi {
                         }
                     }
                 }
-                /*for(int i = 0; i < sheet.getRows(); ++i) //iterate over rows and columns
-                {
-                    for(int j = 0; j < sheet.getColumns(); ++j)
-                    {
-                        Cell cell = sheet.getCell(j, i); //column, row
-                        CellType type = cell.getType();
-                        Log.d("cell: (" + j + "," + i + ")", cell.getContents() + " " + type); //output to log
-                        exFile.append(cell.getContents()); //output to TextView
-                    }
-                }*/
             }
         }
         catch(Exception e)
@@ -186,31 +170,6 @@ public class NutrientTablesApi {
             List<MacronutrientRanges> d = mDb.macronutrientRangesDAO().getAll();
             List<VitaminDRIs> e = mDb.vitaminDRIsDAO().getAll();
             List<VitaminULs> f = mDb.vitaminULsDAO().getAll();
-
-            for(int i = 0; i < a.size(); ++i)
-            {
-                Log.d("Element DRI " + i, a.get(i).toString());
-            }
-            for(int i = 0; i < b.size(); ++i)
-            {
-                Log.d("Element UL " + i, b.get(i).toString());
-            }
-            for(int i = 0; i < c.size(); ++i)
-            {
-                Log.d("Macronutrient DRI " + i, c.get(i).toString());
-            }
-            for(int i = 0; i < d.size(); ++i)
-            {
-                Log.d("Macronutrient Range " + i, d.get(i).toString());
-            }
-            for(int i = 0; i < e.size(); ++i)
-            {
-                Log.d("Vitamin DRI " + i, e.get(i).toString());
-            }
-            for(int i = 0; i < f.size(); ++i)
-            {
-                Log.d("Vitamin UL " + i, f.get(i).toString());
-            }
         }
     }
 
@@ -357,19 +316,15 @@ public class NutrientTablesApi {
             case "Sedentary":
                 al = 1.2;
                 break;
-            case "Lightly active":
             case "Lightly Active":
                 al = 1.375;
                 break;
-            case "Moderately active":
             case "Moderately Active":
                 al = 1.55;
                 break;
-            case "Very active":
             case "Very Active":
                 al = 1.725;
                 break;
-            case "Extremely active":
             case "Extremely Active":
                 al = 1.9;
                 break;

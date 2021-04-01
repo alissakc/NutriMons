@@ -64,15 +64,15 @@ public class MainActivity extends AppCompatActivity implements DrawerController 
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
+        //initialize token
         mDb = AppDatabase.getInstance(getApplicationContext());
         Token t = mDb.tokenDao().getToken();
-        //initialize token
         try
         {
             Log.d("tables initialized", String.valueOf(t.areTablesInitialized));
             if(t.areTablesInitialized == false)
             {
-                NutrientTablesApi nta = new NutrientTablesApi(mDb);
+                NutrientTablesApi nta = new NutrientTablesApi(mDb); //process excel file
                 nta.Initialize(getAssets());
                 t.areTablesInitialized = true;
                 mDb.tokenDao().insert(t);

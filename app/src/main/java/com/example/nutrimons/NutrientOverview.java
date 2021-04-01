@@ -5,14 +5,12 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.nutrimons.database.AppDatabase;
 import com.example.nutrimons.database.DateData;
-import com.example.nutrimons.database.Meal;
 import com.example.nutrimons.database.User;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -43,13 +41,10 @@ public class NutrientOverview extends Fragment {
     private String mParam2;
 
     // vars
-    private static /*final*/ int MAX_X_VALUE;// = 18;
-    //private static final int MAX_Y_VALUE = 120;
-    //private static final int MIN_Y_VALUE = 0;
+    private static int MAX_X_VALUE;
     private static final String SET_LABEL = "Percent of Daily Needs";
-    private static /*final*/ String[] NUTRIENTS = new String[] {};/*= { "CARBOHYDRATES", "PROTEINS", "FATS",  "VITAMIN B1", "VITAMIN B2", "VITAMIN B6", "VITAMIN B12",
-            "VITAMIN C", "FOLIC ACID", "VITAMIN A", "VITAMIN D", "VITAMIN E", "VITAMIN K", "CALCIUM", "POTASSIUM", "SODIUM", "IRON", "ZINC" };*/
-    private static List<Float> NUTRIENT_VALUES, NUTRIENTS_DRI, NUTRIENTS_UL;
+    private static String[] nutrients = new String[] {};
+    private static List<Float> nutrientValues, nutrientDRIs, nutrientULs;
 
     private HorizontalBarChart chart;
 
@@ -98,15 +93,15 @@ public class NutrientOverview extends Fragment {
         dateData.aggregateNutrients();
 
         List<String> nuts = dateData.nutrientsToStringList();
-        NUTRIENTS = nuts.toArray(NUTRIENTS);
+        nutrients = nuts.toArray(nutrients);
 
-        NUTRIENT_VALUES = dateData.nutrientsToFloatList();
+        nutrientValues = dateData.nutrientsToFloatList();
 
-        MAX_X_VALUE = NUTRIENTS.length;
+        MAX_X_VALUE = nutrients.length;
 
         User u = mDb.userDao().findByUserID(mDb.tokenDao().getUserID());
-        NUTRIENTS_DRI = u.DRIToFloatList();
-        NUTRIENTS_UL = u.ULToFloatList();
+        nutrientDRIs = u.DRIToFloatList();
+        nutrientULs = u.ULToFloatList();
 
         chart = view.findViewById(R.id.horizontalBarChart);
 
@@ -125,7 +120,7 @@ public class NutrientOverview extends Fragment {
         xAxis.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
-                return (NUTRIENTS[(int) value]);
+                return (nutrients[(int) value]);
             }
         });
     }
@@ -135,14 +130,14 @@ public class NutrientOverview extends Fragment {
         for (int i = 0; i < MAX_X_VALUE; i++) {
             float x = i;
             float y;
-            if(NUTRIENT_VALUES.get(i) == 0)
+            if(nutrientValues.get(i) == 0)
                 y = 0;
-            else if(NUTRIENTS_DRI.get(i) == 0)
+            else if(nutrientDRIs.get(i) == 0)
                 y = 100;
-            else if(NUTRIENT_VALUES.get(i) / NUTRIENTS_DRI.get(i) > 1)
+            else if(nutrientValues.get(i) / nutrientDRIs.get(i) > 1)
                 y = 100;
             else
-                y = NUTRIENT_VALUES.get(i) / NUTRIENTS_DRI.get(i) * 100;
+                y = nutrientValues.get(i) / nutrientDRIs.get(i) * 100;
             values.add(new BarEntry(x, y));
         }
         BarDataSet set1 = new BarDataSet(values, SET_LABEL);

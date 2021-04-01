@@ -13,14 +13,15 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class InitializeShop {
+    final String FOLDER = "ShopItems";
+
     public InitializeShop(AppDatabase db, AssetManager am) {
-        String folder = "ShopItems";
         try {
-            String[] filePaths = am.list(folder);
+            String[] filePaths = am.list(FOLDER);
             for(String s : filePaths)
             {
                 String name = s;
-                InputStream is = am.open(folder + "/" + s);
+                InputStream is = am.open(FOLDER + "/" + s);
                 ShopItem si = new ShopItem();
 
                 si.name = s.substring(0, s.indexOf('_'));

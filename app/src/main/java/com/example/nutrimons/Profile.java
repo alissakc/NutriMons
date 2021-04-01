@@ -107,10 +107,6 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
 
         view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        //set up button
-        /*editProfilePicture = view.findViewById(R.id.imageView5);
-        editProfilePicture.setOnClickListener(this);*/
-
         //ask for storage permissions
         RxPermissions rxPermissions = new RxPermissions(this);
         rxPermissions
@@ -118,9 +114,6 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
                         Manifest.permission.WRITE_EXTERNAL_STORAGE) // ask single or multiple permission once
                 .subscribe(granted -> {
                     if (granted) {
-                        // All requested permissions are granted
-                        // Set up the listener for take photo button
-                        //Toast.makeText(getContext(), "Permissions granted", Toast.LENGTH_LONG).show();
                     } else {
                         Toast.makeText(getContext(), "Permissions needed for this function", Toast.LENGTH_LONG).show();
                     }
@@ -195,13 +188,11 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
         financialPlanText = view.findViewById(R.id.financialPlan);
         nutriCoinsText = view.findViewById(R.id.nutriCoins);
         ageText = view.findViewById(R.id.age);
-        //sexText = view.findViewById(R.id.sex);
         weightText = view.findViewById(R.id.weight);
         heightText = view.findViewById(R.id.height);
         ethnicityText = view.findViewById(R.id.ethnicity);
         healthHistoryText = view.findViewById(R.id.healthHistory);
         healthGoalsText = view.findViewById(R.id.healthGoals);
-        //activityLevelText = view.findViewById(R.id.activityLevel);
 
         nameText.addTextChangedListener(new TextChangedListener<EditText>(nameText, name));
         emailText.addTextChangedListener(new TextChangedListener<EditText>(emailText, email));
@@ -212,13 +203,11 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
         financialPlanText.addTextChangedListener(new TextChangedListener<EditText>(financialPlanText, financialPlan));
         nutriCoinsText.addTextChangedListener(new TextChangedListener<EditText>(nutriCoinsText, nutriCoins));
         ageText.addTextChangedListener(new TextChangedListener<EditText>(ageText, age));
-        //sexText.addTextChangedListener(new TextChangedListener<EditText>(sexText, sex));
         weightText.addTextChangedListener(new TextChangedListener<EditText>(weightText, weight));
         heightText.addTextChangedListener(new TextChangedListener<EditText>(heightText, height));
         ethnicityText.addTextChangedListener(new TextChangedListener<EditText>(ethnicityText, ethnicity));
         healthHistoryText.addTextChangedListener(new TextChangedListener<EditText>(healthHistoryText, healthHistory));
         healthGoalsText.addTextChangedListener(new TextChangedListener<EditText>(healthGoalsText, healthGoals));
-        //activityLevelText.addTextChangedListener(new TextChangedListener<EditText>(activityLevelText, activityLevel));
 
         nameId = (nameText.getId());
         emailId = (emailText.getId());
@@ -229,20 +218,16 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
         financialPlanId = (financialPlanText.getId());
         nutriCoinsId = (nutriCoinsText.getId());
         ageId = (ageText.getId());
-        //sexId = (sexText.getId());
         weightId = (weightText.getId());
         heightId = (heightText.getId());
         ethnicityId = (ethnicityText.getId());
         healthHistoryId = (healthHistoryText.getId());
         healthGoalsId = (healthGoalsText.getId());
-        //activityLevelId = (activityLevelText.getId());
 
         mDb = AppDatabase.getInstance(getContext());
         nta = new NutrientTablesApi(mDb);
         userID = mDb.tokenDao().getUserID();
         getFields();
-
-        context = getContext();
 
         return view;
     }
@@ -251,35 +236,22 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
     public void onClick(View view) {
         Intent intent;
         switch(view.getId()) {
-            case (R.id.editProfilePicture): //let user upload photo and swap user profile pic with this
+            case (R.id.editProfilePicture):
                 Toast.makeText(getContext(), "Pencil Clicked", Toast.LENGTH_LONG).show();
-                //Navigation.findNavController(view).navigate(R.id.action_nav_meal_to_nav_scanBarcode);
                 intent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 intent.setType("image/*");
                 startActivityForResult(intent, 1);
                 break;
-            case (R.id.captureProfilePicture): //let user upload photo and swap user profile pic with this
+            case (R.id.captureProfilePicture):
                 Toast.makeText(getContext(), "Camera Clicked", Toast.LENGTH_LONG).show();
-                //Navigation.findNavController(view).navigate(R.id.action_nav_meal_to_nav_scanBarcode);
                 intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(intent, 2);
                 break;
             case (R.id.showNutrientRecs):
-                /*Log.d("age & sex", age + " " + sex);
-                nta = new NutrientTablesApi(AppDatabase.getInstance(getContext()));
-                nuts = nta.getTablesByGroup(age, sex, "N/A");
-                nuts.forEach((key, value)->
-                {
-                    Log.d("key", key);
-                    value.forEach((key2, value2)->Log.d("key & string", key2 + " " + value2 + " "));
-                    Log.d("========","===========");
-                });*/
                 showNutrients();
-                //Toast.makeText(getContext(), "nutrient button clicked", Toast.LENGTH_LONG).show();
                 break;
             case (R.id.saveProfile):
                 saveChanges();
-                //Toast.makeText(getContext(), "save profile button clicked", Toast.LENGTH_LONG).show();
                 break;
         }
     }
@@ -301,7 +273,6 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
                 activityLevel = parent.getItemAtPosition(position).toString();
                 break;
         }
-        //Toast.makeText(parent.getContext(), "Selected: " + profileFocus, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -313,40 +284,34 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
     public void onActivityResult(int requestCode, int resultCode, Intent data) //https://stackoverflow.com/questions/9107900/how-to-upload-image-from-gallery-in-android
     {
         super.onActivityResult(requestCode, resultCode, data);
+        Bitmap bitmap = null;
 
         if(requestCode == 1 && resultCode == Activity.RESULT_OK)
         {
             Uri selectedImage = data.getData();
-            Bitmap bitmap = null;
             try
             {
-                bitmap = MediaStore.Images.Media.getBitmap(this.context.getContentResolver(), selectedImage); //get and set image
-                Bitmap scaledbmp = scaleBitmap(bitmap, Math.max(profilePicture.getWidth(), profilePicture.getHeight()));
-                profilePicture.setImageBitmap(scaledbmp);
-
-                String bmp = BitMapToString(scaledbmp); //add to db
-                User u = mDb.userDao().findByUserID(userID);
-                u.profilePicture = bmp;
-                mDb.userDao().insert(u);
-                Log.d("bmp", bmp);
+                Bitmap rawBitmap = MediaStore.Images.Media.getBitmap(this.context.getContentResolver(), selectedImage); //get and set image
+                bitmap = scaleBitmap(rawBitmap, Math.max(profilePicture.getWidth(), profilePicture.getHeight()));
             }
             catch (FileNotFoundException e) { e.printStackTrace(); }
             catch (IOException e) { e.printStackTrace(); }
         }
         else if(requestCode == 2 && resultCode == Activity.RESULT_OK)
         {
-            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-            profilePicture.setImageBitmap(bitmap);
-
-            String bmp = BitMapToString(bitmap); //add to db
-            User u = mDb.userDao().findByUserID(userID);
-            u.profilePicture = bmp;
-            mDb.userDao().insert(u);
+            bitmap = (Bitmap) data.getExtras().get("data");
         }
         else
         {
             Toast.makeText(getContext(), "There was an error. Lol", Toast.LENGTH_LONG).show();
+            return;
         }
+
+        profilePicture.setImageBitmap(bitmap);
+        String bmp = BitMapToString(bitmap); //add to db
+        User u = mDb.userDao().findByUserID(userID);
+        u.profilePicture = bmp;
+        mDb.userDao().insert(u);
     }
 
     private Bitmap scaleBitmap(Bitmap image, int size) //http://www.codeplayon.com/2018/11/android-image-upload-to-server-from-camera-and-gallery/
@@ -369,17 +334,17 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
     }
 
     public String BitMapToString(Bitmap bitmap){ //https://stackoverflow.com/questions/13562429/how-many-ways-to-convert-bitmap-to-string-and-vice-versa
-        ByteArrayOutputStream baos=new  ByteArrayOutputStream();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
-        byte [] b=baos.toByteArray();
-        String temp= Base64.encodeToString(b, Base64.DEFAULT);
+        byte [] b = baos.toByteArray();
+        String temp = Base64.encodeToString(b, Base64.DEFAULT);
         return temp;
     }
 
     public Bitmap StringToBitMap(String encodedString){ //https://stackoverflow.com/questions/13562429/how-many-ways-to-convert-bitmap-to-string-and-vice-versa
         try {
-            byte [] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);
-            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            byte [] encodeByte = Base64.decode(encodedString,Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
             return bitmap;
         } catch(Exception e) {
             e.getMessage();
@@ -412,10 +377,6 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
 
         u.healthGoals = healthGoals;
 
-        //mDb.userDao().updateUser(u);
-        Log.d("debug", "saveChanges() called");
-        //Log.d("debug", String.valueOf(u.userID));
-        mDb.userDao().delete(u); //allows user to change email
         mDb.userDao().insert(u);
 
         Log.d("User ", u.toString());
@@ -443,10 +404,8 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
             this.onTextChanged(target, s);
         }
 
-        public /*abstract*/ void onTextChanged(T target, Editable s)
+        public void onTextChanged(T target, Editable s)
         {
-            //target.setText(s); //infinite loop since text now changed
-            //also set the view fields database values then replace str with a db insert
             et = (EditText) target;
             str = et.getText().toString();
             if(((EditText) target).getId() == nameId)
@@ -477,8 +436,6 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
                 healthHistory = str;
             else if(((EditText) target).getId() == healthGoalsId)
                 healthGoals = str;
-            //Log.d("debug", String.valueOf(((EditText) target).getId()));
-            //Toast.makeText(getContext(), "value is now: " + str, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -492,7 +449,7 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
             TextView driCalories = view.findViewById(R.id.driCalories);
             TextView ulCalories = view.findViewById(R.id.ulCalories);
             TextView driWater = view.findViewById(R.id.driWater);
-            TextView ulWater = view.findViewById(R.id.ulWater);
+            //TextView ulWater = view.findViewById(R.id.ulWater);
             TextView driProtein = view.findViewById(R.id.driProtein);
             TextView ulProtein = view.findViewById(R.id.ulProtein);
             TextView driCarbs = view.findViewById(R.id.driCarbs);
@@ -500,7 +457,7 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
             TextView driSugar = view.findViewById(R.id.driSugar);
             TextView ulSugar = view.findViewById(R.id.ulSugar);
             TextView driFiber = view.findViewById(R.id.driFiber);
-            TextView ulFiber = view.findViewById(R.id.ulFiber);
+            //TextView ulFiber = view.findViewById(R.id.ulFiber);
             TextView driFats = view.findViewById(R.id.driFats);
             TextView ulFats = view.findViewById(R.id.ulFats);
             TextView driCholesterol = view.findViewById(R.id.driCholesterol);
@@ -522,7 +479,7 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
             TextView driSodium = view.findViewById(R.id.driSodium);
             TextView ulSodium = view.findViewById(R.id.ulSodium);
             TextView driPotassium = view.findViewById(R.id.driPotassium);
-            TextView ulPotassium = view.findViewById(R.id.ulPotassium);
+            //TextView ulPotassium = view.findViewById(R.id.ulPotassium);
             TextView driCalcium = view.findViewById(R.id.driCalcium);
             TextView ulCalcium = view.findViewById(R.id.ulCalcium);
             TextView driIron = view.findViewById(R.id.driIron);

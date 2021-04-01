@@ -57,8 +57,6 @@ public class AddFromFDC extends Fragment {
     private String mParam2;
 
     private View v;
-    private AppDatabase mDb;
-    private Bundle bundle;
     public static String mealName;
     public static boolean isBranded;
 
@@ -148,9 +146,6 @@ public class AddFromFDC extends Fragment {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_add_from_fdc, container, false);
 
-        mDb = AppDatabase.getInstance(getContext());
-
-        //bundle = this.getArguments();
         queue = Volley.newRequestQueue(getContext());
         queue.cancelAll(mealName);
         TextView tv = v.findViewById(R.id.FDCapiResponse);
@@ -176,7 +171,6 @@ public class AddFromFDC extends Fragment {
             jsonBody.put("requireAllWords", true);
         }
         catch(JSONException e) { e.printStackTrace(); }
-        Log.d("branded", String.valueOf(isBranded));
 
         HashMap<String, String> nutrientsOfInterest = generateNutrientsOfInterest();
         TableLayout table = (TableLayout) v.findViewById(R.id.tableFDC);
@@ -192,33 +186,28 @@ public class AddFromFDC extends Fragment {
                             Toast.makeText(getContext(), "api request sent response", Toast.LENGTH_SHORT).show();
 
                             JSONArray foodArray = response.getJSONArray(("foods"));
-                            //Log.d("number of foods", String.valueOf(foodArray.length()));
-                            if(foodArray.length() > 50)
-                                Toast.makeText(getContext(), "Results limited to 50. Use more keywords to narrow options.", Toast.LENGTH_SHORT).show();
+                            //api response is only 50 items per page, need to do a new request to get previous/next pages
+                            //Log.d("length", String.valueOf(foodArray.length()));
 
                             for(int i = 0; i < foodArray.length(); ++i)
                             {
                                 String foodName = foodArray.getJSONObject(i).getString("description");
-                                //Log.d("food " + i, foodName);
 
                                 TableRow row = new TableRow(getContext());
                                 TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
                                 row.setLayoutParams(lp);
 
                                 Button button = new Button(getContext());
-                                //button.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
                                 button.setText(String.valueOf(i + 1));
                                 row.addView(button);
 
                                 TextView name = new TextView(getContext());
-                                //name.setLayoutParams(new TableRow.LayoutParams(new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 10)));
                                 name.setText(foodName);
                                 name.setEms(12);
                                 name.setGravity(Gravity.CENTER_HORIZONTAL);
                                 row.addView(name);
 
                                 Button details = new Button(getContext());
-                                //details.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
                                 details.setText("<<");
                                 row.addView(details);
 
@@ -230,7 +219,7 @@ public class AddFromFDC extends Fragment {
                                 food.servingsEaten = 1;
 
                                 JSONArray foodNutrients = foodArray.getJSONObject(i).getJSONArray("foodNutrients");
-                                //Log.d("Number of food nutrients", String.valueOf(foodNutrients.length()));
+
                                 for(int j = 0; j < foodNutrients.length(); ++j)
                                 {
                                     JSONObject foodItem = foodNutrients.getJSONObject(j);
@@ -238,13 +227,10 @@ public class AddFromFDC extends Fragment {
                                     {
                                         if(foodItem.getString("value") != "kJ")
                                         {
-                                            //Log.d("food " + i, foodItem.getString("nutrientName") + " " +
-                                            //        foodItem.getInt("value") + foodItem.getString("unitName"));
                                             food.setFieldFromString(nutrientsOfInterest.get(foodItem.getString("nutrientName")), ((Double)foodItem.getDouble("value")).floatValue());
                                         }
                                     }
                                 }
-
                                 foodRows.add(new foodRow(food, button, details, name));
                             }
 
