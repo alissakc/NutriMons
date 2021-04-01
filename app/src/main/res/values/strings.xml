@@ -138,6 +138,7 @@
     <string name="nutrient_information">Nutrient Information</string>
     <string name="nutrient_overview">Nutrient Overview</string>
     <string name="manually_add_meal">Manually Add Meal</string>
+    <string name="login">Login</string>
     <string name="register">Register</string>
     <string name="sign_in">Sign In</string>
     <string name="name_of_food">Name of Food:</string>
@@ -153,7 +154,8 @@
     <string name="select_dinner">Select your dinner:</string>
     <string name="select_lunch">Select your lunch:</string>
     <string name="select_breakfast">Select your breakfast:</string>
-    <string name="registration_prompt">Don\'t have an account? Create one here</string>
+    <string name="registration_prompt">Need have an account? Create one here</string>
+    <string name="login_prompt">Have an account? Log in here</string>
     <string name="select_workout">Select an existing workout</string>
     <string name="create_new_workout">Create a new workout activity</string>
     <string name="name_of_exercise">Name of Exercise:</string>

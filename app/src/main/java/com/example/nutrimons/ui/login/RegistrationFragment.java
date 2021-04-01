@@ -60,7 +60,8 @@ public class RegistrationFragment extends Fragment {
 
         final EditText emailEditText = view.findViewById(R.id.email);
         final EditText passwordEditText = view.findViewById(R.id.password);
-        final Button loginButton = view.findViewById(R.id.register);
+        final Button registerButton = view.findViewById(R.id.register);
+        final Button loginButton = view.findViewById(R.id.loginButton);
         final ProgressBar loadingProgressBar = view.findViewById(R.id.loading);
         mDb = AppDatabase.getInstance(getContext());
 
@@ -136,6 +137,17 @@ public class RegistrationFragment extends Fragment {
         });*/
 
         loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //loadingProgressBar.setVisibility(View.VISIBLE);
+                //loginViewModel.login(usernameEditText.getText().toString(),
+                //        passwordEditText.getText().toString());
+                Navigation.findNavController(view).navigate(R.id.action_nav_registration_to_nav_login);
+
+            }
+        });
+
+        registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 List<User> myList = mDb.userDao().getAll();

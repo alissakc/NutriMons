@@ -1,6 +1,5 @@
 package com.example.nutrimons.ui.login;
 
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,18 +8,13 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nutrimons.MainActivity;
@@ -54,7 +48,7 @@ public class LoginFragment extends Fragment {
                 .get(LoginViewModel.class);
         final EditText emailEditText = view.findViewById(R.id.email);
         final EditText passwordEditText = view.findViewById(R.id.password);
-        final Button loginButton = view.findViewById(R.id.login);
+        final Button loginButton = view.findViewById(R.id.loginButton);
         final Button registerButton = view.findViewById(R.id.registerButton);
         final ProgressBar loadingProgressBar = view.findViewById(R.id.loading);
         mDb = AppDatabase.getInstance(getContext());
