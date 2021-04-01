@@ -54,7 +54,7 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
     private Spinner profileFocusSpinner, sexSpinner, activityLevelSpinner;
 
     private ImageView profilePicture;
-    private ImageButton editProfilePicture;
+    private ImageButton editProfilePicture, captureProfilePicture;
     private Button showNutrientRecs, saveProfile;
 
     private String profileFocus, name, email, password, birthday, financialSource, financialHistory, financialPlan, nutriCoins, age, sex, weight, height, ethnicity, healthHistory, healthGoals, activityLevel;
@@ -177,10 +177,12 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
 
         profilePicture = view.findViewById(R.id.profilePicture);
         editProfilePicture = view.findViewById(R.id.editProfilePicture);
+        captureProfilePicture = view.findViewById(R.id.captureProfilePicture);
         showNutrientRecs = view.findViewById(R.id.showNutrientRecs);
         saveProfile = view.findViewById(R.id.saveProfile);
 
         editProfilePicture.setOnClickListener(this);
+        captureProfilePicture.setOnClickListener(this);
         showNutrientRecs.setOnClickListener(this);
         saveProfile.setOnClickListener(this);
 
@@ -247,13 +249,20 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
 
     @Override
     public void onClick(View view) {
+        Intent intent;
         switch(view.getId()) {
             case (R.id.editProfilePicture): //let user upload photo and swap user profile pic with this
                 Toast.makeText(getContext(), "Pencil Clicked", Toast.LENGTH_LONG).show();
                 //Navigation.findNavController(view).navigate(R.id.action_nav_meal_to_nav_scanBarcode);
-                Intent intent = new   Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                intent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 intent.setType("image/*");
                 startActivityForResult(intent, 1);
+                break;
+            case (R.id.captureProfilePicture): //let user upload photo and swap user profile pic with this
+                Toast.makeText(getContext(), "Camera Clicked", Toast.LENGTH_LONG).show();
+                //Navigation.findNavController(view).navigate(R.id.action_nav_meal_to_nav_scanBarcode);
+                intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, 2);
                 break;
             case (R.id.showNutrientRecs):
                 /*Log.d("age & sex", age + " " + sex);
@@ -323,6 +332,20 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
             }
             catch (FileNotFoundException e) { e.printStackTrace(); }
             catch (IOException e) { e.printStackTrace(); }
+        }
+        else if(requestCode == 2 && resultCode == Activity.RESULT_OK)
+        {
+            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+            profilePicture.setImageBitmap(bitmap);
+
+            String bmp = BitMapToString(bitmap); //add to db
+            User u = mDb.userDao().findByUserID(userID);
+            u.profilePicture = bmp;
+            mDb.userDao().insert(u);
+        }
+        else
+        {
+            Toast.makeText(getContext(), "There was an error. Lol", Toast.LENGTH_LONG).show();
         }
     }
 

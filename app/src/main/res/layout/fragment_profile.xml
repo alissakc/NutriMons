@@ -44,12 +44,26 @@
                         android:layout_height="wrap_content"
                         android:src="@drawable/profile_pic" />
 
-                    <ImageButton
-                        android:id="@+id/editProfilePicture"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:onClick="onClick"
-                        android:src="@drawable/pencil" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ImageButton
+                            android:id="@+id/editProfilePicture"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:onClick="onClick"
+                            android:layout_marginBottom="5dp"
+                            android:src="@drawable/pencil" />
+
+                        <ImageButton
+                            android:id="@+id/captureProfilePicture"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:onClick="onClick"
+                            android:src="@drawable/ic_menu_camera" />
+                    </LinearLayout>LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
