@@ -817,57 +817,6 @@
 
             </GridLayout>
 
-            <Button
-                android:id="@+id/NLMnutrientInfo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
-                android:onClick="onClick"
-                android:text="@string/NLM_nutrient_info"
-                android:textSize="18sp"
-                android:visibility="gone" />
-
-            <WebView
-                android:id="@+id/NLMnutrientInfoWebView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone" />
-
-            <Button
-                android:id="@+id/NLMvitaminInfo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
-                android:onClick="onClick"
-                android:text="@string/NLM_vitamin_info"
-                android:textSize="18sp"
-                android:visibility="gone" />
-
-            <WebView
-                android:id="@+id/NLMvitaminInfoWebView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone" />
-
-            <Button
-                android:id="@+id/NLMmineralInfo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
-                android:onClick="onClick"
-                android:text="@string/NLM_mineral_info"
-                android:textSize="18sp"
-                android:visibility="gone" />
-
-            <WebView
-                android:id="@+id/NLMmineralInfoWebView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone" />
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

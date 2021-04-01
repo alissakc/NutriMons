@@ -67,7 +67,6 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
     private NutrientTablesApi nta;
 
     private int userID;
-    Context context;
 
     ArrayAdapter<String> profileFocusDataAdapter, sexDataAdapter, activityLevelDataAdapter;
 
@@ -237,13 +236,11 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
         Intent intent;
         switch(view.getId()) {
             case (R.id.editProfilePicture):
-                Toast.makeText(getContext(), "Pencil Clicked", Toast.LENGTH_LONG).show();
                 intent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 intent.setType("image/*");
                 startActivityForResult(intent, 1);
                 break;
             case (R.id.captureProfilePicture):
-                Toast.makeText(getContext(), "Camera Clicked", Toast.LENGTH_LONG).show();
                 intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(intent, 2);
                 break;
@@ -260,7 +257,6 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // On selecting a spinner item
         // Showing selected spinner item
-        //Toast.makeText(parent.getContext(), "Selected: " + parent.getId(), Toast.LENGTH_SHORT).show();
         switch(parent.getId())
         {
             case R.id.profileFocusSpinner:
@@ -291,7 +287,7 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
             Uri selectedImage = data.getData();
             try
             {
-                Bitmap rawBitmap = MediaStore.Images.Media.getBitmap(this.context.getContentResolver(), selectedImage); //get and set image
+                Bitmap rawBitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), selectedImage); //get and set image
                 bitmap = scaleBitmap(rawBitmap, Math.max(profilePicture.getWidth(), profilePicture.getHeight()));
             }
             catch (FileNotFoundException e) { e.printStackTrace(); }

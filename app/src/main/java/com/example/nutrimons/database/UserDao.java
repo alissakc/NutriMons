@@ -19,12 +19,6 @@ public interface UserDao {
     @Query("SELECT * FROM user ORDER BY email ASC")
     List<User> getAll();
 
-    @Query("SELECT email FROM user ORDER BY email ASC")
-    List<String> getAllEmail();
-
-    /*@Query("SELECT * FROM meal WHERE mealID IN (:mealIds)")
-    List<Meal> loadAllByIds(int[] mealIds);*/
-
     @Query("SELECT * FROM user WHERE email LIKE :search")
     User findByEmail(String search);
 
@@ -42,7 +36,6 @@ public interface UserDao {
 
     @Delete
     void delete(User user);
-
 
     @Query("DELETE FROM user")
     public void nukeTable();

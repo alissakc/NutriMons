@@ -188,31 +188,6 @@ public class Meal {
         }
     }
 
-    /*public void setAdvFields(float calories, float water, float protein, float carbohydrate, float sugar,
-                             float fiber, float cholesterol, float saturatedFat, float monounsaturatedFat,
-                             float polyunsaturatedFat, float transFat, float vitaminA, float vitaminC,
-                             float vitaminD, float sodium, float potassium, float calcium, float iron)
-    {
-        this.calories = calories;
-        this.water = water;
-        this.protein = protein;
-        this.carbohydrate = carbohydrate;
-        this.sugar = sugar;
-        this.fiber = fiber;
-        this.cholesterol = cholesterol;
-        this.saturatedFat = saturatedFat;
-        this.monounsaturatedFat = monounsaturatedFat;
-        this.polyunsaturatedFat = polyunsaturatedFat;
-        this.transFat = transFat;
-        this.vitaminA = vitaminA;
-        this.vitaminC = vitaminC;
-        this.vitaminD = vitaminD;
-        this.sodium = sodium;
-        this.potassium = potassium;
-        this.calcium = calcium;
-        this.iron = iron;
-    }*/
-
     public String toTextViewString()
     {
         return mealName + "\n" +
@@ -234,37 +209,5 @@ public class Meal {
                 "Potassium: " + potassium + "g\n" +
                 "Calcium: " + calcium + "mg\n" +
                 "Iron: " + iron + "mg";
-    }
-
-    public String getUnits(String nutrient)
-    {
-        switch(nutrient)
-        {
-            case "calories":
-                return "kcal";
-            case "water":
-                return "L";
-            case "protein":
-            case "carbohydrate":
-            case "sugar":
-            case "fiber":
-            case "saturatedFat":
-            case "monounsaturatedFat":
-            case "polyunsaturatedFat":
-            case "transFat":
-            case "sodium":
-                return "g";
-            case "cholesterol":
-            case "vitaminC":
-            case "potassium":
-            case "calcium":
-            case "iron":
-                return "mg";
-            case "vitaminA":
-            case "vitaminD":
-                return "µg";
-            default:
-                return "";
-        }
     }
 }

@@ -53,9 +53,9 @@
                             android:id="@+id/editProfilePicture"
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            android:onClick="onClick"
                             android:layout_marginBottom="5dp"
-                            android:src="@drawable/pencil" />
+                            android:onClick="onClick"
+                            android:src="@drawable/ic_add_meal" />
 
                         <ImageButton
                             android:id="@+id/captureProfilePicture"
@@ -770,14 +770,6 @@
                     android:textColor="@color/black"
                     android:textStyle="bold" />
 
-                <ImageView
-                    android:id="@+id/imageView7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginLeft="5dp"
-                    android:src="@drawable/pencil"
-                    android:visibility="gone" />
             </LinearLayout>
 
             <LinearLayout
@@ -927,14 +919,6 @@
                     android:textColor="@color/black"
                     android:textStyle="bold" />
 
-                <ImageView
-                    android:id="@+id/imageView8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingLeft="5dp"
-                    android:src="@drawable/pencil"
-                    android:visibility="gone" />
             </LinearLayout>
 
             <LinearLayout
