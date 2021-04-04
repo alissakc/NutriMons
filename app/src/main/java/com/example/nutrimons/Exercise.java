@@ -200,12 +200,9 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
                             }
                         }
                     }
-                    final com.example.nutrimons.database.DateData dateData = new com.example.nutrimons.database.DateData(finalDateString,
-                            dd.breakfast,
-                            dd.lunch,
-                            dd.dinner,
-                            dd.snack,
-                            exerciseList);
+                    final com.example.nutrimons.database.DateData dateData =
+                            new com.example.nutrimons.database.DateData(finalDateString,
+                                    dd.breakfast, dd.lunch, dd.dinner, dd.snack, exerciseList);
                     mDb.dateDataDao().updateDateData(dateData);
                     //mDb.dateDataDao().updateExercise(exerciseList, dateString);
                 }

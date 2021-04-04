@@ -47,5 +47,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
             exerciseName = itemView.findViewById(R.id.recycler_view_item);
             checkbox = itemView.findViewById(R.id.checkBox_select);
         }
+
+
     }
 }

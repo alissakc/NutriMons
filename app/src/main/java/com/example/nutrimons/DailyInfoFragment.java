@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -263,7 +264,96 @@ public class DailyInfoFragment extends Fragment {
         exerciseLayout.setVisibility(View.VISIBLE);
         dailySummaryLayout.setVisibility(View.VISIBLE);
 
-        List<String> tempBreakfast = (List<String>) mDb.dateDataDao().findBreakfastByDate(currentDay);
+        // gets list data from the database
+        List<com.example.nutrimons.database.Meal> breakfast = new ArrayList<>();
+        try{
+            breakfast = (temp.getBreakfast() == null ?
+                    (temp.getBreakfast().isEmpty() ? null : temp.getBreakfast()) : temp.getBreakfast());
+        }catch(NullPointerException e){
+            breakfast = null;
+        }
+        List<com.example.nutrimons.database.Meal> lunch = new ArrayList<>();
+        try{
+            lunch = (temp.getLunch() == null ?
+                    (temp.getLunch().isEmpty() ? null : temp.getLunch()) : temp.getLunch());
+        }catch(NullPointerException e){
+            lunch = null;
+        }
+        List<com.example.nutrimons.database.Meal> dinner = new ArrayList<>();
+        try{
+            dinner = (temp.getDinner() == null ?
+                    (temp.getDinner().isEmpty() ? null : temp.getDinner()) : temp.getDinner());
+        }catch(NullPointerException e){
+            dinner = null;
+        }
+        List<com.example.nutrimons.database.Meal> snack = new ArrayList<>();
+        try{
+            snack = (temp.getSnack() == null ?
+                    (temp.getSnack().isEmpty() ? null : temp.getSnack()) : temp.getSnack());
+        }catch(NullPointerException e){
+            snack = null;
+        }
+
+        // combines meals into one array
+        List<String> meals = new ArrayList<>();
+        if (breakfast == null && lunch == null && dinner == null && snack == null) {
+            meals.add("No meals were inputted.");
+        } else {
+            if (breakfast != null) {
+                if(!breakfast.isEmpty()){
+                    for (com.example.nutrimons.database.Meal b : breakfast) {
+                        if(b != null){
+                            if (!b.mealName.equalsIgnoreCase("null")) {
+                                if (!b.mealName.isEmpty()) {
+                                    meals.add(b.mealName);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if (lunch != null) {
+                if(!lunch.isEmpty()){
+                    for (com.example.nutrimons.database.Meal l : lunch) {
+                        if(l != null){
+                            if (!l.mealName.equalsIgnoreCase("null")) {
+                                if (!l.mealName.isEmpty()) {
+                                    meals.add(l.mealName);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if (dinner != null) {
+                if(!dinner.isEmpty()){
+                    for (com.example.nutrimons.database.Meal d : dinner) {
+                        if(d != null){
+                            if (!d.mealName.equalsIgnoreCase("null")) {
+                                if (!d.mealName.isEmpty()) {
+                                    meals.add(d.mealName);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if (snack != null) {
+                if(!snack.isEmpty()){
+                    for (com.example.nutrimons.database.Meal s : snack) {
+                        if(s != null){
+                            if (!s.mealName.equalsIgnoreCase("null")) {
+                                if (!s.mealName.isEmpty()) {
+                                    meals.add(s.mealName);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        /*List<String> tempBreakfast = (List<String>) mDb.dateDataDao().findBreakfastByDate(currentDay);
         List<String> tempLunch = (List<String>) mDb.dateDataDao().findLunchByDate(currentDay);
         List<String> tempDinner = (List<String>) mDb.dateDataDao().findDinnerByDate(currentDay);
         List<String> tempSnack = (List<String>) mDb.dateDataDao().findSnackByDate(currentDay);
@@ -367,7 +457,7 @@ public class DailyInfoFragment extends Fragment {
                     }
                 }
             }
-        }
+        }*/
 
         mealRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mealRecyclerView.setHasFixedSize(false);
@@ -536,7 +626,7 @@ public class DailyInfoFragment extends Fragment {
         removeMealButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                //SparseBooleanArray checked = mealRecyclerView.getCheckedItemPositions();
             }
         });
 

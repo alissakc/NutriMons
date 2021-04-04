@@ -134,6 +134,22 @@ public class DateData {
         }
     }
 
+    @TypeConverters(Converters.class)
+    public List<Meal> getBreakfast() {
+        return breakfast;
+    }
+
+    public List<Meal> getLunch() {
+        return lunch;
+    }
+
+    public List<Meal> getDinner() {
+        return dinner;
+    }
+
+    public List<Meal> getSnack() {
+        return snack;
+    }
 
     public ArrayList<String> nutrientsToStringList() {
         ArrayList<String> dailyList = new ArrayList<>();

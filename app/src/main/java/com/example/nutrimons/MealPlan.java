@@ -253,6 +253,92 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
                     //mDb.dateDataDao().updateMealPlan(selectedBreakfast, selectedLunch, selectedDinner, selectedSnack, dateString);
                 }
 
+                /*if (mDb.dateDataDao().findByDate(finalDateString) == null) {
+                    final com.example.nutrimons.database.DateData dateData = new com.example.nutrimons.database.DateData(finalDateString, selectedBreakfast, selectedLunch, selectedDinner, selectedSnack, new ArrayList<>());
+                    dateData.aggregateNutrients();
+                    mDb.dateDataDao().insert(dateData);
+                } else {
+                    // checks to see if nothing was selected
+                    if (breakfastSpinner.getSelectedItem().toString().equalsIgnoreCase("Select an item")) {
+                        selectedBreakfast.clear();
+                    } else {
+                        // checks for existing meals
+                        if (!mDb.dateDataDao().findBreakfastByDate(finalDateString).isEmpty()) {
+                            for (String s : mDb.dateDataDao().findBreakfastByDate(finalDateString)) {
+                                if (!s.equalsIgnoreCase("[null]")) {
+                                    if (!s.equalsIgnoreCase("[]")) {
+                                        s = s.replaceAll("\\W", "");
+                                        selectedBreakfast.add(mDb.mealDao().findByName(s));
+                                    }
+                                }
+//                                selectedBreakfast.add(mDb.mealDao().findByName(s));
+//                                selectedBreakfast.add(s);
+                            }
+                        }
+                    }
+                    if (lunchSpinner.getSelectedItem().toString().equalsIgnoreCase("Select an item")) {
+                        selectedLunch.clear();
+                    } else {
+                        // checks for existing meals
+                        if (!mDb.dateDataDao().findLunchByDate(finalDateString).isEmpty()) {
+                            for (String s : mDb.dateDataDao().findLunchByDate(finalDateString)) {
+                                if (!s.equalsIgnoreCase("[null]")) {
+                                    if (!s.equalsIgnoreCase("[]")) {
+                                        s = s.replaceAll("\\W", "");
+                                        selectedLunch.add(mDb.mealDao().findByName(s));
+                                    }
+                                }
+//                                selectedLunch.add(s);
+//                                selectedLunch.add(mDb.mealDao().findByName(s));
+                            }
+                        }
+                    }
+                    if (dinnerSpinner.getSelectedItem().toString().equalsIgnoreCase("Select an item")) {
+                        selectedDinner.clear();
+                    } else {
+                        // checks for existing meals
+                        if (!mDb.dateDataDao().findDinnerByDate(finalDateString).isEmpty()) {
+                            for (String s : mDb.dateDataDao().findDinnerByDate(finalDateString)) {
+                                if (!s.equalsIgnoreCase("[null]")) {
+                                    if (!s.equalsIgnoreCase("[]")) {
+                                        s = s.replaceAll("\\W", "");
+                                        selectedDinner.add(mDb.mealDao().findByName(s));
+                                    }
+                                }
+//                                selectedDinner.add(s);
+//                                selectedDinner.add(mDb.mealDao().findByName(s));
+                            }
+                        }
+                    }
+                    if (snackSpinner.getSelectedItem().toString().equalsIgnoreCase("Select an item")) {
+                        selectedSnack.clear();
+                    } else {
+                        // checks for existing meals
+                        if (!mDb.dateDataDao().findSnackByDate(finalDateString).isEmpty()) {
+                            for (String s : mDb.dateDataDao().findSnackByDate(finalDateString)) {
+                                if (!s.equalsIgnoreCase("[null]")) {
+                                    if (!s.equalsIgnoreCase("[]")) {
+                                        s = s.replaceAll("\\W", "");
+                                        selectedSnack.add(mDb.mealDao().findByName(s));
+                                    }
+                                }
+//                                selectedSnack.add(s);
+//                                selectedSnack.add(mDb.mealDao().findByName(s));
+                            }
+                        }
+                    }
+
+                    final com.example.nutrimons.database.DateData dateData = new com.example.nutrimons.database.DateData(finalDateString,
+                            (selectedBreakfast.isEmpty()) ? mDb.dateDataDao().findByDate(finalDateString).breakfast : selectedBreakfast,
+                            (selectedLunch.isEmpty()) ? mDb.dateDataDao().findByDate(finalDateString).lunch : selectedLunch,
+                            (selectedDinner.isEmpty()) ? mDb.dateDataDao().findByDate(finalDateString).dinner : selectedDinner,
+                            (selectedSnack.isEmpty()) ? mDb.dateDataDao().findByDate(finalDateString).snack : selectedSnack,
+                            mDb.dateDataDao().findByDate(finalDateString).todayExercise);
+                    dateData.aggregateNutrients();
+                    mDb.dateDataDao().updateDateData(dateData);
+                    //mDb.dateDataDao().updateMealPlan(selectedBreakfast, selectedLunch, selectedDinner, selectedSnack, dateString);
+                }*/
+
                 long date = System.currentTimeMillis();
                 SimpleDateFormat Date = new SimpleDateFormat("MM/dd/yyyy");
                 String currentDate = Date.format(date);
