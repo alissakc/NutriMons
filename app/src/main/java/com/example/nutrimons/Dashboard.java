@@ -93,8 +93,9 @@ public class Dashboard extends Fragment  {
     private TextView currentDate;
     private ImageButton goToCalendar;
 
-    Resources res = getResources();
-    private String[] factBank = res.getStringArray(R.array.factBank);
+    //Resources res = this.getResources();
+    //private String[] factBank = res.getStringArray(R.array.factBank);
+    private String[] factBank;
     /*private String[] factBank = new String[]{
             "Milk is 87% water. The nutrients, like protein, carbohydrate, vitamins and minerals are all found in the other 13%.",
             "Fluid needs vary depending on your age and gender. Teens and adults need anywhere between 8 and 13 cups of fluid each day. Water is great, but milk, juice, soup and anything else you drink also count as fluid.",
@@ -136,8 +137,7 @@ public class Dashboard extends Fragment  {
             "Chicken wings were considered throwaway parts before Buffalo wings were invented.",
             "Processed cheese was invented in Switzerland, not America.",
             "Chili peppers contain a chemical that tricks your mouth into \"thinking\" it's being burned — that's why spicy food hurts so much.",
-    };
-*/
+    };*/
     private AppDatabase mDb;
 
     public Dashboard() {
@@ -165,6 +165,7 @@ public class Dashboard extends Fragment  {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        factBank = this.getResources().getStringArray(R.array.factBank);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
