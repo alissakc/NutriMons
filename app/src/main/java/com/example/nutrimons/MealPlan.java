@@ -171,8 +171,8 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
                 selectedDinner.add(mDb.mealDao().findByName(dinnerSpinner.getSelectedItem().toString()));
                 selectedSnack.add(mDb.mealDao().findByName(snackSpinner.getSelectedItem().toString()));
 
-                ArrayList<String> finalMeals = new ArrayList<>();
-                ArrayList<String> finalExercises = new ArrayList<>();
+/*                ArrayList<String> finalMeals = new ArrayList<>();
+                ArrayList<String> finalExercises = new ArrayList<>();*/
                 if (mDb.dateDataDao().findByDate(finalDateString) == null) {
                     final com.example.nutrimons.database.DateData dateData = new com.example.nutrimons.database.DateData(finalDateString, selectedBreakfast, selectedLunch, selectedDinner, selectedSnack, new ArrayList<>());
                     dateData.aggregateNutrients();
@@ -290,7 +290,52 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
                     dateData.aggregateNutrients();
                     mDb.dateDataDao().updateDateData(dateData);
 
-                    // gets list data from the database
+    /*                if (!selectedBreakfast.isEmpty()) {
+                        for (Meal b : selectedBreakfast) {
+                            if (b != null) {
+                                if (!b.mealName.equalsIgnoreCase("null")) {
+                                    if (!b.mealName.isEmpty()) {
+                                        finalMeals.add(b.mealName);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (!selectedLunch.isEmpty()) {
+                        for (Meal l : selectedLunch) {
+                            if (l != null) {
+                                if (!l.mealName.equalsIgnoreCase("null")) {
+                                    if (!l.mealName.isEmpty()) {
+                                        finalMeals.add(l.mealName);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (!selectedDinner.isEmpty()) {
+                        for (Meal d : selectedDinner) {
+                            if (d != null) {
+                                if (!d.mealName.equalsIgnoreCase("null")) {
+                                    if (!d.mealName.isEmpty()) {
+                                        finalMeals.add(d.mealName);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (!selectedSnack.isEmpty()) {
+                        for (Meal s : selectedSnack) {
+                            if (s != null) {
+                                if (!s.mealName.equalsIgnoreCase("null")) {
+                                    if (!s.mealName.isEmpty()) {
+                                        finalMeals.add(s.mealName);
+                                    }
+                                }
+                            }
+                        }
+                    }
+*/
+                    /*// gets list data from the database
                     List<com.example.nutrimons.database.Meal> breakfastTemp;
                     try {
                         breakfastTemp = (temp.getBreakfast() == null ?
@@ -420,8 +465,8 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
                                 }
                             }
                         }
-                    }
-                    if (mDb.dateDataDao().findByDate(finalDateString).todayExercise != null) {
+                    }*/
+                   /* if (mDb.dateDataDao().findByDate(finalDateString).todayExercise != null) {
                         if (!mDb.dateDataDao().findByDate(finalDateString).todayExercise.isEmpty()) {
                             for (String s : mDb.dateDataDao().findByDate(finalDateString).todayExercise) {
                                 if (!s.equalsIgnoreCase("null")) {
@@ -431,7 +476,7 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
                         }
                     }else{
                         finalExercises.add("No exercises were inputted.");
-                    }
+                    }*/
                     //mDb.dateDataDao().updateMealPlan(selectedBreakfast, selectedLunch, selectedDinner, selectedSnack, dateString);
                 }
 
@@ -527,12 +572,12 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
                 if (!finalDateString.equalsIgnoreCase(currentDate)) {
                     Bundle bundle = new Bundle();
                     bundle.putString("key", finalDateString);
-                    if (!finalMeals.contains("No meals were inputted.")) {
+/*                    if (!finalMeals.contains("No meals were inputted.")) {
                         bundle.putStringArrayList("meals", finalMeals);
                     }
                     if (!finalExercises.contains("No exercises were inputted.")) {
                         bundle.putStringArrayList("exercises", finalExercises);
-                    }
+                    }*/
                     DailyInfoFragment fragment = new DailyInfoFragment();
                     fragment.setArguments(bundle);
                     FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -545,7 +590,6 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
                     Dashboard fragment = new Dashboard();
                     fragment.setArguments(bundle);
                     FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                    ActionBar actionBar = getActivity().getActionBar();
                     transaction.replace(R.id.fragment_meal_plan, fragment).addToBackStack(null).commit();
                 }
             }
