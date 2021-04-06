@@ -29,7 +29,10 @@ import androidx.appcompat.widget.Toolbar;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements DrawerController {
+public class MainActivity extends AppCompatActivity implements DrawerController,
+        DailyInfoFragment.OnFragmentInteractionListener, CalendarViewFragment.OnFragmentInteractionListener,
+        MealPlan.OnFragmentInteractionListener, Exercise.OnFragmentInteractionListener,
+        AddMeal.OnFragmentInteractionListener, Dashboard.OnFragmentInteractionListener {
 
     private AppBarConfiguration mAppBarConfiguration;
     DrawerLayout drawer;
@@ -109,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements DrawerController 
         }
         catch(NullPointerException e)
         {
-            dateData = new DateData(dateString, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<String>());
+            dateData = new DateData(dateString, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
             mDb.dateDataDao().insert(dateData);
         }
     }
@@ -173,5 +176,10 @@ public class MainActivity extends AppCompatActivity implements DrawerController 
                 return true;
         }
         return false;
+    }
+
+    @Override
+    public void onFragmentInteraction(String title) {
+        getSupportActionBar().setTitle(title);
     }
 }

@@ -1,6 +1,7 @@
 package com.example.nutrimons;
 
 import android.app.ActionBar;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
@@ -35,9 +37,6 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_DATE = null;
 
-    // TODO: Rename and change types of parameters
-    private String date;
-
     // vars
     private Spinner breakfastSpinner, lunchSpinner, dinnerSpinner, snackSpinner;
     private Button save;
@@ -46,6 +45,7 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
     private final List<Meal> selectedDinner = new ArrayList<>();
     private final List<Meal> selectedSnack = new ArrayList<>();
     private ArrayAdapter<String> breakfastDataAdapter, lunchDataAdapter, dinnerDataAdapter, snackDataAdapter;
+    private OnFragmentInteractionListener mListener;
 
     // creates instance of database
     private AppDatabase mDb;
@@ -82,6 +82,10 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction("Meal Plan");
+        }
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_meal_plan, container, false);
 
@@ -89,7 +93,7 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
         mDb = AppDatabase.getInstance(getContext());
 
         // checks if the there is a bundle from FragmentTransaction
-        String dateString = "";
+        String dateString;
         Bundle bundle = this.getArguments();
         if (bundle == null) {
             // gets current date
@@ -167,6 +171,8 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
                 selectedDinner.add(mDb.mealDao().findByName(dinnerSpinner.getSelectedItem().toString()));
                 selectedSnack.add(mDb.mealDao().findByName(snackSpinner.getSelectedItem().toString()));
 
+                ArrayList<String> finalMeals = new ArrayList<>();
+                ArrayList<String> finalExercises = new ArrayList<>();
                 if (mDb.dateDataDao().findByDate(finalDateString) == null) {
                     final com.example.nutrimons.database.DateData dateData = new com.example.nutrimons.database.DateData(finalDateString, selectedBreakfast, selectedLunch, selectedDinner, selectedSnack, new ArrayList<>());
                     dateData.aggregateNutrients();
@@ -174,32 +180,32 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
                 } else {
                     DateData temp = mDb.dateDataDao().findByDate(finalDateString);
                     // checks for existing meals
-                    List<com.example.nutrimons.database.Meal> breakfast = new ArrayList<>();
-                    try{
+                    List<com.example.nutrimons.database.Meal> breakfast;
+                    try {
                         breakfast = (temp.getBreakfast() == null ?
                                 (temp.getBreakfast().isEmpty() ? null : temp.getBreakfast()) : temp.getBreakfast());
-                    }catch(NullPointerException e){
+                    } catch (NullPointerException e) {
                         breakfast = null;
                     }
-                    List<com.example.nutrimons.database.Meal> lunch = new ArrayList<>();
-                    try{
+                    List<com.example.nutrimons.database.Meal> lunch;
+                    try {
                         lunch = (temp.getLunch() == null ?
                                 (temp.getLunch().isEmpty() ? null : temp.getLunch()) : temp.getLunch());
-                    }catch(NullPointerException e){
+                    } catch (NullPointerException e) {
                         lunch = null;
                     }
-                    List<com.example.nutrimons.database.Meal> dinner = new ArrayList<>();
-                    try{
+                    List<com.example.nutrimons.database.Meal> dinner;
+                    try {
                         dinner = (temp.getDinner() == null ?
                                 (temp.getDinner().isEmpty() ? null : temp.getDinner()) : temp.getDinner());
-                    }catch(NullPointerException e){
+                    } catch (NullPointerException e) {
                         dinner = null;
                     }
-                    List<com.example.nutrimons.database.Meal> snack = new ArrayList<>();
-                    try{
+                    List<com.example.nutrimons.database.Meal> snack;
+                    try {
                         snack = (temp.getSnack() == null ?
                                 (temp.getSnack().isEmpty() ? null : temp.getSnack()) : temp.getSnack());
-                    }catch(NullPointerException e){
+                    } catch (NullPointerException e) {
                         snack = null;
                     }
                     // checks to see if nothing was selected
@@ -207,9 +213,9 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
                         selectedBreakfast.clear();
                     } else {
                         if (breakfast != null) {
-                            if(!breakfast.isEmpty()){
+                            if (!breakfast.isEmpty()) {
                                 for (com.example.nutrimons.database.Meal b : breakfast) {
-                                    if(b != null){
+                                    if (b != null) {
                                         if (!b.mealName.equalsIgnoreCase("null")) {
                                             if (!b.mealName.isEmpty()) {
                                                 selectedBreakfast.add(b);
@@ -225,9 +231,9 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
                     } else {
                         // checks for existing meals
                         if (lunch != null) {
-                            if(!lunch.isEmpty()){
+                            if (!lunch.isEmpty()) {
                                 for (com.example.nutrimons.database.Meal l : lunch) {
-                                    if(l != null){
+                                    if (l != null) {
                                         if (!l.mealName.equalsIgnoreCase("null")) {
                                             if (!l.mealName.isEmpty()) {
                                                 selectedLunch.add(l);
@@ -243,9 +249,9 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
                     } else {
                         // checks for existing meals
                         if (dinner != null) {
-                            if(!dinner.isEmpty()){
+                            if (!dinner.isEmpty()) {
                                 for (com.example.nutrimons.database.Meal d : dinner) {
-                                    if(d != null){
+                                    if (d != null) {
                                         if (!d.mealName.equalsIgnoreCase("null")) {
                                             if (!d.mealName.isEmpty()) {
                                                 selectedDinner.add(d);
@@ -261,9 +267,9 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
                     } else {
                         // checks for existing meals
                         if (snack != null) {
-                            if(!snack.isEmpty()){
+                            if (!snack.isEmpty()) {
                                 for (com.example.nutrimons.database.Meal s : snack) {
-                                    if(s != null){
+                                    if (s != null) {
                                         if (!s.mealName.equalsIgnoreCase("null")) {
                                             if (!s.mealName.isEmpty()) {
                                                 selectedSnack.add(s);
@@ -283,6 +289,149 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
                             mDb.dateDataDao().findByDate(finalDateString).todayExercise);
                     dateData.aggregateNutrients();
                     mDb.dateDataDao().updateDateData(dateData);
+
+                    // gets list data from the database
+                    List<com.example.nutrimons.database.Meal> breakfastTemp;
+                    try {
+                        breakfastTemp = (temp.getBreakfast() == null ?
+                                (temp.getBreakfast().isEmpty() ? null : temp.getBreakfast()) : temp.getBreakfast());
+                    } catch (NullPointerException e) {
+                        breakfastTemp = null;
+                    }
+                    List<com.example.nutrimons.database.Meal> lunchTemp;
+                    try {
+                        lunchTemp = (temp.getLunch() == null ?
+                                (temp.getLunch().isEmpty() ? null : temp.getLunch()) : temp.getLunch());
+                    } catch (NullPointerException e) {
+                        lunchTemp = null;
+                    }
+                    List<com.example.nutrimons.database.Meal> dinnerTemp;
+                    try {
+                        dinnerTemp = (temp.getDinner() == null ?
+                                (temp.getDinner().isEmpty() ? null : temp.getDinner()) : temp.getDinner());
+                    } catch (NullPointerException e) {
+                        dinnerTemp = null;
+                    }
+                    List<com.example.nutrimons.database.Meal> snackTemp;
+                    try {
+                        snackTemp = (temp.getSnack() == null ?
+                                (temp.getSnack().isEmpty() ? null : temp.getSnack()) : temp.getSnack());
+                    } catch (NullPointerException e) {
+                        snackTemp = null;
+                    }
+                    if (selectedBreakfast.isEmpty() && selectedLunch.isEmpty() && selectedDinner.isEmpty() && selectedSnack.isEmpty()
+                            && breakfastTemp == null && lunchTemp == null && dinnerTemp == null && snackTemp == null) {
+                        finalMeals.add("No meals were inputted.");
+                    } else {
+                        // combines meals into one array
+                        if (breakfastTemp != null) {
+                            if (!breakfastTemp.isEmpty()) {
+                                for (com.example.nutrimons.database.Meal b : breakfastTemp) {
+                                    if (b != null) {
+                                        if (!b.mealName.equalsIgnoreCase("null")) {
+                                            if (!b.mealName.isEmpty()) {
+                                                finalMeals.add(b.mealName);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (lunchTemp != null) {
+                            if (!lunchTemp.isEmpty()) {
+                                for (com.example.nutrimons.database.Meal l : lunchTemp) {
+                                    if (l != null) {
+                                        if (!l.mealName.equalsIgnoreCase("null")) {
+                                            if (!l.mealName.isEmpty()) {
+                                                finalMeals.add(l.mealName);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (dinnerTemp != null) {
+                            if (!dinnerTemp.isEmpty()) {
+                                for (com.example.nutrimons.database.Meal d : dinnerTemp) {
+                                    if (d != null) {
+                                        if (!d.mealName.equalsIgnoreCase("null")) {
+                                            if (!d.mealName.isEmpty()) {
+                                                finalMeals.add(d.mealName);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (snackTemp != null) {
+                            if (!snackTemp.isEmpty()) {
+                                for (com.example.nutrimons.database.Meal s : snackTemp) {
+                                    if (s != null) {
+                                        if (!s.mealName.equalsIgnoreCase("null")) {
+                                            if (!s.mealName.isEmpty()) {
+                                                finalMeals.add(s.mealName);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (!selectedBreakfast.isEmpty()) {
+                            for (Meal b : selectedBreakfast) {
+                                if (b != null) {
+                                    if (!b.mealName.equalsIgnoreCase("null")) {
+                                        if (!b.mealName.isEmpty()) {
+                                            finalMeals.add(b.mealName);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (!selectedLunch.isEmpty()) {
+                            for (Meal l : selectedLunch) {
+                                if (l != null) {
+                                    if (!l.mealName.equalsIgnoreCase("null")) {
+                                        if (!l.mealName.isEmpty()) {
+                                            finalMeals.add(l.mealName);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (!selectedDinner.isEmpty()) {
+                            for (Meal d : selectedDinner) {
+                                if (d != null) {
+                                    if (!d.mealName.equalsIgnoreCase("null")) {
+                                        if (!d.mealName.isEmpty()) {
+                                            finalMeals.add(d.mealName);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (!selectedSnack.isEmpty()) {
+                            for (Meal s : selectedSnack) {
+                                if (s != null) {
+                                    if (!s.mealName.equalsIgnoreCase("null")) {
+                                        if (!s.mealName.isEmpty()) {
+                                            finalMeals.add(s.mealName);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (mDb.dateDataDao().findByDate(finalDateString).todayExercise != null) {
+                        if (!mDb.dateDataDao().findByDate(finalDateString).todayExercise.isEmpty()) {
+                            for (String s : mDb.dateDataDao().findByDate(finalDateString).todayExercise) {
+                                if (!s.equalsIgnoreCase("null")) {
+                                    finalExercises.add(s);
+                                }
+                            }
+                        }
+                    }else{
+                        finalExercises.add("No exercises were inputted.");
+                    }
                     //mDb.dateDataDao().updateMealPlan(selectedBreakfast, selectedLunch, selectedDinner, selectedSnack, dateString);
                 }
 
@@ -378,13 +527,15 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
                 if (!finalDateString.equalsIgnoreCase(currentDate)) {
                     Bundle bundle = new Bundle();
                     bundle.putString("key", finalDateString);
+                    if (!finalMeals.contains("No meals were inputted.")) {
+                        bundle.putStringArrayList("meals", finalMeals);
+                    }
+                    if (!finalExercises.contains("No exercises were inputted.")) {
+                        bundle.putStringArrayList("exercises", finalExercises);
+                    }
                     DailyInfoFragment fragment = new DailyInfoFragment();
                     fragment.setArguments(bundle);
                     FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                    ActionBar actionBar = getActivity().getActionBar();
-                    if (actionBar != null) {
-                        actionBar.setTitle("Daily Information");
-                    }
                     transaction.replace(R.id.fragment_meal_plan, fragment).addToBackStack(null).commit();
                 } else {
                     // navigates to the dashboard
@@ -395,9 +546,6 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
                     fragment.setArguments(bundle);
                     FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                     ActionBar actionBar = getActivity().getActionBar();
-                    if (actionBar != null) {
-                        actionBar.setTitle("Dashboard");
-                    }
                     transaction.replace(R.id.fragment_meal_plan, fragment).addToBackStack(null).commit();
                 }
             }
@@ -421,5 +569,26 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
         // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try {
+            mListener = (MealPlan.OnFragmentInteractionListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    public interface OnFragmentInteractionListener {
+        void onFragmentInteraction(String title);
     }
 }

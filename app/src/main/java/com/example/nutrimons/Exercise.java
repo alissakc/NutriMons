@@ -1,6 +1,7 @@
 package com.example.nutrimons;
 
 import android.app.ActionBar;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,12 +19,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 
 import com.example.nutrimons.database.AppDatabase;
 import com.example.nutrimons.database.DateData;
+import com.example.nutrimons.database.Meal;
 
 
 /**
@@ -50,6 +53,7 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
     private float duration;
     private EditText exerciseNameText, unitNameText, caloriesPerUnitText, durationText;
     private final List<String> exerciseList = new ArrayList<>();
+    private OnFragmentInteractionListener mListener;
 
     // creates instance of database
     private AppDatabase mDb;
@@ -88,14 +92,17 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction("Exercise");
+        }
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_exercise, container, false);
+        View view = inflater.inflate(R.layout.fragment_exercise, container, false);
 
         // database
         mDb = AppDatabase.getInstance(getContext());
 
         // checks if the there is a bundle from FragmentTransaction
-        String dateString = "";
+        String dateString;
         Bundle bundle = this.getArguments();
         if (bundle == null) {
             // gets current date
@@ -182,44 +189,155 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
             @Override
             public void onClick(View v) {
                 exerciseList.add(exerciseSpinner.getSelectedItem().toString());
-                if(mDb.dateDataDao().findByDate(finalDateString) == null){
+
+                ArrayList<String> finalMeals = new ArrayList<>();
+                ArrayList<String> finalExercises = new ArrayList<>();
+                if (mDb.dateDataDao().findByDate(finalDateString) == null) {
                     final DateData dateData = new DateData(finalDateString, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), exerciseList);
                     mDb.dateDataDao().insert(dateData);
-                }
-                else{
+                } else {
                     DateData dd = mDb.dateDataDao().findByDate(finalDateString);
-                    if(mDb.dateDataDao().findExercisesByDate(finalDateString) != null){
-                        if(!mDb.dateDataDao().findExercisesByDate(finalDateString).isEmpty()){
+                    if (mDb.dateDataDao().findExercisesByDate(finalDateString) != null) {
+                        if (!mDb.dateDataDao().findExercisesByDate(finalDateString).isEmpty()) {
                             for (String s : mDb.dateDataDao().findExercisesByDate(finalDateString)) {
                                 if (!s.equalsIgnoreCase("[null]")) {
                                     if (!s.equalsIgnoreCase("[]")) {
                                         s = s.replaceAll("\\W", "");
                                         exerciseList.add(s);
+                                        finalExercises.add(s);
                                     }
                                 }
                             }
                         }
                     }
-                    final com.example.nutrimons.database.DateData dateData =
-                            new com.example.nutrimons.database.DateData(finalDateString,
+                    final DateData dateData =
+                            new DateData(finalDateString,
                                     dd.breakfast, dd.lunch, dd.dinner, dd.snack, exerciseList);
                     mDb.dateDataDao().updateDateData(dateData);
+
+                    // gets list data from the database
+                    List<Meal> breakfast;
+                    try {
+                        breakfast = (dd.getBreakfast() == null ?
+                                (dd.getBreakfast().isEmpty() ? null : dd.getBreakfast()) : dd.getBreakfast());
+                    } catch (NullPointerException e) {
+                        breakfast = null;
+                    }
+                    List<Meal> lunch;
+                    try {
+                        lunch = (dd.getLunch() == null ?
+                                (dd.getLunch().isEmpty() ? null : dd.getLunch()) : dd.getLunch());
+                    } catch (NullPointerException e) {
+                        lunch = null;
+                    }
+                    List<Meal> dinner;
+                    try {
+                        dinner = (dd.getDinner() == null ?
+                                (dd.getDinner().isEmpty() ? null : dd.getDinner()) : dd.getDinner());
+                    } catch (NullPointerException e) {
+                        dinner = null;
+                    }
+                    List<Meal> snack;
+                    try {
+                        snack = (dd.getSnack() == null ?
+                                (dd.getSnack().isEmpty() ? null : dd.getSnack()) : dd.getSnack());
+                    } catch (NullPointerException e) {
+                        snack = null;
+                    }
+
+                    // combines meals into one array
+                    if (breakfast == null && lunch == null && dinner == null && snack == null) {
+                        finalMeals.add("No meals were inputted.");
+                    } else {
+                        if (breakfast != null) {
+                            if (!breakfast.isEmpty()) {
+                                for (Meal b : breakfast) {
+                                    if (b != null) {
+                                        if (!b.mealName.equalsIgnoreCase("null")) {
+                                            if (!b.mealName.isEmpty()) {
+                                                finalMeals.add(b.mealName);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (lunch != null) {
+                            if (!lunch.isEmpty()) {
+                                for (Meal l : lunch) {
+                                    if (l != null) {
+                                        if (!l.mealName.equalsIgnoreCase("null")) {
+                                            if (!l.mealName.isEmpty()) {
+                                                finalMeals.add(l.mealName);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (dinner != null) {
+                            if (!dinner.isEmpty()) {
+                                for (Meal d : dinner) {
+                                    if (d != null) {
+                                        if (!d.mealName.equalsIgnoreCase("null")) {
+                                            if (!d.mealName.isEmpty()) {
+                                                finalMeals.add(d.mealName);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (snack != null) {
+                            if (!snack.isEmpty()) {
+                                for (Meal s : snack) {
+                                    if (s != null) {
+                                        if (!s.mealName.equalsIgnoreCase("null")) {
+                                            if (!s.mealName.isEmpty()) {
+                                                finalMeals.add(s.mealName);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    List<String> tempExercise = (List<String>) mDb.dateDataDao().findExercisesByDate(finalDateString);
+                    if (tempExercise.isEmpty() && exerciseList.isEmpty()) {
+                        finalExercises.add("No exercises were inputted.");
+                    } else {
+                        String[] tempE;
+                        for (String e : tempExercise) {
+                            if (!e.equalsIgnoreCase("[null]")) {
+                                if (!e.equalsIgnoreCase("[]")) {
+                                    tempE = e.split(",");
+                                    for (int i = 0; i < tempE.length; i++) {
+                                        e = tempE[i].replaceAll("\\W", "");
+                                        finalExercises.add(e);
+                                    }
+                                }
+                            }
+                        }
+                    }
                     //mDb.dateDataDao().updateExercise(exerciseList, dateString);
                 }
 
                 long date = System.currentTimeMillis();
                 SimpleDateFormat Date = new SimpleDateFormat("MM/dd/yyyy");
                 String currentDate = Date.format(date);
-                if (!finalDateString .equalsIgnoreCase(currentDate)) {
+                if (!finalDateString.equalsIgnoreCase(currentDate)) {
                     Bundle bundle = new Bundle();
                     bundle.putString("key", finalDateString);
+                    if (!finalMeals.contains("No meals were inputted.")) {
+                        bundle.putStringArrayList("meals", finalMeals);
+                    }
+                    if (!finalExercises.contains("No exercises were inputted.")) {
+                        bundle.putStringArrayList("exercises", finalExercises);
+                    }
                     DailyInfoFragment fragment = new DailyInfoFragment();
                     fragment.setArguments(bundle);
                     FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                    ActionBar actionBar = getActivity().getActionBar();
-                    if (actionBar != null) {
-                        actionBar.setTitle("Daily Information");
-                    }
                     transaction.replace(R.id.fragment_exercise, fragment).addToBackStack(null).commit();
                 } else {
                     // refreshes exercise page
@@ -250,5 +368,24 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
         // TODO Auto-generated method stub
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try {
+            mListener = (Exercise.OnFragmentInteractionListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    public interface OnFragmentInteractionListener {
+        void onFragmentInteraction(String title);
+    }
 }

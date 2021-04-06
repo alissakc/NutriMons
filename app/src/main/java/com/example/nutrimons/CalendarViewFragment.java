@@ -1,6 +1,7 @@
 package com.example.nutrimons;
 
 import android.app.ActionBar;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -37,6 +38,7 @@ public class CalendarViewFragment extends Fragment {
     // vars
     private CalendarView mCalendarView;
     private Button today;
+    private OnFragmentInteractionListener mListener;
 
     public CalendarViewFragment() {
         // Required empty public constructor
@@ -72,6 +74,10 @@ public class CalendarViewFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction("Calendar");
+        }
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_calendar_view, container, false);
 
@@ -99,11 +105,6 @@ public class CalendarViewFragment extends Fragment {
                 DailyInfoFragment fragment = new DailyInfoFragment();
                 fragment.setArguments(bundle);
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                ActionBar actionBar = getActivity().getActionBar();
-                if(actionBar != null)
-                {
-                    actionBar.setTitle("Daily Information");
-                }
                 transaction.replace(R.id.fragment_calendar, fragment).addToBackStack(null).commit();
                 /*
                 // send data to dashboard fragment
@@ -130,5 +131,26 @@ public class CalendarViewFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try {
+            mListener = (CalendarViewFragment.OnFragmentInteractionListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    public interface OnFragmentInteractionListener {
+        public void onFragmentInteraction(String title);
     }
 }

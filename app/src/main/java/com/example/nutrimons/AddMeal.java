@@ -1,9 +1,11 @@
 package com.example.nutrimons;
 
+import android.content.Context;
 import android.database.sqlite.SQLiteConstraintException;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
@@ -52,6 +54,7 @@ public class AddMeal extends Fragment {
         advPotassiumText, advCalciumText, advIronText;
     private View advancedMealForm;
     public static com.example.nutrimons.database.Meal food;
+    private OnFragmentInteractionListener mListener;
 
     // creates instance of database
     private AppDatabase mDb;
@@ -94,6 +97,10 @@ public class AddMeal extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction("Add Meal");
+        }
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_meal, container, false);
 
@@ -319,5 +326,26 @@ public class AddMeal extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try {
+            mListener = (AddMeal.OnFragmentInteractionListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    public interface OnFragmentInteractionListener {
+        void onFragmentInteraction(String title);
     }
 }

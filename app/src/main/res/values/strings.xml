@@ -159,7 +159,7 @@
     <string name="select_workout">Select an existing workout</string>
     <string name="create_new_workout">Create a new workout activity</string>
     <string name="name_of_exercise">Name of Exercise:</string>
-    <string name="name_of_exercise_edit_text">Name of exercise...</string>
+    <string name="name_of_exercise_edit_text">Name of exercise…</string>
     <string name="unit_name">Unit Name:</string>
     <string name="calories_per_unit">Calories per Unit:</string>
     <string name="calories_per_unit_edit_text">Calories per Unit</string>
@@ -349,4 +349,46 @@
     <string name="calendar">Calendar</string>
     <string name="remove_exercise">Remove Exercise</string>
     <string name="date">Date</string>
+    <string-array name="factBank">
+        <item>Milk is 87% water. The nutrients, like protein, carbohydrate, vitamins and minerals are all found in the other 13%.</item>
+        <item>Fluid needs vary depending on your age and gender. Teens and adults need anywhere between 8 and 13 cups of fluid each day. Water is great, but milk, juice, soup and anything else you drink also count as fluid.</item>
+        <item>Most supermarket wasabi is actually horseradish.</item>
+        <item>One fast food burger can have meat from 100 different cows.</item>
+        <item>White chocolate isn’t chocolate.</item>
+        <item>The red food dye for Skittles is made from boiled beetles.</item>
+        <item>Chocolate has been used as a currency in Ancient civilizations of Mexico and South America.</item>
+        <item>Froot Loops are all the same flavor.</item>
+        <item>In Japan, chefs have to train for over two years in order to qualify to serve pufferfish.</item>
+        <item>Thomas Jefferson made pasta popular in the U.S.</item>
+        <item>Bad eggs will float.</item>
+        <item>Popsicles were invented by accident.</item>
+        <item>Bird saliva is a delicacy in China.</item>
+        <item>Coffee beans can help eliminate bad breath.</item>
+        <item>Green, yellow, and red bell peppers are not actually the same vegetable.</item>
+        <item>Many shredded cheeses and cereals contain cellulose (wood pulp).</item>
+        <item>Ketchup was once believed to have medicinal qualities that could cure, among other ailments, diarrhea.</item>
+        <item>A typical ear of corn has an even number of rows.</item>
+        <item>One burger patty can contain hundreds of different cows.</item>
+        <item>Scientists can turn peanut butter into diamonds.</item>
+        <item>Fruit snacks and cars are coated in the same type of wax.</item>
+        <item>Ripe cranberries will bounce like rubber balls.</item>
+        <item>An 11-year-old invented the Popsicle by accident.</item>
+        <item>Farm-raised salmon is naturally white and then dyed pink.</item>
+        <item>Apple pie is not American.</item>
+        <item>Potatoes can absorb and reflect Wi-fi signals.</item>
+        <item>Raw oysters are still alive when you eat them.</item>
+        <item>Every banana you eat is a clone.</item>
+        <item>In fact, bananas are technically berries — and strawberries are not.</item>
+        <item>Before being domesticated, chickens only produced about a dozen eggs a year. Now they can produce hundreds.</item>
+        <item>Honey will never ever go bad.</item>
+        <item>Carrots were originally purple.</item>
+        <item>Most wasabi is actually just dyed horseradish.</item>
+        <item>People once thought tomatoes were poisonous.</item>
+        <item>Grapes will explode if you put them in the microwave.</item>
+        <item>Crackers will give you cavities faster than candy.</item>
+        <item>Eating too much nutmeg has the effect of a hallucinogenic drug.</item>
+        <item>Chicken wings were considered throwaway parts before Buffalo wings were invented.</item>
+        <item>Processed cheese was invented in Switzerland, not America.</item>
+        <item>Chili peppers contain a chemical that tricks your mouth into \"thinking\" it's being burned — that's why spicy food hurts so much.</item>
+    </string-array>
 </resources>

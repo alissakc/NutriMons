@@ -1,8 +1,10 @@
 package com.example.nutrimons;
 
 import android.app.ActionBar;
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,6 +23,7 @@ import android.widget.TextView;
 import com.example.nutrimons.database.AppDatabase;
 import com.example.nutrimons.database.DateData;
 
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -48,6 +51,8 @@ public class DailyInfoFragment extends Fragment {
     private RecyclerView mealRecyclerView, exerciseRecyclerView, dailySummaryRecyclerView;
     private ImageView gotToDashboard, goToPreviousDate, goToNextDate;
     private ImageButton addMealButton, removeMealButton, addExerciseButton, removeExerciseButton;
+    private List<String> addedMeals, addedExercises;
+    private OnFragmentInteractionListener mListener;
 
     // vars for calendar
     private TextView currentDate;
@@ -85,13 +90,16 @@ public class DailyInfoFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        if (mListener != null) {
+            mListener.onFragmentInteraction("Daily Information");
+        }
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_daily_info, container, false);
 
@@ -110,6 +118,8 @@ public class DailyInfoFragment extends Fragment {
         } else {
             String date = bundle.getString("key");
             currentDate.setText(date);
+            addedMeals = bundle.getStringArrayList("meals");
+            addedExercises = bundle.getStringArrayList("exercises");
         }
 
         String currentDay = currentDate.getText().toString();
@@ -253,105 +263,149 @@ public class DailyInfoFragment extends Fragment {
         */
 
         //try {
-        DateData temp = mDb.dateDataDao().findByDate(currentDay);
-        LinearLayout mealLayout = view.findViewById(R.id.mealLinearView);
-        LinearLayout exerciseLayout = view.findViewById(R.id.exerciseLinearView);
-        LinearLayout dailySummaryLayout = view.findViewById(R.id.dailySummaryLinearView);
-        mealRecyclerView = view.findViewById(R.id.dailyMealList);
-        exerciseRecyclerView = view.findViewById(R.id.dailyExerciseList);
-        dailySummaryRecyclerView = view.findViewById(R.id.dailySummary);
-        mealLayout.setVisibility(View.VISIBLE);
-        exerciseLayout.setVisibility(View.VISIBLE);
-        dailySummaryLayout.setVisibility(View.VISIBLE);
+        if (addedMeals != null || addedExercises != null) {
+            if (addedMeals != null) {
+                LinearLayout mealLayout = view.findViewById(R.id.mealLinearView);
+                mealRecyclerView = view.findViewById(R.id.dailyMealList);
+                mealLayout.setVisibility(View.VISIBLE);
 
-        // gets list data from the database
-        List<com.example.nutrimons.database.Meal> breakfast = new ArrayList<>();
-        try{
-            breakfast = (temp.getBreakfast() == null ?
-                    (temp.getBreakfast().isEmpty() ? null : temp.getBreakfast()) : temp.getBreakfast());
-        }catch(NullPointerException e){
-            breakfast = null;
-        }
-        List<com.example.nutrimons.database.Meal> lunch = new ArrayList<>();
-        try{
-            lunch = (temp.getLunch() == null ?
-                    (temp.getLunch().isEmpty() ? null : temp.getLunch()) : temp.getLunch());
-        }catch(NullPointerException e){
-            lunch = null;
-        }
-        List<com.example.nutrimons.database.Meal> dinner = new ArrayList<>();
-        try{
-            dinner = (temp.getDinner() == null ?
-                    (temp.getDinner().isEmpty() ? null : temp.getDinner()) : temp.getDinner());
-        }catch(NullPointerException e){
-            dinner = null;
-        }
-        List<com.example.nutrimons.database.Meal> snack = new ArrayList<>();
-        try{
-            snack = (temp.getSnack() == null ?
-                    (temp.getSnack().isEmpty() ? null : temp.getSnack()) : temp.getSnack());
-        }catch(NullPointerException e){
-            snack = null;
-        }
+                mealRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                mealRecyclerView.setHasFixedSize(false);
 
-        // combines meals into one array
-        List<String> meals = new ArrayList<>();
-        if (breakfast == null && lunch == null && dinner == null && snack == null) {
-            meals.add("No meals were inputted.");
+                MealAdapter mealAdapter = new MealAdapter(addedMeals);
+                mealRecyclerView.setAdapter(mealAdapter);
+
+                LinearLayout dailySummaryLayout = view.findViewById(R.id.dailySummaryLinearView);
+                dailySummaryRecyclerView = view.findViewById(R.id.dailySummary);
+                dailySummaryLayout.setVisibility(View.VISIBLE);
+
+                DateData temp = mDb.dateDataDao().findByDate(currentDay);
+                List<String> dailySummary;
+                if (temp != null) {
+                    dailySummaryLayout.setVisibility(View.VISIBLE);
+                    temp.aggregateNutrients();
+                    dailySummary = (List<String>) temp.nutrientsToStringList();
+
+                    DailySummaryAdapter dailySummaryAdapter = new DailySummaryAdapter(dailySummary);
+                    dailySummaryRecyclerView.setAdapter(dailySummaryAdapter);
+                } else {
+                    dailySummary = new ArrayList<>();
+                    dailySummary.add("No meals were inputted.");
+                    dailySummaryLayout.setVisibility(View.GONE);
+                }
+            }
+            if (addedExercises != null) {
+                LinearLayout exerciseLayout = view.findViewById(R.id.exerciseLinearView);
+                exerciseRecyclerView = view.findViewById(R.id.dailyExerciseList);
+                exerciseLayout.setVisibility(View.VISIBLE);
+
+                exerciseRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                exerciseRecyclerView.setHasFixedSize(false);
+
+                ExerciseAdapter exerciseAdapter = new ExerciseAdapter(addedExercises);
+                exerciseRecyclerView.setAdapter(exerciseAdapter);
+            }
+
         } else {
-            if (breakfast != null) {
-                if(!breakfast.isEmpty()){
-                    for (com.example.nutrimons.database.Meal b : breakfast) {
-                        if(b != null){
-                            if (!b.mealName.equalsIgnoreCase("null")) {
-                                if (!b.mealName.isEmpty()) {
-                                    meals.add(b.mealName);
+            DateData temp = mDb.dateDataDao().findByDate(currentDay);
+            LinearLayout mealLayout = view.findViewById(R.id.mealLinearView);
+            LinearLayout exerciseLayout = view.findViewById(R.id.exerciseLinearView);
+            LinearLayout dailySummaryLayout = view.findViewById(R.id.dailySummaryLinearView);
+            mealRecyclerView = view.findViewById(R.id.dailyMealList);
+            exerciseRecyclerView = view.findViewById(R.id.dailyExerciseList);
+            dailySummaryRecyclerView = view.findViewById(R.id.dailySummary);
+            mealLayout.setVisibility(View.VISIBLE);
+            exerciseLayout.setVisibility(View.VISIBLE);
+            dailySummaryLayout.setVisibility(View.VISIBLE);
+
+            // gets list data from the database
+            List<com.example.nutrimons.database.Meal> breakfast;
+            try {
+                breakfast = (temp.getBreakfast() == null ?
+                        (temp.getBreakfast().isEmpty() ? null : temp.getBreakfast()) : temp.getBreakfast());
+            } catch (NullPointerException e) {
+                breakfast = null;
+            }
+            List<com.example.nutrimons.database.Meal> lunch;
+            try {
+                lunch = (temp.getLunch() == null ?
+                        (temp.getLunch().isEmpty() ? null : temp.getLunch()) : temp.getLunch());
+            } catch (NullPointerException e) {
+                lunch = null;
+            }
+            List<com.example.nutrimons.database.Meal> dinner;
+            try {
+                dinner = (temp.getDinner() == null ?
+                        (temp.getDinner().isEmpty() ? null : temp.getDinner()) : temp.getDinner());
+            } catch (NullPointerException e) {
+                dinner = null;
+            }
+            List<com.example.nutrimons.database.Meal> snack;
+            try {
+                snack = (temp.getSnack() == null ?
+                        (temp.getSnack().isEmpty() ? null : temp.getSnack()) : temp.getSnack());
+            } catch (NullPointerException e) {
+                snack = null;
+            }
+
+            // combines meals into one array
+            List<String> meals = new ArrayList<>();
+            if (breakfast == null && lunch == null && dinner == null && snack == null) {
+                meals.add("No meals were inputted.");
+            } else {
+                if (breakfast != null) {
+                    if (!breakfast.isEmpty()) {
+                        for (com.example.nutrimons.database.Meal b : breakfast) {
+                            if (b != null) {
+                                if (!b.mealName.equalsIgnoreCase("null")) {
+                                    if (!b.mealName.isEmpty()) {
+                                        meals.add(b.mealName);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if (lunch != null) {
+                    if (!lunch.isEmpty()) {
+                        for (com.example.nutrimons.database.Meal l : lunch) {
+                            if (l != null) {
+                                if (!l.mealName.equalsIgnoreCase("null")) {
+                                    if (!l.mealName.isEmpty()) {
+                                        meals.add(l.mealName);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if (dinner != null) {
+                    if (!dinner.isEmpty()) {
+                        for (com.example.nutrimons.database.Meal d : dinner) {
+                            if (d != null) {
+                                if (!d.mealName.equalsIgnoreCase("null")) {
+                                    if (!d.mealName.isEmpty()) {
+                                        meals.add(d.mealName);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if (snack != null) {
+                    if (!snack.isEmpty()) {
+                        for (com.example.nutrimons.database.Meal s : snack) {
+                            if (s != null) {
+                                if (!s.mealName.equalsIgnoreCase("null")) {
+                                    if (!s.mealName.isEmpty()) {
+                                        meals.add(s.mealName);
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
-            if (lunch != null) {
-                if(!lunch.isEmpty()){
-                    for (com.example.nutrimons.database.Meal l : lunch) {
-                        if(l != null){
-                            if (!l.mealName.equalsIgnoreCase("null")) {
-                                if (!l.mealName.isEmpty()) {
-                                    meals.add(l.mealName);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            if (dinner != null) {
-                if(!dinner.isEmpty()){
-                    for (com.example.nutrimons.database.Meal d : dinner) {
-                        if(d != null){
-                            if (!d.mealName.equalsIgnoreCase("null")) {
-                                if (!d.mealName.isEmpty()) {
-                                    meals.add(d.mealName);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            if (snack != null) {
-                if(!snack.isEmpty()){
-                    for (com.example.nutrimons.database.Meal s : snack) {
-                        if(s != null){
-                            if (!s.mealName.equalsIgnoreCase("null")) {
-                                if (!s.mealName.isEmpty()) {
-                                    meals.add(s.mealName);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
 
         /*List<String> tempBreakfast = (List<String>) mDb.dateDataDao().findBreakfastByDate(currentDay);
         List<String> tempLunch = (List<String>) mDb.dateDataDao().findLunchByDate(currentDay);
@@ -459,60 +513,60 @@ public class DailyInfoFragment extends Fragment {
             }
         }*/
 
-        mealRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mealRecyclerView.setHasFixedSize(false);
+            mealRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            mealRecyclerView.setHasFixedSize(false);
 
-        MealAdapter mealAdapter = new MealAdapter(meals);
-        mealRecyclerView.setAdapter(mealAdapter);
+            MealAdapter mealAdapter = new MealAdapter(meals);
+            mealRecyclerView.setAdapter(mealAdapter);
         /*ItemTouchHelper itemTouchHelper = new
                 ItemTouchHelper(new MealAdapter.SwipeToDeleteMealCallback(mealAdapter));
         itemTouchHelper.attachToRecyclerView(mealRecyclerView);*/
 
-        exerciseRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        exerciseRecyclerView.setHasFixedSize(false);
+            exerciseRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            exerciseRecyclerView.setHasFixedSize(false);
 
-        List<String> tempExercise = (List<String>) mDb.dateDataDao().findExercisesByDate(currentDay);
-        // gets list data from the database
-        List<String> exercise = (tempExercise.isEmpty() ? null : tempExercise);
-        if (exercise == null) {
-            exercise = new ArrayList<>();
-            exercise.add("No exercises were inputted.");
-        } else {
-            exercise = new ArrayList<>();
-            String[] tempE;
-            for (String e : tempExercise) {
-                if (!e.equalsIgnoreCase("[null]")) {
-                    if (!e.equalsIgnoreCase("[]")) {
-                        tempE = e.split(",");
-                        for(int i = 0; i < tempE.length; i++){
-                            e = tempE[i].replaceAll("\\W", "");
-                            exercise.add(e);
+            List<String> tempExercise = (List<String>) mDb.dateDataDao().findExercisesByDate(currentDay);
+            // gets list data from the database
+            List<String> exercise = (tempExercise.isEmpty() ? null : tempExercise);
+            if (exercise == null) {
+                exercise = new ArrayList<>();
+                exercise.add("No exercises were inputted.");
+            } else {
+                exercise = new ArrayList<>();
+                String[] tempE;
+                for (String e : tempExercise) {
+                    if (!e.equalsIgnoreCase("[null]")) {
+                        if (!e.equalsIgnoreCase("[]")) {
+                            tempE = e.split(",");
+                            for (int i = 0; i < tempE.length; i++) {
+                                e = tempE[i].replaceAll("\\W", "");
+                                exercise.add(e);
+                            }
                         }
                     }
                 }
             }
+
+            ExerciseAdapter exerciseAdapter = new ExerciseAdapter(exercise);
+            exerciseRecyclerView.setAdapter(exerciseAdapter);
+
+            dailySummaryRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            dailySummaryRecyclerView.setHasFixedSize(false);
+
+            List<String> dailySummary;
+            if (temp != null) {
+                dailySummaryLayout.setVisibility(View.VISIBLE);
+                temp.aggregateNutrients();
+                dailySummary = (List<String>) temp.nutrientsToStringList();
+            } else {
+                dailySummary = new ArrayList<>();
+                dailySummary.add("No meals were inputted.");
+                dailySummaryLayout.setVisibility(View.GONE);
+            }
+
+            DailySummaryAdapter dailySummaryAdapter = new DailySummaryAdapter(dailySummary);
+            dailySummaryRecyclerView.setAdapter(dailySummaryAdapter);
         }
-
-        ExerciseAdapter exerciseAdapter = new ExerciseAdapter(exercise);
-        exerciseRecyclerView.setAdapter(exerciseAdapter);
-
-
-        dailySummaryRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        dailySummaryRecyclerView.setHasFixedSize(false);
-
-        List<String> dailySummary;
-        if (temp != null) {
-            dailySummaryLayout.setVisibility(View.VISIBLE);
-            temp.aggregateNutrients();
-            dailySummary = (List<String>) temp.nutrientsToStringList();
-        } else {
-            dailySummary = new ArrayList<>();
-            dailySummary.add("No meals were inputted.");
-            dailySummaryLayout.setVisibility(View.GONE);
-        }
-
-        DailySummaryAdapter dailySummaryAdapter = new DailySummaryAdapter(dailySummary);
-        dailySummaryRecyclerView.setAdapter(dailySummaryAdapter);
 
         /*
         } catch (NullPointerException e) {
@@ -534,11 +588,6 @@ public class DailyInfoFragment extends Fragment {
                 Dashboard fragment = new Dashboard();
                 fragment.setArguments(bundle);
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                ActionBar actionBar = getActivity().getActionBar();
-
-                if (actionBar != null) {
-                    actionBar.setTitle("Dashboard");
-                }
                 transaction.replace(R.id.fragment_dashboard, fragment).addToBackStack(null).commit();
             }
         });
@@ -555,10 +604,6 @@ public class DailyInfoFragment extends Fragment {
                 fragment.setArguments(bundle);
                 fragment.setArguments(savedInstanceState);
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                ActionBar actionBar = getActivity().getActionBar();
-                if (actionBar != null) {
-                    actionBar.setTitle("Calendar");
-                }
                 transaction.replace(R.id.fragment_daily_info, fragment).addToBackStack(null).commit();
             }
         });
@@ -575,6 +620,12 @@ public class DailyInfoFragment extends Fragment {
                     SimpleDateFormat Date = new SimpleDateFormat("MM/dd/yyyy");
                     String dateString = Date.format(yesterday);
                     currentDate.setText(dateString);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("key", dateString);
+                    DailyInfoFragment fragment = new DailyInfoFragment();
+                    fragment.setArguments(bundle);
+                    FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.fragment_daily_info, fragment).addToBackStack(null).commit();
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -595,6 +646,12 @@ public class DailyInfoFragment extends Fragment {
                     SimpleDateFormat Date = new SimpleDateFormat("MM/dd/yyyy");
                     String dateString = Date.format(tomorrow);
                     currentDate.setText(dateString);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("key", dateString);
+                    DailyInfoFragment fragment = new DailyInfoFragment();
+                    fragment.setArguments(bundle);
+                    FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.fragment_daily_info, fragment).addToBackStack(null).commit();
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -613,10 +670,6 @@ public class DailyInfoFragment extends Fragment {
                 MealPlan fragment = new MealPlan();
                 fragment.setArguments(bundle);
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                ActionBar actionBar = getActivity().getActionBar();
-                if (actionBar != null) {
-                    actionBar.setTitle("Meal Plan");
-                }
                 transaction.replace(R.id.fragment_daily_info, fragment).addToBackStack(null).commit();
             }
         });
@@ -640,10 +693,6 @@ public class DailyInfoFragment extends Fragment {
                 Exercise fragment = new Exercise();
                 fragment.setArguments(bundle);
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                ActionBar actionBar = getActivity().getActionBar();
-                if (actionBar != null) {
-                    actionBar.setTitle("Exercise");
-                }
                 transaction.replace(R.id.fragment_daily_info, fragment).addToBackStack(null).commit();
             }
         });
@@ -658,5 +707,26 @@ public class DailyInfoFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try {
+            mListener = (OnFragmentInteractionListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    public interface OnFragmentInteractionListener {
+        void onFragmentInteraction(String title);
     }
 }

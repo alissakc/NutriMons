@@ -1,9 +1,12 @@
 package com.example.nutrimons;
 
 import android.app.ActionBar;
+import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
@@ -63,6 +66,8 @@ public class Dashboard extends Fragment  {
     private String mParam1;
     private String mParam2;
 
+    private OnFragmentInteractionListener mListener;
+
     PieChart caloriesPieChart;
     private BarChart macrosChart;
 
@@ -88,7 +93,9 @@ public class Dashboard extends Fragment  {
     private TextView currentDate;
     private ImageButton goToCalendar;
 
-    private String[] factBank = new String[]{
+    Resources res = getResources();
+    private String[] factBank = res.getStringArray(R.array.factBank);
+    /*private String[] factBank = new String[]{
             "Milk is 87% water. The nutrients, like protein, carbohydrate, vitamins and minerals are all found in the other 13%.",
             "Fluid needs vary depending on your age and gender. Teens and adults need anywhere between 8 and 13 cups of fluid each day. Water is great, but milk, juice, soup and anything else you drink also count as fluid.",
             "Most supermarket wasabi is actually horseradish.",
@@ -130,7 +137,7 @@ public class Dashboard extends Fragment  {
             "Processed cheese was invented in Switzerland, not America.",
             "Chili peppers contain a chemical that tricks your mouth into \"thinking\" it's being burned — that's why spicy food hurts so much.",
     };
-
+*/
     private AppDatabase mDb;
 
     public Dashboard() {
@@ -167,6 +174,10 @@ public class Dashboard extends Fragment  {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction("Dashboard");
+        }
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
@@ -253,11 +264,6 @@ public class Dashboard extends Fragment  {
                 fragment.setArguments(bundle);
                 fragment.setArguments(savedInstanceState);
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                ActionBar actionBar = getActivity().getActionBar();
-                if(actionBar != null)
-                {
-                    actionBar.setTitle("Calendar");
-                }
                 transaction.replace(R.id.fragment_dashboard, fragment).addToBackStack(null).commit();
             }
         });
@@ -482,5 +488,26 @@ public class Dashboard extends Fragment  {
         data.setValueTextSize(12f);
         macrosChart.setData(data);
         macrosChart.invalidate();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try {
+            mListener = (Dashboard.OnFragmentInteractionListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    public interface OnFragmentInteractionListener {
+        public void onFragmentInteraction(String title);
     }
 }
