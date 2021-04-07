@@ -126,6 +126,7 @@ public class DailyInfoFragment extends Fragment {
         if (currentDay.charAt(2) != '/') {
             currentDay = "0" + currentDay;
         }
+
         /*
         String currentDateString = "";
         SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
@@ -165,29 +166,25 @@ public class DailyInfoFragment extends Fragment {
         // gets list data from the database
         List<com.example.nutrimons.database.Meal> breakfast;
         try {
-            breakfast = (temp.getBreakfast() == null ?
-                    (temp.getBreakfast().isEmpty() ? null : temp.getBreakfast()) : temp.getBreakfast());
+            breakfast = temp.getBreakfast();
         } catch (NullPointerException e) {
             breakfast = null;
         }
         List<com.example.nutrimons.database.Meal> lunch;
         try {
-            lunch = (temp.getLunch() == null ?
-                    (temp.getLunch().isEmpty() ? null : temp.getLunch()) : temp.getLunch());
+            lunch = temp.getLunch();
         } catch (NullPointerException e) {
             lunch = null;
         }
         List<com.example.nutrimons.database.Meal> dinner;
         try {
-            dinner = (temp.getDinner() == null ?
-                    (temp.getDinner().isEmpty() ? null : temp.getDinner()) : temp.getDinner());
+            dinner = temp.getDinner();
         } catch (NullPointerException e) {
             dinner = null;
         }
         List<com.example.nutrimons.database.Meal> snack;
         try {
-            snack = (temp.getSnack() == null ?
-                    (temp.getSnack().isEmpty() ? null : temp.getSnack()) : temp.getSnack());
+            snack = temp.getSnack();
         } catch (NullPointerException e) {
             snack = null;
         }
@@ -381,8 +378,6 @@ public class DailyInfoFragment extends Fragment {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-
-
             }
         });
 

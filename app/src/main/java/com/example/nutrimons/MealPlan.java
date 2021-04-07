@@ -162,10 +162,6 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-/*                selectedBreakfast.add(breakfastSpinner.getSelectedItem().toString());
-                selectedLunch.add(lunchSpinner.getSelectedItem().toString());
-                selectedDinner.add(dinnerSpinner.getSelectedItem().toString());
-                selectedSnack.add(snackSpinner.getSelectedItem().toString());*/
                 selectedBreakfast.add(mDb.mealDao().findByName(breakfastSpinner.getSelectedItem().toString()));
                 selectedLunch.add(mDb.mealDao().findByName(lunchSpinner.getSelectedItem().toString()));
                 selectedDinner.add(mDb.mealDao().findByName(dinnerSpinner.getSelectedItem().toString()));
@@ -182,29 +178,25 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
                     // checks for existing meals
                     List<com.example.nutrimons.database.Meal> breakfast;
                     try {
-                        breakfast = (temp.getBreakfast() == null ?
-                                (temp.getBreakfast().isEmpty() ? null : temp.getBreakfast()) : temp.getBreakfast());
+                        breakfast = temp.getBreakfast();
                     } catch (NullPointerException e) {
                         breakfast = null;
                     }
                     List<com.example.nutrimons.database.Meal> lunch;
                     try {
-                        lunch = (temp.getLunch() == null ?
-                                (temp.getLunch().isEmpty() ? null : temp.getLunch()) : temp.getLunch());
+                        lunch = temp.getLunch();
                     } catch (NullPointerException e) {
                         lunch = null;
                     }
                     List<com.example.nutrimons.database.Meal> dinner;
                     try {
-                        dinner = (temp.getDinner() == null ?
-                                (temp.getDinner().isEmpty() ? null : temp.getDinner()) : temp.getDinner());
+                        dinner = temp.getDinner();
                     } catch (NullPointerException e) {
                         dinner = null;
                     }
                     List<com.example.nutrimons.database.Meal> snack;
                     try {
-                        snack = (temp.getSnack() == null ?
-                                (temp.getSnack().isEmpty() ? null : temp.getSnack()) : temp.getSnack());
+                        snack = temp.getSnack();
                     } catch (NullPointerException e) {
                         snack = null;
                     }
