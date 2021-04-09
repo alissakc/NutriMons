@@ -187,7 +187,7 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
 
         //Level Number
         levelingView = view.findViewById(R.id.levelNum);
-        levelingView.setText("Level: "+String.valueOf(tama.level));
+        levelingView.setText(String.valueOf(tama.level));
         
 
         //feeding pet

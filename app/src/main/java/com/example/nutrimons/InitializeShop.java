@@ -24,6 +24,7 @@ public class InitializeShop {
                 InputStream is = am.open(FOLDER + "/" + s);
                 ShopItem si = new ShopItem();
 
+
                 si.name = s.substring(0, s.indexOf('_'));
                 s = s.substring(s.indexOf('_') + 1);
 
@@ -34,6 +35,7 @@ public class InitializeShop {
 
                 si.image = BitMapToString(BitmapFactory.decodeStream(is));
                 db.shopItemDao().insert(si);
+
             }
         }
         catch (IOException e) { e.printStackTrace(); }
