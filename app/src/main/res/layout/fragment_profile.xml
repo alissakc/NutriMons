@@ -986,11 +986,11 @@
                     android:text="@string/nutricoins"
                     android:textColor="@color/black" />
 
-                <EditText
+                <TextView
                     android:id="@+id/nutriCoins"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"
+                    android:layout_marginStart="2dp"
                     android:text="420" />
             </LinearLayout>
 

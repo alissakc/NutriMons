@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.example.nutrimons.database.AppDatabase;
 import com.example.nutrimons.database.ShopItem;
 import com.example.nutrimons.database.TamagotchiPet;
+import com.example.nutrimons.database.User;
 
 import org.w3c.dom.Text;
 
@@ -41,6 +42,7 @@ public class TamagotchiShop extends Fragment {
 
     private AppDatabase mDb;
     private TamagotchiPet tama;
+    private User user;
     private LinearLayout shopItemsArea;
 
     //Coins
@@ -89,11 +91,12 @@ public class TamagotchiShop extends Fragment {
 
         mDb = AppDatabase.getInstance(getContext());
         tama = mDb.tamagotchiDao().findByUserId(mDb.tokenDao().getUserID());
-
+        user = mDb.userDao().findByUserID(mDb.tokenDao().getUserID());
         //setting coins
         coins = view.findViewById(R.id.tamaCoins);
-        coins.setText(String.valueOf(tama.coins));
-        mDb.tamagotchiDao().insert(tama);
+        coins.setText(String.valueOf(user.nutriCoins));
+        //coins.setText(String.valueOf(tama.coins));
+        //mDb.tamagotchiDao().insert(tama);
 
         List<ShopItem> shopItems = mDb.shopItemDao().getAll();
         shopItemsArea = (LinearLayout) view.findViewById(R.id.shopItemsArea);

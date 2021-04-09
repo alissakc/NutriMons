@@ -58,8 +58,9 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
     private Button showNutrientRecs, saveProfile;
 
     private String profileFocus, name, email, password, birthday, financialSource, financialHistory, financialPlan, nutriCoins, age, sex, weight, height, ethnicity, healthHistory, healthGoals, activityLevel;
-    private EditText nameText, emailText, passwordText, birthdayText, financialSourceText, financialHistoryText, financialPlanText, nutriCoinsText, ageText, weightText, heightText, ethnicityText, healthHistoryText, healthGoalsText;
+    private EditText nameText, emailText, passwordText, birthdayText, financialSourceText, financialHistoryText, financialPlanText, ageText, weightText, heightText, ethnicityText, healthHistoryText, healthGoalsText;
     private int nameId, emailId, passwordId, birthdayId, financialSourceId, financialHistoryId, financialPlanId, nutriCoinsId, ageId, weightId, heightId, ethnicityId, healthHistoryId, healthGoalsId;
+    private TextView nutriCoinsText;
 
     private View view;
 
@@ -200,7 +201,7 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
         financialSourceText.addTextChangedListener(new TextChangedListener<EditText>(financialSourceText, financialSource));
         financialHistoryText.addTextChangedListener(new TextChangedListener<EditText>(financialHistoryText, financialHistory));
         financialPlanText.addTextChangedListener(new TextChangedListener<EditText>(financialPlanText, financialPlan));
-        nutriCoinsText.addTextChangedListener(new TextChangedListener<EditText>(nutriCoinsText, nutriCoins));
+        //nutriCoinsText.addTextChangedListener(new TextChangedListener<EditText>(nutriCoinsText, nutriCoins));
         ageText.addTextChangedListener(new TextChangedListener<EditText>(ageText, age));
         weightText.addTextChangedListener(new TextChangedListener<EditText>(weightText, weight));
         heightText.addTextChangedListener(new TextChangedListener<EditText>(heightText, height));
@@ -215,7 +216,7 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
         financialSourceId = (financialSourceText.getId());
         financialHistoryId = (financialHistoryText.getId());
         financialPlanId = (financialPlanText.getId());
-        nutriCoinsId = (nutriCoinsText.getId());
+        //nutriCoinsId = (nutriCoinsText.getId());
         ageId = (ageText.getId());
         weightId = (weightText.getId());
         heightId = (heightText.getId());
@@ -369,7 +370,7 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
         u.financialSource = financialSource;
         u.financialHistory = financialHistory;
         u.financialPlan = financialPlan;
-        u.nutriCoins = nutriCoins;
+        //u.nutriCoins = nutriCoins;
 
         u.healthGoals = healthGoals;
 
@@ -418,8 +419,8 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
                 financialHistory = str;
             else if(((EditText) target).getId() == financialPlanId)
                 financialPlan = str;
-            else if(((EditText) target).getId() == nutriCoinsId)
-                nutriCoins = str;
+            //else if(((EditText) target).getId() == nutriCoinsId)
+            //    nutriCoins = str;
             else if(((EditText) target).getId() == ageId)
                 age = str;
             else if(((EditText) target).getId() == weightId)
@@ -618,7 +619,7 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
         financialSource = u.financialSource;
         financialHistory = u.financialHistory;
         financialPlan = u.financialPlan;
-        nutriCoins = u.nutriCoins;
+        nutriCoins = String.valueOf(u.nutriCoins);
 
         healthGoals = u.healthGoals;
 

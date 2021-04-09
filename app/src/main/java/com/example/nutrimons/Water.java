@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.nutrimons.database.AppDatabase;
 import com.example.nutrimons.database.Meal;
+import com.example.nutrimons.database.User;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
@@ -307,6 +308,11 @@ public class Water extends Fragment implements View.OnClickListener{
                     amountNeeded = Math.max(0, amountNeeded - inputAmount);
                     initPieChart();
                     showPieChart();
+
+                    //reward user
+                    User u = mDb.userDao().findByUserID(mDb.tokenDao().getUserID());
+                    u.nutriCoins += 1;
+                    mDb.userDao().insert(u);
 
                 } catch (NumberFormatException e) {
                     toastWarning();

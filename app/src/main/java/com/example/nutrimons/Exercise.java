@@ -3,6 +3,7 @@ package com.example.nutrimons;
 import android.app.ActionBar;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import androidx.navigation.Navigation;
 import com.example.nutrimons.database.AppDatabase;
 import com.example.nutrimons.database.DateData;
 import com.example.nutrimons.database.Meal;
+import com.example.nutrimons.database.User;
 
 
 /**
@@ -348,6 +350,11 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
                     FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.fragment_exercise, fragment).addToBackStack(null).commit();
                 }
+
+                //reward user
+                User u = mDb.userDao().findByUserID(mDb.tokenDao().getUserID());
+                u.nutriCoins += 1;
+                mDb.userDao().insert(u);
             }
         });
         return view;
