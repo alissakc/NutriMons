@@ -33,7 +33,8 @@ public class InitializeShop {
 
                 si.cost = Integer.parseInt(s.substring(0, s.indexOf('.')));
 
-                si.image = BitMapToString(BitmapFactory.decodeStream(is));
+                Bitmap bm = scaleBitmap(BitmapFactory.decodeStream(is), 300);
+                si.image = BitMapToString(bm);
                 db.shopItemDao().insert(si);
 
             }
@@ -47,5 +48,24 @@ public class InitializeShop {
         byte [] b=baos.toByteArray();
         String temp= Base64.encodeToString(b, Base64.DEFAULT);
         return temp;
+    }
+
+    private Bitmap scaleBitmap(Bitmap image, int size) //http://www.codeplayon.com/2018/11/android-image-upload-to-server-from-camera-and-gallery/
+    {
+        int width = image.getWidth(), height = image.getHeight();
+        float ratio = (float) width / (float) height;
+
+        if(ratio > 1)
+        {
+            width = size;
+            height = (int) (width / ratio);
+        }
+        else
+        {
+            height = size;
+            width = (int) (height * ratio);
+        }
+
+        return Bitmap.createScaledBitmap(image, width, height, true);
     }
 }
