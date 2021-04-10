@@ -471,7 +471,6 @@ public class DailyInfoFragment extends Fragment {
 
                     DailySummaryAdapter dailySummaryAdapter = new DailySummaryAdapter(dailySummary);
                     dailySummaryRecyclerView.setAdapter(dailySummaryAdapter);
-//                    mealRecyclerView.setAdapter(mealAdapter);
                 }
             }
         });
@@ -492,10 +491,29 @@ public class DailyInfoFragment extends Fragment {
 
         // button initialization for removing exercise
         removeExerciseButton = view.findViewById(R.id.removeExerciseFromDailyInfo);
+        List<String> finalExercise = exercise;
         removeExerciseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+               // ExerciseAdapter exerciseAdapterTemp = new ExerciseAdapter(finalExercise);
+                SparseBooleanArray selectedRows = exerciseAdapter.getSelectedIds();
+                if (selectedRows.size() > 0) {
+                    for (int i = (selectedRows.size() - 1); i >= 0; i--) {
+                        if (selectedRows.valueAt(i)) {
+                            finalExercise.remove(selectedRows.keyAt(i));
+                        }
+                    }
+                    final com.example.nutrimons.database.DateData dateData =
+                            new com.example.nutrimons.database.DateData(finalCurrentDay,
+                                    mDb.dateDataDao().findByDate(finalCurrentDay).breakfast,
+                                    mDb.dateDataDao().findByDate(finalCurrentDay).lunch,
+                                    mDb.dateDataDao().findByDate(finalCurrentDay).dinner,
+                                    mDb.dateDataDao().findByDate(finalCurrentDay).snack,
+                                    finalExercise);
+                    mDb.dateDataDao().updateDateData(dateData);
+                    exerciseAdapter.removeSelection();
+                }
+                exerciseRecyclerView.setAdapter(exerciseAdapter);
             }
         });
 
