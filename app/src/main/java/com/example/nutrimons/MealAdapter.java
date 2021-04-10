@@ -1,23 +1,14 @@
 package com.example.nutrimons;
 
-import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,17 +16,17 @@ import java.util.List;
 public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder> {
 
     private List<String> mealList;
-    private String mRecentlyDeletedItem;
-    private int mRecentlyDeletedItemPosition;
+    private SparseBooleanArray mSelectedItemsIds;
 
-    public MealAdapter(List<String> mealList){
+    public MealAdapter(List<String> mealList) {
         this.mealList = mealList;
+        mSelectedItemsIds = new SparseBooleanArray();
     }
 
     @NonNull
     @Override
     public MealViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view  = LayoutInflater.from(parent.getContext()).inflate(R.layout.meal_exercise_list_item, parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.meal_exercise_list_item, parent, false);
         return new MealViewHolder(view);
     }
 
@@ -43,6 +34,13 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
     public void onBindViewHolder(@NonNull MealViewHolder holder, int position) {
         String mealName = mealList.get(position);
         holder.mealName.setText(mealName);
+        holder.checkBox.setChecked(mSelectedItemsIds.get(position));
+        holder.checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkCheckBox(position, !mSelectedItemsIds.get(position));
+            }
+        });
     }
 
     @Override
@@ -50,22 +48,59 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
         return mealList.size();
     }
 
-    public void removeItem(int position){
+    /**
+     * Remove all checkbox Selection
+     **/
+    public void removeSelection() {
+        mSelectedItemsIds = new SparseBooleanArray();
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Check the Checkbox if not checked
+     **/
+    public void checkCheckBox(int position, boolean value) {
+        if (value)
+            mSelectedItemsIds.put(position, true);
+        else
+            mSelectedItemsIds.delete(position);
+
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Return the selected Checkbox IDs
+     **/
+    public SparseBooleanArray getSelectedIds() {
+        return mSelectedItemsIds;
+    }
+
+/*    public void removeItem(int position){
         mealList.remove(position);
         notifyItemRemoved(position);
     }
 
-    public static class  MealViewHolder extends RecyclerView.ViewHolder{
+    public List<Integer> getSelectedItems() {
+        List<Integer> items = new ArrayList<>(selectedItems.size());
+        for (int i = 0; i < selectedItems.size(); ++i) {
+            items.add(selectedItems.keyAt(i));
+        }
+        return items;
+    }
+*/
+
+    public static class MealViewHolder extends RecyclerView.ViewHolder {
 
         public TextView mealName;
-        public CheckBox checkbox;
+        public CheckBox checkBox;
 
         public MealViewHolder(@NonNull View itemView) {
             super(itemView);
             mealName = itemView.findViewById(R.id.recycler_view_item);
-            checkbox = itemView.findViewById(R.id.checkBox_select);
+            checkBox = itemView.findViewById(R.id.checkBox_select);
         }
     }
+
 
 
    /* public void deleteItem(int position) {

@@ -109,6 +109,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:background="@color/teal_200"
+                        android:clickable="true"
                         android:contentDescription="@string/remove_meal"
                         android:paddingEnd="10dp"
                         android:src="@drawable/ic_delete"
