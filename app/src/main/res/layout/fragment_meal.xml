@@ -13,28 +13,28 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="48dp"
+        android:layout_marginBottom="16dp"
         android:onClick="onClick"
         android:text="@string/scan_barcode"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/addMealButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/mealPlanButton" />
 
     <Button
         android:id="@+id/addMealButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="48dp"
+        android:layout_marginBottom="48dp"
         android:onClick="onClick"
-        android:text="@string/manually_add_meal"
+        android:text="@string/add_meal"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/mealPlanButton"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scanBarcodeButton" />
@@ -44,15 +44,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="48dp"
         android:layout_marginEnd="48dp"
-        android:layout_marginBottom="48dp"
         android:onClick="onClick"
-        android:text="@string/create_meal_plan"
+        android:text="@string/meal_plan"
         android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/scanBarcodeButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addMealButton" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

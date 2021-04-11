@@ -96,7 +96,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_tamagotchi"
-        android:name="TamagotchiGame.Tamagotchi"
+        android:name="com.example.nutrimons.Tamagotchi"
         android:label="Tamagotchi"
         tools:layout="@layout/fragment_tamagotchi" >
         <action
@@ -163,8 +163,11 @@
             android:id="@+id/action_nav_dashboard_to_nav_registration"
             app:destination="@id/nav_registration" />
         <action
-            android:id="@+id/action_nav_home_to_nav_dailyInfo"
+            android:id="@+id/action_nav_dashboard_to_nav_dailyInfo"
             app:destination="@id/nav_dailyInfo" />
+        <action
+            android:id="@+id/action_nav_dashboard_to_nav_tamagotchi"
+            app:destination="@id/nav_tamagotchi" />
     </fragment>
     <fragment
         android:id="@+id/nav_calendar"

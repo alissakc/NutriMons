@@ -55,7 +55,7 @@ import java.util.TimerTask;
  * Use the {@link Dashboard#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Dashboard extends Fragment  {
+public class Dashboard extends Fragment implements View.OnClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -79,7 +79,7 @@ public class Dashboard extends Fragment  {
 
     private String dateString;
 
-    Button goToMeal, goToWater, goToExercise;
+    Button goToMeal, goToWater, goToExercise, goToTamagotchi;
     ImageView gotToProfile, goToPreviousDate, goToNextDate;
     int currentIndex;
 
@@ -186,9 +186,10 @@ public class Dashboard extends Fragment  {
 
         // Button and image initialization
 //        gotToProfile = view.findViewById(R.id.imageProfile);
-//        goToMeal = view.findViewById(R.id.dashboardAddMeal);
-//        goToWater = view.findViewById(R.id.dashboardAddWater);
-//        goToExercise = view.findViewById(R.id.dashboardAddExercise);
+        goToMeal = view.findViewById(R.id.dashboardAddMeal);
+        goToWater = view.findViewById(R.id.dashboardAddWater);
+        goToExercise = view.findViewById(R.id.dashboardAddExercise);
+        goToTamagotchi = view.findViewById(R.id.dashboardTamagotchi);
         factTextView = view.findViewById(R.id.textViewFunFactText);
 
         // gets current date
@@ -227,10 +228,10 @@ public class Dashboard extends Fragment  {
         prepareChartData(data);
 
         // assign listener for buttons
-//        gotToProfile.setOnClickListener(this);
-//        goToMeal.setOnClickListener(this);
-//        goToWater.setOnClickListener(this);
-//        goToExercise.setOnClickListener(this);
+        goToMeal.setOnClickListener(this);
+        goToWater.setOnClickListener(this);
+        goToExercise.setOnClickListener(this);
+        goToTamagotchi.setOnClickListener(this);
 
         updateFact();
 
@@ -335,23 +336,26 @@ public class Dashboard extends Fragment  {
         }
     }*/
 
-//    @Override
-//    public void onClick(View v) {
-//        switch (v.getId()) {
-//            case (R.id.imageProfile):
-//                Navigation.findNavController(v).navigate(R.id.action_nav_dashboard_to_nav_profile);
-//                break;
-//            case (R.id.dashboardAddMeal):
-//                Navigation.findNavController(v).navigate(R.id.action_nav_dashboard_to_nav_meal);
-//                break;
-//            case (R.id.dashboardAddWater):
-//                Navigation.findNavController(v).navigate(R.id.action_nav_dashboard_to_nav_water);
-//                break;
-//            case (R.id.dashboardAddExercise):
-//                Navigation.findNavController(v).navigate(R.id.action_nav_dashboard_to_nav_exercise);
-//                break;
-//        }
-//    }
+    @Override
+      public void onClick(View v) {
+        switch (v.getId()) {
+            /*case (R.id.imageProfile):
+                Navigation.findNavController(v).navigate(R.id.action_nav_dashboard_to_nav_profile);
+                break;*/
+            case (R.id.dashboardAddMeal):
+                Navigation.findNavController(v).navigate(R.id.action_nav_dashboard_to_nav_meal);
+                break;
+            case (R.id.dashboardAddWater):
+                Navigation.findNavController(v).navigate(R.id.action_nav_dashboard_to_nav_water);
+                break;
+            case (R.id.dashboardAddExercise):
+                Navigation.findNavController(v).navigate(R.id.action_nav_dashboard_to_nav_exercise);
+                break;
+                case (R.id.dashboardTamagotchi):
+                Navigation.findNavController(v).navigate(R.id.action_nav_dashboard_to_nav_tamagotchi);
+                break;
+        }
+    }
 
     private void updateFact() {
         Random rand = new Random();

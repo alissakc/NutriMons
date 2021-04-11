@@ -1,4 +1,4 @@
-package TamagotchiGame;
+package com.example.nutrimons;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -9,9 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import android.os.Handler;
-import android.os.SystemClock;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.DisplayMetrics;
@@ -25,10 +23,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.nutrimons.Profile;
-import com.example.nutrimons.R;
 import com.example.nutrimons.database.AppDatabase;
 import com.example.nutrimons.database.ShopItem;
 import com.example.nutrimons.database.TamagotchiPet;
@@ -40,11 +35,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import java.util.stream.IntStream;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -183,16 +175,12 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
 
 
         name = tama.petName;
-        petName = view.findViewById(R.id.petName);
-        petName.setText(name);
-        petName.addTextChangedListener(new Tamagotchi.TextChangedListener<EditText>(petName, name));
-
         if (name == null)
         {
-                name = "Name";
-                TamagotchiPet tama1 = mDb.tamagotchiDao().findByUserId(mDb.tokenDao().getUserID());
-                tama1.petName = name;
-                mDb.tamagotchiDao().insert(tama1);
+            name = "Name";
+            TamagotchiPet tama1 = mDb.tamagotchiDao().findByUserId(mDb.tokenDao().getUserID());
+            tama1.petName = name;
+            mDb.tamagotchiDao().insert(tama1);
         }
         else if (name.isEmpty())
         {
@@ -201,6 +189,9 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
             tama1.petName = name;
             mDb.tamagotchiDao().insert(tama1);
         }
+        petName = view.findViewById(R.id.petName);
+        petName.setText(name);
+        petName.addTextChangedListener(new Tamagotchi.TextChangedListener<EditText>(petName, name));
 
 
         goToStore = view.findViewById(R.id.storeButton);
@@ -420,7 +411,7 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
 
     private void levelByClicking(TamagotchiPet tama, View view)
     {
-        if (tama.totalClicks%100==0)
+        if (tama.totalClicks%10==0)
         {
             tama.level++;
         }

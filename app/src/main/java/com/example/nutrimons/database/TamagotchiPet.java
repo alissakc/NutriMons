@@ -9,9 +9,6 @@ import androidx.room.TypeConverters;
 import java.util.ArrayList;
 import java.util.List;
 
-
-import TamagotchiGame.Tamagotchi;
-
 @Entity
 @TypeConverters({Converters.class})
 public class TamagotchiPet {

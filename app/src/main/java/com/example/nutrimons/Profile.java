@@ -27,6 +27,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.nutrimons.database.AppDatabase;
@@ -107,17 +108,7 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
 
         view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        //ask for storage permissions
-        RxPermissions rxPermissions = new RxPermissions(this);
-        rxPermissions
-                .request(Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE) // ask single or multiple permission once
-                .subscribe(granted -> {
-                    if (granted) {
-                    } else {
-                        Toast.makeText(getContext(), "Permissions needed for this function", Toast.LENGTH_LONG).show();
-                    }
-                });
+        getPermissions();
 
         //spinner stuff, see MealPlan
         profileFocusSpinner = (Spinner) view.findViewById(R.id.profileFocusSpinner);
@@ -232,6 +223,28 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
         return view;
     }
 
+    private boolean getPermissions()
+    {
+        //ask for storage permissions
+        boolean permissionsGranted;
+        RxPermissions rxPermissions = new RxPermissions(this);
+        rxPermissions
+                .request(Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.CAMERA) // ask single or multiple permission once
+                .subscribe(granted -> {
+                    if (granted) {
+                    }
+                });
+        if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == 0 &&
+                ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == 0 &&
+                ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == 0)
+        {
+            return true;
+        }
+        else return false;
+    }
+
     @Override
     public void onClick(View view) {
         Intent intent;
@@ -242,8 +255,13 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
                 startActivityForResult(intent, 1);
                 break;
             case (R.id.captureProfilePicture):
-                intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent, 2);
+                if(getPermissions())
+                {
+                    intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(intent, 2);
+                }
+                else
+                    Toast.makeText(getContext(), "Camera permissions required for this action", Toast.LENGTH_LONG).show();
                 break;
             case (R.id.showNutrientRecs):
                 showNutrients();

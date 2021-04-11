@@ -128,6 +128,7 @@
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="tamagotchi">Tamagotchi</string>
     <string name="tamagotchi_shop">Tamagotchi Shop</string>
+    <string name="shop">Shop</string>
     <string name="meal">Meal</string>
     <string name="meal_plan">Meal Plan</string>
     <string name="add_meal">Add Meal</string>
@@ -167,7 +168,6 @@
     <string name="add_water">Add Water</string>
     <string name="water_tracker">Water Tracker</string>
     <string name="enter_amount_of_water">Enter amount of water</string>
-    <string name="create_meal_plan">Create Meal Plan</string>
     <string name="profile">Profile</string>
     <string name="duration">Duration</string>
     <string name="hint_15_min">15 min</string>

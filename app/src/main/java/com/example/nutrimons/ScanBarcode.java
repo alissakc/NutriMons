@@ -86,6 +86,7 @@ public class ScanBarcode extends Fragment {
     RequestQueue queue;
     AppDatabase mDb;
     com.example.nutrimons.database.Meal food;
+    int errorCount = 0;
 
     final String HEADER = "https://world.openfoodfacts.org/api/v0/product/", FOOTER = ".json";
 
@@ -198,6 +199,8 @@ public class ScanBarcode extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(errorCount++ > 2)
+                    Navigation.findNavController(view).navigate(R.id.action_nav_scanBarcode_to_nav_addMeal);
                 imageCapture.takePicture(ContextCompat.getMainExecutor((getContext())),
                         new ImageCapture.OnImageCapturedCallback() {
                             @Override
@@ -211,6 +214,7 @@ public class ScanBarcode extends Fragment {
                                     InputImage inputImage = InputImage.fromMediaImage(mediaImage, image.getImageInfo().getRotationDegrees());
                                     scanBarcode(inputImage);
                                 }
+                                mediaImage.close();
                             }
                             @Override
                             public void onError(ImageCaptureException error) {
@@ -255,6 +259,11 @@ public class ScanBarcode extends Fragment {
                             View br = view.findViewById(R.id.barcodeResult);
                             View vf = view.findViewById(R.id.viewFinder);
 
+                            if(rawValue != null)
+                                errorCount = 0;
+                            else
+                                Log.d("barcode", "null");
+
                             queue.cancelAll(rawValue);
 
                             JsonRequest JReq = callOFFapi(rawValue);
@@ -268,7 +277,8 @@ public class ScanBarcode extends Fragment {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(context, "Error Processing Barcode", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Error Processing Barcode. Try adding manually", Toast.LENGTH_SHORT).show();
+                        Navigation.findNavController(view).navigate(R.id.action_nav_scanBarcode_to_nav_addMeal);
                     }
                 });
     }
