@@ -37,6 +37,7 @@ public class Water extends Fragment implements View.OnClickListener{
     private float amountDrank = 0.0f;
     private float amountNeeded; //Liters
     private float inputAmount;
+    private String unit;
 
     EditText waterAmountInput;
     Button submitWater;
@@ -120,6 +121,7 @@ public class Water extends Fragment implements View.OnClickListener{
         }else {
             List<Float> temp = (List<Float>)mDb.dateDataDao().findWaterByDate(dateString);
             amountDrank = ((Float)temp.get(0) == null) ? 0.0f : (Float)temp.get(0);
+            unit = ((String)mDb.dateDataDao().findByDate(dateString).water_unit == null ? "oz" : (mDb.dateDataDao().findByDate(dateString).water_unit.equals("oz") ? "oz" : "ml"));
             amountNeeded -= amountDrank;
         }
 //        try{
@@ -174,11 +176,13 @@ public class Water extends Fragment implements View.OnClickListener{
     private void showPieChart(){
         ArrayList<PieEntry> pieEntries = new ArrayList<>();
         String label;
-        if(inOz(unitChange)){
+        if(unit.equals("oz")){//inOz(unitChange)){
             label = "(in ounces)";
+            unitChange.setText("oz");
         }
         else{
             label = "(in milliliters)";
+            unitChange.setText("ml");
         }
 
         //initializing data
@@ -293,8 +297,9 @@ public class Water extends Fragment implements View.OnClickListener{
                     SimpleDateFormat Date = new SimpleDateFormat("MM/dd/yyyy");
                     String dateString = Date.format(date);
                     if(mDb.dateDataDao().findByDate(dateString) == null){
-                        com.example.nutrimons.database.DateData dateData = new com.example.nutrimons.database.DateData(dateString, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<String>());
+                        com.example.nutrimons.database.DateData dateData = new com.example.nutrimons.database.DateData(dateString, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
                         dateData.water = amountDrank;
+                        dateData.water_unit = unit;
                         for(String s:  dateData.nutrientsToStringList())
                             Log.d("nutrient", s);
                         mDb.dateDataDao().insert(dateData);
@@ -302,6 +307,7 @@ public class Water extends Fragment implements View.OnClickListener{
                     else{
                         com.example.nutrimons.database.DateData dateData = mDb.dateDataDao().findByDate(dateString);
                         dateData.water = amountDrank;
+                        dateData.water_unit = unit;
                         mDb.dateDataDao().updateDateData(dateData);
                         //mDb.dateDataDao().updateMealPlan(selectedBreakfast, selectedLunch, selectedDinner, selectedSnack, dateString);
                     }
@@ -324,12 +330,14 @@ public class Water extends Fragment implements View.OnClickListener{
                     amountDrank = convertOztoMilli(amountDrank);
                     amountNeeded = convertOztoMilli(amountNeeded);
                     toastConvertedtoML();
+                    unit = "ml";
                 }
                 else if(!inOz(unitChange)){
                     unitChange.setText("oz");
                     amountDrank = convertMillitoOz(amountDrank);
                     amountNeeded = convertMillitoOz(amountNeeded);
                     toastConvertedtoOz();
+                    unit = "oz";
                 }
                 break;
 

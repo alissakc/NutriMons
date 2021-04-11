@@ -42,6 +42,9 @@ public class DateData {
     @ColumnInfo(name = "water")
     public float water;
 
+    @ColumnInfo(name = "water_unit")
+    public String water_unit;
+
     @ColumnInfo(name = "protein")
     public float protein;
 
@@ -198,6 +201,7 @@ public class DateData {
 
         return dailyList;
     }
+
 
    /* public ArrayList<String> breakfastToListString()
     {

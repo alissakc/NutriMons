@@ -73,6 +73,11 @@ public interface DateDataDao {
     @Query("UPDATE dateData SET water=:water WHERE date = :date")
     void updateWater(double water, String date);
 
+    // updates the water column only
+    @Query("UPDATE dateData SET water_unit=:water_unit WHERE date = :date")
+    void update(String water_unit, String date);
+
+
     @Insert
     void insert(DateData dateData);
 

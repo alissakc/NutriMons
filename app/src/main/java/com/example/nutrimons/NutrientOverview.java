@@ -1,5 +1,6 @@
 package com.example.nutrimons;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -127,23 +128,37 @@ public class NutrientOverview extends Fragment {
 
     private BarData createChartData() {
         ArrayList<BarEntry> values = new ArrayList<>();
+        int [] barColorArray = new int[MAX_X_VALUE];
         for (int i = 0; i < MAX_X_VALUE; i++) {
             float x = i;
             float y;
-            if(nutrientValues.get(i) == 0)
+            if(nutrientValues.get(i) == 0) {
                 y = 0;
-            else if(nutrientDRIs.get(i) == 0)
+            }else if (nutrientDRIs.get(i) == 0){
                 y = 100;
-            else if(nutrientValues.get(i) / nutrientDRIs.get(i) > 1)
+            }else if (nutrientValues.get(i) / nutrientDRIs.get(i) == 1){
                 y = 100;
-            else
-                y = nutrientValues.get(i) / nutrientDRIs.get(i) * 100;
+            }else {
+                y = (nutrientValues.get(i) / nutrientDRIs.get(i)) * 100;
+            }
+
             values.add(new BarEntry(x, y));
+            if(y > 100){
+                barColorArray[i] = Color.RED;
+            }else if(y == 100){
+                barColorArray[i] = Color.GREEN;
+            }else{
+                barColorArray[i] = Color.YELLOW;
+            }
         }
+
         BarDataSet set1 = new BarDataSet(values, SET_LABEL);
 
         ArrayList<IBarDataSet> dataSets = new ArrayList<>();
         dataSets.add(set1);
+
+        //set1.setColors(barColorArray);
+        set1.setColors(new int[] {Color.RED, Color.YELLOW, Color.GREEN});
 
         BarData data = new BarData(dataSets);
 
