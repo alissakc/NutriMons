@@ -3,6 +3,7 @@ package com.example.nutrimons;
 import android.app.ActionBar;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import androidx.navigation.Navigation;
 import com.example.nutrimons.database.AppDatabase;
 import com.example.nutrimons.database.DateData;
 import com.example.nutrimons.database.Meal;
+import com.example.nutrimons.database.User;
 
 
 /**
@@ -202,9 +204,15 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
                             for (String s : mDb.dateDataDao().findExercisesByDate(finalDateString)) {
                                 if (!s.equalsIgnoreCase("[null]")) {
                                     if (!s.equalsIgnoreCase("[]")) {
-                                        s = s.replaceAll("\\W", "");
-                                        exerciseList.add(s);
-                                        finalExercises.add(s);
+                                        String[] temp = s.split("(?=\\p{Lu})");
+                                        for(String t : temp){
+                                            t = t.replaceAll("\\W", "");
+                                            if(!t.equals("")){
+                                                exerciseList.add(t);
+                                                finalExercises.add(t);
+                                            }
+                                        }
+
                                     }
                                 }
                             }
@@ -329,12 +337,12 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
                 if (!finalDateString.equalsIgnoreCase(currentDate)) {
                     Bundle bundle = new Bundle();
                     bundle.putString("key", finalDateString);
-                    if (!finalMeals.contains("No meals were inputted.")) {
+                    /*if (!finalMeals.contains("No meals were inputted.")) {
                         bundle.putStringArrayList("meals", finalMeals);
                     }
                     if (!finalExercises.contains("No exercises were inputted.")) {
                         bundle.putStringArrayList("exercises", finalExercises);
-                    }
+                    }*/
                     DailyInfoFragment fragment = new DailyInfoFragment();
                     fragment.setArguments(bundle);
                     FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -348,6 +356,11 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
                     FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.fragment_exercise, fragment).addToBackStack(null).commit();
                 }
+
+                //reward user
+                User u = mDb.userDao().findByUserID(mDb.tokenDao().getUserID());
+                u.nutriCoins += 1;
+                mDb.userDao().insert(u);
             }
         });
         return view;

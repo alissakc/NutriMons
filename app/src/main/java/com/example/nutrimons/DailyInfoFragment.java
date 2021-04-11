@@ -11,7 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.SparseBooleanArray;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -260,6 +262,7 @@ public class DailyInfoFragment extends Fragment {
         exerciseRecyclerView.setHasFixedSize(false);
 
         List<String> tempExercise = (List<String>) mDb.dateDataDao().findExercisesByDate(currentDay);
+
         // gets list data from the database
         List<String> exercise = (tempExercise.isEmpty() ? null : tempExercise);
         if (exercise == null) {
@@ -397,10 +400,78 @@ public class DailyInfoFragment extends Fragment {
 
         // button initialization for removing meal
         removeMealButton = view.findViewById(R.id.removeMealFromDailyInfo);
+        List<com.example.nutrimons.database.Meal> finalBreakfast = breakfast;
+        List<com.example.nutrimons.database.Meal> finalLunch = lunch;
+        List<com.example.nutrimons.database.Meal> finalDinner = dinner;
+        List<com.example.nutrimons.database.Meal> finalSnack = snack;
+
+        String finalCurrentDay = currentDay;
         removeMealButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //SparseBooleanArray checked = mealRecyclerView.getCheckedItemPositions();
+                SparseBooleanArray selectedRows = mealAdapter.getSelectedIds();
+                int breakfastIndexes = -1;
+                int lunchIndexes = -1;
+                int dinnerIndexes = -1;
+                int snackIndexes = -1;
+                if(!finalBreakfast.isEmpty()){
+                    breakfastIndexes = finalBreakfast.size();
+                }
+                if(!finalLunch.isEmpty()){
+                    lunchIndexes = ((finalBreakfast.isEmpty() ? 0 : finalBreakfast.size())
+                            + finalLunch.size());
+                }
+                if(!finalDinner.isEmpty()){
+                    dinnerIndexes = ((finalBreakfast.isEmpty() ? 0 : finalBreakfast.size())
+                            + (finalLunch.isEmpty() ? 0 : finalLunch.size())
+                            + finalDinner.size());
+                }
+                if(!finalSnack.isEmpty()){
+                    snackIndexes = ((finalBreakfast.isEmpty() ? 0 : finalBreakfast.size())
+                            + (finalLunch.isEmpty() ? 0 : finalLunch.size())
+                            + (finalDinner.isEmpty() ? 0 : finalDinner.size())
+                            + finalSnack.size());
+                }
+                if (selectedRows.size() > 0) {
+                    for (int i = (selectedRows.size() - 1); i >= 0; i--) {
+                        if (selectedRows.valueAt(i)) {
+                            meals.remove(selectedRows.keyAt(i));
+                            if(breakfastIndexes != -1 && selectedRows.keyAt(i) < breakfastIndexes){
+                                finalBreakfast.remove(selectedRows.keyAt(i));
+                            }else if(lunchIndexes != -1 && selectedRows.keyAt(i) < lunchIndexes){
+                                finalLunch.remove((lunchIndexes-1)-selectedRows.keyAt(i));
+                            }else if(dinnerIndexes != -1 && selectedRows.keyAt(i) < dinnerIndexes){
+                                finalDinner.remove((dinnerIndexes-1)-selectedRows.keyAt(i));
+                            }else if(snackIndexes != -1 && selectedRows.keyAt(i) < snackIndexes){
+                                finalSnack.remove((snackIndexes-1)-selectedRows.keyAt(i));
+                            }
+                        }
+                    }
+                    final com.example.nutrimons.database.DateData dateData =
+                            new com.example.nutrimons.database.DateData(finalCurrentDay,
+                            finalBreakfast, finalLunch, finalDinner, finalSnack,
+                            mDb.dateDataDao().findByDate(finalCurrentDay).todayExercise);
+                    mDb.dateDataDao().updateDateData(dateData);
+                    mealAdapter.removeSelection();
+
+
+                    dailySummaryRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                    dailySummaryRecyclerView.setHasFixedSize(false);
+
+                    List<String> dailySummary;
+                    if (temp != null) {
+                        dailySummaryLayout.setVisibility(View.VISIBLE);
+                        dateData.aggregateNutrients();
+                        dailySummary = (List<String>) dateData.nutrientsToStringList();
+                    } else {
+                        dailySummary = new ArrayList<>();
+                        dailySummary.add("No meals were inputted.");
+                        dailySummaryLayout.setVisibility(View.GONE);
+                    }
+
+                    DailySummaryAdapter dailySummaryAdapter = new DailySummaryAdapter(dailySummary);
+                    dailySummaryRecyclerView.setAdapter(dailySummaryAdapter);
+                }
             }
         });
 
@@ -420,10 +491,29 @@ public class DailyInfoFragment extends Fragment {
 
         // button initialization for removing exercise
         removeExerciseButton = view.findViewById(R.id.removeExerciseFromDailyInfo);
+        List<String> finalExercise = exercise;
         removeExerciseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+               // ExerciseAdapter exerciseAdapterTemp = new ExerciseAdapter(finalExercise);
+                SparseBooleanArray selectedRows = exerciseAdapter.getSelectedIds();
+                if (selectedRows.size() > 0) {
+                    for (int i = (selectedRows.size() - 1); i >= 0; i--) {
+                        if (selectedRows.valueAt(i)) {
+                            finalExercise.remove(selectedRows.keyAt(i));
+                        }
+                    }
+                    final com.example.nutrimons.database.DateData dateData =
+                            new com.example.nutrimons.database.DateData(finalCurrentDay,
+                                    mDb.dateDataDao().findByDate(finalCurrentDay).breakfast,
+                                    mDb.dateDataDao().findByDate(finalCurrentDay).lunch,
+                                    mDb.dateDataDao().findByDate(finalCurrentDay).dinner,
+                                    mDb.dateDataDao().findByDate(finalCurrentDay).snack,
+                                    finalExercise);
+                    mDb.dateDataDao().updateDateData(dateData);
+                    exerciseAdapter.removeSelection();
+                }
+                exerciseRecyclerView.setAdapter(exerciseAdapter);
             }
         });
 

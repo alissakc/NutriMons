@@ -3,6 +3,7 @@ package com.example.nutrimons;
 import android.app.ActionBar;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ import com.example.nutrimons.database.AppDatabase;
 import com.example.nutrimons.database.DateData;
 import com.example.nutrimons.database.Exercise;
 import com.example.nutrimons.database.Meal;
+import com.example.nutrimons.database.User;
 import com.google.android.material.navigation.NavigationView;
 
 
@@ -557,6 +559,19 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
                     mDb.dateDataDao().updateDateData(dateData);
                     //mDb.dateDataDao().updateMealPlan(selectedBreakfast, selectedLunch, selectedDinner, selectedSnack, dateString);
                 }*/
+
+                //reward user
+                DateData dd = mDb.dateDataDao().findByDate(finalDateString);
+                User u = mDb.userDao().findByUserID(mDb.tokenDao().getUserID());
+                //dd.aggregateNutrients();
+                for(int i = 0; i < dd.nutrientsToFloatList().size(); ++i)
+                {
+                    if (dd.nutrientsToFloatList().get(i) / u.DRIToFloatList().get(i) >= 1)
+                    {
+                            u.nutriCoins += 1;
+                    }
+                }
+                mDb.userDao().insert(u);
 
                 long date = System.currentTimeMillis();
                 SimpleDateFormat Date = new SimpleDateFormat("MM/dd/yyyy");

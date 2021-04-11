@@ -1,5 +1,6 @@
 package com.example.nutrimons;
 
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +15,11 @@ import java.util.List;
 public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder> {
 
     private List<String> exerciseList;
+    private SparseBooleanArray mSelectedItemsIds;
 
     public ExerciseAdapter(List<String> exerciseList){
         this.exerciseList = exerciseList;
+        mSelectedItemsIds = new SparseBooleanArray();
     }
 
     @NonNull
@@ -30,6 +33,13 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
     public void onBindViewHolder(@NonNull ExerciseViewHolder holder, int position) {
         String exerciseName = exerciseList.get(position);
         holder.exerciseName.setText(exerciseName);
+        holder.checkBox.setChecked(mSelectedItemsIds.get(position));
+        holder.checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkCheckBox(position, !mSelectedItemsIds.get(position));
+            }
+        });
     }
 
     @Override
@@ -37,15 +47,42 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
         return exerciseList.size();
     }
 
+    /**
+     * Remove all checkbox Selection
+     **/
+    public void removeSelection() {
+        mSelectedItemsIds = new SparseBooleanArray();
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Check the Checkbox if not checked
+     **/
+    public void checkCheckBox(int position, boolean value) {
+        if (value)
+            mSelectedItemsIds.put(position, true);
+        else
+            mSelectedItemsIds.delete(position);
+
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Return the selected Checkbox IDs
+     **/
+    public SparseBooleanArray getSelectedIds() {
+        return mSelectedItemsIds;
+    }
+
     public static class ExerciseViewHolder extends RecyclerView.ViewHolder{
 
         public TextView exerciseName;
-        public CheckBox checkbox;
+        public CheckBox checkBox;
         
         public ExerciseViewHolder(@NonNull View itemView) {
             super(itemView);
             exerciseName = itemView.findViewById(R.id.recycler_view_item);
-            checkbox = itemView.findViewById(R.id.checkBox_select);
+            checkBox = itemView.findViewById(R.id.checkBox_select);
         }
 
 

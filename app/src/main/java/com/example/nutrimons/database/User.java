@@ -1,6 +1,7 @@
 package com.example.nutrimons.database;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
@@ -42,7 +43,7 @@ public class User {
     public String financialPlan;
 
     @ColumnInfo(name = "nutriCoins")
-    public String nutriCoins;
+    public int nutriCoins;
 
     @ColumnInfo(name = "age")
     public String age;
@@ -173,6 +174,7 @@ public class User {
     public User(String email, String password) {
         this.email = email;
         this.password = password;
+        this.nutriCoins = 0;
     }
 
     public String toString()
