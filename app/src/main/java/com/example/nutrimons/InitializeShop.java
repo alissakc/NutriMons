@@ -24,7 +24,10 @@ public class InitializeShop {
                 String name = s;
                 InputStream is = am.open(FOLDER + "/" + s);
                 ShopItem si = new ShopItem();
-
+                if(name.equals("pig_pets_1.png"))
+                {
+                    si.owned = 1;
+                }
                 si.name = s.substring(0, s.indexOf('_'));
                 s = s.substring(s.indexOf('_') + 1);
 
@@ -36,8 +39,8 @@ public class InitializeShop {
                 Bitmap bm = scaleBitmap(BitmapFactory.decodeStream(is), 300);
                 si.image = BitMapToString(bm);
 
-                if(s.equals("pig_pets_1.png"))
-                    si.owned = 1;
+
+
 
                 db.shopItemDao().insert(si);
 
