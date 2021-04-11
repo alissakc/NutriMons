@@ -1,6 +1,8 @@
 package TamagotchiGame;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,6 +13,7 @@ import android.os.SystemClock;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,10 +30,13 @@ import android.widget.Toast;
 import com.example.nutrimons.Profile;
 import com.example.nutrimons.R;
 import com.example.nutrimons.database.AppDatabase;
+import com.example.nutrimons.database.ShopItem;
 import com.example.nutrimons.database.TamagotchiPet;
 
+import java.io.ByteArrayOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -90,8 +96,13 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
     //var for changing animal
     Button changeAnimal;
     private int currentImage;
-    int[] images = {R.drawable.tamagotchi_pig, R.drawable.tamagotchi_big, R.drawable.tama__pic};
+    //int[] images = {R.drawable.tamagotchi_pig, R.drawable.tamagotchi_big, R.drawable.tama__pic};
 
+    List<Bitmap> imagesPet = new ArrayList<Bitmap>();
+
+
+
+    Button hatButt;
 
 
     //pet movement
@@ -148,15 +159,29 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tamagotchi, container, false);
+        // Inflate the layout for this fragment
 
         //get DB and pet
         mDb = AppDatabase.getInstance(getContext());
         TamagotchiPet tama = mDb.tamagotchiDao().findByUserId(mDb.tokenDao().getUserID());
 
 
-        //System.out.print(allPet);
+        List<ShopItem> shopList = mDb.shopItemDao().getAll();
+        for(ShopItem si : shopList)
+        {
+            if(si.owned==1)
+            {
+                if(si.category.equals("pets"))
+                {
+                    ImageButton ib = new ImageButton(getContext());
+                    imagesPet.add(StringToBitMap(si.image));
+                }
+            }
+            System.out.println("IMAGEPET"+imagesPet);
+        }
+
+
         name = tama.petName;
         petName = view.findViewById(R.id.petName);
         petName.setText(name);
@@ -188,7 +213,7 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
         //Level Number
         levelingView = view.findViewById(R.id.levelNum);
         levelingView.setText(String.valueOf(tama.level));
-        
+
 
         //feeding pet
         feedButton = view.findViewById(R.id.feedButton);
@@ -218,7 +243,12 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
         });
 
 
+        hatButt = view.findViewById(R.id.hatsButt);
+        /*hatButt.setOnClickListener(v -> {
 
+
+        });
+        */
 
 
         TamagotchiPet = view.findViewById(R.id.TamagotchiPet);
@@ -230,8 +260,8 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 currentImage++;
-                currentImage = currentImage % images.length;
-                TamagotchiPet.setImageResource(images[currentImage]);
+                currentImage = currentImage % imagesPet.size();
+                TamagotchiPet.setImageBitmap((imagesPet.get(currentImage)));
             }
         });
 
@@ -368,7 +398,23 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
         }
         return date;
     }
-
+    public Bitmap StringToBitMap(String encodedString){ //https://stackoverflow.com/questions/13562429/how-many-ways-to-convert-bitmap-to-string-and-vice-versa
+        try {
+            byte [] encodeByte= Base64.decode(encodedString,Base64.DEFAULT);
+            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        } catch(Exception e) {
+            e.getMessage();
+            return null;
+        }
+    }
+    public String BitMapToString(Bitmap bitmap){ //https://stackoverflow.com/questions/13562429/how-many-ways-to-convert-bitmap-to-string-and-vice-versa
+        ByteArrayOutputStream baos=new  ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
+        byte [] b=baos.toByteArray();
+        String temp= Base64.encodeToString(b, Base64.DEFAULT);
+        return temp;
+    }
 
 
 

@@ -27,5 +27,8 @@ public class ShopItem {
     @ColumnInfo(name = "cost")
     public int cost;
 
+    @ColumnInfo(name = "owned")
+    public int owned = 0;
+
     public ShopItem() {}
 }

@@ -3,6 +3,7 @@ package com.example.nutrimons;
 import android.database.sqlite.SQLiteConstraintException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -41,8 +43,10 @@ public class TamagotchiShop extends Fragment {
 
     private AppDatabase mDb;
     private TamagotchiPet tama;
-    private LinearLayout shopItemsArea;
+    //public LinearLayout shopItemsArea;
 
+    Button hatsButt;
+    Button petsButt;
     //Coins
     TextView coins;
 
@@ -95,11 +99,112 @@ public class TamagotchiShop extends Fragment {
         coins.setText(String.valueOf(tama.coins));
         mDb.tamagotchiDao().insert(tama);
 
-        List<ShopItem> shopItems = mDb.shopItemDao().getAll();
-        shopItemsArea = (LinearLayout) view.findViewById(R.id.shopItemsArea);
-        shopItemsArea.addView(new TextView(getContext()));
 
-        for(ShopItem si : shopItems)
+        //shopItemsArea = (LinearLayout) view.findViewById(R.id.shopItemsArea);
+        //shopItemsArea.addView(new TextView(getContext()));
+
+
+        hatsButt = view.findViewById(R.id.hatsButt);
+        hatsButt.setOnClickListener(new View.OnClickListener() {
+
+                                        List<ShopItem> shopItems = mDb.shopItemDao().getShopItemByCategory("hats");
+
+                                        @Override
+                                        public void onClick(View v) {
+                                            LinearLayout shopItemsArea = (LinearLayout) view.findViewById(R.id.shopItemsArea);
+                                            //shopItemsArea.addView(new TextView(getContext()));
+                                            shopItemsArea.removeAllViews();
+                                            for(ShopItem si : shopItems)
+                                            {
+                                                TextView tv = new TextView(getContext());
+                                                tv.setText(si.name);
+                                                //tv.setGravity(View.TEXT_ALIGNMENT_CENTER);
+                                                tv.setGravity(View.TEXT_ALIGNMENT_GRAVITY);
+                                                shopItemsArea.addView(tv);
+
+                                                ImageButton ib = new ImageButton(getContext());
+                                                ib.setImageBitmap(StringToBitMap(si.image));
+                                                ib.setBackgroundColor(Color.parseColor("#00FFFFFF"));
+                                                ib.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View view) {
+                                                        //Log.d("clicked", String.valueOf(si.shopItemID));
+                                                        try {
+                                                            if(si.owned==1)//tama.shopItems.contains(String.valueOf(si.shopItemID)))
+
+                                                                Toast.makeText(getContext(), "You already own this", Toast.LENGTH_SHORT).show();
+                                                            else
+                                                            {
+                                                                si.owned = 1;
+                                                                mDb.shopItemDao().insert(si);
+                                                                //tama.shopItems.add(String.valueOf(si.shopItemID));
+                                                                //mDb.tamagotchiDao().insert(tama);
+                                                            }
+                                                        } catch (SQLiteConstraintException e) {
+                                                            Toast.makeText(getContext(), "You already own this ERROR", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    }
+                                                });
+                                                shopItemsArea.addView(ib);
+
+                                                shopItemsArea.addView(new TextView(getContext()));
+                                            }
+                                        }
+                                    }
+        );
+
+        //List<ShopItem> shopItems = mDb.shopItemDao().getAll();
+        //shopItemsArea = (LinearLayout) view.findViewById(R.id.shopItemsArea);
+        //shopItemsArea.addView(new TextView(getContext()));
+
+
+        //shopItemsArea = (LinearLayout) view.findViewById(R.id.shopItemsArea);
+        //shopItemsArea.addView(new TextView(getContext()));
+        petsButt = view.findViewById(R.id.petsButt);
+        petsButt.setOnClickListener(new View.OnClickListener() {
+                                        List<ShopItem> shopItems = mDb.shopItemDao().getShopItemByCategory("pets");
+                                        @Override
+                                        public void onClick(View v) {
+                                            LinearLayout shopItemsArea = (LinearLayout) view.findViewById(R.id.shopItemsArea);
+                                            //shopItemsArea.addView(new TextView(getContext()));
+                                            shopItemsArea.removeAllViews();
+                                            for(ShopItem si : shopItems)
+                                            {
+                                                TextView tv = new TextView(getContext());
+                                                tv.setText(si.name);
+                                                //tv.setGravity(View.TEXT_ALIGNMENT_CENTER);
+                                                tv.setGravity(View.TEXT_ALIGNMENT_GRAVITY);
+                                                shopItemsArea.addView(tv);
+
+                                                ImageButton ib = new ImageButton(getContext());
+                                                ib.setImageBitmap(StringToBitMap(si.image));
+                                                ib.setBackgroundColor(Color.parseColor("#00FFFFFF"));
+                                                ib.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View view) {
+                                                        //Log.d("clicked", String.valueOf(si.shopItemID));
+                                                        try {
+                                                            if(si.owned==1)//tama.shopItems.contains(String.valueOf(si.shopItemID)))
+                                                                Toast.makeText(getContext(), "You already own this", Toast.LENGTH_SHORT).show();
+                                                            else
+                                                            {
+                                                                si.owned = 1;
+                                                                mDb.shopItemDao().insert(si);
+
+                                                            }
+                                                        } catch (SQLiteConstraintException e) {
+                                                            Toast.makeText(getContext(), "You already own this", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    }
+                                                });
+                                                shopItemsArea.addView(ib);
+
+                                                shopItemsArea.addView(new TextView(getContext()));
+                                            }
+                                        }
+                                    }
+        );
+        /*for(ShopItem si : shopItems)
         {
             TextView tv = new TextView(getContext());
             tv.setText(si.name);
@@ -109,6 +214,7 @@ public class TamagotchiShop extends Fragment {
 
             ImageButton ib = new ImageButton(getContext());
             ib.setImageBitmap(StringToBitMap(si.image));
+            ib.setBackgroundColor(Color.parseColor("#00FFFFFF"));
             ib.setOnClickListener(new View.OnClickListener() {
                                       @Override
                                       public void onClick(View view) {
@@ -130,7 +236,7 @@ public class TamagotchiShop extends Fragment {
 
             shopItemsArea.addView(new TextView(getContext()));
         }
-
+           */
         /*for(ShopItem s : shopItems)
         {
             Log.d("name: ", s.name);

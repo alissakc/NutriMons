@@ -55,7 +55,7 @@
                     android:orientation="horizontal">
 
                     <Button
-                        android:id="@+id/hats"
+                        android:id="@+id/hatsButt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
@@ -82,7 +82,7 @@
                         app:backgroundTint="#8BC34A" />
 
                     <Button
-                        android:id="@+id/pets"
+                        android:id="@+id/petsButt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
