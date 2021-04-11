@@ -4,6 +4,7 @@ import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
+import android.util.Log;
 
 import com.example.nutrimons.database.AppDatabase;
 import com.example.nutrimons.database.ShopItem;
@@ -24,7 +25,6 @@ public class InitializeShop {
                 InputStream is = am.open(FOLDER + "/" + s);
                 ShopItem si = new ShopItem();
 
-
                 si.name = s.substring(0, s.indexOf('_'));
                 s = s.substring(s.indexOf('_') + 1);
 
@@ -35,6 +35,10 @@ public class InitializeShop {
 
                 Bitmap bm = scaleBitmap(BitmapFactory.decodeStream(is), 300);
                 si.image = BitMapToString(bm);
+
+                if(s.equals("pig_pets_1.png"))
+                    si.owned = 1;
+
                 db.shopItemDao().insert(si);
 
             }
