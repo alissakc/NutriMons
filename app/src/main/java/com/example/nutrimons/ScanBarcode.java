@@ -458,11 +458,11 @@ public class ScanBarcode extends Fragment {
                 case "monounsaturated-fat":
                 case "polyunsaturated-fat":
                 case "trans-fat":
-                case "sodium":
                     return ((Integer) value).floatValue();
                 //1000 off since we use mg
                 case "cholesterol":
                 case "vitamin-c":
+                case "sodium":
                 case "potassium":
                 case "calcium":
                 case "iron":
@@ -489,12 +489,12 @@ public class ScanBarcode extends Fragment {
                 case "monounsaturated-fat":
                 case "polyunsaturated-fat":
                 case "trans-fat":
-                case "sodium":
-                case "potassium":
                     return ((Double) value).floatValue();
                 //1000 off since we use mg
                 case "cholesterol":
                 case "vitamin-c":
+                case "sodium":
+                case "potassium":
                 case "calcium":
                 case "iron":
                     return ((Double) value).floatValue() * 1000;

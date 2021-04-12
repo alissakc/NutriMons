@@ -24,6 +24,9 @@ public interface MealDao {
     @Query("SELECT mealName FROM meal ORDER BY mealName ASC")
     List<String> getAllNames();
 
+    @Query("SELECT servingsEaten FROM meal ORDER BY mealName ASC")
+    List<Float> getAllServings();
+
     @Query("SELECT * FROM meal WHERE mealID IN (:mealIds)")
     List<Meal> loadAllByIds(int[] mealIds);
 

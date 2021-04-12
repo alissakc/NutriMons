@@ -115,25 +115,24 @@ public class DateData {
     private void addNutrients(List<Meal> meals) {
         for (Meal m : meals) {
             if(m != null){
-                this.calories += m.calories;
-                this.protein += m.protein;
-                this.carbohydrate += m.carbohydrate;
-                this.sugar += m.sugar;
-                this.fiber += m.fiber;
-                this.cholesterol += m.cholesterol;
-                this.saturatedFat += m.saturatedFat;
-                this.monounsaturatedFat += m.monounsaturatedFat;
-                this.polyunsaturatedFat += m.polyunsaturatedFat;
-                this.transFat += m.transFat;
-                this.vitaminA += m.vitaminA;
-                this.vitaminC += m.vitaminC;
-                this.vitaminD += m.vitaminD;
-                this.sodium += m.sodium;
-                this.potassium += m.potassium;
-                this.calcium += m.calcium;
-                this.iron += m.iron;
+                this.calories += m.servingsEaten * m.calories;
+                this.protein += m.servingsEaten * m.protein;
+                this.carbohydrate += m.servingsEaten * m.carbohydrate;
+                this.sugar += m.servingsEaten * m.sugar;
+                this.fiber += m.servingsEaten * m.fiber;
+                this.cholesterol += m.servingsEaten * m.cholesterol;
+                this.saturatedFat += m.servingsEaten * m.saturatedFat;
+                this.monounsaturatedFat += m.servingsEaten * m.monounsaturatedFat;
+                this.polyunsaturatedFat += m.servingsEaten * m.polyunsaturatedFat;
+                this.transFat += m.servingsEaten * m.transFat;
+                this.vitaminA += m.servingsEaten * m.vitaminA;
+                this.vitaminC += m.servingsEaten * m.vitaminC;
+                this.vitaminD += m.servingsEaten * m.vitaminD;
+                this.sodium += m.servingsEaten * m.sodium;
+                this.potassium += m.servingsEaten * m.potassium;
+                this.calcium += m.servingsEaten * m.calcium;
+                this.iron += m.servingsEaten * m.iron;
             }
-
         }
     }
 

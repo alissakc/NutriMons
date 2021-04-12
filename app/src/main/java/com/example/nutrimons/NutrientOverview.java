@@ -158,6 +158,7 @@ public class NutrientOverview extends Fragment implements View.OnClickListener {
             }else {
                 y = (nutrientValues.get(i) / nutrientDRIs.get(i)) * 100;
             }
+            Log.d(String.valueOf(i), nutrientValues.get(i) + " " + nutrientDRIs.get(i));
 
             values.add(new BarEntry(x, y));
             if(y > 100){
