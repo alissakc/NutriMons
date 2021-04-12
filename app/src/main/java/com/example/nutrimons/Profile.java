@@ -402,6 +402,7 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
 
         mDb.userDao().insert(u);
 
+        Toast.makeText(getContext(), "Changes saved", Toast.LENGTH_SHORT).show();
         Log.d("User ", u.toString());
     }
 

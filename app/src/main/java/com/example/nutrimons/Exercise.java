@@ -179,7 +179,7 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
                 duration = Float.parseFloat(durationText.getText().toString());
                 final com.example.nutrimons.database.Exercise exercise = new com.example.nutrimons.database.Exercise(exerciseName, caloriesPerUnit, unitName, duration);
                 mDb.exerciseDao().insert(exercise);
-                //Toast.makeText(getContext(), "Created entry", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Created entry", Toast.LENGTH_SHORT).show();
                 // refreshes exercise page
                 Bundle bundle = new Bundle();
                 bundle.putString("key", finalDateString);
@@ -195,7 +195,12 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
             @Override
             public void onClick(View v) {
                 hideKeyboard();
-                exerciseList.add(exerciseSpinner.getSelectedItem().toString());
+
+                String exercise = exerciseSpinner.getSelectedItem().toString();
+                if(exercise.equals("Select an item"))
+                    return;
+                exerciseList.add(exercise);
+                Toast.makeText(getContext(), exercise + " added", Toast.LENGTH_SHORT).show();
 
                 ArrayList<String> finalMeals = new ArrayList<>();
                 ArrayList<String> finalExercises = new ArrayList<>();

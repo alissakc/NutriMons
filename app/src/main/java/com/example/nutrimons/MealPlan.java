@@ -588,16 +588,17 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
 
                     if(nuts.get(i) / nutrientULs.get(i) >= 1)
                     {
-                    Toast.makeText(getContext(), "DANGER: You have consumed a critical amount of '"
-                            + nutStrs.get(i) + "'. Eating any more can be a long-term detriment to your health. " +
-                            "See Nutrient Overview for more details", Toast.LENGTH_LONG).show();
-                    //ns.notifyLimit("UL");
+                        getContext().startService( new Intent( getContext(), NotificationService.class )) ;
+                        Toast.makeText(getContext(), "DANGER: You have consumed a critical amount of '"
+                                + nutStrs.get(i) + "'. Eating any more can be a long-term detriment to your health. " +
+                                "See Nutrient Overview for more details", Toast.LENGTH_LONG).show();
+                        //ns.notifyLimit("UL");
                     }
                     else if(nuts.get(i) / nutrientDRIs.get(i) >= 1)
                     {
-                        Toast.makeText(getContext(), "Notification: You have reached your daily limit of '"
-                                + nutStrs.get(i) + "'. See Nutrient Overview for more details", Toast.LENGTH_SHORT).show();
-                        //ns.notifyLimit("DRI");
+                            Toast.makeText(getContext(), "Notification: You have reached your daily limit of '"
+                                    + nutStrs.get(i) + "'. See Nutrient Overview for more details", Toast.LENGTH_SHORT).show();
+                            //ns.notifyLimit("DRI");
                     }
 
                 }
