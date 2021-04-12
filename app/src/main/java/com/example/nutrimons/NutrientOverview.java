@@ -5,10 +5,13 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.nutrimons.database.AppDatabase;
 import com.example.nutrimons.database.DateData;
@@ -30,7 +33,7 @@ import java.util.List;
  * Use the {@link NutrientOverview#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NutrientOverview extends Fragment {
+public class NutrientOverview extends Fragment implements View.OnClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -48,6 +51,8 @@ public class NutrientOverview extends Fragment {
     private static List<Float> nutrientValues, nutrientDRIs, nutrientULs;
 
     private HorizontalBarChart chart;
+
+    private Button toNutrientInfo;
 
     private AppDatabase mDb;
 
@@ -110,7 +115,19 @@ public class NutrientOverview extends Fragment {
         configureChartAppearance();
         prepareChartData(data);
 
+        toNutrientInfo = new Button(getContext());
+        toNutrientInfo.setBackgroundColor(00000000);
+        toNutrientInfo.setOnClickListener(this);
+        chart.addView(toNutrientInfo);
+
         return view;
+    }
+
+    @Override
+    public void onClick(View view)
+    {
+        //Log.d("button", "clicked");
+        Navigation.findNavController(view).navigate(R.id.action_nav_nutrientOverview_to_nav_nutrientInformation);
     }
 
     private void configureChartAppearance() {

@@ -126,7 +126,11 @@
         android:id="@+id/nav_nutrientOverview"
         android:name="com.example.nutrimons.NutrientOverview"
         android:label="Nutrient Overview"
-        tools:layout="@layout/fragment_nutrient_overview" />
+        tools:layout="@layout/fragment_nutrient_overview" >
+        <action
+            android:id="@+id/action_nav_nutrientOverview_to_nav_nutrientInformation"
+            app:destination="@id/nav_nutrientInformation" />
+    </fragment>
     <fragment
         android:id="@+id/nav_nutrientInformation"
         android:name="com.example.nutrimons.NutrientInformation"
