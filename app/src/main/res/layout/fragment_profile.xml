@@ -106,6 +106,8 @@
                     android:id="@+id/profileName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
                     android:text="Timothy" />
             </LinearLayout>
 
@@ -124,6 +126,8 @@
                     android:id="@+id/email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
                     android:text="TimTomTam@gmail.com" />
             </LinearLayout>
 
@@ -142,6 +146,8 @@
                     android:id="@+id/password"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
                     android:text="hunter2" />
             </LinearLayout>
 
@@ -160,6 +166,8 @@
                     android:id="@+id/birthday"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
                     android:text="June 8 1949" />
             </LinearLayout>
 
@@ -787,7 +795,8 @@
                     android:id="@+id/age"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
                     android:text="71" />
             </LinearLayout>
 
@@ -825,7 +834,8 @@
                     android:id="@+id/weight"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
                     android:text="280" />
             </LinearLayout>
 
@@ -844,7 +854,8 @@
                     android:id="@+id/height"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
                     android:text="68" />
             </LinearLayout>
 
@@ -863,6 +874,8 @@
                     android:id="@+id/ethnicity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
                     android:text="White" />
             </LinearLayout>
 
@@ -895,6 +908,8 @@
                 android:id="@+id/healthHistory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:imeOptions="actionDone"
+                android:inputType="text"
                 android:text="Diabetes, Hypertension" />
 
         </LinearLayout>
@@ -936,6 +951,8 @@
                     android:id="@+id/financialSource"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
                     android:text="paypal" />
             </LinearLayout>
 
@@ -954,6 +971,8 @@
                     android:id="@+id/financialHistory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
                     android:text="9 transactions" />
             </LinearLayout>
 
@@ -972,6 +991,8 @@
                     android:id="@+id/financialPlan"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
                     android:text="NutriGold" />
             </LinearLayout>
 
@@ -1017,6 +1038,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:imeOptions="actionDone"
+                android:inputType="text"
                 android:text="lose 100 lbs, improve overall health, walk 2 miles each day" />
 
         </LinearLayout>

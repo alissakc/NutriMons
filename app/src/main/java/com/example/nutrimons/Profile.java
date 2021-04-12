@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -223,6 +224,12 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
         return view;
     }
 
+    private void hideKeyboard()
+    {
+        InputMethodManager mgr = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        mgr.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
     private boolean getPermissions()
     {
         //ask for storage permissions
@@ -248,6 +255,7 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
     @Override
     public void onClick(View view) {
         Intent intent;
+        hideKeyboard();
         switch(view.getId()) {
             case (R.id.editProfilePicture):
                 intent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);

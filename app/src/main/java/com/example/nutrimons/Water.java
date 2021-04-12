@@ -1,5 +1,6 @@
 package com.example.nutrimons;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -50,6 +52,8 @@ public class Water extends Fragment implements View.OnClickListener{
     // creates instance of database
     private AppDatabase mDb;
 
+    private View view;
+
     // Required empty public constructor
     public Water() {
 
@@ -64,7 +68,7 @@ public class Water extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_water, container, false);
+        view = inflater.inflate(R.layout.fragment_water, container, false);
         waterPieChart = view.findViewById(R.id.waterPieChart_view);
         submitWater = view.findViewById(R.id.waterSubmitButton);
         submitWater.setOnClickListener(this);
@@ -288,6 +292,7 @@ public class Water extends Fragment implements View.OnClickListener{
     }
     @Override
     public void onClick(View v) {
+        hideKeyboard();
         switch (v.getId()) {
             case (R.id.waterSubmitButton):
                 try {
@@ -342,6 +347,12 @@ public class Water extends Fragment implements View.OnClickListener{
                 break;
 
         }
+    }
+
+    private void hideKeyboard()
+    {
+        InputMethodManager mgr = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        mgr.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     // checks if a button text is in oz

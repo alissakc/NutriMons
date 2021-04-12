@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -59,6 +60,8 @@ public class AddMeal extends Fragment {
     // creates instance of database
     private AppDatabase mDb;
 
+    private View view;
+
     private View checkboxbrandedButton;
     private boolean isBranded;
 
@@ -102,7 +105,7 @@ public class AddMeal extends Fragment {
         }
 
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_add_meal, container, false);
+        view = inflater.inflate(R.layout.fragment_add_meal, container, false);
 
         // database
         mDb = AppDatabase.getInstance(getContext());
@@ -183,6 +186,7 @@ public class AddMeal extends Fragment {
         checkboxbrandedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                hideKeyboard();
                 if(((CompoundButton) view).isChecked()){
                     isBranded = true;
                 } else {
@@ -194,6 +198,7 @@ public class AddMeal extends Fragment {
         searchFDCButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                hideKeyboard();
                 mealName = mealNameText.getText().toString();
                 AddFromFDC fragment = new AddFromFDC();
 
@@ -207,6 +212,7 @@ public class AddMeal extends Fragment {
         advancedMealButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                hideKeyboard();
                 if(advancedMealForm.getVisibility() == View.GONE)
                     advancedMealForm.setVisibility(View.VISIBLE);
                 else
@@ -218,6 +224,7 @@ public class AddMeal extends Fragment {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                hideKeyboard();
                 try {
                     mealName = mealNameText.getText().toString();
                     servingSize = servingSizeText.getText().toString();
@@ -326,6 +333,12 @@ public class AddMeal extends Fragment {
         });
 
         return view;
+    }
+
+    private void hideKeyboard()
+    {
+        InputMethodManager mgr = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        mgr.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     @Override

@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -60,6 +61,8 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
     // creates instance of database
     private AppDatabase mDb;
 
+    private View view;
+
     public Exercise() {
         // Required empty public constructor
     }
@@ -98,7 +101,7 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
             mListener.onFragmentInteraction("Exercise");
         }
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_exercise, container, false);
+        view = inflater.inflate(R.layout.fragment_exercise, container, false);
 
         // database
         mDb = AppDatabase.getInstance(getContext());
@@ -169,6 +172,7 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                hideKeyboard();
                 exerciseName = exerciseNameText.getText().toString();
                 caloriesPerUnit = Integer.parseInt(caloriesPerUnitText.getText().toString());
                 unitName = unitNameText.getText().toString();
@@ -190,6 +194,7 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                hideKeyboard();
                 exerciseList.add(exerciseSpinner.getSelectedItem().toString());
 
                 ArrayList<String> finalMeals = new ArrayList<>();
@@ -364,6 +369,12 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
             }
         });
         return view;
+    }
+
+    private void hideKeyboard()
+    {
+        InputMethodManager mgr = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        mgr.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     @Override

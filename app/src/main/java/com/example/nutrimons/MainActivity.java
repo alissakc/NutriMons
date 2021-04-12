@@ -1,5 +1,6 @@
 package com.example.nutrimons;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.view.inputmethod.InputMethodManager;
 
 import com.example.nutrimons.database.AppDatabase;
 import com.example.nutrimons.database.DateData;
@@ -18,7 +20,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -66,6 +71,16 @@ public class MainActivity extends AppCompatActivity implements DrawerController,
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) { hideKeyboard(); }
+            @Override
+            public void onDrawerOpened(@NonNull View drawerView) {}
+            @Override
+            public void onDrawerClosed(@NonNull View drawerView) {}
+            @Override
+            public void onDrawerStateChanged(int newState) {}
+        });
 
         //initialize token
         mDb = AppDatabase.getInstance(getApplicationContext());
@@ -115,6 +130,17 @@ public class MainActivity extends AppCompatActivity implements DrawerController,
             dateData = new DateData(dateString, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
             mDb.dateDataDao().insert(dateData);
         }
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = this.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(this);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     @Override
