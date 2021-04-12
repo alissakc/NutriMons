@@ -1,7 +1,10 @@
 package com.example.nutrimons;
 
 import android.app.ActionBar;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +24,7 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
@@ -563,7 +567,6 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
                 //reward user
                 DateData dd = mDb.dateDataDao().findByDate(finalDateString);
                 User u = mDb.userDao().findByUserID(mDb.tokenDao().getUserID());
-                //dd.aggregateNutrients();
                 for(int i = 0; i < dd.nutrientsToFloatList().size(); ++i)
                 {
                     if (dd.nutrientsToFloatList().get(i) / u.DRIToFloatList().get(i) >= 1)
@@ -572,6 +575,32 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
                     }
                 }
                 mDb.userDao().insert(u);
+
+                dd.aggregateNutrients();
+                List<Float> nuts = dd.nutrientsToFloatList();
+                List<String> nutStrs = dd.nutrientsToStringList();
+                List<Float> nutrientDRIs = u.DRIToFloatList();
+                List<Float> nutrientULs = u.ULToFloatList();
+                //getContext().startService(new Intent(getContext(), NotificationService.class));
+
+                for(int i = 0; i < nuts.size(); ++i)
+                {
+
+                    if(nuts.get(i) / nutrientULs.get(i) >= 1)
+                    {
+                    Toast.makeText(getContext(), "DANGER: You have consumed a critical amount of '"
+                            + nutStrs.get(i) + "'. Eating any more can be a long-term detriment to your health. " +
+                            "See Nutrient Overview for more details", Toast.LENGTH_LONG).show();
+                    //ns.notifyLimit("UL");
+                    }
+                    else if(nuts.get(i) / nutrientDRIs.get(i) >= 1)
+                    {
+                        Toast.makeText(getContext(), "Notification: You have reached your daily limit of '"
+                                + nutStrs.get(i) + "'. See Nutrient Overview for more details", Toast.LENGTH_SHORT).show();
+                        //ns.notifyLimit("DRI");
+                    }
+
+                }
 
                 long date = System.currentTimeMillis();
                 SimpleDateFormat Date = new SimpleDateFormat("MM/dd/yyyy");
@@ -613,7 +642,7 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
         parent.getId();
 
         // Showing selected spinner item
-        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_SHORT).show();
 
     }
 

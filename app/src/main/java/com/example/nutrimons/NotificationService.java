@@ -31,7 +31,18 @@ public class NotificationService extends Service {
         Log.e(TAG, "onStartCommand");
         super.onStartCommand(intent, flags, startId);
 
-        startTimer();
+        /*switch(limitType) {
+            case "DRI":
+                createNotification();
+                Log.d("notify", "DRI");
+                break;
+            case "UL":
+                createNotification();
+                Log.d("notify", "UL");
+                break;
+            default:*/
+                startTimer();
+        //}
 
         return START_STICKY;
     }
@@ -95,7 +106,8 @@ public class NotificationService extends Service {
             }
         };
     }
-    private void createNotification () {
+
+    private void createNotification() {
         NotificationManager notificationManager = (NotificationManager) getSystemService( NOTIFICATION_SERVICE ) ;
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "This is a notification" ) ;
         builder.setContentTitle( "Nutrimons want you back" ) ;

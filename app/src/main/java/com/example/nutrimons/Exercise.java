@@ -175,7 +175,7 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
                 duration = Float.parseFloat(durationText.getText().toString());
                 final com.example.nutrimons.database.Exercise exercise = new com.example.nutrimons.database.Exercise(exerciseName, caloriesPerUnit, unitName, duration);
                 mDb.exerciseDao().insert(exercise);
-                Toast.makeText(getContext(), "Created entry", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "Created entry", Toast.LENGTH_SHORT).show();
                 // refreshes exercise page
                 Bundle bundle = new Bundle();
                 bundle.putString("key", finalDateString);
@@ -372,7 +372,7 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
         String item = parent.getItemAtPosition(position).toString();
 
         // Showing selected spinner item
-        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+        //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
 
     }
 

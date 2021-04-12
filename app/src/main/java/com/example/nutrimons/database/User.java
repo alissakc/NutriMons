@@ -222,11 +222,11 @@ public class User {
         ArrayList<Float> dailyList = new ArrayList<>();
 
         dailyList.add(Float.parseFloat(calories));
-        dailyList.add(0f);//null
+        dailyList.add(Float.MAX_VALUE);//null
         dailyList.add(Float.parseFloat(proteinUL));
         dailyList.add(Float.parseFloat(carbsUL));
         dailyList.add(Float.parseFloat(sugarUL));
-        dailyList.add(0f);//null
+        dailyList.add(Float.MAX_VALUE);//null
         dailyList.add(Float.parseFloat(cholesterolUL));
         dailyList.add(Float.parseFloat(saturatedFatsUL));
         dailyList.add(Float.parseFloat(unsaturatedFatsUL));
@@ -235,7 +235,7 @@ public class User {
         dailyList.add(Float.parseFloat(vitaminCUL));
         dailyList.add(Float.parseFloat(vitaminDUL));
         dailyList.add(Float.parseFloat(sodiumUL));
-        dailyList.add(0f);//null
+        dailyList.add(Float.MAX_VALUE);//null
         dailyList.add(Float.parseFloat(calciumUL));
         dailyList.add(Float.parseFloat(ironUL));
 

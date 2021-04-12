@@ -30,20 +30,22 @@
         <item
             android:id="@+id/nav_tamagotchiShop"
             android:icon="@drawable/ic_shop"
-            android:title="@string/tamagotchi_shop" />
-        <item
-            android:id="@+id/nav_nutrientOverview"
-            android:icon="@drawable/ic_graph"
-            android:title="@string/nutrient_overview" />
-        <item
-            android:id="@+id/nav_nutrientInformation"
-            android:icon="@drawable/ic_info"
-            android:title="@string/nutrient_information" />
+            android:title="@string/tamagotchi_shop"
+            android:visible="false" />
     </group>
 
     <item android:title="@string/meal">
         <menu>
             <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_nutrientOverview"
+                    android:icon="@drawable/ic_graph"
+                    android:title="@string/nutrient_overview" />
+                <item
+                    android:id="@+id/nav_nutrientInformation"
+                    android:icon="@drawable/ic_info"
+                    android:title="@string/nutrient_information"
+                    android:visible="false" />
                 <item
                     android:id="@+id/nav_mealPlan"
                     android:icon="@drawable/ic_meal_plan"
