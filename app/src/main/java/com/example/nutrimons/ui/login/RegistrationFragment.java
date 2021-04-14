@@ -9,6 +9,7 @@ import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -19,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -142,14 +144,19 @@ public class RegistrationFragment extends Fragment {
                 //loadingProgressBar.setVisibility(View.VISIBLE);
                 //loginViewModel.login(usernameEditText.getText().toString(),
                 //        passwordEditText.getText().toString());
-                Navigation.findNavController(view).navigate(R.id.action_nav_registration_to_nav_login);
+                InputMethodManager mgr = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                mgr.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
+                Navigation.findNavController(view).navigate(R.id.action_nav_registration_to_nav_login);
             }
         });
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                InputMethodManager mgr = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                mgr.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
                 List<User> myList = mDb.userDao().getAll();
                 User user = new User(emailEditText.getText().toString(), passwordEditText.getText().toString());
 
