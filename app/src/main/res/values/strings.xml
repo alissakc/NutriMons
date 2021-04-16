@@ -349,6 +349,8 @@
     <string name="calendar">Calendar</string>
     <string name="remove_exercise">Remove Exercise</string>
     <string name="date">Date</string>
+    <string name="no_meals_were_inputted">No meals were inputted.</string>
+    <string name="no_exercises_were_inputted">No exercises were inputted.</string>
     <string-array name="factBank">
         <item>Milk is 87% water. The nutrients, like protein, carbohydrate, vitamins and minerals are all found in the other 13%.</item>
         <item>Fluid needs vary depending on your age and gender. Teens and adults need anywhere between 8 and 13 cups of fluid each day. Water is great, but milk, juice, soup and anything else you drink also count as fluid.</item>
