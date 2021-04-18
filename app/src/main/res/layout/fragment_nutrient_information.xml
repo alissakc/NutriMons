@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NutrientInformation">
+    tools:context=".NutrientInformation"
+    android:background="#FFFFFF">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
