@@ -203,7 +203,7 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
                 ArrayList<String> finalMeals = new ArrayList<>();
                 ArrayList<String> finalExercises = new ArrayList<>();
                 if (BAMM.getCurrentDateData() == null) {
-                    final DateData dateData = new DateData(finalDateString, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), exerciseList);
+                    final DateData dateData = new DateData(finalDateString, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), exerciseList, 0f, "L");
                     mDb.dateDataDao().insert(dateData);
                 } else {
                     DateData dd = BAMM.getCurrentDateData();
@@ -228,7 +228,8 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
                     }
                     final DateData dateData =
                             new DateData(finalDateString,
-                                    dd.breakfast, dd.lunch, dd.dinner, dd.snack, exerciseList);
+                                    dd.breakfast, dd.lunch, dd.dinner, dd.snack, exerciseList,
+                                    dd.water, dd.water_unit);
                     mDb.dateDataDao().updateDateData(dateData);
 
                     // gets list data from the database

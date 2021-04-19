@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements DrawerController,
         }
         catch(NullPointerException e)
         {
-            dateData = new DateData(dateString, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+            dateData = new DateData(dateString, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), 0f, "L");
             mDb.dateDataDao().insert(dateData);
         }
     }

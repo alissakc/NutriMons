@@ -174,7 +174,7 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
 /*                ArrayList<String> finalMeals = new ArrayList<>();
                 ArrayList<String> finalExercises = new ArrayList<>();*/
                 if (BAMM.getCurrentDateData() == null) {
-                    final com.example.nutrimons.database.DateData dateData = new com.example.nutrimons.database.DateData(finalDateString, selectedBreakfast, selectedLunch, selectedDinner, selectedSnack, new ArrayList<>());
+                    final com.example.nutrimons.database.DateData dateData = new com.example.nutrimons.database.DateData(finalDateString, selectedBreakfast, selectedLunch, selectedDinner, selectedSnack, new ArrayList<>(), 0f, "L");
                     dateData.aggregateNutrients();
                     mDb.dateDataDao().insert(dateData);
                 } else {
@@ -282,7 +282,8 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
                             (selectedLunch.isEmpty()) ? mDb.dateDataDao().findByDate(finalDateString).lunch : selectedLunch,
                             (selectedDinner.isEmpty()) ? mDb.dateDataDao().findByDate(finalDateString).dinner : selectedDinner,
                             (selectedSnack.isEmpty()) ? mDb.dateDataDao().findByDate(finalDateString).snack : selectedSnack,
-                            mDb.dateDataDao().findByDate(finalDateString).todayExercise);
+                            mDb.dateDataDao().findByDate(finalDateString).todayExercise,
+                            temp.water, temp.water_unit);
                     dateData.aggregateNutrients();
                     mDb.dateDataDao().updateDateData(dateData);
 

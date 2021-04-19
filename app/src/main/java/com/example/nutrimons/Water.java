@@ -299,7 +299,7 @@ public class Water extends Fragment implements View.OnClickListener{
                     amountDrank += inputAmount;
                     DateData dateData = BAMM.getCurrentDateData();
                     if(dateData == null){
-                        dateData = new com.example.nutrimons.database.DateData(dateString, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+                        dateData = new com.example.nutrimons.database.DateData(dateString, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), 0f, "L");
                         dateData.water = amountDrank;
                         dateData.water_unit = unit;
                         for(String s:  dateData.nutrientsToStringList())
