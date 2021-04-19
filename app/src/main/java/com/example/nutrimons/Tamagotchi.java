@@ -3,6 +3,8 @@ package com.example.nutrimons;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.icu.text.CaseMap;
+import android.media.Image;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -88,10 +90,12 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
     //var for changing animal
     Button changeAnimal;
     private int currentImage;
+    private int currentGearedImage;
+    private String currentPetname;
     //int[] images = {R.drawable.tamagotchi_pig, R.drawable.tamagotchi_big, R.drawable.tama__pic};
 
     List<Bitmap> imagesPet = new ArrayList<Bitmap>();
-
+    List<Bitmap> imagesPetWithHats = new ArrayList<Bitmap>();
 
 
     Button hatButt;
@@ -154,8 +158,8 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
 
         //get DB and pet
         mDb = AppDatabase.getInstance(getContext());
-        TamagotchiPet tama = BAMM.getCurrentTamagotchi();
 
+        TamagotchiPet tama = BAMM.getCurrentTamagotchi();
 
         List<ShopItem> shopList = mDb.shopItemDao().getAll();
         for(ShopItem si : shopList)
@@ -232,12 +236,7 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
         });
 
 
-        hatButt = view.findViewById(R.id.hatsButt);
-        /*hatButt.setOnClickListener(v -> {
 
-
-        });
-        */
 
 
         TamagotchiPet = view.findViewById(R.id.TamagotchiPet);
@@ -250,9 +249,53 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
             public void onClick(View v) {
                 currentImage++;
                 currentImage = currentImage % imagesPet.size();
+                currentPetname = BAMM.BitMapToString(imagesPet.get(currentImage));
+                String tempName = "";
+                for(ShopItem si: shopList)
+                {
+                    if(si.image.equals(currentPetname))
+                    {
+                        tempName = si.name;
+                    }
+                }
+                List<ShopItem> AllGeareditem = mDb.shopItemDao().getShopItemByCategory("geared");
+                imagesPetWithHats.clear();
+                currentGearedImage = 0;
+                for(ShopItem si:AllGeareditem)
+                {
+
+
+                    if((si.name).contains(tempName))
+                    {
+                        System.out.println(si.name);
+                        //imagesPetWithHats.add((imagesPet.get(currentImage)));
+                        imagesPetWithHats.add(BAMM.StringToBitMap(si.image));
+                        System.out.println("HAVE GEAR");
+
+                    }
+                    for(int i = 0 ;i<imagesPetWithHats.size();i++)
+                        System.out.println(imagesPetWithHats.get(i));
+                }
+
                 TamagotchiPet.setImageBitmap((imagesPet.get(currentImage)));
             }
         });
+        //Changing hats
+        hatButt = view.findViewById(R.id.hatButt);
+        hatButt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(imagesPetWithHats.size()!=0)
+                {
+                    currentGearedImage++;
+                    currentGearedImage = currentGearedImage % imagesPetWithHats.size();
+                    TamagotchiPet.setImageBitmap((imagesPetWithHats.get(currentGearedImage)));
+                }
+
+
+            }
+        });
+
 
         //time
         Calendar c = Calendar.getInstance();

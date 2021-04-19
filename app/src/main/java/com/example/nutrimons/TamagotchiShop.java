@@ -104,6 +104,7 @@ public class TamagotchiShop extends Fragment implements View.OnClickListener {
         mDb = AppDatabase.getInstance(getContext());
         tama = BAMM.getCurrentTamagotchi();
         user = BAMM.getCurrentUser();
+
         //setting coins
         coins = view.findViewById(R.id.tamaCoins);
         coins.setText(String.valueOf(user.nutriCoins));

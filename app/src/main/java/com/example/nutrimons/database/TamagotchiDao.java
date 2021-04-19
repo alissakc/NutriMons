@@ -24,7 +24,6 @@ public interface TamagotchiDao {
     @Query("SELECT * FROM TamagotchiPet WHERE userId LIKE :search")
     TamagotchiPet findByUserId(int search);
 
-
     @Query("SELECT petName FROM tamagotchipet")
     String getPetName();
 
