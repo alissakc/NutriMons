@@ -249,7 +249,7 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
             public void onClick(View v) {
                 currentImage++;
                 currentImage = currentImage % imagesPet.size();
-                currentPetname = BitMapToString(imagesPet.get(currentImage));
+                currentPetname = BAMM.BitMapToString(imagesPet.get(currentImage));
                 String tempName = "";
                 for(ShopItem si: shopList)
                 {
@@ -269,7 +269,7 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
                     {
                         System.out.println(si.name);
                         //imagesPetWithHats.add((imagesPet.get(currentImage)));
-                        imagesPetWithHats.add(StringToBitMap(si.image));
+                        imagesPetWithHats.add(BAMM.StringToBitMap(si.image));
                         System.out.println("HAVE GEAR");
 
                     }
