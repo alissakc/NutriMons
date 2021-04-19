@@ -159,6 +159,9 @@ public class DateData {
         ArrayList<String> dailyList = new ArrayList<>();
 
         dailyList.add("Calories: " + calories + "kcal");
+        if(water_unit == null){
+            water_unit = "ml";
+        }
         if(water_unit.equals("ml"))
         {
             dailyList.add("Water: " + water / 1000 + "L");

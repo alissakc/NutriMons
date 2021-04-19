@@ -317,7 +317,7 @@ public class DailyInfoFragment extends Fragment {
 
         List<String> dailySummary;
         if (temp != null) {
-            if(meals.isEmpty()){
+            if(temp.getSnack().isEmpty() && temp.getDinner().isEmpty() && temp.getLunch().isEmpty() && temp.getBreakfast().isEmpty()){
                 dailySummary = new ArrayList<>();
                 dailySummary.add("No meals were inputted.");
                 dailySummaryLayout.setVisibility(View.GONE);
