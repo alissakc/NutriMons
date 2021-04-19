@@ -126,6 +126,9 @@ public class Water extends Fragment implements View.OnClickListener{
             List<Float> temp = (List<Float>)mDb.dateDataDao().findWaterByDate(dateString);
             amountDrank = ((Float)temp.get(0) == null) ? 0.0f : (Float)temp.get(0);
             unit = ((String)mDb.dateDataDao().findByDate(dateString).water_unit == null ? "oz" : (mDb.dateDataDao().findByDate(dateString).water_unit.equals("oz") ? "oz" : "ml"));
+            if(unit.equals("ml")){
+                amountNeeded *= 29.5735;
+            }
             amountNeeded -= amountDrank;
         }
 //        try{
