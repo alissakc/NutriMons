@@ -796,7 +796,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionDone"
-                    android:inputType="text"
+                    android:inputType="number"
                     android:text="71" />
             </LinearLayout>
 
@@ -835,7 +835,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionDone"
-                    android:inputType="text"
+                    android:inputType="number"
                     android:text="280" />
             </LinearLayout>
 
@@ -855,7 +855,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionDone"
-                    android:inputType="text"
+                    android:inputType="number"
                     android:text="68" />
             </LinearLayout>
 
