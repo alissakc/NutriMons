@@ -160,7 +160,7 @@ public class DateData {
 
         dailyList.add("Calories: " + calories + "kcal");
         if(water_unit == null){
-            water_unit = "ml";
+            water_unit = "oz";
         }
         if(water_unit.equals("ml"))
         {

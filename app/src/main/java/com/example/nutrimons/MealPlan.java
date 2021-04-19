@@ -175,7 +175,7 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
 /*                ArrayList<String> finalMeals = new ArrayList<>();
                 ArrayList<String> finalExercises = new ArrayList<>();*/
                 if (mDb.dateDataDao().findByDate(finalDateString) == null) {
-                    final com.example.nutrimons.database.DateData dateData = new com.example.nutrimons.database.DateData(finalDateString, selectedBreakfast, selectedLunch, selectedDinner, selectedSnack, new ArrayList<>(), (float) 0.0, "ml");
+                    final com.example.nutrimons.database.DateData dateData = new com.example.nutrimons.database.DateData(finalDateString, selectedBreakfast, selectedLunch, selectedDinner, selectedSnack, new ArrayList<>(), (float) 0.0, null);
                     dateData.aggregateNutrients();
                     mDb.dateDataDao().insert(dateData);
                 } else {
