@@ -52,8 +52,7 @@ public class TamagotchiShop extends Fragment implements View.OnClickListener {
     private User user;
     private LinearLayout shopItemsArea;
 
-    Button hatsButt;
-    Button petsButt;
+    Button hatsButt, petsButt, backButt;
     //Coins
     TextView coins;
 
@@ -129,6 +128,9 @@ public class TamagotchiShop extends Fragment implements View.OnClickListener {
         petsButt = view.findViewById(R.id.petsButt);
         petsButt.setOnClickListener(this);
 
+        backButt = view.findViewById(R.id.backToTamagotchi);
+        backButt.setOnClickListener(this);
+
         shopItems = mDb.shopItemDao().getAll();
         populateShop();
 
@@ -188,6 +190,9 @@ public class TamagotchiShop extends Fragment implements View.OnClickListener {
                 break;
             case "Pets":
                 shopItems = mDb.shopItemDao().getShopItemByCategory("pets");
+                break;
+            case "Back":
+                Navigation.findNavController(view).navigate(R.id.action_nav_tamagotchiShop_to_nav_tamagotchi);
                 break;
             case "All":
             default:
