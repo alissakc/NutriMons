@@ -105,6 +105,20 @@ public class NutrientOverview extends Fragment implements View.OnClickListener {
         nutrientDRIs = u.DRIToFloatList();
         nutrientULs = u.ULToFloatList();
 
+        if(dateData.water_unit != null)
+        {
+            if(dateData.water_unit.equals("ml"))
+            {
+                nutrientValues.set(1, nutrientValues.get(1) / 1000f);
+                nutrients[1] = "Water: " + nutrientValues.get(1) + "L";
+            }
+            else if(dateData.water_unit.equals("oz"))
+            {
+                nutrientValues.set(1, nutrientValues.get(1) / 33.814f);
+                nutrients[1] = "Water: " + nutrientValues.get(1) + "L";
+            }
+        }
+
         chart = view.findViewById(R.id.horizontalBarChart);
 
         BarData data = createChartData();
