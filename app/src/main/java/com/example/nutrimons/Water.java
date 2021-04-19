@@ -118,7 +118,7 @@ public class Water extends Fragment implements View.OnClickListener{
 //            Log.d("WaterDateString", "FindBy: NOT NULL");
 //        }
 
-        if(BAMM.getCurrentDateData() == null){
+        if(mDb.dateDataDao().findByDate(dateString) == null){
             amountDrank = 0.0f;
             amountNeeded = Float.parseFloat(BAMM.getCurrentUser().water) * 33.81402f; //convert to fl oz
         }else {
@@ -298,7 +298,7 @@ public class Water extends Fragment implements View.OnClickListener{
                     inputAmount = Float.parseFloat(waterAmountInput.getText().toString());
                     amountDrank += inputAmount;
                     DateData dateData = BAMM.getCurrentDateData();
-                    if(dateData == null){
+                    if(mDb.dateDataDao().findByDate(dateString) == null){
                         dateData = new com.example.nutrimons.database.DateData(dateString, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), 0f, "ml");
                         dateData.water = amountDrank;
                         dateData.water_unit = unit;
