@@ -160,6 +160,8 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
         mDb = AppDatabase.getInstance(getContext());
 
         TamagotchiPet tama = BAMM.getCurrentTamagotchi();
+        ImageButton initImage = (ImageButton)view.findViewById(R.id.TamagotchiPet);
+        initImage.setImageBitmap(BAMM.StringToBitMap(mDb.shopItemDao().getShopItemByName("Pig").image));
 
         List<ShopItem> shopList = mDb.shopItemDao().getAll();
         for(ShopItem si : shopList)
