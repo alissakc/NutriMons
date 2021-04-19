@@ -52,8 +52,7 @@ public class TamagotchiShop extends Fragment implements View.OnClickListener {
     private User user;
     private LinearLayout shopItemsArea;
 
-    Button hatsButt;
-    Button petsButt;
+    Button hatsButt, petsButt, backButt;
     //Coins
     TextView coins;
 
@@ -103,9 +102,9 @@ public class TamagotchiShop extends Fragment implements View.OnClickListener {
         view = inflater.inflate(R.layout.fragment_tamagotchi_shop, container, false);
 
         mDb = AppDatabase.getInstance(getContext());
+        tama = BAMM.getCurrentTamagotchi();
+        user = BAMM.getCurrentUser();
 
-        tama = mDb.tamagotchiDao().findByUserId(mDb.tokenDao().getUserID());
-        user = mDb.userDao().findByUserID(mDb.tokenDao().getUserID());
         //setting coins
         coins = view.findViewById(R.id.tamaCoins);
         coins.setText(String.valueOf(user.nutriCoins));
@@ -129,6 +128,9 @@ public class TamagotchiShop extends Fragment implements View.OnClickListener {
         //shopItemsArea.addView(new TextView(getContext()));
         petsButt = view.findViewById(R.id.petsButt);
         petsButt.setOnClickListener(this);
+
+        backButt = view.findViewById(R.id.backToTamagotchi);
+        backButt.setOnClickListener(this);
 
         shopItems = mDb.shopItemDao().getAll();
         populateShop();
@@ -190,6 +192,9 @@ public class TamagotchiShop extends Fragment implements View.OnClickListener {
             case "Pets":
                 shopItems = mDb.shopItemDao().getShopItemByCategory("pets");
                 break;
+            case "Back":
+                Navigation.findNavController(view).navigate(R.id.action_nav_tamagotchiShop_to_nav_tamagotchi);
+                break;
             case "All":
             default:
                 shopItems = mDb.shopItemDao().getAll();
@@ -217,7 +222,7 @@ public class TamagotchiShop extends Fragment implements View.OnClickListener {
             rowLayout.addView(createTvLabel(si.name, 18, "#660000ff"));
 
             ImageView iv = new ImageView(getContext());
-            iv.setImageBitmap(StringToBitMap(si.image));
+            iv.setImageBitmap(BAMM.StringToBitMap(si.image));
             iv.setBackgroundColor(Color.parseColor("#00FFFFFF"));
             rowLayout.addView(iv);
 
@@ -270,16 +275,5 @@ public class TamagotchiShop extends Fragment implements View.OnClickListener {
         tv.setTextSize(size);
         tv.setBackgroundColor(Color.parseColor(color));
         return tv;
-    }
-
-    public Bitmap StringToBitMap(String encodedString){ //https://stackoverflow.com/questions/13562429/how-many-ways-to-convert-bitmap-to-string-and-vice-versa
-        try {
-            byte [] encodeByte= Base64.decode(encodedString,Base64.DEFAULT);
-            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
-        } catch(Exception e) {
-            e.getMessage();
-            return null;
-        }
     }
 }

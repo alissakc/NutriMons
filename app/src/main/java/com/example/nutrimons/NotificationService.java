@@ -51,8 +51,6 @@ public class NotificationService extends Service {
     @Override
     public void onCreate() {
         Log.e(TAG, "onCreate");
-
-
     }
 
 
@@ -61,9 +59,6 @@ public class NotificationService extends Service {
         super.onDestroy();
         Log.e(TAG, "onDestroy");
         stoptimertask();
-
-
-
     }
 
     //we are going to use a handler to be able to run in our TimerTask

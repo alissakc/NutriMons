@@ -90,12 +90,8 @@ public class NutrientOverview extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_nutrient_overview, container, false);
 
-        long date = System.currentTimeMillis();
-        SimpleDateFormat Date = new SimpleDateFormat("MM/dd/yyyy");
-        String dateString = Date.format(date);
-
         mDb = AppDatabase.getInstance(getContext());
-        DateData dateData = mDb.dateDataDao().findByDate(dateString);
+        DateData dateData = BAMM.getCurrentDateData();
         dateData.aggregateNutrients();
 
         List<String> nuts = dateData.nutrientsToStringList();
@@ -105,9 +101,23 @@ public class NutrientOverview extends Fragment implements View.OnClickListener {
 
         MAX_X_VALUE = nutrients.length;
 
-        User u = mDb.userDao().findByUserID(mDb.tokenDao().getUserID());
+        User u = BAMM.getCurrentUser();
         nutrientDRIs = u.DRIToFloatList();
         nutrientULs = u.ULToFloatList();
+
+        if(dateData.water_unit != null)
+        {
+            if(dateData.water_unit.equals("ml"))
+            {
+                nutrientValues.set(1, nutrientValues.get(1) / 1000f);
+                nutrients[1] = "Water: " + nutrientValues.get(1) + "L";
+            }
+            else if(dateData.water_unit.equals("oz"))
+            {
+                nutrientValues.set(1, nutrientValues.get(1) / 33.814f);
+                nutrients[1] = "Water: " + nutrientValues.get(1) + "L";
+            }
+        }
 
         chart = view.findViewById(R.id.horizontalBarChart);
 

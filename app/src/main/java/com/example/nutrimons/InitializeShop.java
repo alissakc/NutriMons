@@ -40,40 +40,12 @@ public class InitializeShop {
 
                 si.cost = Integer.parseInt(s.substring(0, s.indexOf('.')));
 
-                Bitmap bm = scaleBitmap(BitmapFactory.decodeStream(is), 300);
-                si.image = BitMapToString(bm);
+                Bitmap bm = BAMM.scaleBitmap(BitmapFactory.decodeStream(is), 300);
+                si.image = BAMM.BitMapToString(bm);
 
                 db.shopItemDao().insert(si);
-
             }
         }
         catch (IOException e) { e.printStackTrace(); }
-    }
-
-    public String BitMapToString(Bitmap bitmap){ //https://stackoverflow.com/questions/13562429/how-many-ways-to-convert-bitmap-to-string-and-vice-versa
-        ByteArrayOutputStream baos=new  ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
-        byte [] b=baos.toByteArray();
-        String temp= Base64.encodeToString(b, Base64.DEFAULT);
-        return temp;
-    }
-
-    private Bitmap scaleBitmap(Bitmap image, int size) //http://www.codeplayon.com/2018/11/android-image-upload-to-server-from-camera-and-gallery/
-    {
-        int width = image.getWidth(), height = image.getHeight();
-        float ratio = (float) width / (float) height;
-
-        if(ratio > 1)
-        {
-            width = size;
-            height = (int) (width / ratio);
-        }
-        else
-        {
-            height = size;
-            width = (int) (height * ratio);
-        }
-
-        return Bitmap.createScaledBitmap(image, width, height, true);
     }
 }

@@ -203,4 +203,10 @@
             android:id="@+id/action_nav_addFromFDC_to_nav_addMeal"
             app:destination="@id/nav_addMeal" />
     </fragment>
+    <fragment
+        android:id="@+id/nav_bugReport"
+        android:name="com.example.nutrimons.BugReportFragment"
+        android:label="Food Data Central"
+        tools:layout="@layout/fragment_bug_report">
+    </fragment>
 </navigation>

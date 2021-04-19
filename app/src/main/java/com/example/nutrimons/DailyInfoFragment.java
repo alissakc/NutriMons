@@ -165,6 +165,11 @@ public class DailyInfoFragment extends Fragment {
         exerciseLayout.setVisibility(View.VISIBLE);
         dailySummaryLayout.setVisibility(View.VISIBLE);
 
+        TextView noMeals = view.findViewById(R.id.meal_no_items);
+        TextView noExercises = view.findViewById(R.id.exercise_no_items);
+        noMeals.setVisibility(View.GONE);
+        noExercises.setVisibility(View.GONE);
+
         // gets list data from the database
         List<com.example.nutrimons.database.Meal> breakfast;
         try {
@@ -249,11 +254,17 @@ public class DailyInfoFragment extends Fragment {
                 }
             }
         }
+
         mealRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mealRecyclerView.setHasFixedSize(false);
 
         MealAdapter mealAdapter = new MealAdapter(meals);
         mealRecyclerView.setAdapter(mealAdapter);
+
+        if(meals.contains("No meals were inputted.")){
+            mealRecyclerView.setVisibility(View.GONE);
+            noMeals.setVisibility(View.VISIBLE);
+        }
         /*ItemTouchHelper itemTouchHelper = new
                 ItemTouchHelper(new MealAdapter.SwipeToDeleteMealCallback(mealAdapter));
         itemTouchHelper.attachToRecyclerView(mealRecyclerView);*/
@@ -279,13 +290,24 @@ public class DailyInfoFragment extends Fragment {
                             e = tempE[i].replaceAll("\\W", "");
                             exercise.add(e);
                         }
+                    }else{
+                        exercise = new ArrayList<>();
+                        exercise.add("No exercises were inputted.");
                     }
+                }else{
+                    exercise = new ArrayList<>();
+                    exercise.add("No exercises were inputted.");
                 }
             }
         }
 
         ExerciseAdapter exerciseAdapter = new ExerciseAdapter(exercise);
         exerciseRecyclerView.setAdapter(exerciseAdapter);
+
+        if(exercise.contains("No exercises were inputted.")){
+            exerciseRecyclerView.setVisibility(View.GONE);
+            noExercises.setVisibility(View.VISIBLE);
+        }
 
         dailySummaryRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         dailySummaryRecyclerView.setHasFixedSize(false);
@@ -450,7 +472,9 @@ public class DailyInfoFragment extends Fragment {
                     final com.example.nutrimons.database.DateData dateData =
                             new com.example.nutrimons.database.DateData(finalCurrentDay,
                             finalBreakfast, finalLunch, finalDinner, finalSnack,
-                            mDb.dateDataDao().findByDate(finalCurrentDay).todayExercise);
+                            mDb.dateDataDao().findByDate(finalCurrentDay).todayExercise,
+                            mDb.dateDataDao().findByDate(finalCurrentDay).water,
+                            mDb.dateDataDao().findByDate(finalCurrentDay).water_unit);
                     mDb.dateDataDao().updateDateData(dateData);
                     mealAdapter.removeSelection();
 
@@ -509,7 +533,8 @@ public class DailyInfoFragment extends Fragment {
                                     mDb.dateDataDao().findByDate(finalCurrentDay).lunch,
                                     mDb.dateDataDao().findByDate(finalCurrentDay).dinner,
                                     mDb.dateDataDao().findByDate(finalCurrentDay).snack,
-                                    finalExercise);
+                                    finalExercise, mDb.dateDataDao().findByDate(finalCurrentDay).water,
+                                    mDb.dateDataDao().findByDate(finalCurrentDay).water_unit);
                     mDb.dateDataDao().updateDateData(dateData);
                     exerciseAdapter.removeSelection();
                 }

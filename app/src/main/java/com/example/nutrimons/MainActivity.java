@@ -22,9 +22,12 @@ import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -37,7 +40,8 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements DrawerController,
         DailyInfoFragment.OnFragmentInteractionListener, CalendarViewFragment.OnFragmentInteractionListener,
         MealPlan.OnFragmentInteractionListener, Exercise.OnFragmentInteractionListener,
-        AddMeal.OnFragmentInteractionListener, Dashboard.OnFragmentInteractionListener {
+        AddMeal.OnFragmentInteractionListener, Dashboard.OnFragmentInteractionListener,
+        BugReportFragment.OnFragmentInteractionListener, SettingsFragment.OnFragmentInteractionListener{
 
     private AppBarConfiguration mAppBarConfiguration;
     DrawerLayout drawer;
@@ -117,17 +121,18 @@ public class MainActivity extends AppCompatActivity implements DrawerController,
             new InitializeShop(mDb, getAssets());
         }
 
+        //initialize helper class
+        BAMM bamm = new BAMM(mDb);
+
         //initialize dateData
-        long date = System.currentTimeMillis();
-        SimpleDateFormat Date = new SimpleDateFormat("MM/dd/yyyy");
-        String dateString = Date.format(date);
-        DateData dateData = mDb.dateDataDao().findByDate(dateString);
+        String dateString = BAMM.getDateString();
+        DateData dateData = BAMM.getCurrentDateData();
         try {
             dateData.aggregateNutrients();
         }
         catch(NullPointerException e)
         {
-            dateData = new DateData(dateString, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+            dateData = new DateData(dateString, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), 0f, "L");
             mDb.dateDataDao().insert(dateData);
         }
     }
@@ -154,6 +159,7 @@ public class MainActivity extends AppCompatActivity implements DrawerController,
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.options_menu, menu);
         menu.add(Menu.NONE, R.id.action_settings, Menu.NONE, "Settings");
+        menu.add(Menu.NONE, R.id.fragment_bug_report, Menu.NONE, "Report a Bug");
         menu.add(Menu.NONE, R.id.fragment_login, Menu.NONE, "Logout");
         return true;
     }
@@ -186,7 +192,10 @@ public class MainActivity extends AppCompatActivity implements DrawerController,
         switch(item.getItemId())
         {
             case R.id.action_settings:
-                //return NavigationUI.onNavDestinationSelected(item, navController) || super.onOptionsItemSelected(item);
+                SettingsFragment settingsFragment = new SettingsFragment();
+                FragmentTransaction settingsTransaction = getSupportFragmentManager().beginTransaction();
+                settingsTransaction.replace(R.id.nav_host_fragment, settingsFragment);
+                settingsTransaction.commit();
                 break;
             case R.id.fragment_login: //logout
                 Token t = mDb.tokenDao().getToken();
@@ -200,6 +209,12 @@ public class MainActivity extends AppCompatActivity implements DrawerController,
                 mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 1, mPendingIntent);
                 System.exit(0);
                 return true;
+            case R.id.fragment_bug_report: // bug reporter
+                BugReportFragment bugFragment = new BugReportFragment();
+                FragmentTransaction bugTransaction = getSupportFragmentManager().beginTransaction();
+                bugTransaction.replace(R.id.nav_host_fragment, bugFragment);
+                bugTransaction.commit();
+                return true;
         }
         return false;
     }
@@ -208,4 +223,5 @@ public class MainActivity extends AppCompatActivity implements DrawerController,
     public void onFragmentInteraction(String title) {
         getSupportActionBar().setTitle(title);
     }
+
 }

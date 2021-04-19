@@ -192,12 +192,7 @@ public class Dashboard extends Fragment implements View.OnClickListener {
         goToTamagotchi = view.findViewById(R.id.dashboardTamagotchi);
         factTextView = view.findViewById(R.id.textViewFunFactText);
 
-        // gets current date
-        long dateLong = System.currentTimeMillis();
-        SimpleDateFormat Date = new SimpleDateFormat("MM/dd/yyyy");
-        String dateString = Date.format(dateLong);
-
-        DateData dateData = mDb.dateDataDao().findByDate(dateString);
+        DateData dateData = BAMM.getCurrentDateData();
         dateData.aggregateNutrients();
         mDb.dateDataDao().updateDateData(dateData);
 
