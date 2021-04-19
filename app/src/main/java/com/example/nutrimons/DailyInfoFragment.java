@@ -264,6 +264,9 @@ public class DailyInfoFragment extends Fragment {
         if(meals.contains("No meals were inputted.")){
             mealRecyclerView.setVisibility(View.GONE);
             noMeals.setVisibility(View.VISIBLE);
+        }else if(meals.isEmpty()){
+            mealRecyclerView.setVisibility(View.GONE);
+            noMeals.setVisibility(View.VISIBLE);
         }
         /*ItemTouchHelper itemTouchHelper = new
                 ItemTouchHelper(new MealAdapter.SwipeToDeleteMealCallback(mealAdapter));
@@ -314,9 +317,15 @@ public class DailyInfoFragment extends Fragment {
 
         List<String> dailySummary;
         if (temp != null) {
-            dailySummaryLayout.setVisibility(View.VISIBLE);
-            temp.aggregateNutrients();
-            dailySummary = (List<String>) temp.nutrientsToStringList();
+            if(meals.isEmpty()){
+                dailySummary = new ArrayList<>();
+                dailySummary.add("No meals were inputted.");
+                dailySummaryLayout.setVisibility(View.GONE);
+            }else{
+                dailySummaryLayout.setVisibility(View.VISIBLE);
+                temp.aggregateNutrients();
+                dailySummary = (List<String>) temp.nutrientsToStringList();
+            }
         } else {
             dailySummary = new ArrayList<>();
             dailySummary.add("No meals were inputted.");
