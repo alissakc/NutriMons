@@ -111,9 +111,7 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
         Bundle bundle = this.getArguments();
         if (bundle == null) {
             // gets current date
-            long date = System.currentTimeMillis();
-            SimpleDateFormat Date = new SimpleDateFormat("MM/dd/yyyy");
-            dateString = Date.format(date);
+            dateString = BAMM.getDateString();
         } else {
             String date = bundle.getString("key");
             if (date.charAt(2) != '/') {
@@ -204,11 +202,11 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
 
                 ArrayList<String> finalMeals = new ArrayList<>();
                 ArrayList<String> finalExercises = new ArrayList<>();
-                if (mDb.dateDataDao().findByDate(finalDateString) == null) {
+                if (BAMM.getCurrentDateData() == null) {
                     final DateData dateData = new DateData(finalDateString, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), exerciseList);
                     mDb.dateDataDao().insert(dateData);
                 } else {
-                    DateData dd = mDb.dateDataDao().findByDate(finalDateString);
+                    DateData dd = BAMM.getCurrentDateData();
                     if (mDb.dateDataDao().findExercisesByDate(finalDateString) != null) {
                         if (!mDb.dateDataDao().findExercisesByDate(finalDateString).isEmpty()) {
                             for (String s : mDb.dateDataDao().findExercisesByDate(finalDateString)) {
@@ -341,9 +339,7 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
                     //mDb.dateDataDao().updateExercise(exerciseList, dateString);
                 }
 
-                long date = System.currentTimeMillis();
-                SimpleDateFormat Date = new SimpleDateFormat("MM/dd/yyyy");
-                String currentDate = Date.format(date);
+                String currentDate = BAMM.getDateString();
                 if (!finalDateString.equalsIgnoreCase(currentDate)) {
                     Bundle bundle = new Bundle();
                     bundle.putString("key", finalDateString);
@@ -368,7 +364,7 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
                 }
 
                 //reward user
-                User u = mDb.userDao().findByUserID(mDb.tokenDao().getUserID());
+                User u = BAMM.getCurrentUser();
                 u.nutriCoins += 1;
                 mDb.userDao().insert(u);
             }

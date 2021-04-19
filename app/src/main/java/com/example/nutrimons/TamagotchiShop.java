@@ -103,8 +103,8 @@ public class TamagotchiShop extends Fragment implements View.OnClickListener {
         view = inflater.inflate(R.layout.fragment_tamagotchi_shop, container, false);
 
         mDb = AppDatabase.getInstance(getContext());
-        tama = mDb.tamagotchiDao().findByUserId(mDb.tokenDao().getUserID());
-        user = mDb.userDao().findByUserID(mDb.tokenDao().getUserID());
+        tama = BAMM.getCurrentTamagotchi();
+        user = BAMM.getCurrentUser();
         //setting coins
         coins = view.findViewById(R.id.tamaCoins);
         coins.setText(String.valueOf(user.nutriCoins));
@@ -216,7 +216,7 @@ public class TamagotchiShop extends Fragment implements View.OnClickListener {
             rowLayout.addView(createTvLabel(si.name, 18, "#660000ff"));
 
             ImageView iv = new ImageView(getContext());
-            iv.setImageBitmap(StringToBitMap(si.image));
+            iv.setImageBitmap(BAMM.StringToBitMap(si.image));
             iv.setBackgroundColor(Color.parseColor("#00FFFFFF"));
             rowLayout.addView(iv);
 
@@ -269,16 +269,5 @@ public class TamagotchiShop extends Fragment implements View.OnClickListener {
         tv.setTextSize(size);
         tv.setBackgroundColor(Color.parseColor(color));
         return tv;
-    }
-
-    public Bitmap StringToBitMap(String encodedString){ //https://stackoverflow.com/questions/13562429/how-many-ways-to-convert-bitmap-to-string-and-vice-versa
-        try {
-            byte [] encodeByte= Base64.decode(encodedString,Base64.DEFAULT);
-            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
-        } catch(Exception e) {
-            e.getMessage();
-            return null;
-        }
     }
 }

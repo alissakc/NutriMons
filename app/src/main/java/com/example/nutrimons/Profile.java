@@ -109,7 +109,7 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
 
         view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        getPermissions();
+        hasPermissions();
 
         //spinner stuff, see MealPlan
         profileFocusSpinner = (Spinner) view.findViewById(R.id.profileFocusSpinner);
@@ -230,7 +230,7 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
         mgr.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    private boolean getPermissions()
+    private boolean hasPermissions()
     {
         //ask for storage permissions
         boolean permissionsGranted;
@@ -263,7 +263,7 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
                 startActivityForResult(intent, 1);
                 break;
             case (R.id.captureProfilePicture):
-                if(getPermissions())
+                if(hasPermissions())
                 {
                     intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityForResult(intent, 2);
@@ -315,7 +315,7 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
             try
             {
                 Bitmap rawBitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), selectedImage); //get and set image
-                bitmap = scaleBitmap(rawBitmap, Math.max(profilePicture.getWidth(), profilePicture.getHeight()));
+                bitmap = BAMM.scaleBitmap(rawBitmap, Math.max(profilePicture.getWidth(), profilePicture.getHeight()));
             }
             catch (FileNotFoundException e) { e.printStackTrace(); }
             catch (IOException e) { e.printStackTrace(); }
@@ -331,48 +331,10 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
         }
 
         profilePicture.setImageBitmap(bitmap);
-        String bmp = BitMapToString(bitmap); //add to db
+        String bmp = BAMM.BitMapToString(bitmap); //add to db
         User u = mDb.userDao().findByUserID(userID);
         u.profilePicture = bmp;
         mDb.userDao().insert(u);
-    }
-
-    private Bitmap scaleBitmap(Bitmap image, int size) //http://www.codeplayon.com/2018/11/android-image-upload-to-server-from-camera-and-gallery/
-    {
-        int width = image.getWidth(), height = image.getHeight();
-        float ratio = (float) width / (float) height;
-
-        if(ratio > 1)
-        {
-            width = size;
-            height = (int) (width / ratio);
-        }
-        else
-        {
-            height = size;
-            width = (int) (height * ratio);
-        }
-
-        return Bitmap.createScaledBitmap(image, width, height, true);
-    }
-
-    public String BitMapToString(Bitmap bitmap){ //https://stackoverflow.com/questions/13562429/how-many-ways-to-convert-bitmap-to-string-and-vice-versa
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
-        byte [] b = baos.toByteArray();
-        String temp = Base64.encodeToString(b, Base64.DEFAULT);
-        return temp;
-    }
-
-    public Bitmap StringToBitMap(String encodedString){ //https://stackoverflow.com/questions/13562429/how-many-ways-to-convert-bitmap-to-string-and-vice-versa
-        try {
-            byte [] encodeByte = Base64.decode(encodedString,Base64.DEFAULT);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
-        } catch(Exception e) {
-            e.getMessage();
-            return null;
-        }
     }
 
     private void saveChanges()
@@ -578,7 +540,7 @@ public class Profile<T> extends Fragment implements View.OnClickListener, Adapte
         String pfp = u.profilePicture;
         try {
             if (pfp != null)
-                profilePicture.setImageBitmap(StringToBitMap(pfp));
+                profilePicture.setImageBitmap(BAMM.StringToBitMap(pfp));
             switch (u.profileFocus) {
                 case "Lose Weight":
                     profileFocus = "Lose Weight";

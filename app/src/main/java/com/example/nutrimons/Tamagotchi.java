@@ -144,8 +144,6 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-
     }
 
     @Override
@@ -156,7 +154,7 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
 
         //get DB and pet
         mDb = AppDatabase.getInstance(getContext());
-        TamagotchiPet tama = mDb.tamagotchiDao().findByUserId(mDb.tokenDao().getUserID());
+        TamagotchiPet tama = BAMM.getCurrentTamagotchi();
 
 
         List<ShopItem> shopList = mDb.shopItemDao().getAll();
@@ -167,7 +165,7 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
                 if(si.category.equals("pets"))
                 {
                     ImageButton ib = new ImageButton(getContext());
-                    imagesPet.add(StringToBitMap(si.image));
+                    imagesPet.add(BAMM.StringToBitMap(si.image));
                 }
             }
             System.out.println("IMAGEPET"+imagesPet);
@@ -178,14 +176,14 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
         if (name == null)
         {
             name = "Name";
-            TamagotchiPet tama1 = mDb.tamagotchiDao().findByUserId(mDb.tokenDao().getUserID());
+            TamagotchiPet tama1 = BAMM.getCurrentTamagotchi();
             tama1.petName = name;
             mDb.tamagotchiDao().insert(tama1);
         }
         else if (name.isEmpty())
         {
             name = "Name";
-            TamagotchiPet tama1 = mDb.tamagotchiDao().findByUserId(mDb.tokenDao().getUserID());
+            TamagotchiPet tama1 = BAMM.getCurrentTamagotchi();
             tama1.petName = name;
             mDb.tamagotchiDao().insert(tama1);
         }
@@ -367,7 +365,7 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
     public void onStop() {
         super.onStop();  // Always call the superclass method first
         System.out.println("STOP BITCHES");
-        TamagotchiPet tama = mDb.tamagotchiDao().findByUserId(mDb.tokenDao().getUserID());
+        TamagotchiPet tama = BAMM.getCurrentTamagotchi();
         //update last logged on
         Calendar c = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -389,25 +387,6 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
         }
         return date;
     }
-    public Bitmap StringToBitMap(String encodedString){ //https://stackoverflow.com/questions/13562429/how-many-ways-to-convert-bitmap-to-string-and-vice-versa
-        try {
-            byte [] encodeByte= Base64.decode(encodedString,Base64.DEFAULT);
-            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
-        } catch(Exception e) {
-            e.getMessage();
-            return null;
-        }
-    }
-    public String BitMapToString(Bitmap bitmap){ //https://stackoverflow.com/questions/13562429/how-many-ways-to-convert-bitmap-to-string-and-vice-versa
-        ByteArrayOutputStream baos=new  ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
-        byte [] b=baos.toByteArray();
-        String temp= Base64.encodeToString(b, Base64.DEFAULT);
-        return temp;
-    }
-
-
 
     private void levelByClicking(TamagotchiPet tama, View view)
     {
@@ -418,9 +397,6 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
         mDb.tamagotchiDao().insert(tama);
         levelingView = view.findViewById(R.id.levelNum);
         levelingView.setText(String.valueOf(tama.level));
-
-
-
     }
 
 
@@ -491,7 +467,7 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
             et = (EditText) target;
             str = et.getText().toString();
             name = str;
-            TamagotchiPet tama = mDb.tamagotchiDao().findByUserId(mDb.tokenDao().getUserID());
+            TamagotchiPet tama = BAMM.getCurrentTamagotchi();
             tama.petName = name;
             mDb.tamagotchiDao().insert(tama);
         }

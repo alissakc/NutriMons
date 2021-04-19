@@ -121,11 +121,12 @@ public class MainActivity extends AppCompatActivity implements DrawerController,
             new InitializeShop(mDb, getAssets());
         }
 
+        //initialize helper class
+        BAMM bamm = new BAMM(mDb);
+
         //initialize dateData
-        long date = System.currentTimeMillis();
-        SimpleDateFormat Date = new SimpleDateFormat("MM/dd/yyyy");
-        String dateString = Date.format(date);
-        DateData dateData = mDb.dateDataDao().findByDate(dateString);
+        String dateString = BAMM.getDateString();
+        DateData dateData = BAMM.getCurrentDateData();
         try {
             dateData.aggregateNutrients();
         }

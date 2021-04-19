@@ -103,9 +103,7 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
         Bundle bundle = this.getArguments();
         if (bundle == null) {
             // gets current date
-            long date = System.currentTimeMillis();
-            SimpleDateFormat Date = new SimpleDateFormat("MM/dd/yyyy");
-            dateString = Date.format(date);
+            dateString = BAMM.getDateString();
         } else {
             String date = bundle.getString("key");
             if (date.charAt(2) != '/') {
@@ -175,12 +173,12 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
 
 /*                ArrayList<String> finalMeals = new ArrayList<>();
                 ArrayList<String> finalExercises = new ArrayList<>();*/
-                if (mDb.dateDataDao().findByDate(finalDateString) == null) {
+                if (BAMM.getCurrentDateData() == null) {
                     final com.example.nutrimons.database.DateData dateData = new com.example.nutrimons.database.DateData(finalDateString, selectedBreakfast, selectedLunch, selectedDinner, selectedSnack, new ArrayList<>());
                     dateData.aggregateNutrients();
                     mDb.dateDataDao().insert(dateData);
                 } else {
-                    DateData temp = mDb.dateDataDao().findByDate(finalDateString);
+                    DateData temp = BAMM.getCurrentDateData();
                     // checks for existing meals
                     List<com.example.nutrimons.database.Meal> breakfast;
                     try {
@@ -565,8 +563,8 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
                 }*/
 
                 //reward user
-                DateData dd = mDb.dateDataDao().findByDate(finalDateString);
-                User u = mDb.userDao().findByUserID(mDb.tokenDao().getUserID());
+                DateData dd = BAMM.getCurrentDateData();
+                User u = BAMM.getCurrentUser();
                 for(int i = 0; i < dd.nutrientsToFloatList().size(); ++i)
                 {
                     if (dd.nutrientsToFloatList().get(i) / u.DRIToFloatList().get(i) >= 1)
@@ -603,9 +601,7 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
 
                 }
 
-                long date = System.currentTimeMillis();
-                SimpleDateFormat Date = new SimpleDateFormat("MM/dd/yyyy");
-                String currentDate = Date.format(date);
+                String currentDate = BAMM.getDateString();
                 if (!finalDateString.equalsIgnoreCase(currentDate)) {
                     Bundle bundle = new Bundle();
                     bundle.putString("key", finalDateString);
