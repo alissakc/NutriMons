@@ -202,11 +202,11 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
 
                 ArrayList<String> finalMeals = new ArrayList<>();
                 ArrayList<String> finalExercises = new ArrayList<>();
-                if (BAMM.getCurrentDateData() == null) {
-                    final DateData dateData = new DateData(finalDateString, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), exerciseList, 0f, "L");
+                if (mDb.dateDataDao().findByDate(finalDateString) == null) {
+                    final DateData dateData = new DateData(finalDateString, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), exerciseList, (float) 0.0, null);
                     mDb.dateDataDao().insert(dateData);
                 } else {
-                    DateData dd = BAMM.getCurrentDateData();
+                    DateData dd = mDb.dateDataDao().findByDate(finalDateString);
                     if (mDb.dateDataDao().findExercisesByDate(finalDateString) != null) {
                         if (!mDb.dateDataDao().findExercisesByDate(finalDateString).isEmpty()) {
                             for (String s : mDb.dateDataDao().findExercisesByDate(finalDateString)) {
