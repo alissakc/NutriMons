@@ -103,6 +103,7 @@ public class TamagotchiShop extends Fragment implements View.OnClickListener {
         view = inflater.inflate(R.layout.fragment_tamagotchi_shop, container, false);
 
         mDb = AppDatabase.getInstance(getContext());
+
         tama = mDb.tamagotchiDao().findByUserId(mDb.tokenDao().getUserID());
         user = mDb.userDao().findByUserID(mDb.tokenDao().getUserID());
         //setting coins

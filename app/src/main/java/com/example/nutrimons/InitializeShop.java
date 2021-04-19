@@ -21,14 +21,18 @@ public class InitializeShop {
             String[] filePaths = am.list(FOLDER);
             for(String s : filePaths)
             {
-                String name = s;
+                //String name = s;
                 InputStream is = am.open(FOLDER + "/" + s);
                 ShopItem si = new ShopItem();
-                if(name.equals("pig_pets_1.png"))
+                System.out.println(s);
+
+                if(s.equals("pig_pets_1000.png"))
                 {
                     si.owned = 1;
                 }
                 si.name = s.substring(0, s.indexOf('_'));
+                si.name = Character.toUpperCase(si.name.charAt(0))+si.name.substring(1);
+
                 s = s.substring(s.indexOf('_') + 1);
 
                 si.category = s.substring(0, s.indexOf('_'));
@@ -38,9 +42,6 @@ public class InitializeShop {
 
                 Bitmap bm = scaleBitmap(BitmapFactory.decodeStream(is), 300);
                 si.image = BitMapToString(bm);
-
-
-
 
                 db.shopItemDao().insert(si);
 
