@@ -16,6 +16,7 @@ import com.example.nutrimons.database.AppDatabase;
 import com.example.nutrimons.database.DateData;
 import com.example.nutrimons.database.Meal;
 import com.example.nutrimons.database.Token;
+import com.example.nutrimons.ui.login.LoginFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -202,12 +203,16 @@ public class MainActivity extends AppCompatActivity implements DrawerController,
                 t.userID = -1;
                 mDb.tokenDao().insert(t);
                 //return NavigationUI.onNavDestinationSelected(item, navController) || super.onOptionsItemSelected(item); //https://developer.android.com/guide/navigation/navigation-ui
-                Intent mStartActivity = new Intent(MainActivity.this, MainActivity.class);
+                LoginFragment loginFragment = new LoginFragment();
+                FragmentTransaction loginTransaction = getSupportFragmentManager().beginTransaction();
+                loginTransaction.replace(R.id.nav_host_fragment, loginFragment);
+                loginTransaction.commit();
+                /*Intent mStartActivity = new Intent(MainActivity.this, MainActivity.class);
                 int mPendingIntentId = 999999;
                 PendingIntent mPendingIntent = PendingIntent.getActivity(MainActivity.this, mPendingIntentId, mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
                 AlarmManager mgr = (AlarmManager)MainActivity.this.getSystemService(Context.ALARM_SERVICE);
                 mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 1, mPendingIntent);
-                System.exit(0);
+                System.exit(0);*/
                 return true;
             case R.id.fragment_bug_report: // bug reporter
                 BugReportFragment bugFragment = new BugReportFragment();
