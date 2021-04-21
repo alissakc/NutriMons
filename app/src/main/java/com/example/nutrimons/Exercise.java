@@ -203,7 +203,7 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
                 ArrayList<String> finalMeals = new ArrayList<>();
                 ArrayList<String> finalExercises = new ArrayList<>();
                 if (mDb.dateDataDao().findByDate(finalDateString) == null) {
-                    final DateData dateData = new DateData(finalDateString, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), exerciseList, (float) 0.0, null);
+                    final DateData dateData = new DateData(finalDateString, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), exerciseList, (float) 0.0, null, BAMM.MAX_DAILY_COINS);
                     mDb.dateDataDao().insert(dateData);
                 } else {
                     DateData dd = mDb.dateDataDao().findByDate(finalDateString);
@@ -229,7 +229,7 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
                     final DateData dateData =
                             new DateData(finalDateString,
                                     dd.breakfast, dd.lunch, dd.dinner, dd.snack, exerciseList,
-                                    dd.water, dd.water_unit);
+                                    dd.water, dd.water_unit, dd.coinsLeft);
                     mDb.dateDataDao().updateDateData(dateData);
 
                     // gets list data from the database
@@ -365,9 +365,7 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
                 }
 
                 //reward user
-                User u = BAMM.getCurrentUser();
-                u.nutriCoins += 1;
-                mDb.userDao().insert(u);
+                BAMM.giveCoin();
             }
         });
         return view;

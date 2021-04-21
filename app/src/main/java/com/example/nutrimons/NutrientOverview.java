@@ -91,7 +91,7 @@ public class NutrientOverview extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_nutrient_overview, container, false);
 
         mDb = AppDatabase.getInstance(getContext());
-        DateData dateData = BAMM.getCurrentDateData();
+        DateData dateData = BAMM.getDateData();
         dateData.aggregateNutrients();
 
         List<String> nuts = dateData.nutrientsToStringList();

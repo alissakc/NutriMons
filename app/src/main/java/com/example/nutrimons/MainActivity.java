@@ -126,13 +126,13 @@ public class MainActivity extends AppCompatActivity implements DrawerController,
 
         //initialize dateData
         String dateString = BAMM.getDateString();
-        DateData dateData = BAMM.getCurrentDateData();
+        DateData dateData = BAMM.getDateData();
         try {
             dateData.aggregateNutrients();
         }
         catch(NullPointerException e)
         {
-            dateData = new DateData(dateString, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), 0f, null);
+            dateData = new DateData(dateString, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), 0f, null, BAMM.MAX_DAILY_COINS);
             mDb.dateDataDao().insert(dateData);
         }
     }

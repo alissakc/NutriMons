@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.nutrimons.database.AppDatabase;
+import com.example.nutrimons.database.DateData;
 import com.example.nutrimons.database.Meal;
 import com.example.nutrimons.database.User;
 import com.github.mikephil.charting.animation.Easing;
@@ -305,7 +306,7 @@ public class Water extends Fragment implements View.OnClickListener{
                     SimpleDateFormat Date = new SimpleDateFormat("MM/dd/yyyy");
                     String dateString = Date.format(date);
                     if(mDb.dateDataDao().findByDate(dateString) == null){
-                        com.example.nutrimons.database.DateData dateData = new com.example.nutrimons.database.DateData(dateString, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), 0f,"null");
+                        com.example.nutrimons.database.DateData dateData = new com.example.nutrimons.database.DateData(dateString, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), 0f,"null", BAMM.MAX_DAILY_COINS);
                         dateData.water = amountDrank;
                         dateData.water_unit = unit;
                         for(String s:  dateData.nutrientsToStringList())
@@ -324,9 +325,8 @@ public class Water extends Fragment implements View.OnClickListener{
                     showPieChart();
 
                     //reward user
-                    User u = mDb.userDao().findByUserID(mDb.tokenDao().getUserID());
-                    u.nutriCoins += 1;
-                    mDb.userDao().insert(u);
+                    if(inputAmount > 0)
+                        BAMM.giveCoin();
 
                 } catch (NumberFormatException e) {
                     toastWarning();

@@ -175,7 +175,7 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
 /*                ArrayList<String> finalMeals = new ArrayList<>();
                 ArrayList<String> finalExercises = new ArrayList<>();*/
                 if (mDb.dateDataDao().findByDate(finalDateString) == null) {
-                    final com.example.nutrimons.database.DateData dateData = new com.example.nutrimons.database.DateData(finalDateString, selectedBreakfast, selectedLunch, selectedDinner, selectedSnack, new ArrayList<>(), (float) 0.0, null);
+                    final com.example.nutrimons.database.DateData dateData = new com.example.nutrimons.database.DateData(finalDateString, selectedBreakfast, selectedLunch, selectedDinner, selectedSnack, new ArrayList<>(), (float) 0.0, null, BAMM.MAX_DAILY_COINS);
                     dateData.aggregateNutrients();
                     mDb.dateDataDao().insert(dateData);
                 } else {
@@ -284,7 +284,7 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
                             (selectedDinner.isEmpty()) ? mDb.dateDataDao().findByDate(finalDateString).dinner : selectedDinner,
                             (selectedSnack.isEmpty()) ? mDb.dateDataDao().findByDate(finalDateString).snack : selectedSnack,
                             mDb.dateDataDao().findByDate(finalDateString).todayExercise,
-                            temp.water, temp.water_unit);
+                            temp.water, temp.water_unit, temp.coinsLeft);
                     dateData.aggregateNutrients();
                     mDb.dateDataDao().updateDateData(dateData);
 
@@ -567,15 +567,13 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
                 //reward user
                 DateData dd = mDb.dateDataDao().findByDate(finalDateString);
                 User u = mDb.userDao().findByUserID(mDb.tokenDao().getUserID());
-                //dd.aggregateNutrients();
                 for(int i = 0; i < dd.nutrientsToFloatList().size(); ++i)
                 {
                     if (dd.nutrientsToFloatList().get(i) / u.DRIToFloatList().get(i) >= 1)
                     {
-                            u.nutriCoins += 1;
+                        BAMM.giveCoin();
                     }
                 }
-                mDb.userDao().insert(u);
 
                 dd.aggregateNutrients();
                 List<Float> nuts = dd.nutrientsToFloatList();
