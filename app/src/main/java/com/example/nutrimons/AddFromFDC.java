@@ -215,7 +215,7 @@ public class AddFromFDC extends Fragment {
 
                                 com.example.nutrimons.database.Meal food = new com.example.nutrimons.database.Meal();
                                 food.mealName = foodName;
-                                food.servingSize = "100g"; //all units seem to be 100g, no info in json
+                                food.servingSize = "Unknown"; //no info in json
                                 food.servingsEaten = 1;
 
                                 JSONArray foodNutrients = foodArray.getJSONObject(i).getJSONArray("foodNutrients");

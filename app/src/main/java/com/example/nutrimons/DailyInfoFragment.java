@@ -317,7 +317,7 @@ public class DailyInfoFragment extends Fragment {
 
         List<String> dailySummary;
         if (temp != null) {
-            if(meals.isEmpty()){
+            if(temp.getSnack().isEmpty() && temp.getDinner().isEmpty() && temp.getLunch().isEmpty() && temp.getBreakfast().isEmpty()){
                 dailySummary = new ArrayList<>();
                 dailySummary.add("No meals were inputted.");
                 dailySummaryLayout.setVisibility(View.GONE);
@@ -483,7 +483,8 @@ public class DailyInfoFragment extends Fragment {
                             finalBreakfast, finalLunch, finalDinner, finalSnack,
                             mDb.dateDataDao().findByDate(finalCurrentDay).todayExercise,
                             mDb.dateDataDao().findByDate(finalCurrentDay).water,
-                            mDb.dateDataDao().findByDate(finalCurrentDay).water_unit);
+                            mDb.dateDataDao().findByDate(finalCurrentDay).water_unit,
+                            mDb.dateDataDao().findByDate(finalCurrentDay).coinsLeft);
                     mDb.dateDataDao().updateDateData(dateData);
                     mealAdapter.removeSelection();
 
@@ -543,7 +544,8 @@ public class DailyInfoFragment extends Fragment {
                                     mDb.dateDataDao().findByDate(finalCurrentDay).dinner,
                                     mDb.dateDataDao().findByDate(finalCurrentDay).snack,
                                     finalExercise, mDb.dateDataDao().findByDate(finalCurrentDay).water,
-                                    mDb.dateDataDao().findByDate(finalCurrentDay).water_unit);
+                                    mDb.dateDataDao().findByDate(finalCurrentDay).water_unit,
+                                    mDb.dateDataDao().findByDate(finalCurrentDay).coinsLeft);
                     mDb.dateDataDao().updateDateData(dateData);
                     exerciseAdapter.removeSelection();
                 }

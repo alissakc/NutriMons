@@ -93,7 +93,10 @@ public class DateData {
     @ColumnInfo(name = "iron")
     public float iron;
 
-    public DateData(@NonNull String date, List<Meal> breakfast, List<Meal> lunch, List<Meal> dinner, List<Meal> snack, List<String> todayExercise, float water, String water_unit) {
+    @ColumnInfo(name = "coinsLeft")
+    public int coinsLeft;
+
+    public DateData(@NonNull String date, List<Meal> breakfast, List<Meal> lunch, List<Meal> dinner, List<Meal> snack, List<String> todayExercise, float water, String water_unit, int coinsLeft) {
         this.date = date;
         this.breakfast = breakfast;
         this.lunch = lunch;
@@ -102,6 +105,7 @@ public class DateData {
         this.todayExercise = todayExercise;
         this.water = water;
         this.water_unit = water_unit;
+        this.coinsLeft = coinsLeft;
     }
 
     public void aggregateNutrients() {
@@ -159,6 +163,9 @@ public class DateData {
         ArrayList<String> dailyList = new ArrayList<>();
 
         dailyList.add("Calories: " + calories + "kcal");
+        if(water_unit == null){
+            water_unit = "oz";
+        }
         if(water_unit.equals("ml"))
         {
             dailyList.add("Water: " + water / 1000 + "L");

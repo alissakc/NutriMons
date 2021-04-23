@@ -192,7 +192,7 @@ public class Dashboard extends Fragment implements View.OnClickListener {
         goToTamagotchi = view.findViewById(R.id.dashboardTamagotchi);
         factTextView = view.findViewById(R.id.textViewFunFactText);
 
-        DateData dateData = BAMM.getCurrentDateData();
+        DateData dateData = BAMM.getDateData();
         dateData.aggregateNutrients();
         mDb.dateDataDao().updateDateData(dateData);
 

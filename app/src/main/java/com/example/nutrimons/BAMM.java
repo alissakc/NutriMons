@@ -13,9 +13,11 @@ import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 
 public class BAMM {
-    private static AppDatabase db;
+    public static final int MAX_DAILY_COINS = 20;
 
-    public BAMM(AppDatabase db) { this.db = db; }
+    private static AppDatabase mDb;
+
+    public BAMM(AppDatabase mDb) { this.mDb = mDb; }
 
     public static String getDateString()
     {
@@ -24,19 +26,24 @@ public class BAMM {
         return Date.format(date);
     }
 
-    public static DateData getCurrentDateData()
+    public static DateData getDateData()
     {
-        return db.dateDataDao().findByDate(getDateString());
+        return mDb.dateDataDao().findByDate(getDateString());
+    }
+
+    public static DateData getDateData(String date)
+    {
+        return mDb.dateDataDao().findByDate(date);
     }
 
     public static User getCurrentUser()
     {
-        return db.userDao().findByUserID(db.tokenDao().getUserID());
+        return mDb.userDao().findByUserID(mDb.tokenDao().getUserID());
     }
 
     public static TamagotchiPet getCurrentTamagotchi()
     {
-        return db.tamagotchiDao().findByUserId(db.tokenDao().getUserID());
+        return mDb.tamagotchiDao().findByUserId(mDb.tokenDao().getUserID());
     }
 
     public static Bitmap StringToBitMap(String encodedString){ //https://stackoverflow.com/questions/13562429/how-many-ways-to-convert-bitmap-to-string-and-vice-versa
@@ -75,5 +82,19 @@ public class BAMM {
         }
 
         return Bitmap.createScaledBitmap(image, width, height, true);
+    }
+    
+    public static void giveCoin()
+    {
+        DateData dd = getDateData();
+        if(dd.coinsLeft > 0)
+        {
+            --dd.coinsLeft;
+            mDb.dateDataDao().updateDateData(dd);
+
+            User u = mDb.userDao().findByUserID(mDb.tokenDao().getUserID());
+            u.nutriCoins += 1;
+            mDb.userDao().insert(u);
+        }
     }
 }

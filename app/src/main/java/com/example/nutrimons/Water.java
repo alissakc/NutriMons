@@ -81,11 +81,13 @@ public class Water extends Fragment implements View.OnClickListener{
 //        // database
         mDb = AppDatabase.getInstance(getContext());
 
-        dateString = BAMM.getDateString();
+        long date = System.currentTimeMillis();
+        SimpleDateFormat Date = new SimpleDateFormat("MM/dd/yyyy");
+        String dateString = Date.format(date);
         Log.d("WaterDateString", dateString);
         Log.d("WaterDateString", String.valueOf(dateString.equals("03/13/2021")));
 
-        amountNeeded = Float.parseFloat(BAMM.getCurrentUser().water) * 33.81402f; //convert to fl oz
+        amountNeeded = Float.parseFloat(mDb.userDao().findByUserID(mDb.tokenDao().getUserID()).water) * 33.81402f; //convert to fl oz
 
 //        com.example.nutrimons.database.DateData dateTest = new com.example.nutrimons.database.DateData(dateString, new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), 1.1);
 //        com.example.nutrimons.database.DateData nullDateTest = null;
@@ -118,13 +120,16 @@ public class Water extends Fragment implements View.OnClickListener{
 //            Log.d("WaterDateString", "FindBy: NOT NULL");
 //        }
 
-        if(BAMM.getCurrentDateData() == null){
+        if(mDb.dateDataDao().findByDate(dateString) == null){
             amountDrank = 0.0f;
-            amountNeeded = Float.parseFloat(BAMM.getCurrentUser().water) * 33.81402f; //convert to fl oz
+            amountNeeded = Float.parseFloat(mDb.userDao().findByUserID(mDb.tokenDao().getUserID()).water) * 33.81402f; //convert to fl oz
         }else {
             List<Float> temp = (List<Float>)mDb.dateDataDao().findWaterByDate(dateString);
             amountDrank = ((Float)temp.get(0) == null) ? 0.0f : (Float)temp.get(0);
             unit = ((String)mDb.dateDataDao().findByDate(dateString).water_unit == null ? "oz" : (mDb.dateDataDao().findByDate(dateString).water_unit.equals("oz") ? "oz" : "ml"));
+            if(unit.equals("ml")){
+                amountNeeded *= 29.5735;
+            }
             amountNeeded -= amountDrank;
         }
 //        try{
@@ -297,9 +302,11 @@ public class Water extends Fragment implements View.OnClickListener{
                 try {
                     inputAmount = Float.parseFloat(waterAmountInput.getText().toString());
                     amountDrank += inputAmount;
-                    DateData dateData = BAMM.getCurrentDateData();
-                    if(dateData == null){
-                        dateData = new com.example.nutrimons.database.DateData(dateString, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), 0f, "L");
+                    long date = System.currentTimeMillis();
+                    SimpleDateFormat Date = new SimpleDateFormat("MM/dd/yyyy");
+                    String dateString = Date.format(date);
+                    if(mDb.dateDataDao().findByDate(dateString) == null){
+                        com.example.nutrimons.database.DateData dateData = new com.example.nutrimons.database.DateData(dateString, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), 0f,"null", BAMM.MAX_DAILY_COINS);
                         dateData.water = amountDrank;
                         dateData.water_unit = unit;
                         for(String s:  dateData.nutrientsToStringList())
@@ -307,6 +314,7 @@ public class Water extends Fragment implements View.OnClickListener{
                         mDb.dateDataDao().insert(dateData);
                     }
                     else{
+                        com.example.nutrimons.database.DateData dateData = mDb.dateDataDao().findByDate(dateString);
                         dateData.water = amountDrank;
                         dateData.water_unit = unit;
                         mDb.dateDataDao().updateDateData(dateData);
@@ -317,9 +325,8 @@ public class Water extends Fragment implements View.OnClickListener{
                     showPieChart();
 
                     //reward user
-                    User u = BAMM.getCurrentUser();
-                    u.nutriCoins += 1;
-                    mDb.userDao().insert(u);
+                    if(inputAmount > 0)
+                        BAMM.giveCoin();
 
                 } catch (NumberFormatException e) {
                     toastWarning();

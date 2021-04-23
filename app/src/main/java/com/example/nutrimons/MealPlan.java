@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import android.view.animation.Animation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -173,12 +174,12 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
 
 /*                ArrayList<String> finalMeals = new ArrayList<>();
                 ArrayList<String> finalExercises = new ArrayList<>();*/
-                if (BAMM.getCurrentDateData() == null) {
-                    final com.example.nutrimons.database.DateData dateData = new com.example.nutrimons.database.DateData(finalDateString, selectedBreakfast, selectedLunch, selectedDinner, selectedSnack, new ArrayList<>(), 0f, "L");
+                if (mDb.dateDataDao().findByDate(finalDateString) == null) {
+                    final com.example.nutrimons.database.DateData dateData = new com.example.nutrimons.database.DateData(finalDateString, selectedBreakfast, selectedLunch, selectedDinner, selectedSnack, new ArrayList<>(), (float) 0.0, null, BAMM.MAX_DAILY_COINS);
                     dateData.aggregateNutrients();
                     mDb.dateDataDao().insert(dateData);
                 } else {
-                    DateData temp = BAMM.getCurrentDateData();
+                    DateData temp = mDb.dateDataDao().findByDate(finalDateString);
                     // checks for existing meals
                     List<com.example.nutrimons.database.Meal> breakfast;
                     try {
@@ -283,7 +284,7 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
                             (selectedDinner.isEmpty()) ? mDb.dateDataDao().findByDate(finalDateString).dinner : selectedDinner,
                             (selectedSnack.isEmpty()) ? mDb.dateDataDao().findByDate(finalDateString).snack : selectedSnack,
                             mDb.dateDataDao().findByDate(finalDateString).todayExercise,
-                            temp.water, temp.water_unit);
+                            temp.water, temp.water_unit, temp.coinsLeft);
                     dateData.aggregateNutrients();
                     mDb.dateDataDao().updateDateData(dateData);
 
@@ -564,16 +565,15 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
                 }*/
 
                 //reward user
-                DateData dd = BAMM.getCurrentDateData();
-                User u = BAMM.getCurrentUser();
+                DateData dd = mDb.dateDataDao().findByDate(finalDateString);
+                User u = mDb.userDao().findByUserID(mDb.tokenDao().getUserID());
                 for(int i = 0; i < dd.nutrientsToFloatList().size(); ++i)
                 {
                     if (dd.nutrientsToFloatList().get(i) / u.DRIToFloatList().get(i) >= 1)
                     {
-                            u.nutriCoins += 1;
+                        BAMM.giveCoin();
                     }
                 }
-                mDb.userDao().insert(u);
 
                 dd.aggregateNutrients();
                 List<Float> nuts = dd.nutrientsToFloatList();
