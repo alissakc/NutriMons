@@ -79,30 +79,21 @@
                     android:orientation="horizontal">
 
                     <Button
+                        android:id="@+id/allButt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:layout_weight="1"
+                        android:text="All"
+                        app:backgroundTint="#8BC34A" />
+
+                    <Button
                         android:id="@+id/hatsButt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
                         android:layout_weight="1"
                         android:text="Hats"
-                        app:backgroundTint="#8BC34A" />
-
-                    <Button
-                        android:id="@+id/toys"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="3dp"
-                        android:layout_weight="1"
-                        android:text="Toys"
-                        app:backgroundTint="#8BC34A" />
-
-                    <Button
-                        android:id="@+id/food"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="3dp"
-                        android:layout_weight="1"
-                        android:text="Food"
                         app:backgroundTint="#8BC34A" />
 
                     <Button

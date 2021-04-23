@@ -205,6 +205,16 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
         //Editing name
         petName = view.findViewById(R.id.petName);
 
+        //decease level
+        if(tama.healthLevel<=0 || tama.waterLevel<=0)
+        {
+            if(tama.level>0) {
+                tama.level--;
+                tama.healthLevel++;
+                tama.waterLevel++;
+                mDb.tamagotchiDao().insert(tama);
+            }
+        }
         //Level Number
         levelingView = view.findViewById(R.id.levelNum);
         levelingView.setText(String.valueOf(tama.level));
@@ -241,6 +251,8 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
 
 
 
+
+
         TamagotchiPet = view.findViewById(R.id.TamagotchiPet);
         LinearLayout ll_list = view.findViewById(R.id.petPlayZone);
 
@@ -265,15 +277,12 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
                 currentGearedImage = 0;
                 for(ShopItem si:AllGeareditem)
                 {
-
-
-                    if((si.name).contains(tempName))
+                    if((si.name).contains(tempName) && si.owned==1)
                     {
                         System.out.println(si.name);
                         //imagesPetWithHats.add((imagesPet.get(currentImage)));
                         imagesPetWithHats.add(BAMM.StringToBitMap(si.image));
                         System.out.println("HAVE GEAR");
-
                     }
                     for(int i = 0 ;i<imagesPetWithHats.size();i++)
                         System.out.println(imagesPetWithHats.get(i));
@@ -325,7 +334,7 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
 
 
         //Lowering the health by time
-        int lowerHealthWater = difference/60;
+        int lowerHealthWater = difference/43200;
 
         tama.healthLevel -= lowerHealthWater;
         if (tama.healthLevel < 0)

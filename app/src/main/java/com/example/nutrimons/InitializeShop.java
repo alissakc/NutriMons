@@ -26,7 +26,7 @@ public class InitializeShop {
                 ShopItem si = new ShopItem();
                 System.out.println(s);
 
-                if(s.equals("pig_pets_1000.png"))
+                if(s.equals("pig_pets_100.png"))
                 {
                     si.owned = 1;
                 }

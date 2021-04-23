@@ -32,6 +32,7 @@ import com.github.mikephil.charting.data.LineRadarDataSet;
 import org.w3c.dom.Text;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -52,7 +53,7 @@ public class TamagotchiShop extends Fragment implements View.OnClickListener {
     private User user;
     private LinearLayout shopItemsArea;
 
-    Button hatsButt, petsButt, backButt;
+    Button hatsButt, petsButt, backButt, allButt;
     //Coins
     TextView coins;
 
@@ -119,6 +120,8 @@ public class TamagotchiShop extends Fragment implements View.OnClickListener {
         hatsButt = view.findViewById(R.id.hatsButt);
         hatsButt.setOnClickListener(this);
 
+        allButt = view.findViewById(R.id.allButt);
+        allButt.setOnClickListener(this);
         //List<ShopItem> shopItems = mDb.shopItemDao().getAll();
         //shopItemsArea = (LinearLayout) view.findViewById(R.id.shopItemsArea);
         //shopItemsArea.addView(new TextView(getContext()));
@@ -129,10 +132,16 @@ public class TamagotchiShop extends Fragment implements View.OnClickListener {
         petsButt = view.findViewById(R.id.petsButt);
         petsButt.setOnClickListener(this);
 
+
         backButt = view.findViewById(R.id.backToTamagotchi);
         backButt.setOnClickListener(this);
 
         shopItems = mDb.shopItemDao().getAll();
+        shopItems.clear();
+        List<ShopItem> petList= mDb.shopItemDao().getShopItemByCategory("pets");
+        List<ShopItem> hatsList= mDb.shopItemDao().getShopItemByCategory("hats");
+        shopItems.addAll(petList);
+        shopItems.addAll(hatsList);
         populateShop();
 
         /*for(ShopItem si : shopItems)
@@ -196,8 +205,15 @@ public class TamagotchiShop extends Fragment implements View.OnClickListener {
                 Navigation.findNavController(view).navigate(R.id.action_nav_tamagotchiShop_to_nav_tamagotchi);
                 break;
             case "All":
-            default:
-                shopItems = mDb.shopItemDao().getAll();
+                //shopItems = mDb.shopItemDao().getAll();
+                shopItems.clear();
+                List<ShopItem> petList= mDb.shopItemDao().getShopItemByCategory("pets");
+                List<ShopItem> hatsList= mDb.shopItemDao().getShopItemByCategory("hats");
+                shopItems.addAll(petList);
+                shopItems.addAll(hatsList);
+                break;
+            //default:
+                //shopItems = mDb.shopItemDao().getAll();
         }
         populateShop();
     }
@@ -252,9 +268,54 @@ public class TamagotchiShop extends Fragment implements View.OnClickListener {
                         }
                         else
                         {
-                            si.owned = 1;
-                            mDb.shopItemDao().insert(si);
-                            populateShop();
+                            if(user.nutriCoins>=si.cost) {
+
+                                user.nutriCoins-=si.cost;
+                                mDb.userDao().insert(user);
+                                coins.setText(String.valueOf(user.nutriCoins));
+                                si.owned = 1;
+                                System.out.println(si.name);
+                                switch (si.name) {
+
+                                    case "Propellor Hat":
+                                        ShopItem temp = mDb.shopItemDao().getShopItemByName("PigWithPropellor");
+                                        temp.owned = 1;
+                                        mDb.shopItemDao().insert(temp);
+                                        temp = mDb.shopItemDao().getShopItemByName("CatWithPropellor");
+                                        temp.owned = 1;
+                                        mDb.shopItemDao().insert(temp);
+                                        temp = mDb.shopItemDao().getShopItemByName("PandaWithPropellor");
+                                        temp.owned = 1;
+                                        mDb.shopItemDao().insert(temp);
+                                        break;
+                                    case "Red Hat":
+                                        temp = mDb.shopItemDao().getShopItemByName("PigWithRedHat");
+                                        temp.owned = 1;
+                                        mDb.shopItemDao().insert(temp);
+                                        temp = mDb.shopItemDao().getShopItemByName("CatWithRedHat");
+                                        temp.owned = 1;
+                                        mDb.shopItemDao().insert(temp);
+                                        temp = mDb.shopItemDao().getShopItemByName("PandaWithRedHat");
+                                        temp.owned = 1;
+                                        mDb.shopItemDao().insert(temp);
+                                        break;
+                                    case "Winter Hat":
+                                        temp = mDb.shopItemDao().getShopItemByName("PigWithWinter");
+                                        temp.owned = 1;
+                                        mDb.shopItemDao().insert(temp);
+                                        temp = mDb.shopItemDao().getShopItemByName("CatWithWinter");
+                                        temp.owned = 1;
+                                        mDb.shopItemDao().insert(temp);
+                                        temp = mDb.shopItemDao().getShopItemByName("PandaWithWinter");
+                                        temp.owned = 1;
+                                        mDb.shopItemDao().insert(temp);
+                                        break;
+                                }
+                                mDb.shopItemDao().insert(si);
+                                populateShop();
+                            }
+                            else
+                                Toast.makeText(getContext(), "YOU NEED MONEY", Toast.LENGTH_SHORT).show();
                         }
                     } catch (SQLiteConstraintException e) {
                         Toast.makeText(getContext(), "You already own this", Toast.LENGTH_SHORT).show();
