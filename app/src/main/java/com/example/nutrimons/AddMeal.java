@@ -2,12 +2,10 @@ package com.example.nutrimons;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteConstraintException;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
 
 import android.util.Log;
@@ -24,10 +22,7 @@ import android.widget.Toast;
 import com.example.nutrimons.database.AppDatabase;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.Random;
-
-import static java.lang.Float.parseFloat;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -121,7 +116,7 @@ public class AddMeal extends Fragment {
         searchFDCButton = view.findViewById(R.id.searchFDCButton);
         advancedMealButton = view.findViewById(R.id.advancedMealButton);
         advancedMealForm = view.findViewById(R.id.advancedMealForm);
-        randomButton = view.findViewById(R.id.randomButton);
+        randomButton = view.findViewById(R.id.randomMeal);
 
         // new meal
         mealNameText = (EditText) view.findViewById(R.id.editTextFoodName);
@@ -317,7 +312,6 @@ public class AddMeal extends Fragment {
     {
         Random r = new Random();
         int random = r.nextInt(foodNames.length);
-        Log.d("length, name", foodNames.length + " " + foodNames[random]);
         mealName = foodNames[random];
         MealRecommender mr = new MealRecommender(getContext(), mealName, true);
         try {

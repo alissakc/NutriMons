@@ -48,13 +48,26 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp" />
 
-                <Button
-                    android:id="@+id/saveExerciseButton"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="0dp"
-                    android:layout_marginRight="0dp"
-                    android:text="@string/save_workout" />
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/saveExerciseButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginRight="0dp"
+                        android:text="@string/save_workout" />
+
+                    <Button
+                        android:id="@+id/randomExercise"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="Random" />
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -118,7 +131,7 @@
                     android:autofillHints=""
                     android:ems="10"
                     android:hint="@string/calories_per_unit_edit_text"
-                    android:inputType="text"
+                    android:inputType="number"
                     android:textSize="18sp" />
 
                 <TextView

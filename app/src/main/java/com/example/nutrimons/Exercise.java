@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -50,13 +51,14 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
 
     // vars
     private Spinner exerciseSpinner;
-    private Button addButton, save;
+    private Button addButton, save, randomButton;
     private String exerciseName, unitName;
     private int caloriesPerUnit;
     private float duration;
     private EditText exerciseNameText, unitNameText, caloriesPerUnitText, durationText;
     private final List<String> exerciseList = new ArrayList<>();
     private OnFragmentInteractionListener mListener;
+    private String[] exerciseData;
 
     // creates instance of database
     private AppDatabase mDb;
@@ -158,12 +160,15 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
 
         // Button initialization
         addButton = view.findViewById(R.id.submitNewExercise);
+        randomButton = view.findViewById(R.id.randomExercise);
 
         // new exercise
         exerciseNameText = (EditText) view.findViewById(R.id.editTextExerciseName);
         caloriesPerUnitText = (EditText) view.findViewById(R.id.editTextCaloriesPerUnit);
         unitNameText = (EditText) view.findViewById(R.id.editTextUnitName);
         durationText = (EditText) view.findViewById(R.id.editTextDuration);
+
+        exerciseData = this.getResources().getStringArray(R.array.exerciseData);
 
         String finalDateString = dateString;
         //assign listener
@@ -185,6 +190,27 @@ public class Exercise extends Fragment implements AdapterView.OnItemSelectedList
                 fragment.setArguments(bundle);
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.fragment_exercise, fragment).addToBackStack(null).commit();
+            }
+        });
+
+        randomButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideKeyboard();
+                Random r = new Random();
+                int random = r.nextInt(exerciseData.length);
+                String exercise = exerciseData[random];
+
+                exerciseNameText.setText(exercise.substring(0, exercise.indexOf(';')));
+                exercise = exercise.substring(exercise.indexOf(';') + 1);
+
+                caloriesPerUnitText.setText(exercise.substring(0, exercise.indexOf(';')));
+                exercise = exercise.substring(exercise.indexOf(';') + 1);
+
+                unitNameText.setText(exercise.substring(0, exercise.indexOf(';')));
+                exercise = exercise.substring(exercise.indexOf(';') + 1);
+
+                durationText.setText(exercise);
             }
         });
 
