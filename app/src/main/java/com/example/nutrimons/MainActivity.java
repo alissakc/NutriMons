@@ -204,17 +204,7 @@ public class MainActivity extends AppCompatActivity implements DrawerController,
                 Token t = mDb.tokenDao().getToken();
                 t.userID = -1;
                 mDb.tokenDao().insert(t);
-                //return NavigationUI.onNavDestinationSelected(item, navController) || super.onOptionsItemSelected(item); //https://developer.android.com/guide/navigation/navigation-ui
-                LoginFragment loginFragment = new LoginFragment();
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.popBackStack("content_main", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, loginFragment).commit();
-                /*Intent mStartActivity = new Intent(MainActivity.this, MainActivity.class);
-                int mPendingIntentId = 999999;
-                PendingIntent mPendingIntent = PendingIntent.getActivity(MainActivity.this, mPendingIntentId, mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
-                AlarmManager mgr = (AlarmManager)MainActivity.this.getSystemService(Context.ALARM_SERVICE);
-                mgr.set(AlarmManager.RTC, System.currentTimeMillis(), mPendingIntent);
-                System.exit(0);*/
+                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.nav_login);
                 return true;
             case R.id.fragment_bug_report: // bug reporter
                 BugReportFragment bugFragment = new BugReportFragment();
