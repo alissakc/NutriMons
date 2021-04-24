@@ -1,6 +1,8 @@
 package com.example.nutrimons;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,6 +14,9 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageButton;
+import android.widget.Toast;
+
+import static android.provider.CalendarContract.CalendarCache.URI;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -159,7 +164,7 @@ public class Sources extends Fragment implements View.OnClickListener {
     {
         switch(view.getId()){
             case(R.id.funFacts1B):
-                setWebView((WebView) funFacts1WV, funFacts1_URL, "Calories");
+                openLink(funFacts1_URL);
                 break;
             case(R.id.funFacts2B):
                 setWebView((WebView) funFacts2WV, funFacts2_URL, "Protein");
@@ -168,7 +173,8 @@ public class Sources extends Fragment implements View.OnClickListener {
                 setWebView((WebView) funFacts3WV, funFacts3_URL, "Carbohydrates");
                 break;
             case(R.id.calorieCalculator1B):
-                setWebView((WebView) calorieCalculator1WV, calorieCalculator1_URL, "Sugar");
+                //setWebView((WebView) calorieCalculator1WV, calorieCalculator1_URL, "Sugar");
+                openLink(calorieCalculator1_URL);
                 break;
             case(R.id.calorieCalculator2B):
                 setWebView((WebView) calorieCalculator2WV, calorieCalculator2_URL, "Fiber");
@@ -177,7 +183,8 @@ public class Sources extends Fragment implements View.OnClickListener {
                 setWebView((WebView) calorieCalculator3WV, calorieCalculator3_URL, "Total Fat");
                 break;
             case(R.id.nutrientRecommendationsB):
-                setWebView((WebView) nutrientRecommendationsWV, nutrientRecommendations_URL, "Cholesterol");
+                //setWebView((WebView) nutrientRecommendationsWV, nutrientRecommendations_URL, "Cholesterol");
+                openLink(nutrientRecommendations_URL);
                 break;
             case(R.id.addMealSearchB):
                 setWebView((WebView) addMealSearchWV, addMealSearch_URL, "Saturated Fat");
@@ -194,6 +201,18 @@ public class Sources extends Fragment implements View.OnClickListener {
             case(R.id.mineralInfoB):
                 setWebView((WebView) mineralInfoWV, mineralInfo_URL, "Vitamin C");
                 break;
+        }
+    }
+
+    private void openLink(String link)
+    {
+        try {
+            Intent myIntent = new Intent(Intent.ACTION_VIEW, URI.parse(link));
+            startActivity(myIntent);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(getContext(), "No application can handle this request."
+                    + " Please install a webbrowser",  Toast.LENGTH_LONG).show();
+            e.printStackTrace();
         }
     }
     @Override
