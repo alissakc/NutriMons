@@ -422,4 +422,54 @@
         <item>Processed cheese was invented in Switzerland, not America.</item>
         <item>Chili peppers contain a chemical that tricks your mouth into \"thinking\" it\'s being burned — that\'s why spicy food hurts so much.</item>
     </string-array>
+
+    <string-array name="foodNames">
+        <item>bread</item>
+        <item>chocolate ice cream</item>
+        <item>banana</item>
+        <item>fried chicken</item>
+        <item>chicken tenders</item>
+        <item>spaghetti</item>
+        <item>french fries</item>
+        <item>pizza</item>
+        <item>pancakes</item>
+        <item>hamburger</item>
+        <item>fried rice</item>
+        <item>egg roll</item>
+        <item>pumpkin pie</item>
+        <item>apple pie</item>
+        <item>chicken pot pie</item>
+        <item>bagel</item>
+        <item>blueberry muffin</item>
+        <item>banana bread</item>
+        <item>cheesecake</item>
+        <item>chicken breast</item>
+        <item>donut</item>
+        <item>eggs</item>
+        <item>pork chop</item>
+        <item>spinach</item>
+        <item>yogurt</item>
+        <item>avocado</item>
+        <item>roasted potatoes</item>
+        <item>steak</item>
+        <item>mushroom</item>
+        <item>orange chicken</item>
+        <item>chow mein</item>
+        <item>tater tots</item>
+        <item>key lime pie</item>
+        <item>sourdough bread</item>
+        <item>cobb salad</item>
+        <item>fajitas</item>
+        <item>taco</item>
+        <item>burrito</item>
+        <item>cornbread</item>
+        <item>jambalaya</item>
+        <item>ham</item>
+        <item>chicken fried steak</item>
+        <item>salmon</item>
+        <item>california roll</item>
+        <item>macaroni</item>
+        <item>lobster roll</item>
+    </string-array>
+
 </resources>
