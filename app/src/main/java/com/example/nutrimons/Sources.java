@@ -90,20 +90,20 @@ public class Sources extends Fragment implements View.OnClickListener {
             mListener.onFragmentInteraction("Sources");
         }
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_Sources, container, false);
+        View v = inflater.inflate(R.layout.fragment_sources, container, false);
 
-        funFacts1B = v.findViewById(R.id.funFacts1);
-        funFacts2B = v.findViewById(R.id.funFacts2);
-        funFacts3B = v.findViewById(R.id.funFacts3);
-        calorieCalculator1B = v.findViewById(R.id.calorieCalculator1);
-        calorieCalculator2B = v.findViewById(R.id.calorieCalculator2);
-        calorieCalculator3B = v.findViewById(R.id.calorieCalculator3);
-        nutrientRecommendationsB = v.findViewById(R.id.nutrientRecommendations);
-        addMealSearchB = v.findViewById(R.id.addMealSearch);
-        barcodeSearchB = v.findViewById(R.id.barcodeSearch);
-        macronutrientInfoB = v.findViewById(R.id.macronutrientInfo);
-        vitaminInfoB = v.findViewById(R.id.vitaminInfo);
-        mineralInfoB = v.findViewById(R.id.mineralInfo);
+        funFacts1B = v.findViewById(R.id.funFacts1B);
+        funFacts2B = v.findViewById(R.id.funFacts2B);
+        funFacts3B = v.findViewById(R.id.funFacts3B);
+        calorieCalculator1B = v.findViewById(R.id.calorieCalculator1B);
+        calorieCalculator2B = v.findViewById(R.id.calorieCalculator2B);
+        calorieCalculator3B = v.findViewById(R.id.calorieCalculator3B);
+        nutrientRecommendationsB = v.findViewById(R.id.nutrientRecommendationsB);
+        addMealSearchB = v.findViewById(R.id.addMealSearchB);
+        barcodeSearchB = v.findViewById(R.id.barcodeSearchB);
+        macronutrientInfoB = v.findViewById(R.id.macronutrientInfoB);
+        vitaminInfoB = v.findViewById(R.id.vitaminInfoB);
+        mineralInfoB = v.findViewById(R.id.mineralInfoB);
 
 
         funFacts1B.setOnClickListener(this);
@@ -183,40 +183,40 @@ public class Sources extends Fragment implements View.OnClickListener {
     public void onClick(View view)
     {
         switch(view.getId()){
-            case(R.id.funFacts1):
+            case(R.id.funFacts1B):
                 setWebView((WebView) funFacts1WV, funFacts1_URL, "Calories");
                 break;
-            case(R.id.funFacts2):
+            case(R.id.funFacts2B):
                 setWebView((WebView) funFacts2WV, funFacts2_URL, "Protein");
                 break;
-            case(R.id.funFacts3):
+            case(R.id.funFacts3B):
                 setWebView((WebView) funFacts3WV, funFacts3_URL, "Carbohydrates");
                 break;
-            case(R.id.calorieCalculator1):
+            case(R.id.calorieCalculator1B):
                 setWebView((WebView) calorieCalculator1WV, calorieCalculator1_URL, "Sugar");
                 break;
-            case(R.id.calorieCalculator2):
+            case(R.id.calorieCalculator2B):
                 setWebView((WebView) calorieCalculator2WV, calorieCalculator2_URL, "Fiber");
                 break;
-            case(R.id.calorieCalculator3): 
+            case(R.id.calorieCalculator3B):
                 setWebView((WebView) calorieCalculator3WV, calorieCalculator3_URL, "Total Fat");
                 break;
-            case(R.id.nutrientRecommendations):
+            case(R.id.nutrientRecommendationsB):
                 setWebView((WebView) nutrientRecommendationsWV, nutrientRecommendations_URL, "Cholesterol");
                 break;
-            case(R.id.addMealSearch):
+            case(R.id.addMealSearchB):
                 setWebView((WebView) addMealSearchWV, addMealSearch_URL, "Saturated Fat");
                 break;
-            case(R.id.barcodeSearch):
+            case(R.id.barcodeSearchB):
                 setWebView((WebView) barcodeSearchWV, barcodeSearch_URL, "Monounsaturated Fat");
                 break;
-            case(R.id.macronutrientInfo):
+            case(R.id.macronutrientInfoB):
                 setWebView((WebView) macronutrientInfoWV, macronutrientInfo_URL, "Trans Fat");
                 break;
-            case(R.id.vitaminInfo):
+            case(R.id.vitaminInfoB):
                 setWebView((WebView) vitaminInfoWV, vitaminInfo_URL, "Vitamin A");
                 break;
-            case(R.id.mineralInfo):
+            case(R.id.mineralInfoB):
                 setWebView((WebView) mineralInfoWV, mineralInfo_URL, "Vitamin C");
                 break;
         }
