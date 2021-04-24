@@ -19,7 +19,9 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.nutrimons.BugReportFragment;
 import com.example.nutrimons.MainActivity;
+import com.example.nutrimons.MealPlan;
 import com.example.nutrimons.R;
 import com.example.nutrimons.database.AppDatabase;
 import com.example.nutrimons.database.Token;
@@ -29,6 +31,10 @@ import java.util.List;
 
 public class LoginFragment extends Fragment {
 
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+    private MealPlan.OnFragmentInteractionListener mListener;
+
     private LoginViewModel loginViewModel;
     private AppDatabase mDb;
     @Nullable
@@ -37,6 +43,10 @@ public class LoginFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_login, container, false);
+
+        if (mListener != null) {
+            mListener.onFragmentInteraction("Login");
+        }
 
         ((MainActivity)getActivity()).setDrawer_Locked();
 
@@ -220,5 +230,35 @@ public class LoginFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         ((MainActivity)getActivity()).setDrawer_UnLocked();
+    }
+
+    public static LoginFragment newInstance(String param1, String param2) {
+        LoginFragment fragment = new LoginFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try {
+            mListener = (MealPlan.OnFragmentInteractionListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    public interface OnFragmentInteractionListener {
+        void onFragmentInteraction(String title);
     }
 }

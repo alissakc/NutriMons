@@ -24,6 +24,7 @@ import com.google.android.material.navigation.NavigationView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
@@ -42,7 +43,8 @@ public class MainActivity extends AppCompatActivity implements DrawerController,
         DailyInfoFragment.OnFragmentInteractionListener, CalendarViewFragment.OnFragmentInteractionListener,
         MealPlan.OnFragmentInteractionListener, Exercise.OnFragmentInteractionListener,
         AddMeal.OnFragmentInteractionListener, Dashboard.OnFragmentInteractionListener,
-        BugReportFragment.OnFragmentInteractionListener, SettingsFragment.OnFragmentInteractionListener{
+        BugReportFragment.OnFragmentInteractionListener, SettingsFragment.OnFragmentInteractionListener,
+        LoginFragment.OnFragmentInteractionListener{
 
     private AppBarConfiguration mAppBarConfiguration;
     DrawerLayout drawer;
@@ -204,14 +206,14 @@ public class MainActivity extends AppCompatActivity implements DrawerController,
                 mDb.tokenDao().insert(t);
                 //return NavigationUI.onNavDestinationSelected(item, navController) || super.onOptionsItemSelected(item); //https://developer.android.com/guide/navigation/navigation-ui
                 LoginFragment loginFragment = new LoginFragment();
-                FragmentTransaction loginTransaction = getSupportFragmentManager().beginTransaction();
-                loginTransaction.replace(R.id.nav_host_fragment, loginFragment);
-                loginTransaction.commit();
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.popBackStack("content_main", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, loginFragment).commit();
                 /*Intent mStartActivity = new Intent(MainActivity.this, MainActivity.class);
                 int mPendingIntentId = 999999;
                 PendingIntent mPendingIntent = PendingIntent.getActivity(MainActivity.this, mPendingIntentId, mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
                 AlarmManager mgr = (AlarmManager)MainActivity.this.getSystemService(Context.ALARM_SERVICE);
-                mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 1, mPendingIntent);
+                mgr.set(AlarmManager.RTC, System.currentTimeMillis(), mPendingIntent);
                 System.exit(0);*/
                 return true;
             case R.id.fragment_bug_report: // bug reporter
