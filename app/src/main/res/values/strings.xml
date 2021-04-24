@@ -139,6 +139,8 @@
     <string name="nutrients">Nutrients</string>
     <string name="nutrient_information">Nutrient Information</string>
     <string name="nutrient_overview">Nutrient Overview</string>
+    <string name="purpose">Purpose</string>
+    <string name="sourceLink">Source Link</string>
     <string name="manually_add_meal">Manually Add Meal</string>
     <string name="login">Login</string>
     <string name="register">Register</string>
@@ -357,6 +359,26 @@
     <string name="feedback_name">Feedback Name</string>
     <string name="thank_you_for_contacting_us_please_report_the_bug_in_the_below_form">Thank you for contacting us! Please report the bug in the below form.</string>
     <string name="send_feedback">Send Feedback</string>
+    <string name="funFacts">Fun Facts</string>
+    <string name="funFactsLink1">https://bcdairy.ca/nutritioneducation/articles/fun-nutrition-facts</string>
+    <string name="funFactsLink2">https://facts.net/general/nutrition-facts/</string>
+    <string name="funFactsLink3">https://www.healthline.com/nutrition/20-nutrition-facts-that-should-be-common-sense#TOC_TITLE_HDR_2</string>
+    <string name="calorieCalculator">Calorie Calculator</string>
+    <string name="calorieCalculatorLink1">https://www.k-state.edu/paccats/Contents/PA/PDF/Physical%20Activity%20and%20Controlling%20Weight.pdf</string>
+    <string name="calorieCalculatorLink2">https://en.wikipedia.org/wiki/Basal_metabolic_rate</string>
+    <string name="calorieCalculatorLink3">https://physiqonomics.com/fat-loss/</string>
+    <string name="nutrientRecommendations">Nutrient Recommendations</string>
+    <string name="nutrientRecommendationsLink">https://www.nal.usda.gov/sites/default/files/fnic_uploads/recommended_intakes_individuals.pdf</string>
+    <string name="addMealApi">Add Meal Api</string>
+    <string name="addMealApiLink">https://fdc.nal.usda.gov/index.html</string>
+    <string name="barcodeApi">Barcode Api</string>
+    <string name="barcodeApiLink">https://wiki.openfoodfacts.org/API</string>
+    <string name="macronutrientInfo">Macronutrient Info</string>
+    <string name="macronutrientInfoLink">https://medlineplus.gov/definitions/nutritiondefinitions.html</string>
+    <string name="vitaminInfo">Vitamin Info</string>
+    <string name="vitaminInfoLink">https://medlineplus.gov/definitions/vitaminsdefinitions.html</string>
+    <string name="mineralInfo">Mineral Info</string>
+    <string name="mineralInfoLink">https://medlineplus.gov/definitions/mineralsdefinitions.html</string>
     <string-array name="factBank">
         <item>Milk is 87% water. The nutrients, like protein, carbohydrate, vitamins and minerals are all found in the other 13%.</item>
         <item>Fluid needs vary depending on your age and gender. Teens and adults need anywhere between 8 and 13 cups of fluid each day. Water is great, but milk, juice, soup and anything else you drink also count as fluid.</item>
