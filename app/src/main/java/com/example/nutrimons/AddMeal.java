@@ -25,6 +25,7 @@ import com.example.nutrimons.database.AppDatabase;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.util.Random;
 
 import static java.lang.Float.parseFloat;
 
@@ -45,7 +46,7 @@ public class AddMeal extends Fragment {
     private String mParam2;
 
     // vars
-    private Button addButton, searchFDCButton, advancedMealButton;
+    private Button addButton, searchFDCButton, advancedMealButton, randomButton;
     private String mealName, servingSize;
     private float servingsEaten, advCalories, advProtein,
         advCarbohydrate, advSugar, advFiber, advCholesterol, advSaturatedFat, advMonounsaturatedFat,
@@ -67,6 +68,8 @@ public class AddMeal extends Fragment {
 
     private View checkboxbrandedButton;
     private boolean isBranded;
+
+    private String[] foodNames;
 
     public AddMeal() {
         // Required empty public constructor
@@ -118,6 +121,7 @@ public class AddMeal extends Fragment {
         searchFDCButton = view.findViewById(R.id.searchFDCButton);
         advancedMealButton = view.findViewById(R.id.advancedMealButton);
         advancedMealForm = view.findViewById(R.id.advancedMealForm);
+        randomButton = view.findViewById(R.id.randomButton);
 
         // new meal
         mealNameText = (EditText) view.findViewById(R.id.editTextFoodName);
@@ -142,48 +146,9 @@ public class AddMeal extends Fragment {
         advCalciumText = (EditText) view.findViewById(R.id.advancedMealEditCalcium);
         advIronText = (EditText) view.findViewById(R.id.advancedMealEditIron);
 
-        if(food != null) {
-            mealName = food.mealName;
-            mealNameText.setText(food.mealName);
-            servingSize = food.servingSize;
-            servingSizeText.setText(food.servingSize);
-            servingsEaten = food.servingsEaten;
-            servingsEatenText.setText(String.valueOf(food.servingsEaten));
-            advCalories = food.calories;
-            advCaloriesText.setText(String.valueOf(food.calories));
-            advProtein = food.protein;
-            advProteinText.setText(String.valueOf(food.protein));
-            advCarbohydrate = food.carbohydrate;
-            advCarbohydrateText.setText(String.valueOf(food.carbohydrate));
-            advSugar = food.sugar;
-            advSugarText.setText(String.valueOf(food.sugar));
-            advFiber = food.fiber;
-            advFiberText.setText(String.valueOf(food.fiber));
-            advCholesterol = food.cholesterol;
-            advCholesterolText.setText(String.valueOf(food.cholesterol));
-            advSaturatedFat = food.saturatedFat;
-            advSaturatedFatText.setText(String.valueOf(food.saturatedFat));
-            advMonounsaturatedFat = food.monounsaturatedFat;
-            advMonounsaturatedFatText.setText(String.valueOf(food.monounsaturatedFat));
-            advPolyunsaturatedFat = food.polyunsaturatedFat;
-            advPolyunsaturatedFatText.setText(String.valueOf(food.polyunsaturatedFat));
-            advTransFat = food.transFat;
-            advTransFatText.setText(String.valueOf(food.transFat));
-            advVitaminA = food.vitaminA;
-            advVitaminAText.setText(String.valueOf(food.vitaminA));
-            advVitaminC = food.vitaminC;
-            advVitaminCText.setText(String.valueOf(food.vitaminC));
-            advVitaminD = food.vitaminD;
-            advVitaminDText.setText(String.valueOf(food.vitaminD));
-            advSodium = food.sodium;
-            advSodiumText.setText(String.valueOf(food.sodium));
-            advPotassium = food.potassium;
-            advPotassiumText.setText(String.valueOf(food.potassium));
-            advCalcium = food.calcium;
-            advCalciumText.setText(String.valueOf(food.calcium));
-            advIron = food.iron;
-            advIronText.setText(String.valueOf(food.iron));
-        }
+        foodNames = this.getResources().getStringArray(R.array.foodNames);
+
+        initializeFields();
 
         checkboxbrandedButton = (CompoundButton) view.findViewById(R.id.checkboxBranded);
         checkboxbrandedButton.setOnClickListener(new View.OnClickListener() {
@@ -209,6 +174,14 @@ public class AddMeal extends Fragment {
                 fragment.isBranded = isBranded;
 
                 Navigation.findNavController(view).navigate(R.id.nav_addFromFDC);
+            }
+        });
+
+        randomButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideKeyboard();
+                getRandomFood();
             }
         });
 
@@ -338,6 +311,65 @@ public class AddMeal extends Fragment {
         });
 
         return view;
+    }
+
+    private void getRandomFood()
+    {
+        Random r = new Random();
+        int random = r.nextInt(foodNames.length);
+        Log.d("length, name", foodNames.length + " " + foodNames[random]);
+        mealName = foodNames[random];
+        MealRecommender mr = new MealRecommender(getContext(), mealName, true);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {}
+        Navigation.findNavController(view).navigate(R.id.nav_addMeal);
+    }
+
+    private void initializeFields()
+    {
+        if(food != null) {
+            mealName = food.mealName;
+            mealNameText.setText(food.mealName);
+            servingSize = food.servingSize;
+            servingSizeText.setText(food.servingSize);
+            servingsEaten = food.servingsEaten;
+            servingsEatenText.setText(String.valueOf(food.servingsEaten));
+            advCalories = food.calories;
+            advCaloriesText.setText(String.valueOf(food.calories));
+            advProtein = food.protein;
+            advProteinText.setText(String.valueOf(food.protein));
+            advCarbohydrate = food.carbohydrate;
+            advCarbohydrateText.setText(String.valueOf(food.carbohydrate));
+            advSugar = food.sugar;
+            advSugarText.setText(String.valueOf(food.sugar));
+            advFiber = food.fiber;
+            advFiberText.setText(String.valueOf(food.fiber));
+            advCholesterol = food.cholesterol;
+            advCholesterolText.setText(String.valueOf(food.cholesterol));
+            advSaturatedFat = food.saturatedFat;
+            advSaturatedFatText.setText(String.valueOf(food.saturatedFat));
+            advMonounsaturatedFat = food.monounsaturatedFat;
+            advMonounsaturatedFatText.setText(String.valueOf(food.monounsaturatedFat));
+            advPolyunsaturatedFat = food.polyunsaturatedFat;
+            advPolyunsaturatedFatText.setText(String.valueOf(food.polyunsaturatedFat));
+            advTransFat = food.transFat;
+            advTransFatText.setText(String.valueOf(food.transFat));
+            advVitaminA = food.vitaminA;
+            advVitaminAText.setText(String.valueOf(food.vitaminA));
+            advVitaminC = food.vitaminC;
+            advVitaminCText.setText(String.valueOf(food.vitaminC));
+            advVitaminD = food.vitaminD;
+            advVitaminDText.setText(String.valueOf(food.vitaminD));
+            advSodium = food.sodium;
+            advSodiumText.setText(String.valueOf(food.sodium));
+            advPotassium = food.potassium;
+            advPotassiumText.setText(String.valueOf(food.potassium));
+            advCalcium = food.calcium;
+            advCalciumText.setText(String.valueOf(food.calcium));
+            advIron = food.iron;
+            advIronText.setText(String.valueOf(food.iron));
+        }
     }
 
     private float TextViewToFloat3(TextView tv)

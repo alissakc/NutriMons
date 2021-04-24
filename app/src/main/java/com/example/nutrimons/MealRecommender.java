@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static androidx.camera.core.CameraX.getCameraInfo;
 import static androidx.camera.core.CameraX.getContext;
 
 /**
@@ -50,8 +51,8 @@ import static androidx.camera.core.CameraX.getContext;
  */
 public class MealRecommender {
 
-    public static String mealName;
-    public static boolean isBranded;
+    public String mealName;
+    public boolean isBranded;
 
     private final String FDC_API_KEY = "5k1NBU6Op8fHuzi1DBBG3rIAKT7SZuUFLoKpw6Fc";
     private final String QUERY_HEADER = "https://api.nal.usda.gov/fdc/v1/foods/search?api_key=";
@@ -59,14 +60,16 @@ public class MealRecommender {
 
     private Context context;
 
-    public MealRecommender(Context context) {
+    public MealRecommender(Context context, String mealName, boolean isBranded) {
         // Required empty public constructor
 
         this.context = context;
+        this.mealName = mealName;
+        this.isBranded = isBranded;
 
         queue = Volley.newRequestQueue(context);
-        queue.cancelAll(mealName);
-        JsonObjectRequest JSONoReq = callFDCapi(mealName, isBranded);
+        queue.cancelAll(this.mealName);
+        JsonObjectRequest JSONoReq = callFDCapi(this.mealName, this.isBranded);
         queue.add(JSONoReq);
     }
 
@@ -109,7 +112,7 @@ public class MealRecommender {
 
                                 com.example.nutrimons.database.Meal food = new com.example.nutrimons.database.Meal();
                                 food.mealName = foodName;
-                                food.servingSize = "100g"; //all units seem to be 100g, no info in json
+                                food.servingSize = "Unknown"; //all units seem to be 100g, no info in json
                                 food.servingsEaten = 1;
 
                                 JSONArray foodNutrients = meal.getJSONArray("foodNutrients");
@@ -125,6 +128,8 @@ public class MealRecommender {
                                         }
                                     }
                                 }
+
+                            AddMeal.food = food;
 
                             // catch for the JSON parsing error
                         } catch (Exception e/*JSONException e*/) {

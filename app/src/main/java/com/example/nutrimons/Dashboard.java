@@ -207,6 +207,7 @@ public class Dashboard extends Fragment implements View.OnClickListener {
         User u = mDb.userDao().findByUserID(mDb.tokenDao().getUserID());
         List<Float> nutrientDRIsTemp = u.DRIToFloatList();
         NUTRIENTS_DRI.add(nutrientDRIsTemp.get(2));
+        NUTRIENTS_DRI.add(nutrientDRIsTemp.get(2));
         NUTRIENTS_DRI.add(nutrientDRIsTemp.get(3));
         NUTRIENTS_DRI.add(nutrientDRIsTemp.get(7) + nutrientDRIsTemp.get(8) + nutrientDRIsTemp.get(9));
         NUTRIENTS_DRI.add(nutrientDRIsTemp.get(0));
