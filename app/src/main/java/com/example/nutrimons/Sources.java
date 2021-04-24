@@ -41,7 +41,7 @@ public class Sources extends Fragment implements View.OnClickListener {
             calorieCalculator3_URL = "https://physiqonomics.com/fat-loss/",
             nutrientRecommendations_URL = "https://www.nal.usda.gov/sites/default/files/fnic_uploads/recommended_intakes_individuals.pdf",
             addMealSearch_URL = "https://fdc.nal.usda.gov/index.html",
-            barcodeSearch_URL = "https://wiki.openfoodfacts.org/API",
+            barcodeSearch_URL = "https://wiki.openfoodfacts.org/",
             macronutrientInfo_URL = "https://medlineplus.gov/definitions/nutritiondefinitions.html",
             vitaminInfo_URL = "https://medlineplus.gov/definitions/vitaminsdefinitions.html",
             mineralInfo_URL = "https://medlineplus.gov/definitions/mineralsdefinitions.html";
@@ -137,30 +137,6 @@ public class Sources extends Fragment implements View.OnClickListener {
         return v;
     }
 
-    private String trimHTML(String keptText)
-    {
-        return "javascript:(function() { " +
-                "var article = document.getElementsByTagName('article')[0];" +
-                "var h2s = document.getElementsByTagName('article')[0].getElementsByTagName('h2');" +
-                "var ps = document.getElementsByTagName('article')[0].getElementsByTagName('p');" +
-
-                "document.getElementsByTagName('header')[0].style.display = 'none';" +
-                "document.getElementById('coop').style.display = 'none';" +
-                "document.getElementById('breadcrumbs').style.display = 'none';" +
-                "ps[0].style.display = 'none';" +
-                "ps[1].style.display = 'none';" +
-                "document.getElementsByClassName('page-info')[0].style.display = 'none';" +
-
-                "for (var i = 0; i < h2s.length; ++i) {" + //can't use int in javascript
-                "if (h2s[i].innerHTML != '" + keptText + "') {" +
-                "h2s[i].style.display = 'none'; " +
-                "ps[i + 2].style.display = 'none'; }}" +
-
-                "document.getElementById('page-feedback').style.display = 'none';" +
-                "document.getElementsByTagName('footer')[0].style.display = 'none';" +
-                "})()";
-    }
-
     private void setWebView(WebView wv, String url, String keptText)
     {
         if(wv.getVisibility() == View.GONE)
@@ -169,7 +145,6 @@ public class Sources extends Fragment implements View.OnClickListener {
             wv.setWebViewClient(new WebViewClient() {
                 @Override
                 public void onPageFinished(WebView view, String url) {
-                    wv.loadUrl(trimHTML(keptText));
                     wv.setVisibility(View.VISIBLE);
                 }
             });
