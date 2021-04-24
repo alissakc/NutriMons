@@ -379,6 +379,7 @@
     <string name="vitaminInfoLink">https://medlineplus.gov/definitions/vitaminsdefinitions.html</string>
     <string name="mineralInfo">Mineral Info</string>
     <string name="mineralInfoLink">https://medlineplus.gov/definitions/mineralsdefinitions.html</string>
+    <string name="link">link</string>
     <string-array name="factBank">
         <item>Milk is 87% water. The nutrients, like protein, carbohydrate, vitamins and minerals are all found in the other 13%.</item>
         <item>Fluid needs vary depending on your age and gender. Teens and adults need anywhere between 8 and 13 cups of fluid each day. Water is great, but milk, juice, soup and anything else you drink also count as fluid.</item>
