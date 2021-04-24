@@ -37,7 +37,7 @@ public class Sources extends Fragment implements View.OnClickListener {
             nutrientRecommendationsB, addMealSearchB, barcodeSearchB, macronutrientInfoB,
             vitaminInfoB, mineralInfoB;
     WebView funFacts1WV, funFacts2WV, funFacts3WV, calorieCalculator1WV, calorieCalculator2WV, calorieCalculator3WV, nutrientRecommendationsWV, addMealSearchWV,
-            barcodeSearchWV, unsaturatedFats2WV, macronutrientInfoWV, vitaminInfoWV, mineralInfoWV;
+            barcodeSearchWV, macronutrientInfoWV, vitaminInfoWV, mineralInfoWV;
     final String funFacts1_URL = "https://bcdairy.ca/nutritioneducation/articles/fun-nutrition-facts",
             funFacts2_URL = "https://facts.net/general/nutrition-facts/",
             funFacts3_URL = "https://www.healthline.com/nutrition/20-nutrition-facts-that-should-be-common-sense#TOC_TITLE_HDR_2",
@@ -167,39 +167,39 @@ public class Sources extends Fragment implements View.OnClickListener {
                 openLink(funFacts1_URL);
                 break;
             case(R.id.funFacts2B):
-                setWebView((WebView) funFacts2WV, funFacts2_URL, "Protein");
+                openLink(funFacts2_URL);
                 break;
             case(R.id.funFacts3B):
-                setWebView((WebView) funFacts3WV, funFacts3_URL, "Carbohydrates");
+                openLink(funFacts3_URL);
                 break;
             case(R.id.calorieCalculator1B):
                 //setWebView((WebView) calorieCalculator1WV, calorieCalculator1_URL, "Sugar");
                 openLink(calorieCalculator1_URL);
                 break;
             case(R.id.calorieCalculator2B):
-                setWebView((WebView) calorieCalculator2WV, calorieCalculator2_URL, "Fiber");
+                openLink(calorieCalculator2_URL);
                 break;
             case(R.id.calorieCalculator3B):
-                setWebView((WebView) calorieCalculator3WV, calorieCalculator3_URL, "Total Fat");
+                openLink(calorieCalculator3_URL);
                 break;
             case(R.id.nutrientRecommendationsB):
                 //setWebView((WebView) nutrientRecommendationsWV, nutrientRecommendations_URL, "Cholesterol");
                 openLink(nutrientRecommendations_URL);
                 break;
             case(R.id.addMealSearchB):
-                setWebView((WebView) addMealSearchWV, addMealSearch_URL, "Saturated Fat");
+                openLink(addMealSearch_URL);
                 break;
             case(R.id.barcodeSearchB):
-                setWebView((WebView) barcodeSearchWV, barcodeSearch_URL, "Monounsaturated Fat");
+                openLink(barcodeSearch_URL);
                 break;
             case(R.id.macronutrientInfoB):
-                setWebView((WebView) macronutrientInfoWV, macronutrientInfo_URL, "Trans Fat");
+                openLink(macronutrientInfo_URL);
                 break;
             case(R.id.vitaminInfoB):
-                setWebView((WebView) vitaminInfoWV, vitaminInfo_URL, "Vitamin A");
+                openLink(vitaminInfo_URL);
                 break;
             case(R.id.mineralInfoB):
-                setWebView((WebView) mineralInfoWV, mineralInfo_URL, "Vitamin C");
+                openLink(mineralInfo_URL);
                 break;
         }
     }
