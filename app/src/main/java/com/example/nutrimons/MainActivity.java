@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements DrawerController,
         MealPlan.OnFragmentInteractionListener, Exercise.OnFragmentInteractionListener,
         AddMeal.OnFragmentInteractionListener, Dashboard.OnFragmentInteractionListener,
         BugReportFragment.OnFragmentInteractionListener, SettingsFragment.OnFragmentInteractionListener,
-        LoginFragment.OnFragmentInteractionListener{
+        LoginFragment.OnFragmentInteractionListener, Sources.OnFragmentInteractionListener{
 
     private AppBarConfiguration mAppBarConfiguration;
     DrawerLayout drawer;
@@ -163,6 +163,7 @@ public class MainActivity extends AppCompatActivity implements DrawerController,
         getMenuInflater().inflate(R.menu.options_menu, menu);
         menu.add(Menu.NONE, R.id.action_settings, Menu.NONE, "Settings");
         menu.add(Menu.NONE, R.id.fragment_bug_report, Menu.NONE, "Report a Bug");
+        menu.add(Menu.NONE, R.id.fragment_sources, Menu.NONE, "Sources");
         menu.add(Menu.NONE, R.id.fragment_login, Menu.NONE, "Logout");
         return true;
     }
@@ -211,6 +212,12 @@ public class MainActivity extends AppCompatActivity implements DrawerController,
                 FragmentTransaction bugTransaction = getSupportFragmentManager().beginTransaction();
                 bugTransaction.replace(R.id.nav_host_fragment, bugFragment);
                 bugTransaction.commit();
+                return true;
+            case R.id.fragment_sources: // sources
+                Sources sources = new Sources();
+                FragmentTransaction sourcesTransaction = getSupportFragmentManager().beginTransaction();
+                sourcesTransaction.replace(R.id.nav_host_fragment, sources);
+                sourcesTransaction.commit();
                 return true;
         }
         return false;
