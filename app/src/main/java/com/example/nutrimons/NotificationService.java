@@ -73,7 +73,7 @@ public class NotificationService extends Service {
         initializeTimerTask();
 
         //schedule the timer, after the first 5000ms the TimerTask will run every 10000ms
-        timer.schedule(timerTask, 10000); //
+        timer.schedule(timerTask, 10800000 ); //
         //timer.schedule(timerTask, 5000,1000); //
     }
 
@@ -105,10 +105,10 @@ public class NotificationService extends Service {
     private void createNotification() {
         NotificationManager notificationManager = (NotificationManager) getSystemService( NOTIFICATION_SERVICE ) ;
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "This is a notification" ) ;
-        builder.setContentTitle( "Nutrimons want you back" ) ;
-        builder.setContentText( "Get fit with nutrimons" ) ;
+        builder.setContentTitle( "Your Nutrimons is thirsty!" ) ;
+        builder.setContentText( "Drink some water and get fit with your nutrimons!" ) ;
         builder.setTicker( "Notification Listener Service Example" ) ;
-        builder.setSmallIcon(R.drawable. ic_launcher_foreground ) ;
+        builder.setSmallIcon(R.drawable.tamagotchi_big) ;
         builder.setAutoCancel( true ) ;
         if (android.os.Build.VERSION. SDK_INT >= android.os.Build.VERSION_CODES. O ) {
             int importance = NotificationManager. IMPORTANCE_HIGH ;

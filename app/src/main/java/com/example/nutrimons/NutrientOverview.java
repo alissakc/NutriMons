@@ -186,7 +186,7 @@ public class NutrientOverview extends Fragment implements View.OnClickListener {
         dataSets.add(set1);
 
         //set1.setColors(barColorArray);
-        set1.setColors(new int[] {Color.RED, Color.YELLOW, Color.GREEN});
+        set1.setColors(new int[] {Color.RED, Color.GREEN, Color.YELLOW});
 
         BarData data = new BarData(dataSets);
 
