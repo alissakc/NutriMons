@@ -24,6 +24,7 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -105,18 +106,19 @@ public class NutrientOverview extends Fragment implements View.OnClickListener {
         nutrientDRIs = u.DRIToFloatList();
         nutrientULs = u.ULToFloatList();
 
+        DecimalFormat df = new DecimalFormat("0.000");
+
         if(dateData.water_unit != null)
         {
             if(dateData.water_unit.equals("ml"))
             {
-                nutrientValues.set(1, nutrientValues.get(1) / 1000f);
-                nutrients[1] = "Water: " + nutrientValues.get(1) + "L";
+                nutrientValues.set(1, Float.parseFloat(df.format(nutrientValues.get(1) / 1000f)));
             }
             else if(dateData.water_unit.equals("oz"))
             {
-                nutrientValues.set(1, nutrientValues.get(1) / 33.814f);
-                nutrients[1] = "Water: " + nutrientValues.get(1) + "L";
+                nutrientValues.set(1, Float.parseFloat(df.format(nutrientValues.get(1) / 33.814f)));
             }
+            nutrients[1] = "Water: " + nutrientValues.get(1) + "L";
         }
 
         chart = view.findViewById(R.id.horizontalBarChart);
