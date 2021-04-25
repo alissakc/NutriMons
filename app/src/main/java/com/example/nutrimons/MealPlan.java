@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -582,25 +583,27 @@ public class MealPlan extends Fragment implements OnItemSelectedListener {
                 List<Float> nutrientULs = u.ULToFloatList();
                 //getContext().startService(new Intent(getContext(), NotificationService.class));
 
+                ArrayList<String> nutDanger = new ArrayList<>(), nutNotification = new ArrayList<>();
+                String danger = "DANGER: You have consumed a critical amount of\n", notification = "Notification: You have reached your daily limit of\n";
                 for(int i = 0; i < nuts.size(); ++i)
                 {
-
                     if(nuts.get(i) / nutrientULs.get(i) >= 1)
-                    {
-                        getContext().startService( new Intent( getContext(), NotificationService.class )) ;
-                        Toast.makeText(getContext(), "DANGER: You have consumed a critical amount of '"
-                                + nutStrs.get(i) + "'. Eating any more can be a long-term detriment to your health. " +
-                                "See Nutrient Overview for more details", Toast.LENGTH_LONG).show();
-                        //ns.notifyLimit("UL");
-                    }
+                        nutDanger.add("'" + nutStrs.get(i) + "'\n");
                     else if(nuts.get(i) / nutrientDRIs.get(i) >= 1)
-                    {
-                            Toast.makeText(getContext(), "Notification: You have reached your daily limit of '"
-                                    + nutStrs.get(i) + "'. See Nutrient Overview for more details", Toast.LENGTH_SHORT).show();
-                            //ns.notifyLimit("DRI");
-                    }
-
+                        nutNotification.add("'" + nutStrs.get(i) + "'\n");
                 }
+
+                for(int i = 0; i < nutDanger.size(); ++i)
+                    danger += nutDanger.get(i);
+                for(int i = 0; i < nutNotification.size(); ++i)
+                    notification += nutNotification.get(i);
+                danger += "Eating any more can be a long-term detriment to your health\nSee Nutrient Overview for more details";
+                notification += "See Nutrient Overview for more details";
+
+                if(nutDanger.size() != 0)
+                    Toast.makeText(getContext(), danger, Toast.LENGTH_LONG).show();
+                if(nutNotification.size() != 0)
+                    Toast.makeText(getContext(), notification, Toast.LENGTH_SHORT).show();
 
                 String currentDate = BAMM.getDateString();
                 if (!finalDateString.equalsIgnoreCase(currentDate)) {

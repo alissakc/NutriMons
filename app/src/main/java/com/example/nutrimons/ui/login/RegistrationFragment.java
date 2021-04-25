@@ -239,7 +239,9 @@ public class RegistrationFragment extends Fragment {
                     tama.userId = u2.userID;
                     mDb.tamagotchiDao().insert(tama);
 
-                    Token t = new Token(-1);
+                    Token t = mDb.tokenDao().getToken();
+                    if(t == null)
+                        t = new Token(-1);
                     t.areTablesInitialized = true;
                     t.isShopInitialized = true;
                     mDb.tokenDao().insert(t);

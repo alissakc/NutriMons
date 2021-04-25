@@ -315,7 +315,7 @@ public class AddMeal extends Fragment {
         mealName = foodNames[random];
         MealRecommender mr = new MealRecommender(getContext(), mealName, true);
         try {
-            Thread.sleep(1000);
+            Thread.sleep(1500);
         } catch (InterruptedException e) {}
         Navigation.findNavController(view).navigate(R.id.nav_addMeal);
     }
