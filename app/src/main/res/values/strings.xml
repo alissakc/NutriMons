@@ -423,6 +423,28 @@
         <item>Chili peppers contain a chemical that tricks your mouth into \"thinking\" it\'s being burned — that\'s why spicy food hurts so much.</item>
     </string-array>
 
+    <!-- For settings page -->
+    <string name="remind_me_to_return">Remind me to take a break</string>
+    <string name="remind_me">Enable notifications</string>
+    <string name="notifications">Notifications</string>
+
+    <string-array name="pref_remind_me_to_take_a_break">
+        <item>1 hours</item>
+        <item>2 hours</item>
+        <item>3 hours</item>
+        <item>5 hours</item>
+        <item>10 hours</item>
+        <item>No notifications</item>
+    </string-array>
+    <string-array name="pref_duration">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+
     <string-array name="foodNames">
         <item>bread</item>
         <item>chocolate ice cream</item>

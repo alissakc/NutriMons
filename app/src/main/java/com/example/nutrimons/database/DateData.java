@@ -1,5 +1,7 @@
 package com.example.nutrimons.database;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Embedded;
@@ -8,6 +10,7 @@ import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import java.lang.reflect.Array;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -116,6 +119,25 @@ public class DateData {
         if(!lunch.isEmpty()) addNutrients(lunch);
         if(!dinner.isEmpty()) addNutrients(dinner);
         if(!snack.isEmpty()) addNutrients(snack);
+        DecimalFormat df = new DecimalFormat("0.000");
+        calories = Float.parseFloat(df.format(calories));
+        water = Float.parseFloat(df.format(water));
+        protein = Float.parseFloat(df.format(protein));
+        carbohydrate = Float.parseFloat(df.format(carbohydrate));
+        sugar = Float.parseFloat(df.format(sugar));
+        fiber = Float.parseFloat(df.format(fiber));
+        cholesterol = Float.parseFloat(df.format(cholesterol));
+        saturatedFat = Float.parseFloat(df.format(saturatedFat));
+        monounsaturatedFat = Float.parseFloat(df.format(monounsaturatedFat));
+        polyunsaturatedFat = Float.parseFloat(df.format(polyunsaturatedFat));
+        transFat = Float.parseFloat(df.format(transFat));
+        vitaminA = Float.parseFloat(df.format(vitaminA));
+        vitaminC = Float.parseFloat(df.format(vitaminC));
+        vitaminD = Float.parseFloat(df.format(vitaminD));
+        sodium = Float.parseFloat(df.format(sodium));
+        potassium = Float.parseFloat(df.format(potassium));
+        calcium = Float.parseFloat(df.format(calcium));
+        iron = Float.parseFloat(df.format(iron));
     }
 
     private void addNutrients(List<Meal> meals) {
@@ -161,6 +183,7 @@ public class DateData {
 
     public ArrayList<String> nutrientsToStringList() {
         ArrayList<String> dailyList = new ArrayList<>();
+        DecimalFormat df = new DecimalFormat("0.000");
 
         dailyList.add("Calories: " + calories + "kcal");
         if(water_unit == null){
@@ -168,11 +191,11 @@ public class DateData {
         }
         if(water_unit.equals("ml"))
         {
-            dailyList.add("Water: " + water / 1000 + "L");
+            dailyList.add("Water: " + df.format(water / 1000) + "L");
         }
         else if(water_unit.equals("oz"))
         {
-            dailyList.add("Water: " + water / 33.814 + "L");
+            dailyList.add("Water: " + df.format(water / 33.814) + "L");
         }
         dailyList.add("Protein: " + protein + "g");
         dailyList.add("Carbohydrate: " + carbohydrate + "g");
