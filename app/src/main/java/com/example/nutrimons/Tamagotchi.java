@@ -29,6 +29,7 @@ import android.widget.TextView;
 import com.example.nutrimons.database.AppDatabase;
 import com.example.nutrimons.database.ShopItem;
 import com.example.nutrimons.database.TamagotchiPet;
+import com.example.nutrimons.database.User;
 
 import java.io.ByteArrayOutputStream;
 import java.text.ParseException;
@@ -58,6 +59,7 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
 
 
     private AppDatabase mDb;
+    private User user;
 
     //screen size
     private int screenWidth;
@@ -160,6 +162,7 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
         mDb = AppDatabase.getInstance(getContext());
 
         TamagotchiPet tama = BAMM.getCurrentTamagotchi();
+        user = BAMM.getCurrentUser();
         ImageButton initImage = (ImageButton)view.findViewById(R.id.TamagotchiPet);
         initImage.setImageBitmap(BAMM.StringToBitMap(mDb.shopItemDao().getShopItemByName("Pig").image));
 
@@ -205,7 +208,7 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
         //Editing name
         petName = view.findViewById(R.id.petName);
 
-        //decease level
+        //decrease level
         if(tama.healthLevel<=0 || tama.waterLevel<=0)
         {
             if(tama.level>0) {
@@ -225,13 +228,15 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
         healthBar = view.findViewById(R.id.healthBar);
         healthBar.setProgress(tama.healthLevel);
         feedButton.setOnClickListener(v -> {
-            healthBar.setProgress(++tama.healthLevel);
+            if(user.nutriCoins > 5 && tama.healthLevel < 20) {
+                healthBar.setProgress(++tama.healthLevel);
 
-            if (tama.healthLevel > 20)
-            {
-                tama.healthLevel = 20;
+                if (tama.healthLevel > 20) {
+                    tama.healthLevel = 20;
+                }
+                mDb.userDao().insert(user);
+                mDb.tamagotchiDao().insert(tama);
             }
-            mDb.tamagotchiDao().insert(tama);
         });
 
         //giving water
@@ -239,12 +244,18 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
         waterButton = view.findViewById(R.id.waterButton);
         waterBar.setProgress(tama.waterLevel);
         waterButton.setOnClickListener(v -> {
-            waterBar.setProgress(++tama.waterLevel);
-            if (tama.waterLevel > 20)
+            if(user.nutriCoins > 5 && tama.waterLevel < 20)
             {
-                tama.waterLevel = 20;
+                user.nutriCoins -= 2;
+                waterBar.setProgress(++tama.waterLevel);
+                if (tama.waterLevel > 20)
+                {
+                    tama.waterLevel = 20;
+                }
+                mDb.userDao().insert(user);
+                mDb.tamagotchiDao().insert(tama);
             }
-            mDb.tamagotchiDao().insert(tama);
+
         });
 
 
