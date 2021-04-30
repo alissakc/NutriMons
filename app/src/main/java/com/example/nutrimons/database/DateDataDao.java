@@ -10,11 +10,18 @@ import androidx.room.Query;
 import androidx.room.TypeConverters;
 import androidx.room.Update;
 
+import java.util.Date;
 import java.util.List;
 
 @Dao
 @TypeConverters({Converters.class})
 public interface DateDataDao {
+
+    @Query("SELECT date FROM dateData")
+    List<String> getAllDates();
+
+    @Query("SELECT calories FROM dateData")
+    List<Float> getAllCalories();
 
     @Query("SELECT * FROM dateData WHERE date LIKE :search")
     DateData findByDate(String search);

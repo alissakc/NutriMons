@@ -4,9 +4,12 @@ import android.app.ActionBar;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.DashPathEffect;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
@@ -28,19 +31,30 @@ import com.example.nutrimons.database.Token;
 import com.example.nutrimons.database.User;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.utils.Utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -70,12 +84,17 @@ public class Dashboard extends Fragment implements View.OnClickListener {
 
     PieChart caloriesPieChart;
     private BarChart macrosChart;
+    private LineChart caloriesOverTimeChart;
 
     // vars for horizontal bar chart
     private static int MAX_X_VALUE;
     private static final String SET_LABEL = "Nutrient Overview";
     private static final String[] MACRO_NUTRIENTS = { "PROTEINS %", "CARBOHYDRATES %", "FATS %"};
     private List<Float> NUTRIENT_VALUES = new ArrayList<>(), NUTRIENTS_DRI = new ArrayList<>();
+
+    private List<String> allDates;
+    private List<Float> allCalories;
+    private ArrayList<Entry> XaxisF;
 
     private String dateString;
 
@@ -222,6 +241,12 @@ public class Dashboard extends Fragment implements View.OnClickListener {
         configureChartAppearance();
         prepareChartData(data);
 
+        allDates = mDb.dateDataDao().getAllDates();
+        allCalories = mDb.dateDataDao().getAllCalories();
+        caloriesOverTimeChart = view.findViewById(R.id.overTimeChart_view);
+        setData();
+        renderData();
+
         // assign listener for buttons
         goToMeal.setOnClickListener(this);
         goToWater.setOnClickListener(this);
@@ -229,7 +254,6 @@ public class Dashboard extends Fragment implements View.OnClickListener {
         goToTamagotchi.setOnClickListener(this);
 
         updateFact();
-
 
         handler.postDelayed(runnable = new Runnable() {
             public void run() {
@@ -509,5 +533,111 @@ public class Dashboard extends Fragment implements View.OnClickListener {
 
     public interface OnFragmentInteractionListener {
         public void onFragmentInteraction(String title);
+    }
+
+    private void renderData() {
+        LimitLine llXAxis = new LimitLine(10f, "Index 10");
+        llXAxis.setLineWidth(4f);
+        llXAxis.enableDashedLine(10f, 10f, 0f);
+        llXAxis.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_BOTTOM);
+        llXAxis.setTextSize(10f);
+
+        XAxis xAxis = caloriesOverTimeChart.getXAxis();
+        xAxis.enableGridDashedLine(10f, 10f, 0f);
+        xAxis.setLabelCount(allDates.size());   // sets the number of labels for the y-axis
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM dd yyyy");
+        String s0 = BAMM.getDateString();
+        s0 = s0.substring(s0.lastIndexOf('/') + 1) + '/' + s0.substring(0, s0.lastIndexOf('/'));
+        s0 = s0.replace('/', '-');
+        LocalDate d0 = LocalDate.parse(s0);
+        Log.d("local date0", d0.toString());
+        String s00 = allDates.get(0);
+        s00 = s00.substring(s00.lastIndexOf('/') + 1) + '/' + s00.substring(0, s00.lastIndexOf('/'));
+        s00 = s00.replace('/', '-');
+        LocalDate d00 = LocalDate.parse(s00);
+        long maxX = d0.toEpochDay() - d00.toEpochDay() + 1;
+        XaxisF = new ArrayList<>();
+        ArrayList<String> dates = new ArrayList<>();
+        for(int i = 0, j = 0; i < maxX; ++i)
+        {
+            String s = allDates.get(j);
+            s = s.substring(s.lastIndexOf('/') + 1) + '/' + s.substring(0, s.lastIndexOf('/'));
+            s = s.replace('/', '-');
+            LocalDate d = LocalDate.parse(s);
+            s = s.substring(s.indexOf('-') + 1);
+            if(d00.toEpochDay() + i == d.toEpochDay())
+            {
+                XaxisF.add(new Entry(i, allCalories.get(j++)));
+                dates.add(s);
+            }
+            else
+            {
+                XaxisF.add(new Entry(i, 0));
+                dates.add("");
+            }
+        }
+        xAxis.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return dates.get((int) value);
+            }
+        });
+        xAxis.setDrawLimitLinesBehindData(true);
+
+        float cals = Float.parseFloat(mDb.userDao().findByUserID(mDb.tokenDao().getUserID()).calories);
+        LimitLine ll1 = new LimitLine(cals, "Daily Calories Needed");
+        ll1.setLineWidth(4f);
+        ll1.enableDashedLine(10f, 10f, 0f);
+        ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
+        ll1.setTextSize(10f);
+
+        YAxis leftAxis = caloriesOverTimeChart.getAxisLeft();
+        leftAxis.removeAllLimitLines();
+        leftAxis.addLimitLine(ll1);
+        leftAxis.enableGridDashedLine(10f, 10f, 0f);
+        leftAxis.setDrawZeroLine(false);
+        leftAxis.setDrawLimitLinesBehindData(false);
+
+        caloriesOverTimeChart.getAxisRight().setEnabled(false);
+        setData();
+    }
+
+    private void setData() {
+
+        LineDataSet set1;
+        if (caloriesOverTimeChart.getData() != null &&
+                caloriesOverTimeChart.getData().getDataSetCount() > 0) {
+            caloriesOverTimeChart.getDescription().setText("Calories Over Time");
+            caloriesOverTimeChart.getDescription().setTextSize(16);
+            set1 = (LineDataSet) caloriesOverTimeChart.getData().getDataSetByIndex(0);
+            set1.setValues(XaxisF);
+            caloriesOverTimeChart.getData().notifyDataChanged();
+            caloriesOverTimeChart.notifyDataSetChanged();
+        } else {
+            set1 = new LineDataSet(XaxisF, "Daily Calories");
+            set1.setDrawIcons(false);
+            set1.enableDashedLine(10f, 5f, 0f);
+            set1.enableDashedHighlightLine(10f, 5f, 0f);
+            set1.setColor(Color.DKGRAY);
+            set1.setCircleColor(Color.DKGRAY);
+            set1.setLineWidth(1f);
+            set1.setCircleRadius(3f);
+            set1.setDrawCircleHole(false);
+            set1.setValueTextSize(9f);
+            set1.setDrawFilled(true);
+            set1.setFormLineWidth(1f);
+            set1.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
+            set1.setFormSize(15.f);
+
+            if (Utils.getSDKInt() >= 18) {
+                set1.setFillColor(Color.BLUE);
+            } else {
+                set1.setFillColor(Color.DKGRAY);
+            }
+            ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+            dataSets.add(set1);
+            LineData data = new LineData(dataSets);
+            caloriesOverTimeChart.setData(data);
+        }
     }
 }

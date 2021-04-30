@@ -109,6 +109,18 @@
                         </LinearLayout>
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"></LinearLayout>
+
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/overTimeChart_view"
+                        android:layout_width="340dp"
+                        android:layout_height="270dp"
+                        android:layout_marginTop="10dp"
+                        android:contentDescription='""' />
+
                 </LinearLayout>
             </HorizontalScrollView>
 
