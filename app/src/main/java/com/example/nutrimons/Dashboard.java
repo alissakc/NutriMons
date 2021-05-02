@@ -250,6 +250,8 @@ public class Dashboard extends Fragment implements View.OnClickListener {
         }
         if(allDates.size() > 1)
             renderData();
+        else
+            caloriesOverTimeChart.setNoDataText("Use the app for more than one day to see this chart");
 
         // assign listener for buttons
         goToMeal.setOnClickListener(this);
