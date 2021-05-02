@@ -244,8 +244,12 @@ public class Dashboard extends Fragment implements View.OnClickListener {
         allDates = mDb.dateDataDao().getAllDates();
         allCalories = mDb.dateDataDao().getAllCalories();
         caloriesOverTimeChart = view.findViewById(R.id.overTimeChart_view);
-        setData();
-        renderData();
+        for(int i = 0; i < allDates.size(); ++i)
+        {
+            Log.d("data: " + i, allDates.get(i) + " " + allCalories.get(i));
+        }
+        if(allDates.size() > 1)
+            renderData();
 
         // assign listener for buttons
         goToMeal.setOnClickListener(this);
@@ -579,6 +583,7 @@ public class Dashboard extends Fragment implements View.OnClickListener {
         xAxis.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
+                Log.d("value", "" + value);
                 return dates.get((int) value);
             }
         });
