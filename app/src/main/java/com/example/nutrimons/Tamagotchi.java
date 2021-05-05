@@ -345,7 +345,7 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
 
 
         //Lowering the health by time
-        int lowerHealthWater = difference/43200;
+        int lowerHealthWater = difference/21600;
 
         tama.healthLevel -= lowerHealthWater;
         if (tama.healthLevel < 0)
@@ -429,7 +429,6 @@ public class Tamagotchi extends Fragment implements View.OnClickListener {
     @Override
     public void onStop() {
         super.onStop();  // Always call the superclass method first
-        System.out.println("STOP BITCHES");
         TamagotchiPet tama = BAMM.getCurrentTamagotchi();
         //update last logged on
         Calendar c = Calendar.getInstance();
