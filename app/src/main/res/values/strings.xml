@@ -495,26 +495,26 @@
     </string-array>
 
     <string-array name="exerciseData">
-        <item>High-knee running;240;set;30 min</item>
-        <item>Butt kicks;240;set;30 min</item>
-        <item>Mountain climbers;240;set;30 min</item>
-        <item>Swimming;198;set;30 min</item>
-        <item>Stationary bicycling;210;set;30 min</item>
-        <item>Sprints;240;set;30 min</item>
-        <item>Running;10.8;set;1 min</item>
-        <item>Jumping jacks;8;set;1 min</item>
-        <item>squat;112;set;30 min</item>
-        <item>Bench press;112;set;30 min</item>
-        <item>chin ups;112;set;30 min</item>
-        <item>pull ups;112;set;30 min</item>
-        <item>Hex Bar Deadlift;112;set;30 min</item>
-        <item>Back Squat;112;set;30 min</item>
-        <item>Overhead Press;112;set;30 min</item>
-        <item>Deadlift;112;set;30 min</item>
-        <item>front squat;112;set;30 min</item>
-        <item>lat pull down;112;set;30 min</item>
-        <item>incline bench press;112;set;30 min</item>
-        <item>cable row;112;set;30 min</item>
+        <item>High-knee running;240;set;30</item>
+        <item>Butt kicks;240;set;30</item>
+        <item>Mountain climbers;240;set;30</item>
+        <item>Swimming;198;set;30</item>
+        <item>Stationary bicycling;210;set;30</item>
+        <item>Sprints;240;set;30</item>
+        <item>Running;10.8;set;1</item>
+        <item>Jumping jacks;8;set;1</item>
+        <item>squat;112;set;30</item>
+        <item>Bench press;112;set;30</item>
+        <item>chin ups;112;set;30</item>
+        <item>pull ups;112;set;30</item>
+        <item>Hex Bar Deadlift;112;set;30</item>
+        <item>Back Squat;112;set;30</item>
+        <item>Overhead Press;112;set;30</item>
+        <item>Deadlift;112;set;30</item>
+        <item>front squat;112;set;30</item>
+        <item>lat pull down;112;set;30</item>
+        <item>incline bench press;112;set;30</item>
+        <item>cable row;112;set;30</item>
 
     </string-array>
 
