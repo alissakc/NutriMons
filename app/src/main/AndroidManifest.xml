@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.nutrimons">
+    package="com.BAMM.nutrimons">
 
     <uses-feature android:name="android.hardware.camera.any" /> <!-- camera permissions -->
     <uses-permission android:name="android.permission.CAMERA" />
@@ -18,7 +18,7 @@
         android:usesCleartextTraffic="true" >
         <activity android:name="TamagotchiGame.GameActivity"></activity>
         <activity
-            android:name=".MainActivity"
+            android:name="com.BAMM.nutrimons.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.NutriMons.NoActionBar">
             <intent-filter>
@@ -28,7 +28,7 @@
             </intent-filter>
         </activity>
         <service
-            android:name=".NotificationService"
+            android:name="com.BAMM.nutrimons.NotificationService"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="com.example.nutrimons.NotificationService" />

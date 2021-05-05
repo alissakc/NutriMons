@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/nav_login"
-        android:name="com.example.nutrimons.ui.login.LoginFragment"
+        android:name="com.BAMM.nutrimons.ui.login.LoginFragment"
         android:label="Login"
         tools:layout="@layout/fragment_login">
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_registration"
-        android:name="com.example.nutrimons.ui.login.RegistrationFragment"
+        android:name="com.BAMM.nutrimons.ui.login.RegistrationFragment"
         android:label="Registration"
         tools:layout="@layout/fragment_registration">
         <action
@@ -28,12 +28,12 @@
     </fragment>
     <fragment
         android:id="@+id/nav_profile"
-        android:name="com.example.nutrimons.Profile"
+        android:name="com.BAMM.nutrimons.Profile"
         android:label="Profile"
         tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/nav_meal"
-        android:name="com.example.nutrimons.Meal"
+        android:name="com.BAMM.nutrimons.Meal"
         android:label="Meal"
         tools:layout="@layout/fragment_meal" >
         <action
@@ -48,7 +48,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_addMeal"
-        android:name="com.example.nutrimons.AddMeal"
+        android:name="com.BAMM.nutrimons.AddMeal"
         android:label="Add Meal"
         tools:layout="@layout/fragment_add_meal">
         <action
@@ -63,7 +63,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_scanBarcode"
-        android:name="com.example.nutrimons.ScanBarcode"
+        android:name="com.BAMM.nutrimons.ScanBarcode"
         android:label="Scan Barcode"
         tools:layout="@layout/fragment_scan_barcode">
         <action
@@ -84,7 +84,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_mealPlan"
-        android:name="com.example.nutrimons.MealPlan"
+        android:name="com.BAMM.nutrimons.MealPlan"
         android:label="Meal Plan"
         tools:layout="@layout/fragment_meal_plan">
         <action
@@ -96,7 +96,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_tamagotchi"
-        android:name="com.example.nutrimons.Tamagotchi"
+        android:name="com.BAMM.nutrimons.Tamagotchi"
         android:label="Tamagotchi"
         tools:layout="@layout/fragment_tamagotchi" >
         <action
@@ -105,7 +105,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_tamagotchiShop"
-        android:name="com.example.nutrimons.TamagotchiShop"
+        android:name="com.BAMM.nutrimons.TamagotchiShop"
         android:label="Tamagotchi Shop"
         tools:layout="@layout/fragment_tamagotchi_shop">
         <action
@@ -114,17 +114,17 @@
     </fragment>
     <fragment
         android:id="@+id/nav_water"
-        android:name="com.example.nutrimons.Water"
+        android:name="com.BAMM.nutrimons.Water"
         android:label="@string/water_tracker"
         tools:layout="@layout/fragment_water" />
     <fragment
         android:id="@+id/nav_exercise"
-        android:name="com.example.nutrimons.Exercise"
+        android:name="com.BAMM.nutrimons.Exercise"
         android:label="Exercise"
         tools:layout="@layout/fragment_exercise" />
     <fragment
         android:id="@+id/nav_nutrientOverview"
-        android:name="com.example.nutrimons.NutrientOverview"
+        android:name="com.BAMM.nutrimons.NutrientOverview"
         android:label="Nutrient Overview"
         tools:layout="@layout/fragment_nutrient_overview" >
         <action
@@ -133,7 +133,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_nutrientInformation"
-        android:name="com.example.nutrimons.NutrientInformation"
+        android:name="com.BAMM.nutrimons.NutrientInformation"
         android:label="Nutrient Information"
         tools:layout="@layout/fragment_nutrient_information">
         <action
@@ -142,7 +142,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.nutrimons.Dashboard"
+        android:name="com.BAMM.nutrimons.Dashboard"
         android:label="@string/dashboard"
         tools:layout="@layout/fragment_dashboard">
         <action
@@ -175,7 +175,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_calendar"
-        android:name="com.example.nutrimons.CalendarViewFragment"
+        android:name="com.BAMM.nutrimons.CalendarViewFragment"
         android:label="Calendar"
         tools:layout="@layout/fragment_calendar_view">
         <action
@@ -184,7 +184,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_dailyInfo"
-        android:name="com.example.nutrimons.DailyInfoFragment"
+        android:name="com.BAMM.nutrimons.DailyInfoFragment"
         android:label="Daily Information"
         tools:layout="@layout/fragment_daily_info">
         <action
@@ -193,7 +193,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_addFromFDC"
-        android:name="com.example.nutrimons.AddFromFDC"
+        android:name="com.BAMM.nutrimons.AddFromFDC"
         android:label="Food Data Central"
         tools:layout="@layout/fragment_add_from_fdc">
         <action
@@ -205,7 +205,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_bugReport"
-        android:name="com.example.nutrimons.BugReportFragment"
+        android:name="com.BAMM.nutrimons.BugReportFragment"
         android:label="Food Data Central"
         tools:layout="@layout/fragment_bug_report">
     </fragment>
