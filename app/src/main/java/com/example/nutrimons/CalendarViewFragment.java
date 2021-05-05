@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,7 +99,15 @@ public class CalendarViewFragment extends Fragment {
         mCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                String date = (month+1) + "/" + dayOfMonth + "/" + year;
+                String date;
+                if(month+1<10)
+                    date = "0" + (month + 1) + "/";
+                else
+                    date = (month + 1) + "/";
+                if(dayOfMonth < 10)
+                    date += "0" + dayOfMonth + "/" + year;
+                else
+                    date += dayOfMonth + "/" + year;
                 // send data to dailyInfo fragment
                 Bundle bundle = new Bundle();
                 bundle.putString("key", date);
