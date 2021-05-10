@@ -3,143 +3,152 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ConstraintLayout"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/tamagotchi_background_shrunk"
     tools:context=".Tamagotchi">
 
     <LinearLayout
+        android:id="@+id/linearLayout5"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/tamagotchi_background_shrunk"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/petPlayZone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:id="@+id/linearLayout5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/healthBarLabel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="Health"
-                    android:textSize="24sp" />
-
-                <ProgressBar
-                    android:id="@+id/healthBar"
-                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:max="20"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:progressTint="#F31A0A" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+            <TextView
+                android:id="@+id/healthBarLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:text="Health"
+                android:textSize="24sp" />
 
-                <EditText
-                    android:id="@+id/petName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:imeOptions="actionDone"
-                    android:inputType="text"
-                    android:text="Bobby"
-                    android:textSize="30sp" />
+            <ProgressBar
+                android:id="@+id/healthBar"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:max="20"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:progressTint="#F31A0A" />
+        </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/levelText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Level: "
-                        android:textSize="18sp" />
-
-                    <TextView
-                        android:id="@+id/levelNum"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/black"
-                        android:textSize="24sp" />
-                </LinearLayout>
-
-
-            </LinearLayout>
+            <EditText
+                android:id="@+id/petName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:text="Bobby"
+                android:textSize="30sp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/waterBarLabel"
-                    android:layout_width="match_parent"
+                    android:id="@+id/levelText"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="Water"
+                    android:text="Level: "
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/levelNum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:textSize="24sp" />
-
-                <ProgressBar
-                    android:id="@+id/waterBar"
-                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:max="20"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:progressTint="#36C8F4" />
-
             </LinearLayout>
+
 
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/petPlayZone"
-            android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="60dp"
-            android:foregroundGravity="center"
-            android:gravity="center">
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-            <ImageButton
-                android:id="@+id/TamagotchiPet"
-                android:layout_width="259dp"
-                android:layout_height="229dp"
-                android:layout_gravity="center"
-                android:layout_weight="0"
-                android:background="#00FFFFFF"
-                android:foregroundGravity="center"
-                android:src="@drawable/tamagotchi_pig" />
+            <TextView
+                android:id="@+id/waterBarLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Water"
+                android:textSize="24sp" />
+
+            <ProgressBar
+                android:id="@+id/waterBar"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:max="20"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:progressTint="#36C8F4" />
 
         </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/petPlayZone"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:foregroundGravity="center"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
+
+        <ImageButton
+            android:id="@+id/TamagotchiPet"
+            android:layout_width="259dp"
+            android:layout_height="229dp"
+            android:layout_gravity="center"
+            android:layout_weight="0"
+            android:background="#00FFFFFF"
+            android:foregroundGravity="center"
+            android:src="@drawable/tamagotchi_pig" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/petPlayZone">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -195,7 +204,6 @@
                 android:text="@string/shop"
                 android:textSize="10sp" />
         </LinearLayout>
-
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
