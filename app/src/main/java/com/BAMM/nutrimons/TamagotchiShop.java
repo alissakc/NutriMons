@@ -225,14 +225,14 @@ public class TamagotchiShop extends Fragment implements View.OnClickListener {
             else
                 rowLayout.setBackgroundColor(Color.parseColor("#11111111"));
 
-            rowLayout.addView(createTvLabel(si.name, 18, "#660000ff"));
+            //rowLayout.addView(createTvLabel(si.name, 18, "#660000ff"));
 
             ImageView iv = new ImageView(getContext());
             iv.setImageBitmap(BAMM.StringToBitMap(si.image));
             iv.setBackgroundColor(Color.parseColor("#00FFFFFF"));
             rowLayout.addView(iv);
 
-            rowLayout.addView(createTvLabel(si.category, 14, "#660000ff"));
+            //rowLayout.addView(createTvLabel(si.category, 14, "#660000ff"));
 
             rowLayout.addView(createTvLabel(String.valueOf(si.cost) + " coins", 14, "#660000ff"));
 
